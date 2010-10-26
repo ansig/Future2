@@ -1,0 +1,14 @@
+//
+// Prefix header for all source files of the 'Future2' target in the 'Future2' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+	#import "Future2AppDelegate.h"
+	#import "FCTypedef.h"
+	#import "FCConstants.h"
+	#import "FCProtocols.h"
+	#import "FCDateFormatterHelper.h"
+	#import "FCNumberHelper.h"
+#endif
