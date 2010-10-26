@@ -1,7 +1,7 @@
 TFuture2
 v7
 r0
-t309801817.577779
+t309804215.254553
 cCheck dependencies
 cProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist Future2-Info.plist
 cCompileXIB /Users/anders/Desktop/iPhoneDevelopment/Future2/MainWindow.xib
@@ -1232,7 +1232,7 @@ t1286376082
 s102
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-t1288109017
+t1288111415
 s952
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM
@@ -1256,15 +1256,15 @@ t1288000133
 s28672
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist
-t1287054122
-s968
+t1288111415
+s992
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/MainWindow.nib
 t1285682850
 s1500
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/PkgInfo
-t1287054122
+t1288111415
 s8
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/TapkuLibrary.bundle
@@ -1717,13 +1717,13 @@ t1288022145
 s15511024
 
 NFuture2-Info.plist
-c000000004CB6DBA500000000000005B5
-t1287052197
-s1461
+c000000004CC704E700000000000005CB
+t1288111335
+s1483
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies309801817#309801817#0(0"0(0#1#0"8625788704#0"0#
+lSLF07#2@18"Check dependencies309804215#309804215#0(0"0(0#1#0"8593657920#0"0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppCustomViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppCustomViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309717062.234311
@@ -2926,13 +2926,13 @@ xi386
 lSLF07#2@100"Link /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2309801817#309801817#0(0"0(0#0#0"8626727392#1001"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -L/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -filelist /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/Future2.LinkFileList -mmacosx-version-min=10.6 -Xlinker -objc_abi_version -Xlinker 2 -framework CoreGraphics -framework Foundation -framework UIKit -framework CoreLocation -framework QuartzCore -lsqlite3 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future20#
 
 CProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist Future2-Info.plist
-s308746922.847413
-e308746922.878509
+s309804215.222115
+e309804215.239780
 r1
 xProcessInfoPlistFile
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist
 xFuture2-Info.plist
-lSLF07#2@26"Process Future2-Info.plist308746922#308746922#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2-Info.plist8620612512#506"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Future2-Info.plist -genpkginfo /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist0#
+lSLF07#2@26"Process Future2-Info.plist309804215#309804215#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2-Info.plist8615411456#506"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Future2-Info.plist -genpkginfo /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist0#
 
 CProcessPCH /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-avygqcnxguivrgcfnuhcwpbncprd/Future2_Prefix.pch.gch Future2_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
 s307375605.837693
@@ -2974,10 +2974,10 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@29"Precompile Future2_Prefix.pch309714944#309714945#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2_Prefix.pch8622597152#1896"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Future2_Prefix.pch -o /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch.gch0#
 
 CTouch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-s309801817.574881
-e309801817.577726
+s309804215.248558
+e309804215.254209
 r1
 xTouch
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-lSLF07#2@93"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app309801817#309801817#0(0"0(0#0#0"8624154528#296"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app0#
+lSLF07#2@93"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app309804215#309804215#0(0"0(0#0#0"8595880864#296"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app0#
 

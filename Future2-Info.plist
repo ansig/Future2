@@ -27,7 +27,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>Product information</key>
-	<string>TiY (tm) 2010</string>
+	<string>TiY (tm) v0.2.1 2010</string>
 	<key>Product URL</key>
 	<string>www.idc.ul.ie/projects/futurecom</string>
 	<key>Project information</key>
@@ -39,8 +39,8 @@
 	<key>License URL</key>
 	<string>www.gnu.org/licenses/gpl.html</string>
 	<key>Source information</key>
-	<string>Source available here</string>
+	<string>git repository @ github.com</string>
 	<key>Source URL</key>
-	<string>sourceforge.net</string>
+	<string>github.com/ansig/Future2</string>
 </dict>
 </plist>

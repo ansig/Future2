@@ -1,7 +1,7 @@
 TFuture2
 v7
 r0
-t309802072.009573
+t309804151.228104
 cCheck dependencies
 cCpResource build/Debug-iphoneos/Future2.app/ResourceRules.plist /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/ResourceRules.plist
 cProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist Future2-Info.plist
@@ -82,6 +82,7 @@ cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/NSDate+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/UIImage+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/UIView+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+cLd /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/Future2 normal armv6
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/main.o /Users/anders/Desktop/iPhoneDevelopment/Future2/main.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/Future2AppDelegate.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Future2AppDelegate.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCTypedef.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCTypedef.m normal armv7 objective-c com.apple.compilers.gcc.4_2
@@ -115,7 +116,6 @@ cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCUnitConverter.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCUnitConverter.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCAppEntryViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppEntryViewController.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCAppLogDateSelectorViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m normal armv7 objective-c com.apple.compilers.gcc.4_2
-cLd /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/Future2 normal armv6
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCGraphViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCGraphViewController.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCGraphEntryView.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCGraphEntryView.m normal armv7 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/FCGraphEntryInfoView.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCGraphEntryInfoView.m normal armv7 objective-c com.apple.compilers.gcc.4_2
@@ -1041,7 +1041,7 @@ t1265281312
 s7962
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app
-t1288109272
+t1288111336
 s1088
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app.dSYM
@@ -1065,15 +1065,15 @@ t1288007322
 s28672
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist
-t1287054117
-s1103
+t1288111335
+s1127
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/MainWindow.nib
 t1285579263
 s1500
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/PkgInfo
-t1287054117
+t1288111335
 s8
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/ResourceRules.plist
@@ -1161,7 +1161,7 @@ t1285579263
 s1581
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent
-t1287054117
+t1288111335
 s430
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/FCAppCustomViewController.o
@@ -1749,21 +1749,22 @@ t1288024671
 s10495956
 
 NFuture2-Info.plist
-c000000004CB6DBA500000000000005B5
-t1287052197
-s1461
+c000000004CC704E700000000000005CB
+t1288111335
+s1483
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies309802069#309802069#0(0"0(0#1#0"8625537792#0"0#
+lSLF07#2@18"Check dependencies309804151#309804151#0(0"0(0#1#0"8608957024#0"0#
 
 CCodeSign /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app
-s309802071.020426
-e309802072.009409
+s309804135.939255
+e309804136.206110
 r1
 xCodeSign
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app
-lSLF07#2@41"CodeSign build/Debug-iphoneos/Future2.app309802071#309802072#0(0"0(0#0#80"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app8629565216#690"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv _CODESIGN_ALLOCATE_ /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate    /usr/bin/codesign -f -s "iPhone Developer: Anders Sigfridsson (2U7YSVEB9V)" --resource-rules=/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/ResourceRules.plist --entitlements /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app0#
+o/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app: replacing invalid existing signature
+lSLF07#2@41"CodeSign build/Debug-iphoneos/Future2.app309804135#309804136#0(119"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app: replacing invalid existing signature0(0#0#80"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app8606519584#690"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv _CODESIGN_ALLOCATE_ /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate    /usr/bin/codesign -f -s "iPhone Developer: Anders Sigfridsson (2U7YSVEB9V)" --resource-rules=/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/ResourceRules.plist --entitlements /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app0#
 
 CCompileC build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv6/FCAppCustomViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppCustomViewController.m normal armv6 objective-c com.apple.compilers.gcc.4_2
 s309717473.429142
@@ -3483,13 +3484,13 @@ xarmv7
 lSLF07#2@130"Link /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/Future2309802070#309802070#0(0"0(0#0#0"8626681248#960"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv IPHONEOS_DEPLOYMENT_TARGET 4.1    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -arch armv7 -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk -L/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos -filelist /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/Future2.LinkFileList -dead_strip -miphoneos-version-min=4.1 -framework CoreGraphics -framework Foundation -framework UIKit -framework CoreLocation -framework QuartzCore -lsqlite3 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Objects-normal/armv7/Future20#
 
 CProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist Future2-Info.plist
-s308746917.224725
-e308746917.244772
+s309804135.886836
+e309804135.905579
 r1
 xProcessInfoPlistFile
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist
 xFuture2-Info.plist
-lSLF07#2@26"Process Future2-Info.plist308746917#308746917#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2-Info.plist8617505088#598"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Future2-Info.plist -genpkginfo /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -resourcerulesfile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/ResourceRules.plist -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist0#
+lSLF07#2@26"Process Future2-Info.plist309804135#309804135#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2-Info.plist8607701152#598"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Future2-Info.plist -genpkginfo /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -resourcerulesfile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/ResourceRules.plist -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app/Info.plist0#
 
 CProcessPCH /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-bmgkgsgrddyhtydfpmcoqcbygich/Future2_Prefix.pch.gch Future2_Prefix.pch normal armv6 objective-c com.apple.compilers.gcc.4_2
 s309717469.844760
@@ -3545,19 +3546,19 @@ CProcessingProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDK
 r0
 
 CProcessingProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent
-s308746917.849913
-e308746917.934519
+s309804135.920040
+e309804135.939150
 r1
 xProcessingProductPackaging
 x/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent
-lSLF07#2@178"ProcessingProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent308746917#308746917#0(0"0(0#0#110"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent8622754240#450"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    <com.apple.tools.product-pkg-utility> /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist -entitlements -format xml -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent0#
+lSLF07#2@178"ProcessingProductPackaging /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent309804135#309804135#0(0"0(0#0#110"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent8606796608#450"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    <com.apple.tools.product-pkg-utility> /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/Entitlements.plist -entitlements -format xml -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphoneos/Future2.build/Future2.xcent0#
 
 CTouch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app
-s309802071.004068
-e309802071.020141
+s309804135.916696
+e309804135.919923
 r1
 xTouch
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app
-lSLF07#2@86"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app309802071#309802071#0(0"0(0#0#0"8626573440#282"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app0#
+lSLF07#2@86"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app309804135#309804135#0(0"0(0#0#0"8603904224#282"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphoneos/Future2.app0#
 

@@ -265,10 +265,6 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
-								<string>9A859BC01275DE9D00987FBD</string>
-								<string>9A859C731275E64C00987FBD</string>
-								<string>9A859C421275E0E300987FBD</string>
-								<string>9A859BC11275DEA600987FBD</string>
 								<string>9AF7D9F0111AE3D9008E90F6</string>
 								<string>9AF7D9F1111AE3E3008E90F6</string>
 								<string>9A8C1A861248D4B300124E25</string>
@@ -283,15 +279,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
+									<integer>60</integer>
 									<integer>46</integer>
-									<integer>43</integer>
-									<integer>36</integer>
-									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 201}, {331, 914}}</string>
+							<string>{{0, 81}, {331, 914}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -321,14 +315,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>FCAppLogDateSelectorViewController.h</string>
+								<string>Future2-Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -336,11 +328,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>FCAppLogDateSelectorViewController.h</string>
+										<string>Future2-Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>9AEA4CE912773605005C63A4</string>
+										<string>9AEA4D1B12773CC2005C63A4</string>
 										<key>history</key>
 										<array>
 											<string>9A9CCDD31120A6E500BAB27A</string>
@@ -387,7 +379,6 @@
 											<string>9A8957811268683500776EEF</string>
 											<string>9A8957821268683500776EEF</string>
 											<string>9A8957871268683500776EEF</string>
-											<string>9A89586A1268AFBB00776EEF</string>
 											<string>9A8958AC1268B9E900776EEF</string>
 											<string>9A3D3E2B126C8FDC00A205B3</string>
 											<string>9A3D3E2C126C8FDC00A205B3</string>
@@ -448,7 +439,8 @@
 											<string>9A8719A2127731600089300F</string>
 											<string>9A8719A3127731600089300F</string>
 											<string>9AEA4CE712773605005C63A4</string>
-											<string>9AEA4CE812773605005C63A4</string>
+											<string>9AEA4D0112773AA9005C63A4</string>
+											<string>9AEA4D0212773AA9005C63A4</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -644,6 +636,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>9AEA4D1A12773CB7005C63A4</string>
+		<string>9AEA4D0612773AA9005C63A4</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>9AF7D9DD111AE156008E90F6</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2.xcodeproj</string>
@@ -971,8 +966,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -1008,7 +1001,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>9A8718C212770F280089300F</string>
+				<string>9AEA4D0412773AA9005C63A4</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
@@ -1018,7 +1011,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
