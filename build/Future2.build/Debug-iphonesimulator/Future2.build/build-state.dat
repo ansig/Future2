@@ -1,7 +1,7 @@
 TFuture2
 v7
 r0
-t309772639.283745
+t309801817.577779
 cCheck dependencies
 cProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist Future2-Info.plist
 cCompileXIB /Users/anders/Desktop/iPhoneDevelopment/Future2/MainWindow.xib
@@ -77,9 +77,9 @@ cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal
 cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/TKCalendarMonthView.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/TKCalendarMonthView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/TKCalendarMonthViewController.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/TKCalendarMonthViewController.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/TKGlobal.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/TKGlobal.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/NSDate+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIView+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cLd /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2 normal i386
 cGenerateDSYMFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2
 cTouch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
@@ -317,17 +317,18 @@ s16903
 i"FCAppGlucoseViewController.h"
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.h
-c000000004CC5B3C200000000000002CE
-t1288025026
-s718
+c000000004CC6EBF800000000000002CF
+t1288104952
+s719
 i<UIKit/UIKit.h>
 i"FCAppCustomViewController.h"
 i"TKCalendarMonthView.h"
+i"NSDate+TKCategory.h"
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m
-c000000004CC689D000000000000019A6
-t1288079824
-s6566
+c000000004CC6FBD200000000000020CA
+t1288109010
+s8394
 i"FCAppLogDateSelectorViewController.h"
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.h
@@ -1019,6 +1020,18 @@ c00000000000000000000000000000000
 t2
 s0
 
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.h
+c000000004CAC8A920000000000000AB0
+t1286376082
+s2736
+i<Foundation/Foundation.h>
+
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m
+c000000004CAC8A9200000000000027A3
+t1286376082
+s10147
+i"NSDate+TKCategory.h"
+
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/ODCalendarDayEventView.h
 c000000004CC5AA6F000000000000076F
 t1288022639
@@ -1143,6 +1156,32 @@ t1286376082
 s7071
 i"TapDetectingView.h"
 
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.h
+c000000004CAC8A920000000000000605
+t1286376082
+s1541
+i<UIKit/UIKit.h>
+
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m
+c000000004CC5B2970000000000000C91
+t1288024727
+s3217
+i"UIImage+TKCategory.h"
+i"UIView+TKCategory.h"
+i"TKGlobal.h"
+
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.h
+c000000004CAC8A9200000000000006E1
+t1286376082
+s1761
+i<UIKit/UIKit.h>
+
+N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m
+c000000004CAC8A920000000000001186
+t1286376082
+s4486
+i"UIView+TKCategory.h"
+
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.h
 c000000004CAC8A920000000000000605
 t1286376082
@@ -1193,11 +1232,11 @@ t1286376082
 s102
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-t1288079839
+t1288109017
 s952
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM
-t1288079839
+t1288109017
 s102
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Default.png
@@ -1209,8 +1248,8 @@ t1285342877
 s6013
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2
-t1288079839
-s665204
+t1288109017
+s667040
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2Record.rdb
 t1288000133
@@ -1317,12 +1356,12 @@ t1288022146
 s88276
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogDateSelectorViewController.o
-t1288079838
-s58176
+t1288109017
+s61928
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogViewController.o
-t1288079838
-s82732
+t1288105045
+s82292
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppProfileInputViewController.o
 t1288022147
@@ -1341,7 +1380,7 @@ t1288022146
 s37748
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRootViewController.o
-t1288079838
+t1288105045
 s57988
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppSettingsSelectViewController.o
@@ -1486,8 +1525,8 @@ t1288022145
 s58104
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o
-t1288022339
-s29788
+t1288099751
+s29816
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDictionary+TKCategory.o
 t1288022339
@@ -1538,12 +1577,12 @@ t1288023713
 s47580
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o
-t1288079838
-s39328
+t1288099751
+s39296
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o
-t1288022497
-s41524
+t1288099751
+s41548
 
 N/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/main.o
 t1288022145
@@ -1684,7 +1723,7 @@ s1461
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies309772635#309772636#0(0"0(0#1#0"8610563552#0"0#
+lSLF07#2@18"Check dependencies309801817#309801817#0(0"0(0#1#0"8625788704#0"0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppCustomViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppCustomViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309717062.234311
@@ -1726,8 +1765,8 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@92"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppGlucoseViewController.m309714946#309714946#0(0"0(0#0#84"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppGlucoseViewController.m8630023488#2065"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppGlucoseViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppGlucoseViewController.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogDateSelectorViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s309772638.111778
-e309772638.297609
+s309801817.104598
+e309801817.328200
 r1
 xCompileC
 xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogDateSelectorViewController.o
@@ -1736,11 +1775,11 @@ xnormal
 xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
-lSLF07#2@100"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m309772638#309772638#0(0"0(0#0#92"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m8610412160#2081"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogDateSelectorViewController.o0#
+lSLF07#2@100"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m309801817#309801817#0(0"0(0#0#92"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m8625530496#2081"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogDateSelectorViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogDateSelectorViewController.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s309772636.521363
-e309772638.113016
+s309797845.352955
+e309797845.598253
 r1
 xCompileC
 xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogViewController.o
@@ -1749,7 +1788,7 @@ xnormal
 xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
-lSLF07#2@88"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m309772636#309772638#0(0"0(0#0#80"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m8611292096#2057"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogViewController.o0#
+lSLF07#2@88"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m309797845#309797845#0(0"0(0#0#80"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m8624774080#2057"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppLogViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppLogViewController.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppProfileInputViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppProfileInputViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309714947.327948
@@ -1804,8 +1843,8 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@94"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRecordingViewController.m309714946#309714946#0(0"0(0#0#86"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRecordingViewController.m8630645376#2069"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRecordingViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRecordingViewController.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRootViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
-s309772636.519641
-e309772638.109677
+s309797845.343754
+e309797845.503297
 r1
 xCompileC
 xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRootViewController.o
@@ -1814,7 +1853,7 @@ xnormal
 xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
-lSLF07#2@89"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m309772636#309772638#0(0"0(0#0#81"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m8611261120#2059"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRootViewController.o0#
+lSLF07#2@89"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m309797845#309797845#0(0"0(0#0#81"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m8625144640#2059"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppRootViewController.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppRootViewController.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/FCAppSettingsSelectViewController.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/FCAppSettingsSelectViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309714947.344481
@@ -2238,6 +2277,19 @@ xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@84"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Future2AppDelegate.m309714945#309714945#0(0"0(0#0#76"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Future2AppDelegate.m8628922240#2049"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Future2AppDelegate.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/Future2AppDelegate.o0#
 
+CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s309792551.191288
+e309792551.318251
+r1
+xCompileC
+xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o
+x/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@97"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m309792551#309792551#0(0"0(0#0#89"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m8606671904#2063"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/NSDate+TKCategory.m" -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o0#
+
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/NSDate+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/NSDate+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309715139.493458
 e309715139.659270
@@ -2574,6 +2626,19 @@ xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@82"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/TapDetectingView.m309714949#309714949#0(0"0(0#0#74"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/TapDetectingView.m8620637984#2045"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/TapDetectingView.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/TapDetectingView.o0#
 
+CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s309792551.291062
+e309792551.395909
+r1
+xCompileC
+xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o
+x/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@98"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m309792551#309792551#0(0"0(0#0#90"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m8605884288#2065"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIImage+TKCategory.m" -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o0#
+
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309772638.298008
 e309772638.374757
@@ -2586,6 +2651,19 @@ xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@84"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.m309772638#309772638#0(0"0(0#0#76"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.m8607198048#2049"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIImage+TKCategory.m -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIImage+TKCategory.o0#
+
+CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s309792551.318368
+e309792551.408831
+r1
+xCompileC
+xbuild/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o
+x/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@97"Compile /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m309792551#309792551#0(0"0(0#0#89"/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m8604459648#2063"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -include /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch -c "/Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/Tapku Library/UIView+TKCategory.m" -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o0#
 
 CCompileC build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/UIView+TKCategory.o /Users/anders/Desktop/iPhoneDevelopment/Future2/Classes/UIView+TKCategory.m normal i386 objective-c com.apple.compilers.gcc.4_2
 s309715297.897666
@@ -2829,23 +2907,23 @@ xresources/images/buttons/webviewClose.png
 lSLF07#2@46"Copy resources/images/buttons/webviewClose.png307035677#307035677#0(0"0(0#0#89"/Users/anders/Desktop/iPhoneDevelopment/Future2/resources/images/buttons/webviewClose.png8610292352#512"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks /Users/anders/Desktop/iPhoneDevelopment/Future2/resources/images/buttons/webviewClose.png /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app0#
 
 CGenerateDSYMFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2
-s309772639.105710
-e309772639.279516
+s309801817.454466
+e309801817.574766
 r1
 xGenerateDSYMFile
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2
-lSLF07#2@109"GenerateDSYMFile build/Debug-iphonesimulator/Future2.app.dSYM build/Debug-iphonesimulator/Future2.app/Future2309772639#309772639#0(0"0(0#0#95"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future28610207232#410"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM0#
+lSLF07#2@109"GenerateDSYMFile build/Debug-iphonesimulator/Future2.app.dSYM build/Debug-iphonesimulator/Future2.app/Future2309801817#309801817#0(0"0(0#0#95"/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future28624379456#410"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app.dSYM0#
 
 CLd /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2 normal i386
-s309772638.374855
-e309772639.105530
+s309801817.328287
+e309801817.454327
 r1
 xLd
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2
 xnormal
 xi386
-lSLF07#2@100"Link /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2309772638#309772639#0(0"0(0#0#0"8606820160#1001"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -L/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -filelist /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/Future2.LinkFileList -mmacosx-version-min=10.6 -Xlinker -objc_abi_version -Xlinker 2 -framework CoreGraphics -framework Foundation -framework UIKit -framework CoreLocation -framework QuartzCore -lsqlite3 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future20#
+lSLF07#2@100"Link /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future2309801817#309801817#0(0"0(0#0#0"8626727392#1001"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -L/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -filelist /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Objects-normal/i386/Future2.LinkFileList -mmacosx-version-min=10.6 -Xlinker -objc_abi_version -Xlinker 2 -framework CoreGraphics -framework Foundation -framework UIKit -framework CoreLocation -framework QuartzCore -lsqlite3 -o /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Future20#
 
 CProcessInfoPlistFile /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app/Info.plist Future2-Info.plist
 s308746922.847413
@@ -2896,10 +2974,10 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@29"Precompile Future2_Prefix.pch309714944#309714945#0(0"0(0#0#66"/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2_Prefix.pch8622597152#1896"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.1.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-generated-files.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-own-target-headers.hmap -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-all-target-headers.hmap -iquote /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/Future2-project-headers.hmap -F/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/include -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources/i386 -I/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Future2.build/Debug-iphonesimulator/Future2.build/DerivedSources -c /Users/anders/Desktop/iPhoneDevelopment/Future2/Future2_Prefix.pch -o /var/folders/uy/uy+tkJLnF7yLYbsw8BdYfE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Future2_Prefix-guuvtgzogjloxrchggngacbofhdi/Future2_Prefix.pch.gch0#
 
 CTouch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-s309772639.279658
-e309772639.283675
+s309801817.574881
+e309801817.577726
 r1
 xTouch
 x/Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app
-lSLF07#2@93"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app309772639#309772639#0(0"0(0#0#0"8609426176#296"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app0#
+lSLF07#2@93"Touch /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app309801817#309801817#0(0"0(0#0#0"8624154528#296"    cd /Users/anders/Desktop/iPhoneDevelopment/Future2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/anders/Desktop/iPhoneDevelopment/Future2/build/Debug-iphonesimulator/Future2.app0#
 

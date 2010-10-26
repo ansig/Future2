@@ -10,22 +10,18 @@
 
 #import "FCAppCustomViewController.h"
 #import "TKCalendarMonthView.h"
+#import "NSDate+TKCategory.h"
 
-@interface FCAppLogDateSelectorViewController : FCAppCustomViewController {
+@interface FCAppLogDateSelectorViewController : FCAppCustomViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource> {
 
-	UIDatePicker *datePickerView;
-	UILabel *startDateLabel;
-	UILabel *endDateLabel;
-	UILabel *separatorLabel;
+	TKCalendarMonthView *calendarMonthView;
+	NSDate *lastSelectedDate;
+	BOOL lastSetWasStartDate;
 }
 
-@property (nonatomic, retain) UIDatePicker *datePickerView;
-@property (nonatomic, retain) UILabel *startDateLabel;
-@property (nonatomic, retain) UILabel *endDateLabel;
-@property (nonatomic, retain) UILabel *separatorLabel;
+@property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
 
-// Custom
-
--(void)setLabels;
+@property (nonatomic, retain) NSDate *lastSelectedDate;
+@property (nonatomic) BOOL lastSetWasStartDate;
 
 @end

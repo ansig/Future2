@@ -11,9 +11,8 @@
 
 @implementation FCAppLogDateSelectorViewController
 
-@synthesize datePickerView;
-@synthesize startDateLabel, endDateLabel;
-@synthesize separatorLabel;
+@synthesize calendarMonthView;
+@synthesize lastSelectedDate, lastSetWasStartDate;
 
 #pragma mark Init
 
@@ -31,12 +30,8 @@
 
 - (void)dealloc {
 	
-	[datePickerView release];
-	
-	[startDateLabel release];
-	[endDateLabel release];
-	
-	[separatorLabel release];
+	[calendarMonthView release];
+	[lastSelectedDate release];
 	
     [super dealloc];
 }
@@ -76,6 +71,168 @@
 	// e.g. self.myOutlet = nil;
 }
 
+#pragma mark TKCalendarMonthViewDelegate
+
+- (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)d {
+	
+	// get current log dates
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	
+	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
+	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
+	
+	// determine whether to set a new start or end date
+	
+	BOOL setNewStartDate = NO;
+	
+	int differenceToStartDate = [logStartDate differenceInDaysTo:d];
+	
+	if (self.lastSelectedDate == nil) {
+	
+		if (differenceToStartDate <= 0)
+			setNewStartDate = YES;
+		
+	} else if (self.lastSetWasStartDate) {
+		
+		if (differenceToStartDate <= 0)
+			setNewStartDate = YES;
+		
+	} else {
+		
+		int differenceToEndDate = [logEndDate differenceInDaysTo:d];
+		
+		if (differenceToEndDate <= 0)
+			setNewStartDate = YES;
+	}
+	
+	// set new start or end date
+	NSDate *newLogStartDate, *newLogEndDate;
+	if (setNewStartDate) {
+		
+		newLogStartDate = d;
+		
+		// adjust end date so that difference to the new start date is within the allowed range
+		
+		int differenceToEndDate = [newLogStartDate differenceInDaysTo:logEndDate];
+		
+		if (differenceToEndDate > 6) {
+		
+			TKDateInformation newStartDateInfo = [newLogStartDate dateInformation];
+			newStartDateInfo.day += 6;
+			
+			newLogEndDate = [NSDate dateFromDateInformation:newStartDateInfo];
+		
+		} else {
+		
+			newLogEndDate = logEndDate;
+		}
+		
+		// flag that the last set date was start date
+		
+		self.lastSetWasStartDate = YES;
+		
+	} else {
+		
+		newLogEndDate = d;
+		
+		// adjust end date so that difference to the new start date is within the allowed range
+		
+		int differenceToStartDate = [logStartDate differenceInDaysTo:newLogEndDate];
+		
+		if (differenceToStartDate > 6) {
+			
+			TKDateInformation newEndDateInfo = [newLogEndDate dateInformation];
+			newEndDateInfo.day -= 6;
+			
+			newLogStartDate = [NSDate dateFromDateInformation:newEndDateInfo];
+			
+		} else {
+			
+			newLogStartDate = logStartDate;
+		}
+		
+		// flag that the last set date was start date
+		
+		self.lastSetWasStartDate = NO;
+	}
+	
+	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
+	
+	// update the user defaults
+	
+	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
+	
+	[newLogDates release];
+	
+	// remember this selection and reload the calendar month view
+	
+	self.lastSelectedDate = d;
+	[self.calendarMonthView reload];
+}
+
+- (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)d {
+	
+	// reload to ensure visible marked days are marked
+	[self.calendarMonthView reload];
+}
+
+#pragma mark TKCalendarMonthViewDataSource
+
+- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate {
+	
+	// * Mark all dates between current log start date and end date in user defaults
+	
+	// get current log dates
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	
+	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
+	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
+	
+	// loop through all dates currently visible in calendar view
+	
+	NSMutableArray *selectedDates = [[NSMutableArray alloc] init];
+	
+	NSDate *currentDate = startDate;
+	
+	int difference = [startDate differenceInDaysTo:lastDate];
+	for (int i = 0; i <= difference; i++) {
+	
+		// get info about current date
+		TKDateInformation currentDateInfo = [currentDate dateInformation];
+		
+		// find dates between the log start and end dates
+		NSNumber *marker;
+		
+		int differenceToLogStartDate = [currentDate differenceInDaysTo:logStartDate];
+		int differenceToLogEndDate = [currentDate differenceInDaysTo:logEndDate];
+		
+		if (differenceToLogStartDate <= 0 && differenceToLogEndDate >= 0)
+			marker = [[NSNumber alloc] initWithBool:YES];
+		
+		else
+			marker = [[NSNumber alloc] initWithBool:NO];
+			
+		// add marker
+		[selectedDates addObject:marker];
+		
+		[marker release];
+		
+		// get the next date
+		currentDateInfo.day++;
+		currentDate = [NSDate dateFromDateInformation:currentDateInfo];
+	}
+	
+	// autorelease and return
+	
+	[selectedDates autorelease];
+	
+	return selectedDates;
+}
+
 #pragma mark Custom
 
 -(void)presentContent {
@@ -86,147 +243,56 @@
 	self.navigationItem.rightBarButtonItem = newRightButton;
 	[newRightButton release];
 	
-	// get the end date
-	NSDate *endDate = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates] objectForKey:@"EndDate"];
-	
-	NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0.0f];
-	
-	if (endDate == nil)
-		endDate = now;
-	
-	// create date picker
-	
-	UIDatePicker *newDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0f, 460.0f, 320.0f, 216.0f)];
-	newDatePicker.datePickerMode = UIDatePickerModeDate;
-	
-	[newDatePicker addTarget:self action:@selector(setLabels) forControlEvents:UIControlEventValueChanged];
-	
-	newDatePicker.maximumDate = now;
-	newDatePicker.date = endDate;
-	
-	[now release];
-	
-	[self.view addSubview:newDatePicker];
-	self.datePickerView = newDatePicker;
-	
-	[newDatePicker release];
-	
-	// create the labels
-	
-	UILabel *newStartDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 155.0f, 24.0f)];
-	newStartDateLabel.backgroundColor = [UIColor clearColor];
-	newStartDateLabel.textColor = [UIColor whiteColor];
-	newStartDateLabel.textAlignment = UITextAlignmentCenter;
-	newStartDateLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-	
-	self.startDateLabel = newStartDateLabel;
-	[self.view addSubview:newStartDateLabel];
-	
-	[newStartDateLabel release];
-	
-	UILabel *newEndDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(165.0f, 20.0f, 155.0f, 24.0f)];
-	newEndDateLabel.backgroundColor = [UIColor clearColor];
-	newEndDateLabel.textColor = [UIColor whiteColor];
-	newEndDateLabel.textAlignment = UITextAlignmentCenter;
-	newEndDateLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-	
-	self.endDateLabel = newEndDateLabel;
-	[self.view addSubview:newEndDateLabel];
-	
-	[newEndDateLabel release];
-	
-	UILabel *newSeparatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(155.0f, 20.0f, 10.0f, 24.0f)];
-	newSeparatorLabel.backgroundColor = [UIColor clearColor];
-	newSeparatorLabel.textColor = [UIColor whiteColor];
-	newSeparatorLabel.textAlignment = UITextAlignmentCenter;
-	newSeparatorLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-	
-	newSeparatorLabel.text = @"-";
-	
-	self.separatorLabel = newSeparatorLabel;
-	[self.view addSubview:newSeparatorLabel];
-	
-	[newSeparatorLabel release];
-	
-	// set the labels
-	[self setLabels];
-	
 	// show navigation bar
 	if (self.navigationController.navigationBarHidden == YES)
 		[self.navigationController setNavigationBarHidden:NO animated:YES];
 	
-	// animate date picker appearance
+	// create calendar month view
 	
-	[UIView beginAnimations:@"PresentDatePicker" context:NULL];
-	[UIView setAnimationDuration:kAppearDuration];
+	TKCalendarMonthView *newCalendarMonthView = [[TKCalendarMonthView alloc] init];
+	newCalendarMonthView.delegate = self;
+	newCalendarMonthView.dataSource = self;
 	
-	CGRect newFrame = CGRectMake(0.0f, 200.0f, 320.0f, 216.0f);
-	self.datePickerView.frame = newFrame;
+	newCalendarMonthView.frame = CGRectMake(0.0f, 460.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
 	
-	[UIView commitAnimations];
+	self.calendarMonthView = newCalendarMonthView;
+	[self.view addSubview:newCalendarMonthView];
+	
+	[newCalendarMonthView release];
+	
+	// get the current end date (assumes that logDates exists, since it should be created on startup, see FCRootViewController -loadApplication:)
+	// and select it in calendar to ensure the correct month is shown
+	
+	NSDate *endDate = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates] objectForKey:@"EndDate"];
+	[self.calendarMonthView selectDate:endDate];
+	
+	// reload calendar month view to highlight selected
+	[newCalendarMonthView reload];
+	
+	// animate calendar month view onto screen
+	
+	[UIView animateWithDuration:kAppearDuration 
+					 animations:^{ self.calendarMonthView.frame = CGRectMake(0.0f, 0.0f, self.calendarMonthView.frame.size.width, self.calendarMonthView.frame.size.height); } 
+					 completion:^(BOOL finished) { } ];
 }
 
 -(void)dismiss {
 	
-	// get end date from the picker
-	NSDate *endDate = [self.datePickerView.date retain];
-	
-	// calculate the start date
-	NSTimeInterval interval = -518400; // 6 days
-	NSDate *startDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:endDate];
-	
-	// save the dates
-	NSDictionary *logDates = [[NSDictionary alloc] initWithObjectsAndKeys:startDate, @"StartDate", endDate, @"EndDate", nil];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:logDates forKey:FCDefaultLogDates];
-	
-	[logDates release];
-	
-	[startDate release];
-	[endDate release];
-	
 	// post notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationLogDateChanged object:self];
+	if (self.lastSelectedDate != nil)
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationLogDateChanged object:self];
 	
 	// super dismiss
 	[super dismiss];
 }
 
 -(void)dismissUIElements {
-	
-	[self.startDateLabel removeFromSuperview];
-	[self.separatorLabel removeFromSuperview];
-	[self.endDateLabel removeFromSuperview];
-		
-	[UIView beginAnimations:@"DismissDatePicker" context:NULL];
-	[UIView setAnimationDuration:kDisappearDuration];
-	
-	CGRect newFrame = CGRectMake(0.0f, 460.f, 320.0f, 216.0f);
-	self.datePickerView.frame = newFrame;
-	
-	[UIView commitAnimations];
-}
 
--(void)setLabels {
-
-	// get end date from the picker
-	NSDate *endDate = [self.datePickerView.date retain];
+	// animate calendar month view off screen
 	
-	// calculate the start date
-	NSTimeInterval interval = -518400; // 6 days
-	NSDate *startDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:endDate];
-	
-	// set the labels
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	formatter.dateStyle = NSDateFormatterMediumStyle;
-	
-	self.startDateLabel.text = [formatter stringFromDate:startDate];
-	self.endDateLabel.text = [formatter stringFromDate:endDate];
-	
-	[formatter release];
-	
-	[endDate release];
-	[startDate release];
+	[UIView animateWithDuration:kDisappearDuration 
+					 animations:^{ self.calendarMonthView.frame = CGRectMake(0.0f, 460.0f, self.calendarMonthView.frame.size.width, self.calendarMonthView.frame.size.height); } 
+					 completion:^(BOOL finished) { } ];
 }
 
 
