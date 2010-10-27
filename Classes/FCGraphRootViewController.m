@@ -118,11 +118,20 @@
 	 NSMutableArray *newAvailableColors = [[NSMutableArray alloc] init];
 	 
 	 // default colors:
-	 [newAvailableColors addObject:[UIColor purpleColor]]; // purple
-	 [newAvailableColors addObject:[UIColor orangeColor]]; // orange
-	 [newAvailableColors addObject:[UIColor blueColor]]; // blue
-	 [newAvailableColors addObject:[UIColor brownColor]]; // brown
-	 [newAvailableColors addObject:[UIColor redColor]]; // red
+	 
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.1328125f green:0.54296975f blue:0.1328125f alpha:1.0f]]; // Forest green
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.26953125 blue:0 alpha:1.0f]]; // Orange red
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.51953125 green:0.51953125 blue:0.7734375 alpha:1.0f]]; // Slate blue
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.5546875 green:0.21875 blue:0.554675 alpha:1.0f]]; // Beet
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.38671875 blue:0.27734375 alpha:1.0f]]; // Tomato
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.83984375 blue:0 alpha:1.0f]]; // Gold
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.57421875 green:0.4375 blue:0.85546875 alpha:1.0f]]; // Medium purple
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.64453125 blue:0 alpha:1.0f]]; // Orange
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.21875 green:0.5546875 blue:0.5546875 alpha:1.0f]]; // Teal
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.6015625 green:0.80078125 blue:0.1953125 alpha:1.0f]]; // Olive
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.125 green:0.6953125 blue:0.6640625 alpha:1.0f]]; // Light sea green
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.77734375 green:0.08203125 blue:0.51953125 alpha:1.0f]]; // Medium violet red
+	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.546875 blue:0 alpha:1.0f]]; // Dark orange
 	 
 	 self.availableColors = newAvailableColors;
 	 

@@ -75,83 +75,6 @@
 	self.view = view;
 	[view release];
 	
-	// * Timestamp label/button
-
-	CGFloat labelWidth = 200.0f;
-	CGFloat labelHeight = 20.0f;
-	
-	CGFloat buttonWidth = 80.0f;
-	CGFloat buttonHeight = 25.0f;
-	
-	CGFloat spacing = 6.0f;
-	CGFloat yAnchor = 35.0f;
-	CGFloat xAnchor = 160.0f;
-	
-	CGFloat labelXPosition = xAnchor - (labelWidth/2);
-	CGFloat labelYPosition = yAnchor - labelHeight - (spacing/2);
-	
-	CGFloat buttonXPosition = xAnchor - (buttonWidth/2);
-	CGFloat buttonYPosition = yAnchor + (spacing/2);
-	
-	UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 320.0f, 20.0f)];
-	newTimestampLabel.backgroundColor = [UIColor clearColor];
-	newTimestampLabel.textAlignment = UITextAlignmentCenter;
-	newTimestampLabel.font = [UIFont systemFontOfSize:18.0f];
-	
-	self.timestampLabel = newTimestampLabel;
-	[self.view addSubview:newTimestampLabel];
-	
-	[newTimestampLabel release];
-	
-	UIButton *newTimestampButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	
-	newTimestampButton.frame = CGRectMake(buttonXPosition, buttonYPosition, buttonWidth, buttonHeight);
-	
-	[newTimestampButton setTitleColor:kButtonTitleColor forState:UIControlStateNormal];
-	newTimestampButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-	newTimestampButton.titleLabel.textAlignment = UITextAlignmentCenter;
-	
-	[newTimestampButton setTitle:@"Change" forState:UIControlStateNormal];
-	
-	[newTimestampButton addTarget:self action:@selector(loadTimestampSelectionViewController) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.timestampButton = newTimestampButton;
-	[self.view addSubview:newTimestampButton];
-	
-	// * Unit label/button
-	yAnchor = 325.0f;
-	
-	labelXPosition = xAnchor - (labelWidth/2);
-	labelYPosition = yAnchor - labelHeight - (spacing/2);
-	
-	buttonXPosition = xAnchor - (buttonWidth/2);
-	buttonYPosition = yAnchor + (spacing/2);
-	
-	UILabel *newUnitLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
-	newUnitLabel.backgroundColor = [UIColor clearColor];
-	newUnitLabel.textAlignment = UITextAlignmentCenter;
-	newUnitLabel.font = [UIFont systemFontOfSize:18.0f];
-	
-	self.unitLabel = newUnitLabel;
-	[self.view addSubview:newUnitLabel];
-	
-	[newUnitLabel release];
-	
-	UIButton *newUnitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	
-	newUnitButton.frame = CGRectMake(buttonXPosition, buttonYPosition, buttonWidth, buttonHeight);
-	
-	[newUnitButton setTitleColor:kButtonTitleColor forState:UIControlStateNormal];
-	newUnitButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-	newUnitButton.titleLabel.textAlignment = UITextAlignmentCenter;
-	
-	[newUnitButton setTitle:@"Change" forState:UIControlStateNormal];
-	
-	[newUnitButton addTarget:self action:@selector(loadUnitSelectionViewController) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.timestampButton = newUnitButton;
-	[self.view addSubview:newUnitButton];
-	
 	// * Picker view
 	UIPickerView *newPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, 75.0f, 320.0f, 216.0f)];
 	newPickerView.delegate = self;
@@ -185,7 +108,8 @@
 								// leaving only its data and category information
 	}
 	
-	// set timestamp and unit labels
+	// * Timestamp and unit labels
+	
 	[self updateTimestampLabel];
 	[self updateUnitLabel];
 	
@@ -403,6 +327,10 @@
 #pragma mark Custom
 
 -(void)updateTimestampLabel {
+/*	Updates the text of the timestamp label and also resizes it and moves the
+	edit button accordingly. */
+	
+	// * Get text for the label
 	
 	NSDate *theTimestamp;
 	
@@ -422,16 +350,153 @@
 	[formatter setDateStyle:NSDateFormatterMediumStyle];
 	[formatter setTimeStyle:NSDateFormatterShortStyle];
 	
-	self.timestampLabel.text = [formatter stringFromDate:theTimestamp];
+	NSString *text = [formatter stringFromDate:theTimestamp];
 	
-	[formatter release]; 
+	[formatter release];
+	
+	// * Create/resize and position the label and button if necessary
+	
+	CGSize sizeForText = [text sizeWithFont:kAppCommonLabelFont];
+	
+	if (self.timestampLabel == nil || self.timestampButton == nil) {
+		
+		// create new label and button
+		
+		CGFloat yAnchor = 35.0f;
+		CGFloat xAnchor = 160.0f;
+		
+		CGFloat labelWidth = sizeForText.width;
+		CGFloat labelHeight = sizeForText.height;
+		
+		CGFloat buttonWidth = 30.0f; // (same size as buttonImage.png)
+		CGFloat buttonHeight = 30.0f;
+		
+		CGFloat labelXPosition = xAnchor - (labelWidth/2);
+		CGFloat labelYPosition = yAnchor - (labelHeight/2);
+		
+		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
+		CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
+		
+		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
+		newTimestampLabel.backgroundColor = [UIColor clearColor];
+		newTimestampLabel.textAlignment = UITextAlignmentCenter;
+		newTimestampLabel.font = kAppCommonLabelFont;
+		
+		self.timestampLabel = newTimestampLabel;
+		[self.view addSubview:newTimestampLabel];
+		
+		[newTimestampLabel release];
+		
+		UIButton *newTimestampButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		
+		[newTimestampButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+		
+		newTimestampButton.frame = CGRectMake(buttonXPosition, buttonYPosition, buttonWidth, buttonHeight);
+		
+		[newTimestampButton addTarget:self action:@selector(loadTimestampSelectionViewController) forControlEvents:UIControlEventTouchUpInside];
+		
+		self.timestampButton = newTimestampButton;
+		[self.view addSubview:newTimestampButton];
+		
+	} else {
+		
+		// resize label
+		
+		CGPoint center = self.timestampLabel.center;
+		
+		CGRect oldFrame = self.timestampLabel.frame;
+		
+		CGFloat newXPos = center.x - (sizeForText.width/2);		// using this calculation instead of simply setting new center to the old one
+		CGFloat newYPos = center.y - (sizeForText.height/2);	// because that would for some reason be 7 points off every second try... /Anders
+		
+		CGRect newFrame = CGRectMake(newXPos, newYPos, sizeForText.width, sizeForText.height);
+		
+		self.timestampLabel.frame = newFrame;
+		
+		// move edit button
+		
+		oldFrame = self.timestampButton.frame;
+		newXPos = self.timestampLabel.frame.origin.x + self.timestampLabel.frame.size.width + kAppLabelSpacing;
+		self.timestampButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);	
+	}
+	
+	self.timestampLabel.text = text;
 }
 
 -(void)updateUnitLabel {
 	
-	FCUnit *unit = self.entry.unit;
+	// * Unit abbreviation
 	
-	self.unitLabel.text = unit.abbreviation;
+	FCUnit *unit = self.entry.unit;
+	NSString *text = unit.abbreviation;
+	
+	// * Create/resize and position the label and button if necessary
+	
+	CGSize sizeForText = [text sizeWithFont:kAppCommonLabelFont];
+	
+	if (self.unitLabel == nil || self.unitButton == nil) {
+		
+		// create new label and button
+		
+		CGFloat yAnchor = 325.0f;
+		CGFloat xAnchor = 160.0f;
+		
+		CGFloat labelWidth = sizeForText.width;
+		CGFloat labelHeight = sizeForText.height;
+		
+		CGFloat buttonWidth = 30.0f; // (same size as buttonImage.png)
+		CGFloat buttonHeight = 30.0f;
+		
+		CGFloat labelXPosition = xAnchor - (labelWidth/2);
+		CGFloat labelYPosition = yAnchor - (labelHeight/2);
+		
+		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
+		CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
+		
+		UILabel *newUnitLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
+		newUnitLabel.backgroundColor = [UIColor clearColor];
+		newUnitLabel.textAlignment = UITextAlignmentCenter;
+		newUnitLabel.font = kAppCommonLabelFont;
+		
+		self.unitLabel = newUnitLabel;
+		[self.view addSubview:newUnitLabel];
+		
+		[newUnitLabel release];
+		
+		UIButton *newUnitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		
+		[newUnitButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+		
+		newUnitButton.frame = CGRectMake(buttonXPosition, buttonYPosition, buttonWidth, buttonHeight);
+		
+		[newUnitButton addTarget:self action:@selector(loadUnitSelectionViewController) forControlEvents:UIControlEventTouchUpInside];
+		
+		self.unitButton = newUnitButton;
+		[self.view addSubview:newUnitButton];
+		
+	} else {
+		
+		// resize label
+		
+		CGPoint center = self.unitLabel.center;
+		
+		CGRect oldFrame = self.unitLabel.frame;
+		
+		CGFloat newXPos = center.x - (sizeForText.width/2);		// using this calculation instead of simply setting new center to the old one
+		CGFloat newYPos = center.y - (sizeForText.height/2);	// because that would for some reason be 7 points off every second try... /Anders
+		
+		CGRect newFrame = CGRectMake(newXPos, newYPos, sizeForText.width, sizeForText.height);
+		
+		self.unitLabel.frame = newFrame;
+		
+		// move edit button
+		
+		oldFrame = self.unitButton.frame;
+		newXPos = self.unitLabel.frame.origin.x + self.unitLabel.frame.size.width + kAppLabelSpacing;
+		self.unitButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);	
+	}
+	
+	self.unitLabel.text = text;
 }
 
 -(void)setPickerRows {

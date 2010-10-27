@@ -27,6 +27,10 @@
 
 /* SIMPLE */
 
+#define kAppCommonLabelFont		[UIFont systemFontOfSize:18.0f]
+#define kAppLargeLabelFont		[UIFont systemFontOfSize:36.0f]
+#define kAppLabelSpacing		15.0f // distance between any label and another label or button
+
 #define kGraphPadding		12.5f // minimum distance to all edges in the graph view (should be about half kGraphEntryViewDiameter)
 #define kGraphSpacing		50.0f // minimum distance between date-time units in the graph
 

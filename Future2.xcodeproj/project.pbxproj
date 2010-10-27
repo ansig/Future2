@@ -56,6 +56,7 @@
 		9A8C1A951248F63200124E25 /* FCAppLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C1A941248F63200124E25 /* FCAppLogDateSelectorViewController.m */; };
 		9A8C7AB7122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */; };
 		9A8F740F1250A08300DDD1A4 /* FCGraphEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */; };
+		9A9648C3127841B200A410C1 /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A9648C2127841B200A410C1 /* editButton.png */; };
 		9A968048123E396700ED80EE /* FCAppPropertySelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A968047123E396700ED80EE /* FCAppPropertySelectorViewController.m */; };
 		9A9680C0123E57DE00ED80EE /* FCAppCustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9680BF123E57DE00ED80EE /* FCAppCustomViewController.m */; };
 		9A968263123F982100ED80EE /* FCUnitConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A968262123F982100ED80EE /* FCUnitConverter.m */; };
@@ -177,6 +178,7 @@
 		9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppSettingsSelectViewController.m; sourceTree = "<group>"; };
 		9A8F740D1250A08300DDD1A4 /* FCGraphEntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphEntryView.h; sourceTree = "<group>"; };
 		9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphEntryView.m; sourceTree = "<group>"; };
+		9A9648C2127841B200A410C1 /* editButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = editButton.png; path = resources/images/buttons/editButton.png; sourceTree = "<group>"; };
 		9A968046123E396700ED80EE /* FCAppPropertySelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppPropertySelectorViewController.h; sourceTree = "<group>"; };
 		9A968047123E396700ED80EE /* FCAppPropertySelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppPropertySelectorViewController.m; sourceTree = "<group>"; };
 		9A9680BE123E57DE00ED80EE /* FCAppCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCustomViewController.h; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 		9A8513211235286100031CA6 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				9A9648C2127841B200A410C1 /* editButton.png */,
 				9A804790125A3141006ADD63 /* entryInfoViewClose.png */,
 				9A8513221235287B00031CA6 /* webviewClose.png */,
 				9A8513231235287B00031CA6 /* webviewBack.png */,
@@ -761,6 +764,7 @@
 				9AB10F70124CAB3C005E8D2A /* tagIcon.png in Resources */,
 				9A804791125A3141006ADD63 /* entryInfoViewClose.png in Resources */,
 				9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */,
+				9A9648C3127841B200A410C1 /* editButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
