@@ -119,7 +119,6 @@
 	 
 	 // default colors:
 	 
-	 [newAvailableColors addObject:[UIColor colorWithRed:0.1328125f green:0.54296975f blue:0.1328125f alpha:1.0f]]; // Forest green
 	 [newAvailableColors addObject:[UIColor colorWithRed:0.99609375 green:0.26953125 blue:0 alpha:1.0f]]; // Orange red
 	 [newAvailableColors addObject:[UIColor colorWithRed:0.51953125 green:0.51953125 blue:0.7734375 alpha:1.0f]]; // Slate blue
 	 [newAvailableColors addObject:[UIColor colorWithRed:0.5546875 green:0.21875 blue:0.554675 alpha:1.0f]]; // Beet

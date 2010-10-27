@@ -251,6 +251,7 @@
 			9A9649961278693E00A410C1 /* PBXTextBookmark */ = 9A9649961278693E00A410C1 /* PBXTextBookmark */;
 			9A96499E12786B9F00A410C1 /* PBXTextBookmark */ = 9A96499E12786B9F00A410C1 /* PBXTextBookmark */;
 			9A9649A312786CA600A410C1 /* PBXTextBookmark */ = 9A9649A312786CA600A410C1 /* PBXTextBookmark */;
+			9A9649A71278780500A410C1 /* PBXTextBookmark */ = 9A9649A71278780500A410C1 /* PBXTextBookmark */;
 			9A9CB7A91271D48800048400 = 9A9CB7A91271D48800048400 /* PBXTextBookmark */;
 			9A9CB7AA1271D48800048400 = 9A9CB7AA1271D48800048400 /* PBXTextBookmark */;
 			9A9CB82B1271FD0100048400 = 9A9CB82B1271FD0100048400 /* PBXTextBookmark */;
@@ -1260,7 +1261,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 454";
 		rLen = 0;
-		rLoc = 16613;
+		rLoc = 16484;
 		rType = 0;
 		vrLen = 1708;
 		vrLoc = 21465;
@@ -1965,7 +1966,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 454";
 		rLen = 0;
-		rLoc = 16613;
+		rLoc = 16484;
 		rType = 0;
 		vrLen = 1326;
 		vrLoc = 0;
@@ -2269,7 +2270,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 454";
 		rLen = 0;
-		rLoc = 16613;
+		rLoc = 16484;
 		rType = 0;
 		vrLen = 1325;
 		vrLoc = 0;
@@ -2278,8 +2279,8 @@
 		isa = PBXTextBookmark;
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 129";
-		rLen = 9;
-		rLoc = 3438;
+		rLen = 0;
+		rLoc = 3383;
 		rType = 0;
 		vrLen = 1359;
 		vrLoc = 2899;
@@ -2289,7 +2290,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 131";
 		rLen = 0;
-		rLoc = 3684;
+		rLoc = 3555;
 		rType = 0;
 		vrLen = 1398;
 		vrLoc = 3237;
@@ -2299,7 +2300,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 132";
 		rLen = 0;
-		rLoc = 3864;
+		rLoc = 3735;
 		rType = 0;
 		vrLen = 1532;
 		vrLoc = 3237;
@@ -2309,7 +2310,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 133";
 		rLen = 0;
-		rLoc = 4935;
+		rLoc = 4806;
 		rType = 0;
 		vrLen = 1633;
 		vrLoc = 3237;
@@ -2319,7 +2320,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 134";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 1663;
 		vrLoc = 3237;
@@ -2329,7 +2330,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 135";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 1751;
 		vrLoc = 3237;
@@ -2339,7 +2340,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 136";
 		rLen = 0;
-		rLoc = 4333;
+		rLoc = 4204;
 		rType = 0;
 		vrLen = 1888;
 		vrLoc = 3237;
@@ -2349,7 +2350,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 138";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 1949;
 		vrLoc = 3237;
@@ -2359,7 +2360,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 138";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 2063;
 		vrLoc = 3237;
@@ -2369,7 +2370,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 139";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 2129;
 		vrLoc = 3237;
@@ -2379,7 +2380,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 140";
 		rLen = 0;
-		rLoc = 4830;
+		rLoc = 4701;
 		rType = 0;
 		vrLen = 2199;
 		vrLoc = 3237;
@@ -2389,7 +2390,7 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 141";
 		rLen = 0;
-		rLoc = 4935;
+		rLoc = 4806;
 		rType = 0;
 		vrLen = 2339;
 		vrLoc = 3237;
@@ -2409,9 +2410,19 @@
 		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
 		name = "FCGraphRootViewController.m: 126";
 		rLen = 0;
-		rLoc = 3890;
+		rLoc = 3761;
 		rType = 0;
 		vrLen = 2191;
+		vrLoc = 3159;
+	};
+	9A9649A71278780500A410C1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */;
+		name = "FCGraphRootViewController.m: 121";
+		rLen = 0;
+		rLoc = 3383;
+		rType = 0;
+		vrLen = 2116;
 		vrLoc = 3159;
 	};
 	9A968046123E396700ED80EE /* FCAppPropertySelectorViewController.h */ = {
@@ -2465,9 +2476,9 @@
 	};
 	9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1212, 14512}}";
-			sepNavSelRange = "{3890, 0}";
-			sepNavVisRange = "{3159, 2191}";
+			sepNavIntBoundsRect = "{{0, 0}, {1212, 14544}}";
+			sepNavSelRange = "{3383, 0}";
+			sepNavVisRange = "{3159, 2116}";
 		};
 	};
 	9A9BD09312116ABA00E3A1EB /* FCGraphView.h */ = {
