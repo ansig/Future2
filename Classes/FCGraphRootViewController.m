@@ -719,9 +719,20 @@
 		// to the database which can store reference ranges for any category.
 		if ([theKey isEqualToString:FCKeyCIDGlucose]) {
 		
-			FCGraphReferenceRange *newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
-																			   upperLimit:[NSNumber numberWithDouble:8.0] 
-																			   lowerLimit:[NSNumber numberWithDouble:5.0]];
+			FCGraphReferenceRange *newRange;
+			
+			if ([category.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre]) {
+			
+				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+															upperLimit:[NSNumber numberWithDouble:8.0] 
+															lowerLimit:[NSNumber numberWithDouble:5.0]];
+				
+			} else {
+				
+				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+															upperLimit:[NSNumber numberWithDouble:144.0] 
+															lowerLimit:[NSNumber numberWithDouble:90.0]];
+			}
 			
 			[dataSet addYReferenceRange:newRange];
 			
