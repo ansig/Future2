@@ -127,7 +127,7 @@
 	if (self.entry.timestamp == nil) {
 	
 		[self updateTimestampLabel];
-		_timer = [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(updateTimestampLabel) userInfo:nil repeats:YES];
+		[self startTimer];
 	}
 	
 	[super viewDidAppear:animated];
@@ -135,9 +135,8 @@
 
 -(void)viewWillDisappear:(BOOL)animated {
 
-	// stop and release the timer if it has been set
-	if (self.entry.timestamp == nil)
-		[_timer invalidate];
+	// make sure timer is stopped
+	[self stopTimer];
 	
 	[super viewWillDisappear:animated];
 }
@@ -176,7 +175,7 @@
 	entryViewController.navigationControllerFadesOut = YES;
 	entryViewController.opaque = YES;
 	
-	[entryViewController showContentForAddingAttachments];
+	[entryViewController showUIContent];
 	
 	// create a container navigation controller
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:entryViewController];
@@ -543,6 +542,14 @@
 #pragma mark Notifications
 
 -(void)onEntryUpdatedNotification {
+	
+	// if the timestamp was removed, start the timer
+	if (self.entry.timestamp == nil)
+		[self startTimer];
+	
+	// if it was set, stop the timer
+	else
+		[self stopTimer];
 
 	// update the visible entry information
 	[self updateTimestampLabel];
@@ -567,6 +574,26 @@
 	
 	// stop listening to notifications about entry creations
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryCreated object:nil];
+}
+
+-(void)startTimer {
+	
+	if (_timer == nil) {
+		_timer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(updateTimestampLabel) userInfo:nil repeats:YES];
+
+		NSLog(@"timer started");
+	}
+}
+
+-(void)stopTimer {
+	
+	if (_timer != nil) {
+		
+		[_timer invalidate];
+		_timer = nil;
+		
+		NSLog(@"timer stopped");
+	}
 }
 
 @end
