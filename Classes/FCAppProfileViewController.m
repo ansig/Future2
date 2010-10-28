@@ -81,6 +81,14 @@
 	// hide navigation bar
 	self.navigationController.navigationBarHidden = YES;
 	
+	// * Header background
+	UIImageView *headerBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	headerBackground.image = [UIImage imageNamed:@"navigationBarBackground.png"];
+	
+	[self.view addSubview:headerBackground];
+	
+	[headerBackground release];
+	
 	// * Settings button
 	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
 	
@@ -122,14 +130,6 @@
 	[self.view addSubview:newPageLabel];
 	
 	[newPageLabel release];
-	
-	// * Separator line
-	CGFloat separation = 2.0f;
-	UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 44.0f-separation, 320.0f, separation)];
-	separatorView.backgroundColor = [UIColor darkGrayColor];
-	
-	[self.view addSubview:separatorView];
-	[separatorView release];
 	
 	// * Scroll view
 	
