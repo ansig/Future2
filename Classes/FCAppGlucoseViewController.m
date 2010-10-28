@@ -578,11 +578,8 @@
 
 -(void)startTimer {
 	
-	if (_timer == nil) {
+	if (_timer == nil)
 		_timer = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(updateTimestampLabel) userInfo:nil repeats:YES];
-
-		NSLog(@"timer started");
-	}
 }
 
 -(void)stopTimer {
@@ -591,8 +588,6 @@
 		
 		[_timer invalidate];
 		_timer = nil;
-		
-		NSLog(@"timer stopped");
 	}
 }
 
