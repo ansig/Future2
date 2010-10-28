@@ -117,10 +117,8 @@ INSERT INTO categories (cid, name, minimum, maximum, uid, did, iid, oid) VALUES 
 
 INSERT INTO categories (cid, name, did, iid, oid) VALUES ('system_0_4', 'Note', 'system_0_1', 'system_0_5', 'system_0_3');
 INSERT INTO categories (cid, name, did, iid, oid) VALUES ('system_0_5', 'Photo', 'system_0_4', 'system_0_6', 'system_0_3');
-INSERT INTO categories (cid, name, did, iid, oid) VALUES ('system_0_6', 'Audio', 'system_0_5', 'system_0_7', 'system_0_3');
 
-INSERT INTO categories (cid, name, minimum, maximum, decimals, uid, did, iid, oid) VALUES ('system_0_7', 'Height', 1, 220, 1, 'system_0_3', 'system_0_3', 'system_0_4', 'system_0_4');
-INSERT INTO categories (cid, name, minimum, maximum, decimals, uid, did, iid, oid) VALUES ('system_0_8', 'Weight', 1, 150, 1, 'system_0_12', 'system_0_3', 'system_0_4', 'system_0_4');
+INSERT INTO categories (cid, name, minimum, maximum, decimals, uid, did, iid, oid) VALUES ('system_0_6', 'Weight', 1, 200, 1, 'system_0_12', 'system_0_3', 'system_0_4', 'system_0_4');
 
 CREATE TABLE entries (
 eid Varchar(512)  NOT NULL  PRIMARY KEY DEFAULT '-1',

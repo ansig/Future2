@@ -28,7 +28,7 @@
 /* SIMPLE */
 
 #define kAppCommonLabelFont		[UIFont systemFontOfSize:18.0f]
-#define kAppLargeLabelFont		[UIFont systemFontOfSize:36.0f]
+#define kAppLargeLabelFont		[UIFont boldSystemFontOfSize:36.0f]
 #define kAppLabelSpacing		15.0f // distance between any label and another label or button
 
 #define kGraphPadding		12.5f // minimum distance to all edges in the graph view (should be about half kGraphEntryViewDiameter)
@@ -167,9 +167,7 @@ extern NSString * const FCKeyCIDBasalInsulin;
 
 extern NSString * const FCKeyCIDNote;
 extern NSString * const FCKeyCIDPhoto;
-extern NSString * const FCKeyCIDAudio;
 
-extern NSString * const FCKeyCIDHeight;
 extern NSString * const FCKeyCIDWeigth;
 
 extern NSString * const FCKeyUIDGlucoseMillimolesPerLitre;

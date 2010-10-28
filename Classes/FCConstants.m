@@ -38,10 +38,8 @@ NSString * const FCKeyCIDBasalInsulin = @"system_0_3";
 
 NSString * const FCKeyCIDNote = @"system_0_4";
 NSString * const FCKeyCIDPhoto = @"system_0_5";
-NSString * const FCKeyCIDAudio = @"system_0_6";
 
-NSString * const FCKeyCIDHeight = @"system_0_7";
-NSString * const FCKeyCIDWeigth = @"system_0_8";
+NSString * const FCKeyCIDWeigth = @"system_0_6";
 
 NSString * const FCKeyUIDGlucoseMillimolesPerLitre = @"system_0_1";
 NSString * const FCKeyUIDGlucoseMilligramsPerDecilitre = @"system_0_2";
