@@ -89,6 +89,7 @@
 
 -(void)loadGraphOptionsMode;
 -(void)unloadGraphOptionsMode;
+-(UISwitch *)switchForGraphSetKey:(NSString *)theGraphSetKey;
 
 -(void)loadGeneralOptionsMode;
 -(void)unloadGeneralOptionsMode;

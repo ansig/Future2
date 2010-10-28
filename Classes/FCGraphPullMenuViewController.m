@@ -394,36 +394,7 @@
 		NSDictionary *item = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		cell.textLabel.text = [item objectForKey:@"Title"];
 		
-		NSIndexPath *selectedIndexPath = [self.selectedIndexPaths objectAtIndex:0];
-		NSDictionary *selectedGraphSet = [[self.storedSections objectAtIndex:selectedIndexPath.section] objectAtIndex:selectedIndexPath.row];
-		
-		NSString *graphSetKey = [item objectForKey:@"GraphSetKey"];
-		if ([graphSetKey isEqualToString:@"EntryViewMode"]) {
-			
-			UISegmentedControl *newSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Dots", @"Bars", @"None", nil]];
-			newSegmentedControl.frame = CGRectMake(0.0f, 0.0f, 220.0f, 27.0f);
-			
-			NSInteger index = [[selectedGraphSet objectForKey:graphSetKey] integerValue];
-			newSegmentedControl.selectedSegmentIndex = index; // set index
-			
-			if (index > 2)
-				newSegmentedControl.enabled = NO; // disable		
-			
-			[newSegmentedControl addTarget:self action:@selector(onSegmentControlValueChanged) forControlEvents:UIControlEventValueChanged];
-			
-			cell.accessoryView = newSegmentedControl;
-			[newSegmentedControl release];
-			
-		} else {
-			
-			UISwitch *newSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 94.0f, 27.0f)];
-			newSwitch.on = [[selectedGraphSet objectForKey:graphSetKey] boolValue];
-			
-			[newSwitch addTarget:self action:@selector(onSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
-			
-			cell.accessoryView = newSwitch;
-			[newSwitch release];
-		}
+		cell.accessoryView = [item objectForKey:@"ControlObject"];
 		
 		cell.imageView.image = nil;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -762,44 +733,110 @@
 					 animations:^ { self.selectButton.alpha = 0.0f; self.reorderButton.alpha = 0.0f; self.optionsButton.alpha = 0.0f; [self.view addSubview:self.doneButton]; self.doneButton.alpha = 1.0f; } 
 					 completion:^ (BOOL finished) { [self.selectButton removeFromSuperview]; [self.reorderButton removeFromSuperview]; [self.optionsButton removeFromSuperview]; } ];
 	
-	// create the graph set options section
+	// * create the graph set options section
 	
-	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"GraphSetKey", nil];
+	// variables
+	
+	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"GraphSetKey", @"ControlObject", nil];
 	NSArray *objects;
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemEntryViewMode, @"EntryViewMode", nil];
+	NSString *graphSetKey;
+	
+	UISwitch *newSwitch;
+	
+	// entry view mode
+	
+	NSIndexPath *selectedIndexPath = [self.selectedIndexPaths objectAtIndex:0];
+	NSDictionary *selectedGraphSet = [[self.sections objectAtIndex:selectedIndexPath.section] objectAtIndex:selectedIndexPath.row];
+	
+	graphSetKey = @"EntryViewMode";
+	
+	UISegmentedControl *newSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Dots", @"Bars", @"None", nil]];
+	newSegmentedControl.frame = CGRectMake(0.0f, 0.0f, 220.0f, 27.0f);
+	
+	NSInteger index = [[selectedGraphSet objectForKey:graphSetKey] integerValue];
+	newSegmentedControl.selectedSegmentIndex = index; // set index
+	
+	if (index > 2)
+		newSegmentedControl.enabled = NO; // disable	
+	
+	[newSegmentedControl addTarget:self action:@selector(onSegmentControlValueChanged) forControlEvents:UIControlEventValueChanged];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemEntryViewMode, graphSetKey, newSegmentedControl, nil];
 	NSDictionary *entryViewModePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawLines, @"DrawLines", nil];
+	[newSegmentedControl release];
+	
+	// draw lines
+	
+	graphSetKey = @"DrawLines";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawLines, graphSetKey, newSwitch, nil];
 	NSDictionary *linesPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawAverage, @"DrawAverage", nil];
+	// draw average
+	
+	graphSetKey = @"DrawAverage";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawAverage, graphSetKey, newSwitch, nil];
 	NSDictionary *averagePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawMedian, @"DrawMedian", nil];
+	// draw median
+	
+	graphSetKey = @"DrawMedian";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawMedian, graphSetKey, newSwitch, nil];
 	NSDictionary *medianPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawIQR, @"DrawIQR", nil];
+	// draw IQR
+	
+	graphSetKey = @"DrawIQR";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawIQR, graphSetKey, newSwitch, nil];
 	NSDictionary *IQRPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawReferences, @"DrawReferences", nil];
+	// draw references
+	
+	graphSetKey = @"DrawReferences";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawReferences, graphSetKey, newSwitch, nil];
 	NSDictionary *referencesPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawXScale, @"DrawXScale", nil];
+	// draw x scale
+	
+	graphSetKey = @"DrawXScale";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawXScale, graphSetKey, newSwitch, nil];
 	NSDictionary *xAxisPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawAxes, @"DrawAxes", nil];
+	// draw axes
+	
+	graphSetKey = @"DrawAxes";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawAxes, graphSetKey, newSwitch, nil];
 	NSDictionary *axesPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawGrid, @"DrawGrid", nil];
+	// draw grid
+	
+	graphSetKey = @"DrawGrid";
+	newSwitch = [self switchForGraphSetKey:graphSetKey];
+	
+	objects = [[NSArray alloc] initWithObjects:kSettingsItemDrawGrid, graphSetKey, newSwitch, nil];
 	NSDictionary *gridPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
@@ -832,49 +869,63 @@
 	[self.tableView endUpdates];
 }
 
+-(UISwitch *)switchForGraphSetKey:(NSString *)theGraphSetKey {
+/*	Returns a switch set to the correct mode for the selected graph set.
+	OBS! Assumes FCGraphMenuModeGraphOptions but original sections. */
+	
+	if (self.mode == FCGraphMenuModeGraphOptions) {
+	
+		// get the selected graph set
+		
+		NSIndexPath *selectedIndexPath = [self.selectedIndexPaths objectAtIndex:0];
+		NSDictionary *selectedGraphSet = [[self.sections objectAtIndex:selectedIndexPath.section] objectAtIndex:selectedIndexPath.row];
+		
+		// create a new switch set to correct mode
+		
+		UISwitch *newSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 94.0f, 27.0f)];
+		newSwitch.on = [[selectedGraphSet objectForKey:theGraphSetKey] boolValue];
+		
+		[newSwitch addTarget:self action:@selector(onSwitchValueChanged) forControlEvents:UIControlEventValueChanged];
+		
+		// autorelease and return
+		
+		[newSwitch autorelease];
+		
+		return newSwitch;
+	}
+	
+	return nil;
+}
+
 -(void)unloadGraphOptionsMode {
 	
 	if (self.pendingChanges) {
 	
 		// * Create a new graph set and replace the one in the stored section
 		
-		// get preferences from table view
+		// get the preferences
 		
 		NSMutableDictionary *preferences = [[NSMutableDictionary alloc] init];
-		
+	
 		NSMutableArray *section = [self.sections objectAtIndex:0];
-		int i = 0;
-		for (NSDictionary *pair in section) {
+		for (NSDictionary *graphOption in section) {
+		
+			NSString *graphSetKey = [graphOption objectForKey:@"GraphSetKey"];
 			
-			// get the cell and extract it's asseccory view
-			
-			NSUInteger arrayLength = 2;
-			NSUInteger integerArray[] = {0, i};
-			NSIndexPath *indexPath = [NSIndexPath indexPathWithIndexes:integerArray length:arrayLength];
-			
-			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-			
-			// store each setting
-			
-			NSString *graphSetKey = [pair objectForKey:@"GraphSetKey"];
 			if ([graphSetKey isEqualToString:@"EntryViewMode"]) {
-				
-				UISegmentedControl *segmentedControl = (UISegmentedControl *)cell.accessoryView;
-				NSNumber *number = [[NSNumber alloc] initWithInteger:segmentedControl.selectedSegmentIndex];
+			
+				UISegmentedControl *aSegmentedControl = [graphOption objectForKey:@"ControlObject"];
+				NSNumber *number = [[NSNumber alloc] initWithInteger:aSegmentedControl.selectedSegmentIndex];
 				[preferences setObject:number forKey:graphSetKey];
 				[number release];
 				
 			} else {
 				
-				UISwitch *switchView = (UISwitch *)cell.accessoryView;
-				NSNumber *number = [[NSNumber alloc] initWithInteger:switchView.on];
+				UISwitch *aSwitch = [graphOption objectForKey:@"ControlObject"];
+				NSNumber *number = [[NSNumber alloc] initWithBool:aSwitch.on];
 				[preferences setObject:number forKey:graphSetKey];
 				[number release];
 			}
-			
-			// iterate
-			
-			i++;
 		}
 		
 		// get the old graph set
@@ -915,11 +966,15 @@
 		[keys release];
 		[objects release];
 		
+		[preferences release];
+		
 		// replace old graph set in the stored section
 		
 		[[self.storedSections objectAtIndex:selectedIndexPath.section] replaceObjectAtIndex:selectedIndexPath.row withObject:newGraphSet];
 		
 		[newGraphSet release];
+		
+		self.pendingChanges = NO;
 	}
 	
 	// load normal mode
@@ -937,7 +992,7 @@
 	
 	[self.tableView endUpdates];
 	
-	// remove selected index path and stored sections
+	// remove selected index path, stored sections, and graph preferences
 	
 	[self.selectedIndexPaths removeAllObjects];
 	[self.storedSections removeAllObjects];
