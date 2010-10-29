@@ -110,12 +110,12 @@
 	
 	if (self.lastSelectedDate == nil) {
 	
-		if (differenceToStartDate <= 0)
+		if (differenceToStartDate < 0)
 			setNewStartDate = YES;
 		
 	} else if (self.lastSetWasStartDate) {
 		
-		if (differenceToStartDate <= 0)
+		if (differenceToStartDate < 0)
 			setNewStartDate = YES;
 		
 	} else {
