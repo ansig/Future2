@@ -122,17 +122,17 @@
 	if (self.drawReferenceRanges)
 		[self drawReferenceRangesForYInContext:context];
 	
-	if (self.drawCurves)
-		[self drawCurvesInContext:context];
-	
-	if (self.drawLines)
-		[self drawLinesInContext:context];
-	
 	if (self.drawAverage)
 		[self drawAverageForYValuesInContext:context];
 	
 	if (self.drawMedian)
 		[self drawMedianForYValuesInContext:context];
+	
+	if (self.drawCurves)
+		[self drawCurvesInContext:context];
+	
+	if (self.drawLines)
+		[self drawLinesInContext:context];
 }
 
 -(void)drawXScaleInContext:(CGContextRef)context {
@@ -273,6 +273,12 @@
 		
 		CGContextSetLineWidth(context, kGraphLinesWidth); // WIDTH
 		
+		const CGFloat lengths [2] = {0, 0}; // DASH PATTERN (alternating filled/unfilled)
+		CGContextSetLineDash(context, 
+							 0, 
+							 lengths, 
+							 0);
+		
 		for (NSArray *dataSet in self.dataSetsRef) {
 			
 			if ([dataSet count] > 1) {
@@ -308,6 +314,12 @@
 	if (self.dataSetsRef != nil) {
 		
 		CGContextSetLineWidth(context, kGraphAverageWidth); // WIDTH
+		
+		const CGFloat lengths [2] = {0, 0}; // DASH PATTERN (alternating filled/unfilled)
+		CGContextSetLineDash(context, 
+							 0, 
+							 lengths, 
+							 0);
 		
 		for (FCGraphDataSet *dataSet in self.dataSetsRef) {
 			
@@ -362,6 +374,12 @@
 	if (self.dataSetsRef != nil) {
 		
 		CGContextSetLineWidth(context, kGraphMedianWidth); // WIDTH
+		
+		const CGFloat lengths [2] = {0, 0}; // DASH PATTERN (alternating filled/unfilled)
+		CGContextSetLineDash(context, 
+							 0, 
+							 lengths, 
+							 0);
 		
 		for (FCGraphDataSet *dataSet in self.dataSetsRef) {
 			
