@@ -144,6 +144,12 @@
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, kGraphGridAlpha); // COLOR
 	CGContextSetLineWidth(context, 1); // WIDTH
 	
+	const CGFloat lengths [2] = {1, 3}; // DASH PATTERN (alternating filled/unfilled)
+	CGContextSetLineDash(context, 
+						 0, 
+						 lengths, 
+						 1);
+	
 	CGFloat padding = self.xScaleRef.padding;
 	CGFloat totalPadding = padding * 2;
 	
@@ -185,6 +191,12 @@
 	
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, kGraphGridAlpha); // COLOR
 	CGContextSetLineWidth(context, 1); // WIDTH
+	
+	const CGFloat lengths [2] = {1, 3}; // DASH PATTERN (alternating filled/unfilled)
+	CGContextSetLineDash(context, 
+						 0, 
+						 lengths, 
+						 1);
 	
 	CGFloat padding = self.yScaleRef.padding;
 	CGFloat totalPadding = padding * 2;
