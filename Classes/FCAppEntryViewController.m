@@ -28,11 +28,29 @@
 #import "FCAppEntryViewController.h"
 
 
+#import "FCAppNewEntryViewController.h"
+
 @implementation FCAppEntryViewController
 
-@synthesize iconImageView, timestampLabel, numberLabel, textView, unitLabel;
+@synthesize entry;
+@synthesize iconImageView;
+@synthesize editButton;
+@synthesize timestampLabel;
+@synthesize numberLabel, unitLabel;
+@synthesize textView;
+@synthesize imageView;
 
 #pragma mark Init
+
+-(id)initWithEntry:(FCEntry *)theEntry {
+	
+	if (self = [super init]) {
+		
+		entry = [theEntry copy];
+	}
+	
+	return self;
+}
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -48,11 +66,20 @@
 
 - (void)dealloc {
 	
+	[entry release];
+	
 	[iconImageView release];
+	
 	[timestampLabel release];
+	
+	[editButton release];
+	
 	[numberLabel release];
-	[textView release];
 	[unitLabel release];
+	
+	[textView release];
+	
+	[imageView release];
 	
     [super dealloc];
 }
@@ -92,25 +119,92 @@
 	// e.g. self.myOutlet = nil;
 }
 
-#pragma mark Custom
+-(void)loadNewEntryViewController {
+	
+	// start listening to entry updated notifications
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	
+	// create an new entry input view controller with the current entry
+	FCAppEntryViewController *newEntryViewController = [[FCAppNewEntryViewController alloc] initWithEntry:self.entry];
+	newEntryViewController.title = self.entry.category.name;
+	newEntryViewController.shouldAnimateContent = YES;
+	
+	// present the new entry view controller
+	[self presentOverlayViewController:newEntryViewController];
+	
+	// release the entry input view controller
+	[newEntryViewController release];
+}
 
--(void)createContentForCreatingNewEntry; {
+#pragma mark FCEntryView
+
+-(void)onEntryUpdatedNotification {
+	
+	// update UI content
+	[self updateUIContent];
+	
+	// stop listening to notifications about entry updates
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryUpdated object:nil];
+}
+
+-(void)onAttachmentAddedNotification {
 	
 }
 
--(void)createContentForAddingAttachments {
+-(void)onAttachmentRemovedNotification {
+	
+}
+
+#pragma mark Custom
+
+-(void)createUIContent {
+	
+	if (self.entry.eid == nil && self.navigationItem.backBarButtonItem == nil) {
+		
+		//  left button
+		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+		self.navigationItem.leftBarButtonItem = newLeftButton;
+		[newLeftButton release];
+	}
+	
+	// right button
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
+	self.navigationItem.rightBarButtonItem = newRightButton;
+	[newRightButton release];
 	
 	// timestamp label
 	
 	UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 320.0f, 20.0f)];
 	newTimestampLabel.backgroundColor = [UIColor clearColor];
 	newTimestampLabel.textAlignment = UITextAlignmentCenter;
-	newTimestampLabel.font = [UIFont systemFontOfSize:18.0f];
+	newTimestampLabel.font = kAppCommonLabelFont;
 	
 	self.timestampLabel = newTimestampLabel;
-	[self.view addSubview:newTimestampLabel];
 	
 	[newTimestampLabel release];
+	
+	// icon
+	
+	UIImageView *newIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+	newIconImageView.image = [UIImage imageNamed:self.entry.category.icon];
+	
+	self.iconImageView = newIconImageView;
+	
+	[newIconImageView release];
+	
+	// edit button
+	
+	if (self.entry.eid != nil) {
+	
+		UIButton *newEditButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		newEditButton.frame = CGRectMake(280.0f, 10.0f, 30.0f, 30.0f);
+		
+		[newEditButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+		
+		[newEditButton addTarget:self action:@selector(loadNewEntryViewController) forControlEvents:UIControlEventTouchUpInside];
+		 
+		self.editButton = newEditButton;
+	}
 	
 	if (self.entry.integer != nil || self.entry.decimal != nil) {
 	
@@ -119,10 +213,9 @@
 		UILabel *newNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 40.0f, 320.0f, 40.0f)];
 		newNumberLabel.backgroundColor = [UIColor clearColor];
 		newNumberLabel.textAlignment = UITextAlignmentCenter;
-		newNumberLabel.font = [UIFont boldSystemFontOfSize:36.0f];
+		newNumberLabel.font = kAppLargeLabelFont;
 		
 		self.numberLabel = newNumberLabel;
-		[self.view addSubview:newNumberLabel];
 		
 		[newNumberLabel release];
 		
@@ -131,74 +224,74 @@
 		UILabel *newUnitLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 90.0f, 320.0f, 20.0f)];
 		newUnitLabel.backgroundColor = [UIColor clearColor];
 		newUnitLabel.textAlignment = UITextAlignmentCenter;
-		newUnitLabel.font = [UIFont systemFontOfSize:18.0f];
+		newUnitLabel.font = kAppCommonLabelFont;
 		
 		self.unitLabel = newUnitLabel;
-		[self.view addSubview:newUnitLabel];
 		
 		[newUnitLabel release];
+	
+	} else {
+	
+		NSString *datatype = self.entry.category.datatype;
+		if ([datatype isEqualToString:@"string"]) {
+		
+			UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, kEntryHeaderHeight, 320.0f, 216)];
+			newTextView.backgroundColor = [UIColor clearColor];
+			newTextView.textColor = [UIColor blackColor];
+			newTextView.font = [UIFont systemFontOfSize:16.0f];
+			newTextView.editable = NO;
+			
+			self.textView = newTextView;
+			[newTextView release];
+		
+		} else if ([datatype isEqualToString:@"photo"]) {
+			
+			UIImageView *newImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, kEntryHeaderHeight, 320.0f, 320.0f)];
+			
+			self.imageView = newImageView;
+			
+			[newImageView release];
+		}
 	}
 }
 
--(void)showContentForAddingAttachments {
+-(void)showUIContent {
 	
-	// if this entry has not yet been saved (ie has no eid) and there is NOT already a back button, add a cancel button (happens for new glucose readings)
-	if (self.entry.eid == nil && self.navigationItem.backBarButtonItem == nil) {
-		
-		// * Left button
-		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
-		self.navigationItem.leftBarButtonItem = newLeftButton;
-		[newLeftButton release];
-	}
+	// timestamp label
+	[self.view addSubview:self.timestampLabel];
 	
-	// * Right button
-	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
-	self.navigationItem.rightBarButtonItem = newRightButton;
-	[newRightButton release];
+	// icon image view
+	[self.view addSubview:self.iconImageView];
 	
-	// create the UI content
-	[self createContentForAddingAttachments];
+	// edit button
+	if (self.editButton != nil)
+		[self.view addSubview:self.editButton];
+	
+	// number label
+	if (self.numberLabel != nil)
+		[self.view addSubview:self.numberLabel];
+	
+	// unit label
+	if (self.unitLabel != nil)
+		[self.view addSubview:self.unitLabel];
+	
+	// text view
+	if (self.textView != nil)
+		[self.view addSubview:self.textView];
+	
+	// image view
+	if (self.imageView != nil)
+		[self.view addSubview:self.imageView];
 	
 	// fill in content
-	[self setContentsForUIElements];
+	[self updateUIContent];
 }
 
--(void)setContentsForUIElements {
+-(void)updateUIContent {
 	
-	// timestamp label and icon image view
+	// timestamp label
 	
-	if (self.timestampLabel != nil) {
-		
-		// set the timestamp label text
-		self.timestampLabel.text = self.entry.timestampDescription;
-	
-		// resize and reposition the timestamp label
-		CGSize newSize = [self.timestampLabel.text sizeWithFont:self.timestampLabel.font];
-		
-		CGFloat xPosition = 160.0f - (newSize.width / 2);
-		CGFloat yPosition = self.timestampLabel.frame.origin.y;
-		CGFloat width = newSize.width;
-		CGFloat height = self.timestampLabel.frame.size.height;
-		
-		self.timestampLabel.frame = CGRectMake(xPosition, yPosition, width, height);
-		
-		// add an icon image view next to the timestamp
-		UIImage *icon = [UIImage imageNamed:self.entry.category.icon];
-		UIImageView *newIconImageView = [[UIImageView alloc] initWithImage:icon];
-		
-		CGFloat spacing = 10.0f;
-		xPosition = self.timestampLabel.frame.origin.x - icon.size.width - spacing;
-		yPosition = self.timestampLabel.frame.origin.y;
-		width = icon.size.width;
-		height = icon.size.height;
-		
-		newIconImageView.frame = CGRectMake(xPosition, yPosition, width, height);
-		
-		self.iconImageView = newIconImageView;
-		[self.view addSubview:newIconImageView];
-		
-		[newIconImageView release];
-	}
+	self.timestampLabel.text = self.entry.timestampDescription;
 	
 	// number and unit label
 	
@@ -210,14 +303,20 @@
 			self.numberLabel.text = self.entry.convertedShortDescription;
 		else
 			self.numberLabel.text = self.entry.shortDescription;
-	}
-	
-	if (self.unitLabel != nil) {
 	
 		if (converted)
 			self.unitLabel.text = self.entry.category.unit.abbreviation;
 		else 
 			self.unitLabel.text = self.entry.unit.abbreviation;
+	
+	} else if (self.textView != nil) {
+	
+		self.textView.text = self.entry.string;
+	
+	} else if (self.imageView != nil) {
+		
+		UIImage *image = [UIImage imageNamed:self.entry.string];
+		self.imageView.image = image;
 	}
 }
 

@@ -233,6 +233,32 @@
 	return [FCUnit unitWithUID:self.uid];
 }
 
+#pragma mark NSCopying
+
+-(id)copyWithZone:(NSZone *)zone {
+
+	// implements shallow copying (i.e. shares pointer ivars with copy)
+	// (see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmImplementCopy.html )
+	
+	FCEntry *copy = [[[self class] allocWithZone:zone] init];
+	
+	copy.eid = self.eid;
+	
+	copy.title = self.title;
+	
+	copy.string = self.string;
+	copy.integer = self.integer;
+	copy.decimal = self.decimal;
+	
+	copy.timestamp = self.timestamp;
+	copy.created = self.created;
+	
+	copy.cid = self.cid;
+	copy.uid = self.uid;
+	
+	return (copy);
+}
+
 #pragma mark Custom
 
 -(void)makeNew {
@@ -249,6 +275,24 @@
 	self.uid = nil;
 }
 
+-(void)copyEntry:(FCEntry *)anotherEntry {
+/*	Implements shallow copying, i.e. shares pointer ivars with original. */
+	
+	self.eid = anotherEntry.eid;
+	
+	self.title = anotherEntry.title;
+	
+	self.string = anotherEntry.string;
+	self.integer = anotherEntry.integer;
+	self.decimal = anotherEntry.decimal;
+	
+	self.timestamp = anotherEntry.timestamp;
+	self.created = anotherEntry.created;
+	
+	self.cid = anotherEntry.cid;
+	self.uid = anotherEntry.uid;
+}
+
 -(void)convertToNewUnit:(FCUnit *)newUnit {
 /*	This converts any set numerical data to the given unit.
 	Does NOT update the corresponding category. */
@@ -259,22 +303,18 @@
 			
 			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
 			
-			NSNumber *convertedNumber = [converter convertNumber:self.integer withUnit:self.unit];
+			NSNumber *convertedNumber = [converter convertNumber:self.integer withUnit:self.unit roundedToScale:0];
 			
-			// rounding up to nearest higher integer
-			NSNumber *roundedNumber = [[NSNumber alloc] initWithInt:[convertedNumber intValue] + 1];
-			
-			self.integer = roundedNumber;
-			
-			[roundedNumber release];
-			
+			self.integer = convertedNumber;
+						
 			[converter release];
 			
 		} else if (self.decimal != nil) {
 			
 			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
 			
-			NSNumber *convertedNumber = [converter convertNumber:self.decimal withUnit:self.unit];
+			NSInteger scale = [self.category.decimals integerValue];
+			NSNumber *convertedNumber = [converter convertNumber:self.decimal withUnit:self.unit roundedToScale:scale];
 			
 			self.decimal = convertedNumber;
 			

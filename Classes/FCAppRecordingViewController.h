@@ -25,11 +25,25 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCAppViewController.h" // superclass
 
-@interface FCAppRecordingViewController : UIViewController {
+#import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
+#import "FCAppNewEntryViewController.h"
+
+@interface FCAppRecordingViewController : FCAppViewController <FCGroupedTableSourceDelegate> {
+
+	UITableView *tableView;
+	
+	NSMutableArray *sectionTitles;
+	NSMutableArray *sections;
 }
+
+@property (nonatomic, retain) UITableView *tableView;
+
+@property (nonatomic, retain) NSMutableArray *sectionTitles;
+@property (nonatomic, retain) NSMutableArray *sections;
 
 @end

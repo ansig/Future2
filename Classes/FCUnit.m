@@ -142,8 +142,20 @@
 
 -(FCUnitQuantity)quantity {
 	
+	// * special cases
+	
+	// glucose
+	if ([self.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre] || [self.uid isEqualToString:FCKeyUIDGlucoseMilligramsPerDecilitre])
+		return FCUnitQuantityGlucose;
+	
+	// insulin
+	else if ([self.uid isEqualToString:FCKeyUidInsulinUnits])
+		return FCUnitQuantityInsulin;
+	
+	// * normal cases
+	
 	// time
-	if (self.second != nil)
+	else if (self.second != nil)
 		return FCUnitQuantityTime;
 	
 	// length
@@ -153,19 +165,6 @@
 	// volume
 	else if (self.metre != nil && [self.exponent intValue] == 3)
 		return FCUnitQuantityVolume;
-	
-	// * special cases
-	
-	else {
-		
-		// glucose
-		if ([self.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre] || [self.uid isEqualToString:FCKeyUIDGlucoseMilligramsPerDecilitre])
-			return FCUnitQuantityGlucose;
-		
-		// insulin
-		else if ([self.abbreviation isEqualToString:FCKeyUidInsulinUnits])
-			return FCUnitQuantityInsulin;
-	}
 	
 	// * default			 
 	

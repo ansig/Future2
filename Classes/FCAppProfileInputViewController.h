@@ -28,10 +28,12 @@
 #import <UIKit/UIKit.h>
 
 
-#import "FCAppCustomViewController.h"
+#import "FCAppOverlayViewController.h"  // superclass
 
-@interface FCAppProfileInputViewController : FCAppCustomViewController {
+@interface FCAppProfileInputViewController : FCAppOverlayViewController {
 
+	BOOL cancelled;
+	
 	NSArray *defaultItems;
 	
 	UITextView *textView;
@@ -39,6 +41,8 @@
 	UILabel *label;
 	UIDatePicker *datePicker;
 }
+
+@property (nonatomic) BOOL cancelled;
 
 @property (nonatomic, retain) NSArray *defaultItems;
 
@@ -50,11 +54,9 @@
 -(id)initWithDefaultItems:(NSArray *)theDefaultItems;
 
 // Custom
--(void)presentContent;
--(void)dismiss;
+-(void)cancel;
 -(void)next;
 
 -(void)updateUserDefaults;
--(void)dismissUIElements;
 
 @end

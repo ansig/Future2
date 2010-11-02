@@ -25,37 +25,53 @@
 //  Created by Anders Sigfridsson on 16/09/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCAppOverlayViewController.h"  // superclass
 
-#import "FCAppCustomViewController.h"
-#import "FCEntry.h"
-#import "FCCategory.h"
-#import "FCUnit.h"
+#import "FCModelsFramework.h"
 
-@interface FCAppEntryViewController : FCAppCustomViewController {
+@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView> {
+	
+	FCEntry *entry;
 	
 	UIImageView *iconImageView;
+	
 	UILabel *timestampLabel;
+	
+	UIButton *editButton;
+	
 	UILabel *numberLabel;
-	UITextView *textView;
 	UILabel *unitLabel;
+	
+	UITextView *textView;
+	
+	UIImageView *imageView;
 }
 
+@property (nonatomic, retain) FCEntry *entry;
+
 @property (nonatomic, retain) UIImageView *iconImageView;
+
+@property (nonatomic, retain) UIButton *editButton;
+
 @property (nonatomic, retain) UILabel *timestampLabel;
+
 @property (nonatomic, retain) UILabel *numberLabel;
-@property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *unitLabel;
 
+@property (nonatomic, retain) UITextView *textView;
+
+@property (nonatomic, retain) UIImageView *imageView;
+
+// Init
+
+-(id)initWithEntry:(FCEntry *)theEntry;
+
+// View
+
+-(void)loadNewEntryViewController;
+
 // Custom
-
--(void)createContentForCreatingNewEntry;
--(void)createContentForAddingAttachments;
-
--(void)showContentForAddingAttachments;
-
--(void)setContentsForUIElements;
 
 -(void)save;
 

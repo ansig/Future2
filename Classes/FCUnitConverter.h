@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 14/09/2010.
 //
 
-#import <Foundation/Foundation.h>
-
 
 #import "FCUnit.h"
 
@@ -44,5 +42,7 @@
 // Custom
 
 -(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit;
+-(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit roundedToScale:(NSInteger)scale;
+-(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit roundedToScale:(NSInteger)scale withMode:(NSRoundingMode)mode;
 
 @end

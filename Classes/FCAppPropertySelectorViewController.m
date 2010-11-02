@@ -30,11 +30,23 @@
 
 @implementation FCAppPropertySelectorViewController
 
+@synthesize entry;
+@synthesize propertyToSelect;
 @synthesize timestampLabel, datePicker;
 @synthesize tableView, rows;
 @synthesize quantity, system;
 
 #pragma mark Init
+
+-(id)initWithEntry:(FCEntry *)theEntry {
+	
+	if (self = [super init]) {
+		
+		entry = [theEntry retain];
+	}
+	
+	return self;
+}
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -49,6 +61,8 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	
+	[entry release];
 	
 	[timestampLabel release];
 	[datePicker release];
@@ -122,8 +136,7 @@
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	// Dismiss
-	[self dismiss];
+	[self save];
 }
 
 #pragma mark FCGroupedTableSourceDelegate
@@ -134,7 +147,91 @@
 	// -createContentForUnitQuantitySelection and -createContentForUnitSystemSelection
 }
 
+#pragma mark FCAppOverlayViewController
+
+-(void)createUIContent {
+	
+	if (self.propertyToSelect == FCPropertyUnit)
+		[self createContentForUnitSelection];
+	
+	else if (self.propertyToSelect == FCPropertyDateTime)
+		[self createContentForTimestampSelection];
+}
+
+-(void)presentUIContent {
+	
+	if (self.propertyToSelect == FCPropertyUnit)
+		[self presentContentForUnitSelection];
+	
+	else if (self.propertyToSelect == FCPropertyDateTime)
+		[self presentContentForTimestampSelection];
+}
+
+-(void)dismissUIContent {
+	
+	if (self.datePicker != nil) {
+		
+		[self.timestampLabel removeFromSuperview];
+		
+		CGFloat verticalOffset = self.view.frame.size.height - self.datePicker.frame.origin.x;
+		CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
+		
+		[UIView animateWithDuration:kDisappearDuration 
+						 animations:^ { self.datePicker.transform = translation; }
+						 completion:^ (BOOL finished) { [self.datePicker removeFromSuperview]; }];
+		
+	} else if (self.tableView != nil) {
+		
+		CGFloat verticalOffset = self.view.frame.size.height - self.tableView.frame.origin.x;
+		CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
+		
+		[UIView animateWithDuration:kDisappearDuration 
+						 animations:^ { self.tableView.transform = translation; } 
+						 completion:^ (BOOL finished) { [self.tableView removeFromSuperview]; } ];
+	}
+}
+
 #pragma mark Custom
+
+-(void)save {
+	
+	// save whatever data we have elements for
+	
+	if (self.datePicker != nil) {
+		
+		// timestamp
+		self.entry.timestamp = self.datePicker.date;
+		
+	} else if (self.tableView != nil) {
+		
+		// unit
+		NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+		FCUnit *newUnit = [FCUnit unitWithUID:[[rows objectAtIndex:indexPath.row] objectForKey:@"uid"]];
+		
+		[self.entry convertToNewUnit:newUnit];
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationConvertLogOrUnitChanged object:self];
+	}
+	
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+	
+	// super dismiss
+	[super dismiss];
+}
+
+-(void)cancel {
+	
+	// remove the timestamp
+	self.entry.timestamp = nil;
+	
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+	
+	// super dismiss
+	[super dismiss];
+}
 
 -(void)createContentForTimestampSelection {
 	
@@ -150,7 +247,7 @@
 	[newLeftButton release];
 	
 	// * Right button
-	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
 	self.navigationItem.rightBarButtonItem = newRightButton;
 	[newRightButton release];
 	
@@ -162,17 +259,15 @@
 	newLabel.font = [UIFont boldSystemFontOfSize:22.0f];
 	
 	self.timestampLabel = newLabel;
-	[self.view addSubview:newLabel];
 	
 	// * Date picker
-	UIDatePicker *newDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0f, 460.0f, 320.0f, 216.0f)];
+	UIDatePicker *newDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0f, 200.0f, 320.0f, 216.0f)];
 	newDatePicker.datePickerMode = UIDatePickerModeDateAndTime;
 	
 	NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0.0f];
 	newDatePicker.maximumDate = now;
 	[now release];
 	
-	[self.view addSubview:newDatePicker];
 	self.datePicker = newDatePicker;
 	
 	[newDatePicker release];
@@ -208,8 +303,8 @@
 		filter = [NSString stringWithFormat:@"uid = '%@' OR uid = '%@'", FCKeyUIDGlucoseMillimolesPerLitre, FCKeyUIDGlucoseMilligramsPerDecilitre]; // glucose
 		
 	} else if (self.quantity == FCUnitQuantityInsulin) {
-		
-		filter = [NSString stringWithFormat:@"uid = '%@'", FCKeyUidInsulinUnits]; // insulin
+	
+		filter = [NSString stringWithFormat:@"uid = '%@'", FCKeyUidInsulinUnits];
 	}
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
@@ -227,13 +322,12 @@
 	[newRows release];
 	
 	// * Table
-	UITableView *newTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 460.0f, 320.0f, 416.0f) style:UITableViewStyleGrouped];
+	UITableView *newTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f) style:UITableViewStyleGrouped];
 	newTableView.backgroundColor = [UIColor clearColor];
 	newTableView.delegate = self;
 	newTableView.dataSource = self;
 	
 	self.tableView = newTableView;
-	[self.view addSubview:self.tableView];
 	
 	[newTableView release];
 }
@@ -248,55 +342,44 @@
 
 -(void)presentContentForTimestampSelection {
 	
-	// create content
-	[self createContentForTimestampSelection];
-	
 	// show navigation bar
-	if (self.navigationController.navigationBarHidden == YES)
-		[self.navigationController setNavigationBarHidden:NO animated:YES];
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
 	
-	// animate date picker appearance
-	[UIView beginAnimations:@"PresentDatePicker" context:NULL];
-	[UIView setAnimationDuration:kAppearDuration];
-	
-	CGRect newFrame = CGRectMake(0.0f, 200.0f, 320.0f, 216.0f);
-	self.datePicker.frame = newFrame;
-	
-	[UIView commitAnimations];
+	[self.view addSubview:self.timestampLabel];
 	
 	// set initial data if there is any
-	if (self.entry.timestamp != nil) {
-		
-		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-		formatter.dateStyle = NSDateFormatterMediumStyle;
-		formatter.timeStyle = NSDateFormatterShortStyle;
-		
-		NSString *string = [[NSString alloc] initWithString:[formatter stringFromDate:self.entry.timestamp]];
-		self.timestampLabel.text = string;
-		
-		[formatter release];
-		[string release];
-		
-		self.datePicker.date = self.entry.timestamp;
-	}
+	if (self.entry.timestamp != nil) 
+		self.timestampLabel.text = self.entry.timestampDescription;
+	
+	// animate date picker appearance
+	
+	CGFloat verticalOffset = self.view.frame.size.height - self.datePicker.frame.origin.x;
+	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
+	
+	self.datePicker.transform = translation;
+	
+	[self.view addSubview:self.datePicker];
+	
+	[UIView animateWithDuration:kAppearDuration 
+					 animations:^ { self.datePicker.transform = CGAffineTransformIdentity; } 
+					 completion:^ (BOOL finished) { if (self.entry.timestamp != nil) [self.datePicker setDate:self.entry.timestamp]; }];
 }
 
 -(void)presentContentForUnitSelection {
 	
-	// create the content
-	[self createContentForUnitSelection];
-	
 	// show navigation bar
-	if (self.navigationController.navigationBarHidden == YES)
-		[self.navigationController setNavigationBarHidden:NO animated:YES];
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
 	
 	// animate table view appearance
-	[UIView beginAnimations:@"PresentTableView" context:NULL];
-	[UIView setAnimationDuration:kAppearDuration];
+	CGFloat verticalOffset = self.view.frame.size.height - self.tableView.frame.origin.x;
+	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
 	
-	self.tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f, 416.0f);
+	self.tableView.transform = translation;
 	
-	[UIView commitAnimations];
+	[self.view addSubview:self.tableView];
+	
+	[UIView animateWithDuration:kAppearDuration 
+					 animations:^ { self.tableView.transform = CGAffineTransformIdentity; } ];
 }
 
 -(void)showContentForUnitQuantitySelection {
@@ -305,74 +388,6 @@
 
 -(void)showContentForUnitSystemSelection {
 	
-}
-
--(void)dismiss {
-	
-	// save whatever data we have elements for
-	if (self.datePicker != nil) {
-	
-		// timestamp
-		if (!self.cancelled)
-			self.entry.timestamp = self.datePicker.date;
-		else
-			self.entry.timestamp = nil;
-	
-	} else if (self.tableView != nil) {
-	
-		// unit
-		NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
-		FCUnit *newUnit = [FCUnit unitWithUID:[[rows objectAtIndex:indexPath.row] objectForKey:@"uid"]];
-		
-		[self.entry convertToNewUnit:newUnit];
-		
-		// also update the category
-		FCCategory *category = self.entry.category;
-		
-		[category saveNewUnit:newUnit andConvert:YES];
-
-		// post notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationConvertLogOrUnitChanged object:self];
-	}
-	
-	// post notifications
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryUpdated object:self];
-	
-	// super dismiss
-	[super dismiss];
-}
-
--(void)dismissUIElements {
-	
-	if (self.datePicker != nil) {
-		
-		[self.timestampLabel removeFromSuperview];
-		
-		[UIView beginAnimations:@"DismissDatePicker" context:NULL];
-		[UIView setAnimationDuration:kDisappearDuration];
-		
-		CGRect newFrame = CGRectMake(0.0f, 460.f, 320.0f, 216.0f);
-		self.datePicker.frame = newFrame;
-		
-		[UIView commitAnimations];
-	
-	} else if (self.tableView != nil) {
-	
-		[UIView beginAnimations:@"DismissTableView" context:NULL];
-		[UIView setAnimationDuration:kDisappearDuration];
-		
-		CGRect newFrame = CGRectMake(0.0f, 460.f, 320.0f, 416.0f);
-		self.tableView.frame = newFrame;
-		
-		[UIView commitAnimations];
-	}
-}
-
--(void)cancel {
-	
-	self.cancelled = YES;
-	
-	[self dismiss];
 }
 
 @end

@@ -25,15 +25,17 @@
 //  Created by Anders Sigfridsson on 13/09/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCAppOverlayViewController.h"  // superclass
 
-#import "FCAppCustomViewController.h"
-#import "FCDatabaseHandler.h"
-#import "FCUnitConverter.h"
+#import "FCModelsFramework.h"
 
-@interface FCAppPropertySelectorViewController : FCAppCustomViewController <FCGroupedTableSourceDelegate> {
+@interface FCAppPropertySelectorViewController : FCAppOverlayViewController <FCGroupedTableSourceDelegate> {
 
+	FCEntry *entry;
+	
+	FCProperty propertyToSelect;
+	
 	// timestamp
 	UILabel *timestampLabel;
 	UIDatePicker *datePicker;
@@ -46,6 +48,10 @@
 	FCUnitSystem system;
 }
 
+@property (nonatomic, retain) FCEntry *entry;
+
+@property (nonatomic) FCProperty propertyToSelect;
+
 @property (nonatomic, retain) UILabel *timestampLabel;
 @property (nonatomic, retain) UIDatePicker *datePicker;
 
@@ -55,7 +61,14 @@
 @property (nonatomic) FCUnitQuantity quantity;
 @property (nonatomic) FCUnitSystem system;
 
+// Init
+
+-(id)initWithEntry:(FCEntry *)entry;
+
 // Custom
+
+-(void)save;
+-(void)cancel;
 
 -(void)createContentForTimestampSelection;
 -(void)createContentForUnitSelection;
@@ -67,10 +80,5 @@
 
 -(void)showContentForUnitQuantitySelection;
 -(void)showContentForUnitSystemSelection;
-
--(void)dismiss;
--(void)dismissUIElements;
-
--(void)cancel;
 
 @end

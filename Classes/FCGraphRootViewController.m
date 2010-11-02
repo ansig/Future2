@@ -312,6 +312,17 @@
 	return [NSArray arrayWithObject:[self.availableColors objectAtIndex:indexOfGraphController]];
 }
 
+-(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
+
+	// TMP, VERY SLOW!
+	
+	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
+	NSString *imageName = anEntry.category.icon;
+	UIImage *icon = [UIImage imageNamed:imageName];
+	
+	return icon;
+}
+
 -(id)twinForGraphViewController:(id)theController {
 	
 	// create a new controller with info derived from the sibling

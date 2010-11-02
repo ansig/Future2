@@ -28,8 +28,10 @@
 /* SIMPLE */
 
 #define kAppCommonLabelFont		[UIFont systemFontOfSize:18.0f]
+#define kAppBoldCommonLabelFont	[UIFont boldSystemFontOfSize:18.0f]
 #define kAppLargeLabelFont		[UIFont boldSystemFontOfSize:36.0f]
 #define kAppLabelSpacing		15.0f // distance between any label and another label or button
+#define kEntryHeaderHeight		70.0f // distance between navigation bar and body content (often contains icon, timestamp and edit-button)
 
 #define kGraphPadding		12.5f // minimum distance to all edges in the graph view (should be about half kGraphEntryViewDiameter)
 #define kGraphSpacing		50.0f // minimum distance between date-time units in the graph
@@ -89,6 +91,8 @@
 #define kShrinkDuration		0.3f // duration of the shrink animation of graph entry views (should be related to kGrowthDuration)
 
 #define kLockDuration		0.25f // duration of the animation when handle views lock to a side
+
+#define kPerceptionDelay	0.5f // delay until animations that the user should be made aware of are executed (makes sure they see it)
 
 #define kProfilePageHealth				@"Health"
 #define kProfilePagePersonal			@"Personal"
@@ -235,6 +239,7 @@ extern NSString * const FCNotificationLogDateChanged;
 
 extern NSString * const FCNotificationEntryCreated;
 extern NSString * const FCNotificationEntryUpdated;
+extern NSString * const FCNotificationEntryObjectUpdated;
 extern NSString * const FCNotificationEntryDeleted;
 
 extern NSString * const FCNotificationCategoryCreated;

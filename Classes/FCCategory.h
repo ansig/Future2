@@ -25,11 +25,10 @@
 //  Created by Anders Sigfridsson on 10/09/2010.
 //
 
-#import <Foundation/Foundation.h>
-
 
 #import "FCDatabaseHandler.h"
 #import "FCUnitConverter.h"
+
 #import "FCUnit.h"
 
 @interface FCCategory : NSObject {
@@ -78,6 +77,7 @@
 // Class
 +(FCCategory *)categoryWithCID:(NSString *)theCID;
 +(NSArray *)allCategories;
++(NSArray *)allCategoriesWithOwner:(NSString *)theOwnersCID;
 
 // Init
 -(id)initWithDictionary:(NSDictionary *)theDictionary;

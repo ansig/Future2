@@ -147,27 +147,13 @@
 	// start listening to date changed notifications
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogDateChangedNotification) name:FCNotificationLogDateChanged object:nil];
 	
-	// create a new selector view controller
+	// create and present a new selector view controller
 	FCAppLogDateSelectorViewController *selectorViewController = [[FCAppLogDateSelectorViewController alloc] init];
-	selectorViewController.view.alpha = 0.0f; // in preparation for the fade-in animation
+	selectorViewController.shouldAnimateContent = YES;
 	selectorViewController.title = @"Select log period";
 	
-	// create a navigation controller for containing the selector
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:selectorViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.navigationBarHidden = YES; // the selector view controller presents the navigation bar once the fade-in animation is complete
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 460.0f);
+	[self presentOverlayViewController:selectorViewController];
 	
-	// add the new controller to the top view, so that they cover all
-	[self.tabBarController.view addSubview:navigationController.view];
-	
-	// perform the fade-in animation
-	[selectorViewController animateFadeIn];
-	
-	// present the correct content
-	[selectorViewController performSelector:@selector(presentContent) withObject:nil afterDelay:kViewAppearDuration];
-	
-	// release the selector view controller (OBS! the naviation controller is released by the selector view controller on dismiss)
 	[selectorViewController release];
 }
 
@@ -208,6 +194,36 @@
 	[self.tableView reloadData];
 }
 
+#pragma mark FCEntryList
+
+-(void)onEntryCreatedNotification {
+	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+}
+
+-(void)onEntryUpdatedNotification {
+	
+	// reload table
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+	
+	// stop listening to notifications about entry updates
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryUpdated object:nil];
+}
+
+-(void)onEntryDeletedNotification {
+	
+}
+
+-(void)onAttachmentAddedNotification {
+	
+}
+
+-(void)onAttachmentRemovedNotification {
+	
+}
+
 #pragma mark Table view
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -239,52 +255,47 @@
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	FCEntry *entry = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	FCEntry *anEntry = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	// default is to use the entry's own description, but uses converted description
 	// if the user has enabled the convert log option
-	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? entry.convertedFullDescription : entry.fullDescription;
+	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
-	cell.detailTextLabel.text = entry.timeDescription;
-	cell.imageView.image = [UIImage imageNamed:entry.category.icon];
+	cell.detailTextLabel.text = anEntry.timeDescription;
+	cell.imageView.image = [UIImage imageNamed:anEntry.category.icon];
 	
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	// Get the entry
+	// start listening to entry updated notifications
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	
+	// get the entry
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	FCEntry *entry = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	FCEntry *anEntry = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	// create an entry input view controller
-	FCAppEntryViewController *entryViewController = [[FCAppEntryViewController alloc] initWithEntry:entry];
-	entryViewController.title = entry.category.name;
-	entryViewController.navigationControllerFadesOut = YES;
-	entryViewController.opaque = YES;
+	FCAppEntryViewController *anEntryViewController = [[FCAppEntryViewController alloc] initWithEntry:anEntry];
+	anEntryViewController.title = anEntry.category.name;
+	anEntryViewController.navigationControllerFadesInOut = YES;
+	anEntryViewController.isOpaque = YES;
+	anEntryViewController.shouldAnimateToCoverTabBar = YES;
 	
-	[entryViewController showContentForAddingAttachments];
-	
-	// create a container navigation controller
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:entryViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 411.0f);
-	navigationController.view.alpha = 0.0f;
-	
-	[self.tabBarController.view addSubview:navigationController.view];
-	
-	[entryViewController animateFadeInAndCover];
+	// present the new controllers
+	[self presentOverlayViewController:anEntryViewController];
 	
 	// release the entry input view controller
-	[entryViewController release];
+	[anEntryViewController release];
 	
 	// finally deselect the row
 	[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-#pragma mark Protocol
+#pragma mark FCGroupedTableSourceDelegate
 
 -(void)loadSectionsAndRows {
 /*	Loads section titles and all entries within the start date - end date interval from the database */
@@ -341,9 +352,9 @@
 
 		for (NSDictionary *row in resultForRows) {
 			
-			FCEntry *entry = [[FCEntry alloc] initWithDictionary:row];
-			[section addObject:entry];
-			[entry release];
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[section addObject:anEntry];
+			[anEntry release];
 		}
 		
 		// add the array to the sections array
@@ -365,28 +376,6 @@
 	
 	self.sections = newSections;
 	[newSections release];
-}
-
--(void)onEntryCreatedNotification {
-	
-	[self loadSectionsAndRows];
-	[self.tableView reloadData];
-}
-
--(void)onEntryUpdatedNotification {
-	
-}
-
--(void)onEntryDeletedNotification {
-	
-}
-
--(void)onAttachmentAddedNotification {
-	
-}
-
--(void)onAttachmentRemovedNotification {
-	
 }
 
 @end

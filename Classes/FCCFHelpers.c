@@ -18,47 +18,33 @@
  
  */
 
-//
-//  FCNumberHelper.m
-//  Future2
-//
-//  Created by Anders Sigfridsson on 11/09/2010.
-//
+/*
+ *  FCCFHelpers.c
+ *  Future2
+ *
+ *  Created by Anders Sigfridsson on 30/10/2010.
+ *
+ */
 
-#import "FCNumberHelper.h"
+#include "FCCFHelpers.h"
 
+CFLocaleRef FCSystemLocale() {
+	
+	// returns the locale used to format all
+	// stored data in Future2
 
-@implementation NSNumber (FCNumberHelper)
-
--(int)countIntegralDigits {
+	CFStringRef localeIden = CFSTR("en_US_POSIX");
+	CFLocaleRef localeRef = CFLocaleCreate(kCFAllocatorDefault, localeIden);
 	
-	int n = [self intValue];
-	
-	if (n < 0)
-		n = -n;
-	
-	int i = 1;
-	
-	n /= 10;
-	
-	while (n >= 1) {
-		
-		i++;
-		n /= 10;
-	}
-	
-	return i;
+	return localeRef;
 }
 
--(int)countDecimalPlacesOfDecimalValue {
+CFLocaleRef FCUserLocale() {
 	
-	NSDecimal decimal = [self decimalValue];
-	int exponent = decimal._exponent;
+	// returns the locale used to format all
+	// data presented to the user
 	
-	if (exponent < 0)
-		exponent = -exponent;
+	CFLocaleRef localeRef = CFLocaleCopyCurrent();
 	
-	return exponent;
+	return localeRef;
 }
-
-@end

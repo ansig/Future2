@@ -25,7 +25,8 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
-#import <UIKit/UIKit.h>
+
+#import "FCAppViewController.h" // superclass
 
 #import "FCProfileHealthInfoDataSource.h"
 #import "FCProfilePersonalInfoTableDataSource.h"
@@ -33,7 +34,7 @@
 #import "FCAppSettingsViewController.h"
 #import "FCAppProfileInputViewController.h"
 
-@interface FCAppProfileViewController : UIViewController <FCProfileDisplay> {
+@interface FCAppProfileViewController : FCAppViewController <FCProfileDisplay> {
 
 	UIScrollView *scrollView;
 	

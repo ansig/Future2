@@ -30,10 +30,10 @@
 
 @implementation FCAppGlucoseViewController
 
+@synthesize entry;
 @synthesize pickerView;
 @synthesize timestampLabel, timestampButton;
 @synthesize unitLabel, unitButton;
-@synthesize entry;
 
 #pragma mark Init
 
@@ -51,6 +51,8 @@
 
 - (void)dealloc {
 	
+	[entry release];
+	
 	[pickerView release];
 	
 	[timestampLabel release];
@@ -58,8 +60,6 @@
 	
 	[unitLabel release];
 	[unitButton release];
-	
-	[entry release];
 	
     [super dealloc];
 }
@@ -101,8 +101,8 @@
 	
 	else {
 		
-		FCCategory *category = self.entry.category;		// this ensures the entry template 
-		[self.entry convertToNewUnit:category.unit];	// is always shown in the correct unit
+		FCCategory *aCategory = self.entry.category;		// this ensures the entry template 
+		[self.entry convertToNewUnit:aCategory.unit];		// is always shown in the correct unit
 		
 		[self.entry makeNew];	// this removes any specific information about the entry,
 								// leaving only its data and category information
@@ -116,7 +116,7 @@
 	// set the picker components to show the last entered reading if there was one
 	if (self.entry.decimal != nil) {
 	
-		[self performSelector:@selector(setPickerRows) withObject:self afterDelay:1.0f];
+		[self performSelector:@selector(setPickerRows) withObject:self afterDelay:kPerceptionDelay];
 	}
 }
 
@@ -130,6 +130,9 @@
 		[self startTimer];
 	}
 	
+	// stop listening to notifications about category updates
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationCategoryUpdated object:nil];
+	
 	[super viewDidAppear:animated];
 }
 
@@ -137,6 +140,9 @@
 
 	// make sure timer is stopped
 	[self stopTimer];
+	
+	// start listening to notifications about category updates
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
 	
 	[super viewWillDisappear:animated];
 }
@@ -151,6 +157,9 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+	
+	// stop listening to notifications about category updates
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationCategoryUpdated object:nil];
 }
 
 -(void)loadEntryViewController {
@@ -169,91 +178,54 @@
 		[now release];
 	}
 	
-	// create an entry input view controller
+	// create and present an entry input view controller
 	FCAppEntryViewController *entryViewController = [[FCAppEntryViewController alloc] initWithEntry:self.entry];
 	entryViewController.title = @"Glucose";
-	entryViewController.navigationControllerFadesOut = YES;
-	entryViewController.opaque = YES;
+	entryViewController.navigationControllerFadesInOut = YES;
+	entryViewController.isOpaque = YES;
 	
-	[entryViewController showUIContent];
+	[self presentOverlayViewController:entryViewController];
 	
-	// create a container navigation controller
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:entryViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 411.0f);
-	navigationController.view.alpha = 0.0f;
-	
-	[self.tabBarController.view addSubview:navigationController.view];
-	
-	[entryViewController animateFadeInAndCover];
-	
-	// release the entry input view controller
 	[entryViewController release];
 }
 
 -(void)loadTimestampSelectionViewController {
 	
 	// start listening to entry updated notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value
 	[self setEntryValue];
 	
-	// create a new selector view controller
+	// create and present a new selector view controller
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
-	selectorViewController.view.alpha = 0.0f; // in preparation for the fade-in animation
+	selectorViewController.shouldAnimateContent = YES;
 	selectorViewController.title = @"Date & time";
 	
-	// create a navigation controller for containing the selector
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:selectorViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.navigationBarHidden = YES; // the input view controller presents the navigation bar once the fade-in animation is complete
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 460.0f);
+	[self presentOverlayViewController:selectorViewController];
 	
-	// add the new controller to the top view, so that they cover all
-	[self.tabBarController.view addSubview:navigationController.view];
-	
-	// perform the fade-in animation
-	[selectorViewController animateFadeIn];
-	
-	// present the correct content
-	[selectorViewController performSelector:@selector(presentContentForTimestampSelection) withObject:nil afterDelay:kViewAppearDuration];
-	
-	// release the selector view controller (OBS! the naviation controller is released by the selector view controller on dismiss)
 	[selectorViewController release];
 }
 
 -(void)loadUnitSelectionViewController {
 	
 	// start listening to entry updated notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value
 	[self setEntryValue];
 	
 	// create a new selector view controller
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
-	selectorViewController.view.alpha = 0.0f; // in preparation for the fade-in animation
+	selectorViewController.shouldAnimateContent = YES;
 	selectorViewController.title = @"Glucose unit";
+	
+	selectorViewController.propertyToSelect = FCPropertyUnit;
 	selectorViewController.system = self.entry.unit.system;
 	selectorViewController.quantity = self.entry.unit.quantity;
 	
-	// create a navigation controller for containing the selector
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:selectorViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.navigationBarHidden = YES; // the input view controller presents the navigation bar once the fade-in animation is complete
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 460.0f);
+	[self presentOverlayViewController:selectorViewController];
 	
-	// add the new controller to the top view, so that they cover all
-	[self.tabBarController.view addSubview:navigationController.view];
-	
-	// perform the fade-in animation
-	[selectorViewController animateFadeIn];
-	
-	// present the correct content
-	[selectorViewController performSelector:@selector(presentContentForUnitSelection) withObject:nil afterDelay:kViewAppearDuration];
-	
-	// release the selector view controller (OBS! the naviation controller is released by the selector view controller on dismiss)
 	[selectorViewController release];
 }
 
@@ -264,6 +236,33 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 	
+#pragma mark FCEntryView
+
+-(void)onEntryObjectUpdatedNotification {
+	
+	// if the timestamp was removed, start the timer
+	if (self.entry.timestamp == nil)
+		[self startTimer];
+	
+	// if it was set, stop the timer
+	else
+		[self stopTimer];
+	
+	// update category's unit (only executes if applicable)
+	[self.entry.category saveNewUnit:self.entry.unit andConvert:YES];
+	
+	// update the visible entry information
+	[self updateTimestampLabel];
+	[self updateUnitLabel];
+	
+	// wait a second before resetting the picker rows
+	[self.pickerView reloadAllComponents];
+	[self performSelector:@selector(setPickerRows) withObject:nil afterDelay:kPerceptionDelay];
+	
+	// stop listening to notifications about entry updates
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryObjectUpdated object:nil];
+}
+
 #pragma mark Picker view
 	
 // Data source
@@ -502,10 +501,8 @@
 
 	NSNumber *decimalNumber = self.entry.decimal;
 	
-	// get the integer and set the first component to that value
-	[self.pickerView selectRow:[decimalNumber intValue] inComponent:0 animated:YES];
+	// set the number up in a number formatter to get correctly rounded number
 	
-	// get the fractional and set the second component to that value
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	[formatter setMinimumFractionDigits:1];
@@ -514,6 +511,12 @@
 	NSString *decimalNumberAsString = [[NSString alloc] initWithString:[formatter stringFromNumber:decimalNumber]];
 	
 	[formatter release];
+	
+	// get the integer and set the first component to that value
+	
+	[self.pickerView selectRow:[decimalNumberAsString intValue] inComponent:0 animated:YES];
+	
+	// get the fractional and set the second component to that value
 	
 	NSInteger digits = [decimalNumber countIntegralDigits];
 	NSRange range = NSMakeRange(digits+1, 1);
@@ -541,28 +544,6 @@
 
 #pragma mark Notifications
 
--(void)onEntryUpdatedNotification {
-	
-	// if the timestamp was removed, start the timer
-	if (self.entry.timestamp == nil)
-		[self startTimer];
-	
-	// if it was set, stop the timer
-	else
-		[self stopTimer];
-
-	// update the visible entry information
-	[self updateTimestampLabel];
-	[self updateUnitLabel];
-	
-	// wait a second before resetting the picker rows
-	[self.pickerView reloadAllComponents];
-	[self performSelector:@selector(setPickerRows) withObject:nil afterDelay:1.0f];
-	
-	// stop listening to notifications about entry updates
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryUpdated object:nil];
-}
-
 -(void)onEntryCreatedNotification {
 	
 	// reset the entry
@@ -574,6 +555,16 @@
 	
 	// stop listening to notifications about entry creations
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryCreated object:nil];
+}
+
+-(void)onCategoryUpdatedNotification {
+
+	[self.entry convertToNewUnit:self.entry.category.unit];
+	
+	[self updateUnitLabel];
+	
+	[self.pickerView reloadAllComponents];
+	[self setPickerRows];
 }
 
 -(void)startTimer {

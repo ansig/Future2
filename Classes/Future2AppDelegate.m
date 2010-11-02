@@ -56,8 +56,6 @@
 	// * Database
 	[self setupDatabase];
 	
-	
-	
 	// * Load application...
 	[self.rootViewController loadApplication];
 }

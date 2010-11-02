@@ -30,6 +30,9 @@
 
 @implementation FCAppRecordingViewController
 
+@synthesize tableView;
+@synthesize sectionTitles, sections;
+
 #pragma mark Init
 
 /*
@@ -46,6 +49,11 @@
 
 - (void)dealloc {
 	
+	[tableView release];
+	
+	[sectionTitles release];
+	[sections release];
+	
     [super dealloc];
 }
 
@@ -55,10 +63,23 @@
 - (void)loadView {
 	
 	// * Main view
+	
 	UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
 	self.view = view;
 	[view release];
+	
+	// * Table view
+	
+	[self loadSectionsAndRows];
+	
+	UITableView *newTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f) style:UITableViewStyleGrouped];
+	newTableView.backgroundColor = [UIColor clearColor];
+	newTableView.delegate = self;
+	newTableView.dataSource = self;
+	
+	[self.view addSubview:newTableView];
+	[newTableView release];
 }
 
 /*
@@ -85,6 +106,137 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
+    
+	return [self.sections count];
+}
+
+- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section {
+    
+	return [[self.sections objectAtIndex:section] count];
+}
+
+- (NSString *)tableView:(UITableView *)theTableView titleForHeaderInSection:(NSInteger)section {
+	
+	return [sectionTitles objectAtIndex:section];
+}
+
+#pragma mark Table view delegate
+
+- (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // cell
+	static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [theTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+	}
+	
+	NSInteger section = indexPath.section;
+	NSInteger row = indexPath.row;
+	
+	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	
+	cell.textLabel.text = aCategory.name;
+	cell.imageView.image = [UIImage imageNamed:aCategory.icon];
+	
+    return cell;
+}
+
+- (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	// get the selected category
+	NSInteger section = indexPath.section;
+	NSInteger row = indexPath.row;
+	
+	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	
+	// create an new entry input view controller
+	FCAppEntryViewController *newEntryViewController = [[FCAppNewEntryViewController alloc] initWithCategory:aCategory];
+	newEntryViewController.title = aCategory.name;
+	newEntryViewController.shouldAnimateContent = YES;
+	
+	// show the entry intut view controller
+	[self presentOverlayViewController:newEntryViewController];
+	
+	// release the entry input view controller
+	[newEntryViewController release];
+	
+	// finally deselect the row
+	[theTableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark FCGroupedTableSourceDelegate
+
+-(void)loadSectionsAndRows {
+	
+	// release any present sections and section titles arrays
+	if (self.sectionTitles != nil)
+		self.sectionTitles = nil;
+	
+	if (self.sections != nil)
+		self.sections = nil;
+	
+	// get the owners for which we want to retrieve categories
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	NSString *table = @"owners";
+	NSString *columns = @"oid, name";
+	NSString *filters = @"oid IS NOT 'system_0_1' AND oid IS NOT 'system_0_4'"; // we do not want categories related to
+																				// Glucose or Profile to appear here
+	
+	NSArray *owners = [dbh getColumns:columns fromTable:table withFilters:filters];
+	
+	[dbh release];
+	
+	// create new sections and section titles arrays
+	
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	// loop through the retrieved owners
+	for (NSDictionary *owner in owners) {
+	
+		// add owners name to tiles
+		[newSectionTitles addObject:[owner objectForKey:@"name"]];
+		
+		// retrieve the owners categories
+		NSArray *categories = [FCCategory allCategoriesWithOwner:[owner objectForKey:@"oid"]];
+		
+		// add as new section
+		NSMutableArray *section = [[NSMutableArray alloc] initWithArray:categories];
+		[newSections addObject:section];
+		[section release];
+	}
+	
+	// store new section titles and sections
+	
+	self.sectionTitles = newSectionTitles;
+	[newSectionTitles release];
+	
+	self.sections = newSections;
+	[newSections release];
+}
+
+#pragma mark FCCategoryList
+
+-(void)onCategoryCreatedNotification {
+	
+}
+
+-(void)onCategoryUpdatedNotification {
+	
+}
+
+-(void)onCategoryDeletedNotification {
+	
 }
 
 @end

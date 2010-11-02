@@ -19,46 +19,22 @@
  */
 
 //
-//  FCNumberHelper.m
+//  FCAppCameraViewController.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 11/09/2010.
+//  Created by Anders Sigfridsson on 02/11/2010.
 //
 
-#import "FCNumberHelper.h"
 
+#import "FCModelsFramework.h"
 
-@implementation NSNumber (FCNumberHelper)
+@interface FCAppCameraViewController : UIImagePickerController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>  {
 
--(int)countIntegralDigits {
-	
-	int n = [self intValue];
-	
-	if (n < 0)
-		n = -n;
-	
-	int i = 1;
-	
-	n /= 10;
-	
-	while (n >= 1) {
-		
-		i++;
-		n /= 10;
-	}
-	
-	return i;
+	FCEntry *entry;
 }
 
--(int)countDecimalPlacesOfDecimalValue {
-	
-	NSDecimal decimal = [self decimalValue];
-	int exponent = decimal._exponent;
-	
-	if (exponent < 0)
-		exponent = -exponent;
-	
-	return exponent;
-}
+@property (nonatomic, retain) FCEntry *entry;
+
+-(id)initWithEntry:(FCEntry *)anEntry;
 
 @end

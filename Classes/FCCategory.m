@@ -101,6 +101,43 @@
 	return allCategories;
 }
 
++(NSArray *)allCategoriesWithOwner:(NSString *)theOwnersCID {
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
+	NSString *table = @"categories";
+	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+	NSString *filters = [[NSString alloc] initWithFormat:@"categories.oid = '%@'", theOwnersCID];
+	NSString *options = @"ORDER BY name";
+	
+	NSArray *result = [dbh getColumns:columns fromTable:table withJoints:joints filters:filters options:options];
+	
+	[filters release];
+	
+	[dbh release];
+	
+	if (result == nil)
+		return nil;
+	
+	NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+	for (NSDictionary *dict in result) {
+		
+		FCCategory *aCategory = [[FCCategory alloc] initWithDictionary:dict];
+		[mutableArray addObject:aCategory];
+		[aCategory release];
+	}
+	
+	NSRange range = NSMakeRange(0, [mutableArray count]);
+	NSArray *allCategoriesWithOwner = [[NSArray alloc] initWithArray:[mutableArray subarrayWithRange:range]];
+	
+	[mutableArray release];
+	
+	[allCategoriesWithOwner autorelease];
+	
+	return allCategoriesWithOwner;
+}
+
 #pragma mark Init
 
 -(id)initWithDictionary:(NSDictionary *)theDictionary {
@@ -363,67 +400,74 @@
 
 -(void)saveNewUnit:(FCUnit *)newUnit andConvert:(BOOL)doConvert {
 
-	// the sets to be passed to the databasehandler
-	NSMutableArray *sets = [[NSMutableArray alloc] init];
-	NSDictionary *set;
+	if (![self.uid isEqualToString:newUnit.uid]) {
 	
-	if (doConvert) {
+		// the sets to be passed to the databasehandler
+		NSMutableArray *sets = [[NSMutableArray alloc] init];
+		NSDictionary *set;
 		
-		// convert minimum and maximum
+		if (doConvert) {
+			
+			// convert minimum and maximum
+			
+			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
+			FCUnit *origin = self.unit;
+			
+			NSNumber *convertedMaximum = [converter convertNumber:self.maximum withUnit:origin roundedToScale:0];
+			self.maximum = convertedMaximum;
+			
+			NSNumber *convertedMinimum = [converter convertNumber:self.minimum withUnit:origin roundedToScale:0];
+			self.minimum = convertedMinimum;		
+			
+			[converter release];
+			
+			// add them to the sets to be updated
+			
+			NSString *value = [[NSString alloc] initWithFormat:@"%d", [self.maximum intValue]];
+			set = [[NSDictionary alloc] initWithObjectsAndKeys:@"maximum", @"Column", value, @"Value", nil];
+			[sets addObject:set];
+			
+			[set release];
+			[value release];
+			
+			value = [[NSString alloc] initWithFormat:@"%d", [self.minimum intValue]];
+			set = [[NSDictionary alloc] initWithObjectsAndKeys:@"minimum", @"Column", value, @"Value", nil];
+			[sets addObject:set];
+			
+			[set release];
+			[value release];
+		}
 		
-		FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
-		FCUnit *origin = self.unit;
+		// change the unit id
+		self.uid = newUnit.uid;
 		
-		NSNumber *convertedMaximum = [converter convertNumber:self.maximum withUnit:origin];
-		self.maximum = convertedMaximum;
+		// add it to the sets to be updated
 		
-		NSNumber *convertedMinimum = [converter convertNumber:self.minimum withUnit:origin];
-		self.minimum = convertedMinimum;		
-		
-		[converter release];
-		
-		// add them to the sets to be updated
-		
-		NSString *value = [[NSString alloc] initWithFormat:@"%d", [self.maximum intValue]];
-		set = [[NSDictionary alloc] initWithObjectsAndKeys:@"maximum", @"Column", value, @"Value", nil];
+		NSString *value = [[NSString alloc] initWithFormat:@"'%@'", self.uid];
+		set = [[NSDictionary alloc] initWithObjectsAndKeys:@"uid", @"Column", value, @"Value", nil];
 		[sets addObject:set];
 		
-		[set release];
 		[value release];
-		
-		value = [[NSString alloc] initWithFormat:@"%d", [self.minimum intValue]];
-		set = [[NSDictionary alloc] initWithObjectsAndKeys:@"minimum", @"Column", value, @"Value", nil];
-		[sets addObject:set];
-		
 		[set release];
-		[value release];
+		
+		// update the database
+		
+		NSString *table = @"categories";
+		NSString *filter = [NSString stringWithFormat:@"cid ='%@'", self.cid];
+		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		NSRange range = NSMakeRange(0, [sets count]);
+		[dbh updateTable:table withSets:[sets subarrayWithRange:range] filters:filter];
+		
+		[dbh release];
+		
+		[sets release];
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryUpdated object:self];
+		
 	}
-	
-	// change the unit id
-	self.uid = newUnit.uid;
-	
-	// add it to the sets to be updated
-	
-	NSString *value = [[NSString alloc] initWithFormat:@"'%@'", self.uid];
-	set = [[NSDictionary alloc] initWithObjectsAndKeys:@"uid", @"Column", value, @"Value", nil];
-	[sets addObject:set];
-	
-	[value release];
-	[set release];
-	
-	// update the database
-	
-	NSString *table = @"categories";
-	NSString *filter = [NSString stringWithFormat:@"cid ='%@'", self.cid];
-	
-	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
-	
-	NSRange range = NSMakeRange(0, [sets count]);
-	[dbh updateTable:table withSets:[sets subarrayWithRange:range] filters:filter];
-	
-	[dbh release];
-	
-	[sets release];
 }
 
 -(NSDictionary *)generateDefaultGraphSet {
@@ -443,7 +487,7 @@
 	NSNumber *entryViewMode;
 	
 	// special cases
-	if ([self.cid isEqualToString:FCKeyCIDRapidInsulin] || [self.cid isEqualToString:FCKeyCIDBasalInsulin] || [self.cid isEqualToString:FCKeyCIDHeight])
+	if ([self.cid isEqualToString:FCKeyCIDRapidInsulin] || [self.cid isEqualToString:FCKeyCIDBasalInsulin])
 		entryViewMode = [[NSNumber alloc] initWithInteger:FCGraphEntryViewModeBarVertical];
 	
 	else if ([self.datatype isEqualToString:@"integer"] || [self.datatype isEqualToString:@"decimal"])

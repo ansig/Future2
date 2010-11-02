@@ -272,29 +272,15 @@
 	NSDictionary *defaultItem = [[sections objectAtIndex:section] objectAtIndex:row];
 	NSArray *defaultItems = [[NSArray alloc] initWithObjects:defaultItem, nil];
 	
-	// create the input view controller
+	// create and present the input view controller
 	FCAppProfileInputViewController *inputViewController = [[FCAppProfileInputViewController alloc] initWithDefaultItems:defaultItems];
-	[defaultItems release];
-	inputViewController.view.alpha = 0.0f; // in preparation for the fade-in animation, we make its main (ie background) view completely transparent
 	
-	// create a navigation controller as container
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:inputViewController];
-	navigationController.delegate = self.navigationController.delegate;
-	navigationController.navigationBarHidden = YES; // navigation bar is presented by the inputViewController once fade-in animation is complete
+	inputViewController.shouldAnimateContent = YES;
 	
-	navigationController.view.frame = CGRectMake(0.0f, 0.0f, 320.0f, 460.0f);
+	[self presentOverlayViewController:inputViewController];
 	
-	// add the main view of the new controller hierarchy to the tabbar controllers main view, so that it covers everything
-	[self.tabBarController.view addSubview:navigationController.view]; // OBS! the navigation controller is manually released by the inputViewController when it is dismissed /Anders
-	
-	// animate a fade-in of the input view controller
-	[inputViewController animateFadeIn];
-	
-	// manually inform the input view controller that it has been displayed, so that it can finish setting up
-	[inputViewController performSelector:@selector(presentContent) withObject:nil afterDelay:kViewAppearDuration];
-	
-	// release the inputViewController (still retained within the navigaiton controllers view hierarchy)
 	[inputViewController release];
+	[defaultItems release];
 	
 	// deselect row
 	[theTableView deselectRowAtIndexPath:indexPath animated:YES];

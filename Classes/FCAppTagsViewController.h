@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 @interface FCAppTagsViewController : UIViewController {
 

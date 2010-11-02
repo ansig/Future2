@@ -105,6 +105,7 @@ NSString * const FCNotificationLogDateChanged = @"LogDateChanged";
 
 NSString * const FCNotificationEntryCreated = @"EntryCreated";
 NSString * const FCNotificationEntryUpdated = @"EntryUpdated";
+NSString * const FCNotificationEntryObjectUpdated = @"EntryObjectUpdated";
 NSString * const FCNotificationEntryDeleted = @"EntryDeleted";
 
 NSString * const FCNotificationCategoryCreated = @"CategoryCreated";

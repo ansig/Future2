@@ -25,13 +25,13 @@
 //  Created by Anders Sigfridsson on 21/09/2010.
 //
 
-#import <UIKit/UIKit.h>
 
-#import "FCAppCustomViewController.h"
+#import "FCAppOverlayViewController.h"  // superclass
+
 #import "TKCalendarMonthView.h"
 #import "NSDate+TKCategory.h"
 
-@interface FCAppLogDateSelectorViewController : FCAppCustomViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource> {
+@interface FCAppLogDateSelectorViewController : FCAppOverlayViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource> {
 
 	TKCalendarMonthView *calendarMonthView;
 	NSDate *lastSelectedDate;

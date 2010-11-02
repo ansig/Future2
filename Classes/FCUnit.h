@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 10/09/2010.
 //
 
-#import <Foundation/Foundation.h>
-
 
 #import "FCDatabaseHandler.h"
 

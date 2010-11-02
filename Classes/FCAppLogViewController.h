@@ -25,15 +25,13 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCAppViewController.h" // superclass
 
 #import "FCAppLogDateSelectorViewController.h"
 #import "FCAppEntryViewController.h"
-#import "FCDatabaseHandler.h"
-#import "FCEntry.h"
 
-@interface FCAppLogViewController : UIViewController <FCGroupedTableSourceDelegate, FCEntryList> {
+@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList> {
 
 	NSDate *startDate;
 	NSDate *endDate;

@@ -30,6 +30,7 @@
 
 @implementation FCAppProfileInputViewController
 
+@synthesize cancelled;
 @synthesize defaultItems;
 @synthesize textView, label, datePicker;
 
@@ -84,9 +85,6 @@
 	NSArray *viewControllersInStack = [self.navigationController viewControllers];
 	NSUInteger index = [viewControllersInStack indexOfObject:self];
 	self.title = [[defaultItems objectAtIndex:index] objectForKey:@"Title"];
-	
-	// * Cancelled
-	self.cancelled = NO;
 }
 
 /*
@@ -118,9 +116,9 @@
 }
 */
 
-#pragma mark Custom
+#pragma mark FCAppOverlayViewController
 
--(void)presentContent {
+-(void)presentUIContent {
 	
 	// * Determine if this is the last one in the navigation stack
 	NSArray *viewControllersInStack = [self.navigationController viewControllers];
@@ -165,22 +163,22 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	id object = [defaults objectForKey:[item objectForKey:@"DefaultKey"]];
 	
-	// flag for if we're dealing with a saved date or not
-	BOOL isNow = NO;
+	// flag for if we're dealing with a set default or not
+	BOOL isSet = YES;
 	
 	// deal with no entered defaults
 	if (object == nil) {
+		
+		isSet = NO;
 		
 		// Just consider these special cases: date of birth, date diagnosed, height and weigh.
 		// The rest are per default strings.
 		
 		NSString *defaultKey = [item objectForKey:@"DefaultKey"];
-		if (defaultKey == FCDefaultProfileDateOfBirth || defaultKey == FCDefaultProfileDiabetesDateDiagnosed) {
-			
+		if (defaultKey == FCDefaultProfileDateOfBirth || defaultKey == FCDefaultProfileDiabetesDateDiagnosed)
 			object = (NSDate *)[NSDate dateWithTimeIntervalSinceNow:0.0f];
-			isNow = YES;
 		
-		} else if (defaultKey == FCDefaultProfileHeight || defaultKey == FCDefaultProfileWeight)
+		else if (defaultKey == FCDefaultProfileHeight || defaultKey == FCDefaultProfileWeight)
 			object = (NSNumber *)[NSNumber numberWithInt:0];
 		
 		else
@@ -196,7 +194,9 @@
 		newTextView.font = [UIFont boldSystemFontOfSize:22.0f];
 		newTextView.textColor = [UIColor whiteColor];
 		newTextView.textAlignment = UITextAlignmentCenter;
-		newTextView.text = string;
+		
+		if (isSet) 
+			newTextView.text = string;
 		
 		self.textView = newTextView;
 		[self.view addSubview:newTextView];
@@ -223,7 +223,9 @@
 		newLabel.textColor = [UIColor whiteColor];
 		newLabel.textAlignment = UITextAlignmentCenter;
 		newLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-		newLabel.text = string;
+		
+		if (isSet)
+			newLabel.text = string;
 		
 		self.label = newLabel;
 		[self.view addSubview:newLabel];
@@ -255,9 +257,9 @@
 		
 		[UIView commitAnimations];
 		
-		// also add a remove button for dates
+		// also add a cancel OR remove button for dates
 		NSString *title;
-		if (isNow) 
+		if (!isSet) 
 			title = @"Cancel";
 		else 
 			title = @"Remove";
@@ -270,6 +272,29 @@
 	}
 }
 
+-(void)dismissUIContent {
+	
+	if (self.textView != nil) {
+		
+		[self.textView resignFirstResponder];
+		[self.textView removeFromSuperview];
+		
+	} else if (self.datePicker != nil) {
+		
+		[self.label removeFromSuperview];
+		
+		[UIView beginAnimations:@"DismissDatePicker" context:NULL];
+		[UIView setAnimationDuration:kDisappearDuration];
+		
+		CGRect newFrame = CGRectMake(0.0f, 460.f, 320.0f, 216.0f);
+		self.datePicker.frame = newFrame;
+		
+		[UIView commitAnimations];
+		
+		[self.datePicker performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:kDisappearDuration];
+	}
+}
+
 -(void)dismiss {
 
 	// * Update the user defaults
@@ -278,6 +303,8 @@
 	// * Super dismiss
 	[super dismiss];
 }
+
+#pragma mark Custom
 
 -(void)next {
 	
@@ -321,29 +348,6 @@
 	// synchronise user defaults and send notification
 	[defaults synchronize];
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
-}
-
--(void)dismissUIElements {
-	
-	if (self.textView != nil) {
-		
-		[self.textView resignFirstResponder];
-		[self.textView removeFromSuperview];
-		
-	} else if (self.datePicker != nil) {
-		
-		[self.label removeFromSuperview];
-		
-		[UIView beginAnimations:@"DismissDatePicker" context:NULL];
-		[UIView setAnimationDuration:kDisappearDuration];
-		
-		CGRect newFrame = CGRectMake(0.0f, 460.f, 320.0f, 216.0f);
-		self.datePicker.frame = newFrame;
-		
-		[UIView commitAnimations];
-		
-		[self.datePicker performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:kDisappearDuration];
-	}
 }
 
 @end

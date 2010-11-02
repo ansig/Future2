@@ -3,12 +3,18 @@
 //
 
 #ifdef __OBJC__
+	/*	SDK */
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
+	/*	Application */
 	#import "Future2AppDelegate.h"
+	/*	Resources */
 	#import "FCTypedef.h"
 	#import "FCConstants.h"
 	#import "FCProtocols.h"
+	/*	Helpers */
+	#import "FCCFHelpers.h"
 	#import "FCDateFormatterHelper.h"
 	#import "FCNumberHelper.h"
+	#import "FCImageHelper.h"
 #endif

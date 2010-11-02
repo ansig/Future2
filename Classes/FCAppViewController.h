@@ -19,46 +19,24 @@
  */
 
 //
-//  FCNumberHelper.m
+//  FCAppViewController.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 11/09/2010.
+//  Created by Anders Sigfridsson on 02/11/2010.
 //
 
-#import "FCNumberHelper.h"
 
+@interface FCAppViewController : UIViewController {
 
-@implementation NSNumber (FCNumberHelper)
-
--(int)countIntegralDigits {
-	
-	int n = [self intValue];
-	
-	if (n < 0)
-		n = -n;
-	
-	int i = 1;
-	
-	n /= 10;
-	
-	while (n >= 1) {
-		
-		i++;
-		n /= 10;
-	}
-	
-	return i;
+	UINavigationController *overlaidNavigationController;
 }
 
--(int)countDecimalPlacesOfDecimalValue {
-	
-	NSDecimal decimal = [self decimalValue];
-	int exponent = decimal._exponent;
-	
-	if (exponent < 0)
-		exponent = -exponent;
-	
-	return exponent;
-}
+@property (nonatomic, retain) UINavigationController *overlaidNavigationController;
+
+// Custom
+
+-(void)presentOverlayViewController:(id)anOverlayViewController;
+-(void)replaceOverlayViewControllerWith:(id)anotherOverlayViewController;
+-(void)dismissOverlayViewController;
 
 @end

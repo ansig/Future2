@@ -25,18 +25,19 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCAppViewController.h" // superclass
+
+#import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
 #import "FCAppPropertySelectorViewController.h"
 #import "FCAppEntryViewController.h"
-#import "FCUnitConverter.h"
-#import "FCEntry.h"
-#import "FCCategory.h"
-#import "FCUnit.h"
 
-@interface FCAppGlucoseViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface FCAppGlucoseViewController : FCAppViewController <UIPickerViewDataSource, UIPickerViewDelegate, FCEntryView> {
 
+	FCEntry *entry;
+	
 	UIPickerView *pickerView;
 	
 	UILabel *timestampLabel;
@@ -45,10 +46,10 @@
 	UILabel *unitLabel;
 	UIButton *unitButton;
 	
-	FCEntry *entry;
-	
 	NSTimer *_timer;
 }
+
+@property (nonatomic, retain) FCEntry *entry;
 
 @property (nonatomic, retain) UIPickerView *pickerView;
 
@@ -58,7 +59,6 @@
 @property (nonatomic, retain) UILabel *unitLabel;
 @property (nonatomic, retain) UIButton *unitButton;
 
-@property (nonatomic, retain) FCEntry *entry;
 
 // View
 
@@ -74,9 +74,11 @@
 -(void)setPickerRows;
 -(void)setEntryValue;
 
+-(void)startTimer;
+-(void)stopTimer;
+
 // Notifications
 
--(void)onEntryUpdatedNotification;
 -(void)onEntryCreatedNotification;
 
 @end

@@ -64,6 +64,8 @@ FCBoxPlot FCBoxPlotMake(double median, double lowerQuartile, double upperQuartil
 
 /* ENUM */
 
+// * graph modes
+
 typedef enum {
 	
 	FCGraphModeTimePlotHorizontal, // default
@@ -110,6 +112,59 @@ typedef enum {
 } FCGraphEntryViewMode;
 
 typedef enum {
+	
+	FCGraphHandleModeLeftToRight,
+	FCGraphHandleModeRightToLeft,
+	FCGraphHandleModeTopDown,
+	FCGraphHandleModeBottomUp
+	
+} FCGraphHandleMode;
+
+typedef enum {
+	
+	FCGraphHandleThresholdNone, // default
+	FCGraphHandleThresholdOpposite,
+	FCGraphHandleThresholdHalf = 2,
+	FCGraphHandleThresholdThird = 3,
+	FCGraphHandleThresholdQuarter = 4,
+	FCGraphHandleThresholdFifth = 5,
+	FCGraphHandleThresholdSixth = 6
+	
+} FCGraphHandleThreshold;
+
+typedef enum {
+	
+	FCGraphMenuModeNormal,
+	FCGraphMenuModeSelect,
+	FCGraphMenuModeGraphOptions,
+	FCGraphMenuModeGeneralOptions,
+	FCGraphMenuModeReorder
+	
+} FCGraphMenuMode;
+
+// * app modes
+
+typedef enum {
+	
+	FCDateDisplayDate, // default
+	FCDateDisplayYears
+	
+} FCDateDisplay;
+
+NSString * FCDateDisplayAsString(FCDateDisplay display);
+
+typedef enum {
+	
+	FCPropertyDateTime,
+	FCPropertyUnit,
+	FCpropertyUnitQuantity,
+	FCpropertyUnitSystem
+	
+} FCProperty;
+
+// * system structures
+
+typedef enum {
 
 	FCUnitSystemMetric, // default
 	FCUnitSystemImperial,
@@ -133,16 +188,7 @@ typedef enum {
 NSString *FCUnitQuantityAsString(FCUnitQuantity quantity);
 
 typedef enum {
-
-	FCDateDisplayDate, // default
-	FCDateDisplayYears
 	
-} FCDateDisplay;
-
-NSString * FCDateDisplayAsString(FCDateDisplay display);
-
-typedef enum {
-
 	FCTabProfile,
 	FCTabGlucose,
 	FCTabTags,
@@ -152,34 +198,3 @@ typedef enum {
 } FCTab;
 
 NSString * FCTabAsString(FCTab tab);
-
-typedef enum {
-	
-	FCGraphHandleModeLeftToRight,
-	FCGraphHandleModeRightToLeft,
-	FCGraphHandleModeTopDown,
-	FCGraphHandleModeBottomUp
-	
-} FCGraphHandleMode;
-
-typedef enum {
-
-	FCGraphHandleThresholdNone, // default
-	FCGraphHandleThresholdOpposite,
-	FCGraphHandleThresholdHalf = 2,
-	FCGraphHandleThresholdThird = 3,
-	FCGraphHandleThresholdQuarter = 4,
-	FCGraphHandleThresholdFifth = 5,
-	FCGraphHandleThresholdSixth = 6
-	
-} FCGraphHandleThreshold;
-
-typedef enum {
-
-	FCGraphMenuModeNormal,
-	FCGraphMenuModeSelect,
-	FCGraphMenuModeGraphOptions,
-	FCGraphMenuModeGeneralOptions,
-	FCGraphMenuModeReorder
-	
-} FCGraphMenuMode;

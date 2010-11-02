@@ -25,11 +25,10 @@
 //  Created by Anders Sigfridsson on 10/09/2010.
 //
 
-#import <Foundation/Foundation.h>
-
 
 #import "FCDatabaseHandler.h"
 #import "FCUnitConverter.h"
+
 #import "FCCategory.h"
 #import "FCUnit.h"
 
@@ -80,6 +79,7 @@
 
 -(void)save;
 -(void)makeNew;
+-(void)copyEntry:(FCEntry *)anotherEntry; 
 -(void)convertToNewUnit:(FCUnit *)newUnit;
 
 -(NSString *)fullDescription;

@@ -66,6 +66,16 @@
 
 -(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit {
 
+	return [self convertNumber:aNumber withUnit:aUnit roundedToScale:-1]; // scale -1 means number will be returned as is
+}
+
+-(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit roundedToScale:(NSInteger)scale {
+	
+	return [self convertNumber:aNumber withUnit:aUnit roundedToScale:scale withMode:NSRoundPlain]; // default rounding mode = plain
+}
+
+-(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit roundedToScale:(NSInteger)scale withMode:(NSRoundingMode)mode {
+	
 	// if origin unit and target unit are the same, return original number
 	if ([aUnit.uid isEqualToString:self.target.uid])
 		return aNumber;
@@ -83,17 +93,17 @@
 		
 		originBase = [aUnit.metre doubleValue];
 		targetBase = [self.target.metre doubleValue];
-	
+		
 	} else if (aUnit.kilogram != nil) {
 		
 		originBase = [aUnit.kilogram doubleValue];
 		targetBase = [self.target.kilogram doubleValue];
-	
+		
 	} else if (aUnit.second != nil) {
 		
 		originBase = [aUnit.second doubleValue];
 		targetBase = [self.target.second doubleValue];
-	
+		
 	} else if (aUnit.quantity == FCUnitQuantityGlucose) {
 		
 		// special case for glucose
@@ -109,20 +119,40 @@
 			targetBase = 1;
 		}
 	}
-		
+	
 	// find conversion rate
 	double rate = originBase / targetBase;
 	
 	// convert the value
-	double convert = [aNumber doubleValue] * rate;
-	
-	// TMP FIX: this fixes an issue where the intValue of convertedNumber would be one less
-	// than it should be if the number was created with a double instead of a float. I have
-	// no clue as to why...
-	float convertAsFloat = convert;
+	double convertedValue = [aNumber doubleValue] * rate;
 	
 	// create new number object and return it
-	NSNumber *convertedNumber = [[NSNumber alloc] initWithFloat:convertAsFloat];
+	
+	NSNumber *convertedNumber = [[NSNumber alloc] initWithDouble:convertedValue];
+	
+	if (scale > -1) {
+		
+		// round to given scale
+		
+		NSDecimal decimalValue = [convertedNumber decimalValue];
+		NSDecimal roundedDecimalValue;
+		NSDecimalRound(&roundedDecimalValue, &decimalValue, scale, mode);
+		NSDecimalNumber *roundedDecimalNumber = [[NSDecimalNumber alloc] initWithDecimal:roundedDecimalValue];
+		
+		NSNumber *roundedConvertedNumber = [[NSNumber alloc] initWithDouble:[roundedDecimalNumber doubleValue]]; 
+		
+		[roundedDecimalNumber release];
+		
+		// return rounded converted number
+		
+		[convertedNumber release];
+		[roundedConvertedNumber autorelease];
+		
+		return roundedConvertedNumber;
+	}
+	
+	// return converted number as is
+	
 	[convertedNumber autorelease];
 	
 	return convertedNumber;

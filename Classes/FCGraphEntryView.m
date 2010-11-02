@@ -105,7 +105,7 @@
 	else if (self.mode == FCGraphEntryViewModeIcon) {
 		
 		if (self.delegate != nil && [self.delegate conformsToProtocol:@protocol(FCGraphEntryViewDelegate)]) {
-	
+			
 			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:self.frame];
 			newIcon.image = [self.delegate iconForEntryViewWithKey:self.key];
 			

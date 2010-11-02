@@ -55,6 +55,18 @@
 
 @end
 
+@protocol FCEntryView
+/* For view controller classes that display a single entry. */
+
+@optional
+-(void)onEntryObjectUpdatedNotification;
+-(void)onEntryUpdatedNotification;
+-(void)onCategoryUpdatedNotification;
+-(void)onAttachmentAddedNotification;
+-(void)onAttachmentRemovedNotification;
+
+@end
+
 @protocol FCCategoryList
 /* For view controller classes that display a list with categories sorted by owner */
 
@@ -62,11 +74,22 @@
 -(void)onCategoryCreatedNotification;
 -(void)onCategoryUpdatedNotification;
 -(void)onCategoryDeletedNotification;
+
+@optional
 -(void)onEntryCreatedNotification;
 -(void)onEntryUpdatedNotification;
 -(void)onEntryDeletedNotification;
 
 @end
+
+@protocol FCCategoryView
+/* For view controller classes that display a single category. */
+
+@required
+-(void)onCategoryUpdatedNotification;
+
+@end
+
 
 @protocol FCAttachmentsDisplay
 /* For view controller classes that display a single entry with a list of attachments (entries of different categories) */

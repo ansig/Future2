@@ -26,8 +26,6 @@
 //  Copyright 2010 University of Limerick. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 
 #import "sqlite3.h"
 

@@ -254,30 +254,31 @@
 
 #pragma mark Custom
 
--(void)presentContent {
-
+-(void)createUIContent {
+	
 	// right button
 	
 	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
 	self.navigationItem.rightBarButtonItem = newRightButton;
 	[newRightButton release];
 	
-	// show navigation bar
-	if (self.navigationController.navigationBarHidden == YES)
-		[self.navigationController setNavigationBarHidden:NO animated:YES];
-	
-	// create calendar month view
+	// calendar month view
 	
 	TKCalendarMonthView *newCalendarMonthView = [[TKCalendarMonthView alloc] init];
 	newCalendarMonthView.delegate = self;
 	newCalendarMonthView.dataSource = self;
 	
-	newCalendarMonthView.frame = CGRectMake(0.0f, 460.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
+	newCalendarMonthView.frame = CGRectMake(0.0f, 0.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
 	
 	self.calendarMonthView = newCalendarMonthView;
-	[self.view addSubview:newCalendarMonthView];
-	
 	[newCalendarMonthView release];
+}
+
+-(void)presentUIContent {
+
+	// show navigation bar
+	
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
 	
 	// get the current end date (assumes that logDates exists, since it should be created on startup, see FCRootViewController -loadApplication:)
 	// and select it in calendar to ensure the correct month is shown
@@ -286,13 +287,29 @@
 	[self.calendarMonthView selectDate:endDate];
 	
 	// reload calendar month view to highlight selected
-	[newCalendarMonthView reload];
+	[self.calendarMonthView reload];
 	
 	// animate calendar month view onto screen
 	
+	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, 460.0f);
+	self.calendarMonthView.transform = translation;
+	
+	[self.view addSubview:self.calendarMonthView];
+	
 	[UIView animateWithDuration:kAppearDuration 
-					 animations:^{ self.calendarMonthView.frame = CGRectMake(0.0f, 0.0f, self.calendarMonthView.frame.size.width, self.calendarMonthView.frame.size.height); } 
-					 completion:^(BOOL finished) { } ];
+					 animations:^ { self.calendarMonthView.transform = CGAffineTransformIdentity; } 
+					 completion:^ (BOOL finished) { } ];
+}
+
+-(void)dismissUIContent {
+	
+	// animate calendar month view off screen and remove from superview
+	
+	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, 460.0f);
+	
+	[UIView animateWithDuration:kDisappearDuration 
+					 animations:^{ self.calendarMonthView.transform = translation; } 
+					 completion:^(BOOL finished) { [self.calendarMonthView removeFromSuperview]; } ];
 }
 
 -(void)dismiss {
@@ -303,15 +320,6 @@
 	
 	// super dismiss
 	[super dismiss];
-}
-
--(void)dismissUIElements {
-
-	// animate calendar month view off screen
-	
-	[UIView animateWithDuration:kDisappearDuration 
-					 animations:^{ self.calendarMonthView.frame = CGRectMake(0.0f, 460.0f, self.calendarMonthView.frame.size.width, self.calendarMonthView.frame.size.height); } 
-					 completion:^(BOOL finished) { } ];
 }
 
 
