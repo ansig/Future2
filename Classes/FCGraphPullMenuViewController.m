@@ -915,7 +915,13 @@
 			if ([graphSetKey isEqualToString:@"EntryViewMode"]) {
 			
 				UISegmentedControl *aSegmentedControl = [graphOption objectForKey:@"ControlObject"];
-				NSNumber *number = [[NSNumber alloc] initWithInteger:aSegmentedControl.selectedSegmentIndex];
+				
+				// TMP BUGFIX: until a better system for selecting entry view mode is devised,
+				// there is a bug where icon mode gets ignored. This fixes it temporarily, but
+				// is ugly...
+				NSInteger selectedSegment = aSegmentedControl.selectedSegmentIndex == -1 ? FCGraphEntryViewModeIcon : aSegmentedControl.selectedSegmentIndex;
+				
+				NSNumber *number = [[NSNumber alloc] initWithInteger:selectedSegment];
 				[preferences setObject:number forKey:graphSetKey];
 				[number release];
 				
