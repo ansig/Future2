@@ -41,6 +41,9 @@
 	UIButton *unitButton;
 	
 	UIPickerView *pickerView;
+	
+	UIActivityIndicatorView *activityIndicator;
+	UILabel *statusLabel;
 }
 
 @property (nonatomic, retain) FCCategory *category;
@@ -51,6 +54,9 @@
 @property (nonatomic, retain) UIButton *unitButton;
 
 @property (nonatomic, retain) UIPickerView *pickerView;
+
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) UILabel *statusLabel;
 
 // Init
 
@@ -64,10 +70,18 @@
 -(void)loadEntryViewControllerWithEntry:(FCEntry *)anEntry;
 -(void)loadCameraViewController;
 
+// Events
+
+-(void)imageButtonPressed;
+
 // Custom
 
 -(void)cancel;
 -(void)setPickerViewRows;
 -(void)setEntryValue;
+
+-(void)createImageButton;
+-(void)createImageView;
+-(void)createActivityIndicatorAndStatusLabel;
 
 @end

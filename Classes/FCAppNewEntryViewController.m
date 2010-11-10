@@ -33,6 +33,7 @@
 @synthesize category, originalEntry, owner;
 @synthesize timestampButton, unitButton;
 @synthesize pickerView;
+@synthesize activityIndicator, statusLabel;
 
 #pragma mark Init
 
@@ -97,6 +98,9 @@
 	
 	[pickerView release];
 	
+	[activityIndicator release];
+	[statusLabel release];
+	
     [super dealloc];
 }
 
@@ -118,10 +122,9 @@
 */
 
 - (void)didReceiveMemoryWarning {
+	
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
@@ -166,6 +169,7 @@
 	selectorViewController.title = [NSString stringWithFormat:@"%@ unit", self.category.name];
 	selectorViewController.system = self.entry.unit.system;
 	selectorViewController.quantity = self.entry.unit.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnit;
 	
 	[self presentOverlayViewController:selectorViewController];
 	
@@ -181,6 +185,7 @@
 	FCAppEntryViewController *entryViewController = [[FCAppEntryViewController alloc] initWithEntry:newEntry];
 	entryViewController.navigationControllerFadesInOut = YES;
 	entryViewController.isOpaque = YES;
+	entryViewController.shouldAnimateToCoverTabBar = YES;
 	entryViewController.title = newEntry.category.name;
 	
 	[self transitionTo:entryViewController];
@@ -314,6 +319,10 @@
 		
 		// save the ORIGINAL entry
 		
+		// if there is a new file, remove the original entry's file before saving
+		if (![self.originalEntry.string isEqualToString:self.entry.string])
+			[originalEntry deleteAssocitedFiles];
+		
 		[self.originalEntry copyEntry:entry];
 		
 		[self.originalEntry save];
@@ -357,7 +366,7 @@
 	
 	CGSize sizeForText = [timestampText sizeWithFont:kAppBoldCommonLabelFont];
 	
-	CGFloat yAnchor = 35.0f;
+	CGFloat yAnchor = kAppHeaderHeight/2;
 	CGFloat xAnchor = 160.0f;
 	
 	CGFloat labelWidth = sizeForText.width;
@@ -369,7 +378,7 @@
 	CGFloat labelXPosition = xAnchor - (labelWidth/2);
 	CGFloat labelYPosition = yAnchor - (labelHeight/2);
 	
-	CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
+	CGFloat buttonXPosition = labelXPosition + labelWidth + kAppAdjacentSpacing;
 	CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
 	
 	UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
@@ -400,7 +409,7 @@
 	NSString *datatype = self.category.datatype;
 	if ([datatype isEqualToString:@"integer"] || [datatype isEqualToString:@"decimal"]) {
 		
-		UIPickerView *newPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, kEntryHeaderHeight, 320.0f, 216.0f)];
+		UIPickerView *newPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, kAppHeaderHeight, 320.0f, 216.0f)];
 		newPickerView.delegate = self;
 		newPickerView.dataSource = self;
 		
@@ -418,21 +427,18 @@
 			NSString *text = unit.abbreviation;
 			
 			CGSize sizeForText = [text sizeWithFont:kAppBoldCommonLabelFont];
-		
-			CGFloat yAnchor = 325.0f;
-			CGFloat xAnchor = 160.0f;
-			
+				
 			CGFloat labelWidth = sizeForText.width;
 			CGFloat labelHeight = sizeForText.height;
 			
 			CGFloat buttonWidth = 30.0f; // (same size as buttonImage.png)
 			CGFloat buttonHeight = 30.0f;
 			
-			CGFloat labelXPosition = xAnchor - (labelWidth/2);
-			CGFloat labelYPosition = yAnchor - (labelHeight/2);
+			CGFloat labelXPosition = 160.0f - (labelWidth/2);
+			CGFloat labelYPosition = self.pickerView.frame.origin.y + self.pickerView.frame.size.height + kAppSpacing;
 			
-			CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
-			CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
+			CGFloat buttonXPosition = labelXPosition + labelWidth + kAppAdjacentSpacing;
+			CGFloat buttonYPosition = labelYPosition + (labelHeight/2) - (buttonHeight/2);
 			
 			UILabel *newUnitLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
 			newUnitLabel.backgroundColor = [UIColor clearColor];
@@ -460,8 +466,9 @@
 	
 	} else if ([datatype isEqualToString:@"string"]) {
 		
-		CGFloat height = self.view.frame.size.height - kEntryHeaderHeight - 216.0f; // (216.0f = standard keyboard height)
-		UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, kEntryHeaderHeight, 320.0f, height)];
+		CGFloat height = self.view.frame.size.height - kAppHeaderHeight - 216.0f; // (216.0f = standard keyboard height)
+		UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(kAppSpacing, kAppHeaderHeight, 320.0f-(kAppSpacing*2), height)];
+		newTextView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 		newTextView.backgroundColor = [UIColor clearColor];
 		newTextView.textColor = [UIColor whiteColor];
 		newTextView.font = [UIFont boldSystemFontOfSize:16.0f];
@@ -469,13 +476,17 @@
 		self.textView = newTextView;
 		[newTextView release];
 	
-	} else if ([datatype isEqualToString:@"photo"]) {
+	} else if ([datatype isEqualToString:@"photo"] && self.originalEntry != nil) {
+		
+		// image button
+		
+		[self createImageButton];
 	
-		UIImageView *newImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, kEntryHeaderHeight, 320.0f, 320.0f)];
+	} else if ([datatype isEqualToString:@"photo"] && self.originalEntry == nil && self.entry.string == nil) {
 		
-		self.imageView = newImageView;
+		// create an activity indicator and status label
 		
-		[newImageView release];
+		[self createActivityIndicatorAndStatusLabel];
 	}
 }
 
@@ -515,7 +526,7 @@
 	// move edit button
 	
 	oldFrame = self.timestampButton.frame;
-	newXPos = self.timestampLabel.frame.origin.x + self.timestampLabel.frame.size.width + kAppLabelSpacing;
+	newXPos = self.timestampLabel.frame.origin.x + self.timestampLabel.frame.size.width + kAppAdjacentSpacing;
 	self.timestampButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);
 	
 	if (self.unitLabel != nil && self.unitButton != nil) {
@@ -546,7 +557,7 @@
 		// move edit button
 		
 		oldFrame = self.unitButton.frame;
-		newXPos = self.unitLabel.frame.origin.x + self.unitLabel.frame.size.width + kAppLabelSpacing;
+		newXPos = self.unitLabel.frame.origin.x + self.unitLabel.frame.size.width + kAppAdjacentSpacing;
 		self.unitButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);
 	}
 	
@@ -556,13 +567,34 @@
 	
 		[self.pickerView reloadAllComponents];
 		[self performSelector:@selector(setPickerViewRows) withObject:nil afterDelay:kPerceptionDelay];
+	}
 	
-	// * Image view
+	// * Image related...
 	
-	} else if (self.imageView != nil) {
+	if (self.activityIndicator != nil && self.statusLabel != nil) {
+	
+		[self.activityIndicator removeFromSuperview];
+		self.activityIndicator = nil;
 		
-		UIImage *image = [UIImage imageNamed:self.entry.string];
-		self.imageView.image = image;
+		[self.statusLabel removeFromSuperview];
+		self.statusLabel = nil;
+		
+		if (self.originalEntry != nil &&
+			[self.originalEntry.string isEqualToString:self.entry.string]) {
+		
+			[self createImageButton];
+			[self.view addSubview:self.imageButton];
+		
+		} else if (self.entry.string == nil) {
+			
+			[self createImageButton];
+			[self.view addSubview:self.imageButton];
+		
+		} else {
+		
+			[self createImageView];
+			[self.view addSubview:self.imageView];
+		}
 	}
 }
 
@@ -598,6 +630,10 @@
 	
 		[self.textView resignFirstResponder];
 		[self.textView removeFromSuperview];
+	
+	} else if (self.imageButton != nil) {
+	
+		[self.imageButton removeFromSuperview];
 	
 	} else if (self.imageView != nil) {
 	
@@ -655,10 +691,39 @@
 		[self.view addSubview:self.textView];
 		[self.textView becomeFirstResponder];
 	
-	} else if (self.imageView != nil) {
+	} else if (self.activityIndicator != nil &&
+			   self.statusLabel != nil) {
+		
+		[self.view addSubview:self.activityIndicator];
+		[self.view addSubview:self.statusLabel];
 	
 		[self performSelector:@selector(loadCameraViewController) withObject:nil afterDelay:kPerceptionDelay];
+	
+	} else if (self.imageButton != nil) {
+		
+		[self.view addSubview:self.imageButton];
 	}
+}
+
+#pragma mark Events
+
+-(void)imageButtonPressed {
+
+	// remove the button
+	
+	[self.imageButton removeFromSuperview];
+	self.imageButton = nil;
+	
+	// create and show activity indicator and status label
+	
+	[self createActivityIndicatorAndStatusLabel];
+	
+	[self.view addSubview:self.activityIndicator];
+	[self.view addSubview:self.statusLabel];
+	
+	// call up camera
+	
+	[self performSelector:@selector(loadCameraViewController) withObject:nil afterDelay:kPerceptionDelay];
 }
 
 #pragma mark Custom
@@ -669,6 +734,20 @@
 	// (only executes if applicable)
 	if (self.originalEntry != nil)
 		[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
+	
+	// remove any files that might have been saved
+	// for a new entry
+	BOOL delete = YES;
+	
+	if (self.originalEntry != nil) {
+			
+		if ([self.originalEntry.string isEqualToString:self.entry.string])
+			delete = NO;	// do NOT delete if the new entry is associated
+							// with the original entry's file
+	}
+			
+	if (delete)
+		[self.entry deleteAssocitedFiles];
 	
 	[super dismiss];
 }
@@ -789,6 +868,77 @@
 	} else if (self.textView != nil) {
 	
 		self.entry.string = self.textView.text;
+	}
+}
+
+-(void)createImageButton {
+	
+	if (self.imageButton == nil) {
+	
+		CGFloat width = 150.0f;
+		CGFloat height = 150.0f;
+		CGFloat xPos = 160.0f - (width/2);
+		
+		UIButton *newImageButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		newImageButton.frame = CGRectMake(xPos, kAppHeaderHeight, width, height);
+		
+		[newImageButton setTitle:@"Take new photo" forState:UIControlStateNormal];
+		[newImageButton setTitleColor:kButtonTitleColor forState:UIControlStateNormal];
+		
+		[newImageButton addTarget:self action:@selector(imageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		
+		self.imageButton = newImageButton;
+	}
+}
+
+-(void)createImageView {
+
+	if (self.imageView == nil) {
+		
+		CGFloat width = 150.0f;
+		CGFloat height = 150.0f;
+		CGFloat xPos = 160.0f - (width/2);
+		
+		UIImageView *newImageView = [[UIImageView alloc] initWithFrame:CGRectMake(xPos, kAppHeaderHeight, width, height)];
+		newImageView.contentMode = UIViewContentModeScaleAspectFit;
+		newImageView.image = [UIImage imageWithContentsOfFile:self.entry.filePath];
+		
+		self.imageView = newImageView;
+		
+		[newImageView release];
+	}
+}
+
+-(void)createActivityIndicatorAndStatusLabel {
+
+	if (self.activityIndicator == nil && self.statusLabel == nil) {
+	
+		UIActivityIndicatorView *newActivityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		
+		CGRect newFrame = CGRectMake(160.0f-(newActivityView.frame.size.width/2), 
+									 kAppHeaderHeight, 
+									 newActivityView.frame.size.width, 
+									 newActivityView.frame.size.height);
+		
+		newActivityView.frame = newFrame;
+		
+		[newActivityView startAnimating];
+		
+		self.activityIndicator = newActivityView;
+		
+		[newActivityView release];
+		
+		UILabel *newStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, kAppHeaderHeight+self.activityIndicator.frame.size.height+kAppAdjacentSpacing, 320.0f, 20.0f)];
+		
+		newStatusLabel.backgroundColor = [UIColor clearColor];
+		newStatusLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+		newStatusLabel.textColor = [UIColor whiteColor];
+		newStatusLabel.textAlignment = UITextAlignmentCenter;
+		newStatusLabel.text = @"Loading camera...";
+		
+		self.statusLabel = newStatusLabel;
+		
+		[newStatusLabel release];
 	}
 }
 

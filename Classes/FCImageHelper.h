@@ -28,6 +28,8 @@
 
 @interface UIImage (FCImageHelper)
 
++(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
++(UIImage *)imageWithImage:(UIImage *)theImage scaledToScale:(CGFloat)theScale;
 -(UIImage *)resizeImage:(CGSize)newSize;
 
 @end

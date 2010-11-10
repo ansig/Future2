@@ -274,6 +274,25 @@
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+/*
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+
+	NSLog(@"FCRootViewController -willAnimateRotationToInterfaceOrientation:duration:");
+}
+*/
+
+/*
+- (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	NSLog(@"FCRootViewController -willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:");
+}
+
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	NSLog(@"FCRootViewController -willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:");
+}
+*/
+
 -(void)onOrientationChangeNotification {
 	
 	if (rotationIsAllowed) {

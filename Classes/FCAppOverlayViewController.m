@@ -94,11 +94,13 @@
 
 #pragma mark Orientation
 
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	
 	// Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+*/
 
 #pragma mark Animation
 

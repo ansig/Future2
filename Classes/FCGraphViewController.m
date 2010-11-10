@@ -754,7 +754,7 @@
 		
 	} else {
 
-		// default colors:
+		// DEFAULT:
 		[newAvailableColors addObject:[UIColor purpleColor]]; // purple
 		[newAvailableColors addObject:[UIColor orangeColor]]; // orange
 		[newAvailableColors addObject:[UIColor blueColor]]; // blue
@@ -935,11 +935,12 @@
 		// setup and display the new entry objects
 		for (FCGraphEntryView *entry in theDataSet) {
 			
+			entry.delegate = self;
+			
 			// get mode from delegate (default is circles)
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(entryViewModeForGraphViewController:)])
 				entry.mode = [self.delegate entryViewModeForGraphViewController:self];
 			
-			entry.delegate = self;
 			entry.color = theColor;
 			entry.anchor = [self.graphView positionForX:[entry.xValue doubleValue] y:[entry.yValue doubleValue]];
 			

@@ -30,6 +30,25 @@
 
 @implementation UIImage (FCImageHelper)
 
++(UIImage *)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize {
+	
+	UIGraphicsBeginImageContext( newSize );
+	[image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+	UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return newImage;
+}
+
++(UIImage *)imageWithImage:(UIImage *)theImage scaledToScale:(CGFloat)theScale {
+
+	CGFloat newWidth = theImage.size.width * theScale;
+	CGFloat newHeight = theImage.size.height * theScale;
+	CGSize newSize = CGSizeMake(newWidth, newHeight);
+	
+	return [self imageWithImage:theImage scaledToSize:newSize];
+}
+
 -(UIImage *)resizeImage:(CGSize)newSize {
 /*	This solution is borrowed from the Trevor's Bike Shed blog:
 	http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/

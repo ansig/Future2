@@ -183,6 +183,7 @@
 	entryViewController.title = @"Glucose";
 	entryViewController.navigationControllerFadesInOut = YES;
 	entryViewController.isOpaque = YES;
+	entryViewController.shouldAnimateToCoverTabBar = YES;
 	
 	[self presentOverlayViewController:entryViewController];
 	
@@ -231,10 +232,12 @@
 
 #pragma mark Orientation
 
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+*/
 	
 #pragma mark FCEntryView
 
@@ -372,7 +375,7 @@
 		CGFloat labelXPosition = xAnchor - (labelWidth/2);
 		CGFloat labelYPosition = yAnchor - (labelHeight/2);
 		
-		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
+		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppSpacing;
 		CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
 		
 		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
@@ -414,7 +417,7 @@
 		// move edit button
 		
 		oldFrame = self.timestampButton.frame;
-		newXPos = self.timestampLabel.frame.origin.x + self.timestampLabel.frame.size.width + kAppLabelSpacing;
+		newXPos = self.timestampLabel.frame.origin.x + self.timestampLabel.frame.size.width + kAppSpacing;
 		self.timestampButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);	
 	}
 	
@@ -448,7 +451,7 @@
 		CGFloat labelXPosition = xAnchor - (labelWidth/2);
 		CGFloat labelYPosition = yAnchor - (labelHeight/2);
 		
-		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppLabelSpacing;
+		CGFloat buttonXPosition = labelXPosition + labelWidth + kAppSpacing;
 		CGFloat buttonYPosition = yAnchor - (buttonHeight/2);
 		
 		UILabel *newUnitLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelXPosition, labelYPosition, labelWidth, labelHeight)];
@@ -490,7 +493,7 @@
 		// move edit button
 		
 		oldFrame = self.unitButton.frame;
-		newXPos = self.unitLabel.frame.origin.x + self.unitLabel.frame.size.width + kAppLabelSpacing;
+		newXPos = self.unitLabel.frame.origin.x + self.unitLabel.frame.size.width + kAppSpacing;
 		self.unitButton.frame = CGRectMake(newXPos, oldFrame.origin.y, oldFrame.size.width, oldFrame.size.height);	
 	}
 	

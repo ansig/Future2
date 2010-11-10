@@ -104,23 +104,36 @@
 
 #pragma mark Orientation
 
-/*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+ 
+ NSLog(@"FCRootViewController -willAnimateRotationToInterfaceOrientation:duration:");
+}
+
+/*
+ - (void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+ 
+ NSLog(@"FCRootViewController -willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:");
+ }
+ 
+ - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration {
+ 
+ NSLog(@"FCRootViewController -willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:");
+ }
+ */
 
 #pragma mark UIImagePickerController
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	
 	// retrieving original image and resizing it
-	// (OBS! tmp primitive method can't tell the orientation itself and simply
-	//  switches height and width to retain original aspect ration)
 	UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-	UIImage *image = [originalImage resizeImage:CGSizeMake(1024.0f, 768.0f)];
+	UIImage *image = [UIImage imageWithImage:originalImage scaledToScale:0.5f];
 	
 	// save image to unique path
 	
@@ -147,8 +160,12 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 	
+	// make notification (so that FCAppNewEntryViewController updates its
+	// UI content properly
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+	
 	// dismiss the camera
-	[[self parentViewController] dismissModalViewControllerAnimated:YES];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

@@ -443,6 +443,9 @@
 		// post notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryCreated object:self];
 		
+		// log
+		NSLog(@"FCEntry -save: || SAVED entry.");
+		
 	} else {
 		
 		// * UPDATE
@@ -458,6 +461,9 @@
 		
 		// post notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryUpdated object:self];
+		
+		// log
+		NSLog(@"FCEntry -save: || UPDATED entry.");
 	}
 	
 	[sets release];
@@ -620,6 +626,43 @@
 	
 	// return nil if there is no timestamp
 	return nil;
+}
+
+-(NSString *)filePath {
+/*	Returns a path if the entry had a file associated with it.
+	Nil if no file. */
+	
+	NSString *documentsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+	
+	NSString *filePath = [documentsFolder stringByAppendingPathComponent:self.string];
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
+		return filePath;
+	
+	return nil;
+}
+
+-(void)deleteAssocitedFiles {
+/*	Removes any files associated with the entry. */
+
+	if ([self.category.datatype isEqualToString:@"photo"] || 
+		[self.category.datatype isEqualToString:@"audio"]) {
+		
+		if (self.string != nil) {
+			
+			// get path
+			NSString *path = self.filePath;
+			
+			if (path != nil) {
+			
+				// remove files
+				[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+			
+				// log
+				NSLog(@"FCEntry -deleteAssociatedFiles: || Removed file at path: %@", path);
+			}
+		}
+	}
 }
 
 @end

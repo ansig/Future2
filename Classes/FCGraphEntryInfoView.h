@@ -25,31 +25,44 @@
 //  Created by Anders Sigfridsson on 01/10/2010.
 //
 
-#import <UIKit/UIKit.h>
 
-
+#import "TKGlobal.h"
 #import "FCEntry.h"
 
-@interface FCGraphEntryInfoView : UIView {
+@interface FCGraphEntryInfoView : UIView <UIScrollViewDelegate> {
 	
 	FCEntry *entry;
 	
-	UIImageView *icon;
-	
 	UILabel *categoryLabel;
-	UILabel *descriptionLabel;
 	UILabel *timestampLabel;
+	
+	UIImageView *icon;
+	UILabel *descriptionLabel;
+	
+	UIImageView *imageView;
+	UIScrollView *scrollView;
+	
+	UITextView *textView;
+	
+	UIButton *closeButton;
 	
 	CGAffineTransform _originTransform;
 }
 
 @property (nonatomic, retain) FCEntry *entry;
 
-@property (nonatomic, retain) UIImageView *icon;
-
 @property (nonatomic, retain) UILabel *categoryLabel;
-@property (nonatomic, retain) UILabel *descriptionLabel;
 @property (nonatomic, retain) UILabel *timestampLabel;
+
+@property (nonatomic, retain) UIImageView *icon;
+@property (nonatomic, retain) UILabel *descriptionLabel;
+
+@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIScrollView *scrollView;
+
+@property (nonatomic, retain) UITextView *textView;
+
+@property (nonatomic, retain) UIButton *closeButton;
 
 // Init
 
@@ -63,6 +76,6 @@
 // Custom
 
 -(void)prepareToAnimateAppearanceFromPoint:(CGPoint)thePoint;
--(void)showContent;
+-(void)createAndDisplayCloseButton;
 
 @end

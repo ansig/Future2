@@ -31,8 +31,11 @@
 @implementation FCGraphEntryInfoView
 
 @synthesize entry;
-@synthesize icon;
-@synthesize categoryLabel, descriptionLabel, timestampLabel;
+@synthesize categoryLabel, timestampLabel;
+@synthesize icon, descriptionLabel;
+@synthesize imageView, scrollView;
+@synthesize textView;
+@synthesize closeButton;
 
 #pragma mark Init
 
@@ -40,7 +43,134 @@
 
 	if (self = [self initWithFrame:frame]) {
 		
+		// retain the entry
+		
 		entry = [theEntry retain];
+		
+		// get the category
+		
+		FCCategory *category = self.entry.category;
+		
+		// common labels
+		
+		UILabel *newCategoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 20.0f)];
+		newCategoryLabel.backgroundColor = [UIColor darkGrayColor];
+		newCategoryLabel.font = [UIFont systemFontOfSize:16.0f];
+		newCategoryLabel.textColor = [UIColor whiteColor];
+		
+		newCategoryLabel.text = category.name;
+		
+		self.categoryLabel = newCategoryLabel;
+		[self addSubview:newCategoryLabel];
+		
+		[newCategoryLabel release];
+		
+		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 20.0f)];
+		newTimestampLabel.backgroundColor = [UIColor clearColor];
+		newTimestampLabel.font = [UIFont systemFontOfSize:16.0f];
+		newTimestampLabel.textAlignment = UITextAlignmentRight;
+		newTimestampLabel.textColor = [UIColor whiteColor];
+		
+		newTimestampLabel.text = self.entry.timestampDescription;
+		
+		self.timestampLabel = newTimestampLabel;
+		[self addSubview:newTimestampLabel];
+		
+		[newTimestampLabel release];
+		
+		if ([category.datatype isEqualToString:@"string"]) {
+			
+			// text view
+			
+			UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, self.frame.size.width, self.frame.size.height-20.0f)];
+			newTextView.backgroundColor = [UIColor clearColor];
+			newTextView.font = [UIFont boldSystemFontOfSize:18.0f];
+			newTextView.textColor = [UIColor whiteColor];
+			newTextView.editable = NO;
+			
+			newTextView.text = self.entry.string;
+			
+			self.textView = newTextView;
+			[self addSubview:newTextView];
+			[newTextView release];
+			
+			// close button
+			
+			[self createAndDisplayCloseButton];
+			
+		} else if ([category.datatype isEqualToString:@"photo"]) {
+			
+			// image
+			
+			UIImage *image = [UIImage imageWithContentsOfFile:self.entry.filePath];
+			
+			if (image != nil) {
+				
+				// scroll view
+				
+				UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, self.frame.size.width, self.frame.size.height-20.0f)];
+				
+				CGFloat minimumScale = image.size.height > image.size.width ? newScrollView.frame.size.height / image.size.height : newScrollView.frame.size.width / image.size.width;
+				newScrollView.minimumZoomScale = minimumScale;
+				newScrollView.maximumZoomScale = 2.0;
+				
+				newScrollView.contentSize = image.size;
+				
+				newScrollView.delegate = self;
+				
+				self.scrollView = newScrollView;
+				[self addSubview:newScrollView];
+				
+				[newScrollView release];
+				
+				// image view
+				
+				UIImageView *newImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, image.size.width, image.size.height)];
+				newImageView.image = image;
+				
+				self.imageView = newImageView;
+				
+				[newImageView release];
+				
+				// add image view to scroll view
+				
+				[self.scrollView addSubview:self.imageView];
+				self.scrollView.zoomScale = minimumScale; // zoom all the way out
+				
+				// close button
+				
+				[self createAndDisplayCloseButton];
+			}
+			
+		} else {
+			
+			// description label
+			
+			UILabel *newDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 25.0f, self.frame.size.width-30.0f, 20.0f)];
+			newDescriptionLabel.backgroundColor = [UIColor clearColor];
+			newDescriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+			newDescriptionLabel.textColor = [UIColor whiteColor];
+			
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog])
+				newDescriptionLabel.text = self.entry.convertedFullDescription;
+			else
+				newDescriptionLabel.text = self.entry.fullDescription;
+			
+			self.descriptionLabel = newDescriptionLabel;
+			[self addSubview:newDescriptionLabel];
+			
+			[newDescriptionLabel release];
+			
+			// icon
+			
+			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5.0f, 25.0f, 20.0f, 20.0f)];
+			newIcon.image = [UIImage imageNamed:category.icon];
+			
+			self.icon = newIcon;
+			[self addSubview:newIcon];
+			
+			[newIcon release];
+		}
 	}
 	
 	return self;
@@ -52,50 +182,6 @@
 		
         // background
 		self.backgroundColor = [UIColor grayColor];
-		
-		CGSize size = frame.size;
-		
-		// labels
-		
-		UILabel *newCategoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, 20.0f)];
-		newCategoryLabel.backgroundColor = [UIColor darkGrayColor];
-		newCategoryLabel.font = [UIFont systemFontOfSize:16.0f];
-		newCategoryLabel.textColor = [UIColor whiteColor];
-		
-		self.categoryLabel = newCategoryLabel;
-		[self addSubview:newCategoryLabel];
-		
-		[newCategoryLabel release];
-		
-		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width, 20.0f)];
-		newTimestampLabel.backgroundColor = [UIColor clearColor];
-		newTimestampLabel.font = [UIFont systemFontOfSize:16.0f];
-		newTimestampLabel.textAlignment = UITextAlignmentRight;
-		newTimestampLabel.textColor = [UIColor whiteColor];
-		
-		self.timestampLabel = newTimestampLabel;
-		[self addSubview:newTimestampLabel];
-		
-		[newTimestampLabel release];
-		
-		UILabel *newDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 25.0f, size.width-30.0f, 20.0f)];
-		newDescriptionLabel.backgroundColor = [UIColor clearColor];
-		newDescriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-		newDescriptionLabel.textColor = [UIColor whiteColor];
-		
-		self.descriptionLabel = newDescriptionLabel;
-		[self addSubview:newDescriptionLabel];
-		
-		[newDescriptionLabel release];
-		
-		// icon
-		
-		UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5.0f, 25.0f, 20.0f, 20.0f)];
-		
-		self.icon = newIcon;
-		[self addSubview:newIcon];
-		
-		[newIcon release];
     }
 	
     return self;
@@ -107,11 +193,18 @@
 	
 	[entry release];
 	
-	[icon release];
-	
 	[categoryLabel release];
-	[descriptionLabel release];
 	[timestampLabel release];
+	
+	[icon release];
+	[descriptionLabel release];
+	
+	[imageView release];
+	[scrollView release];
+	
+	[textView release];
+	
+	[closeButton release];
  
 	[super dealloc];
 }
@@ -133,8 +226,7 @@
 	OBS! Assumes that -prepareToAnimateAppearanceFromPoint: has been called before. */
 	
 	[UIView		animateWithDuration:kAppearDuration 
-					animations:^{ self.transform = CGAffineTransformIdentity; } 
-						completion: ^(BOOL finished) { [self showContent]; } ];
+					animations:^{ self.transform = CGAffineTransformIdentity; } ];
 }
 
 -(void)animateDisappearence {
@@ -152,6 +244,17 @@
 	
 	// disappear
 	[self animateDisappearence];
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)aScrollView {
+	
+	return self.imageView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
+	
 }
 
 #pragma mark Custom
@@ -174,28 +277,22 @@
 	self.transform = _originTransform;
 }
 
--(void)showContent {
-/*	Fills in the labels with the entry's info. */
+-(void)createAndDisplayCloseButton {
+/*	Creates a close-button and adds it as subview. */
 	
-	if (self.entry != nil) {
+	// close button
 	
-		FCCategory *category = self.entry.category;
-		
-		// category
-		self.categoryLabel.text = category.name;
-		
-		// timestamp
-		self.timestampLabel.text = self.entry.timestampDescription;
-		
-		// description
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog])
-			self.descriptionLabel.text = self.entry.convertedFullDescription;
-		else
-			self.descriptionLabel.text = self.entry.fullDescription;
-		
-		// icon
-		self.icon.image = [UIImage imageNamed:category.icon];
-	}
+	UIButton *newCloseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	
+	UIImage *image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/graph/close.png")];
+	
+	newCloseButton.frame = CGRectMake(self.frame.size.width - 35.0f, 30.0f, image.size.width, image.size.height);
+	
+	[newCloseButton setImage:image forState:UIControlStateNormal];
+	[newCloseButton addTarget:self action:@selector(animateDisappearence) forControlEvents:UIControlEventTouchUpInside];
+	
+	self.closeButton = newCloseButton;
+	[self addSubview:newCloseButton];
 }
 
 @end

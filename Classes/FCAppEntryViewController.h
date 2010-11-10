@@ -28,9 +28,11 @@
 
 #import "FCAppOverlayViewController.h"  // superclass
 
+
+#import "TKGlobal.h"
 #import "FCModelsFramework.h"
 
-@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView> {
+@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, UIScrollViewDelegate> {
 	
 	FCEntry *entry;
 	
@@ -45,7 +47,10 @@
 	
 	UITextView *textView;
 	
+	UIButton *imageButton;
+	UIScrollView *scrollView;
 	UIImageView *imageView;
+	UIButton *closeButton;
 }
 
 @property (nonatomic, retain) FCEntry *entry;
@@ -61,7 +66,10 @@
 
 @property (nonatomic, retain) UITextView *textView;
 
+@property (nonatomic, retain) UIButton *imageButton;
+@property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIButton *closeButton;
 
 // Init
 
@@ -71,8 +79,13 @@
 
 -(void)loadNewEntryViewController;
 
+-(void)loadScrollViewForImage;
+-(void)unloadScrollViewForImage;
+
 // Custom
 
 -(void)save;
+
+-(void)createAndDisplayCloseButton;
 
 @end

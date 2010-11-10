@@ -363,82 +363,101 @@
 
 -(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey; {
 	
+	// remove any present info views
+	
 	if (self.entryInfoView != nil)
 		[self.entryInfoView animateDisappearence], self.entryInfoView = nil;
 	
-	// find a centre point for the entry info view where any edge of the view is not nearer 
-	// to the edge of the screen or the entry view object pressed than a specified limit
-	
-	/*
-		OBS! The solution for calculating the position below is not great right now! It would be better
-		to rotate around a circle and try at different radians until a suitable one is found or
-		default to start position.
-	
-		/Anders
-	*/
+	// load the entry with the given key
+	 
+	FCEntry *entry = [FCEntry entryWithEID:theKey];
 	
 	// variables
+	
 	CGFloat superviewWidth = self.view.frame.size.height;
 	CGFloat superviewHeight = self.view.frame.size.width;
 	
-	CGFloat width = kGraphEntryInfoViewSize.width;
-	CGFloat height = kGraphEntryInfoViewSize.height;
+	CGFloat width = superviewWidth; // default size: full view
+	CGFloat height = superviewHeight;
+	
+	CGFloat xPos = 0.0f; // default position: top left corner
+	CGFloat yPos = 0.0f; 
+	
 	CGFloat padding = kGraphEntryInfoViewPadding;
 	
-	// convert point
+	// get and convert origin point
+	
 	CGPoint anchorInSelf = [self.view convertPoint:theAnchor fromView:theSuperview];
 	CGFloat xAnchor = anchorInSelf.x;
 	CGFloat yAnchor = anchorInSelf.y;
 	
-	// default: top left of touched entry
+	// find corrent size and position for entries with integer or decimal values
 	
-	CGFloat xPos = xAnchor - (kGraphEntryViewDiameter/2) - padding - width;
-	CGFloat yPos = yAnchor - (kGraphEntryViewDiameter/2) - padding - height;
+	if (entry.integer != nil || entry.decimal != nil) {
 	
-	// adjust horizontally
-	
-	BOOL adjustedRight = NO;
-	
-	if (xPos < padding) {
+		// set width and height to constant values
 		
-		// move right
-		xPos = padding;
-		adjustedRight = YES;
+		width = kGraphEntryInfoViewSize.width;
+		height = kGraphEntryInfoViewSize.height;
 		
-	} else if ((xPos + width) > (superviewWidth-padding)) {
+		// find a centre point for the entry info view where any edge of the view is not nearer 
+		// to the edge of the screen or the entry view object pressed than a specified limit
 		
-		// move left
-		xPos = superviewWidth - padding - width;
-	}
-	
-	// adjust vertically
-	
-	if (yPos < padding) {
-	
-		if (adjustedRight) {
+		/*
+		 OBS! The solution for calculating the position below is not great right now! It would be better
+		 to rotate around a circle and try at different radians until a suitable one is found or
+		 default to start position.
+		 
+		 /Anders
+		 */
 		
-			// try to place underneath instead
-			yPos = yAnchor + (kGraphEntryViewDiameter/2) + padding;
+		// begin at top left of touched entry
+		
+		xPos = xAnchor - (kGraphEntryViewDiameter/2) - padding - width;
+		yPos = yAnchor - (kGraphEntryViewDiameter/2) - padding - height;
+		
+		// adjust horizontally
+		
+		BOOL adjustedRight = NO;
+		
+		if (xPos < padding) {
 			
-			if ((yPos + height) > (superviewHeight-padding)) {
+			// move right
+			xPos = padding;
+			adjustedRight = YES;
 			
-				// try to change to right side
-				xPos = xAnchor + (kGraphEntryViewDiameter/2) + padding;
-				yPos = padding;
+		} else if ((xPos + width) > (superviewWidth-padding)) {
+			
+			// move left
+			xPos = superviewWidth - padding - width;
+		}
+		
+		// adjust vertically
+		
+		if (yPos < padding) {
+			
+			if (adjustedRight) {
 				
-				// default to top left corner
-				if ((xPos + width) > (superviewWidth - padding))
-					xPos = padding;
+				// try to place underneath instead
+				yPos = yAnchor + (kGraphEntryViewDiameter/2) + padding;
+				
+				if ((yPos + height) > (superviewHeight-padding)) {
+					
+					// try to change to right side
+					xPos = xAnchor + (kGraphEntryViewDiameter/2) + padding;
+					yPos = padding;
+					
+					// default to top left corner
+					if ((xPos + width) > (superviewWidth - padding))
+						xPos = padding;
+				}
+				
+			} else {
+				
+				yPos = padding;
 			}
-		
-		} else {
-		
-			yPos = padding;
 		}
 	}
-	
-	// load the entry with the given key
-	FCEntry *entry = [FCEntry entryWithEID:theKey];
 	
 	// create and display the info view
 	FCGraphEntryInfoView *newEntryInfoView = [[FCGraphEntryInfoView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height) entry:entry];

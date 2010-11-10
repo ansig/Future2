@@ -92,4 +92,7 @@
 -(NSString *)dateDescription;
 -(NSString *)timeDescription;
 
+-(NSString *)filePath;
+-(void)deleteAssocitedFiles;
+
 @end

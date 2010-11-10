@@ -84,7 +84,7 @@
 }
 
 -(void)drawInContext:(CGContextRef)context {
-/*	Draws a colored shape reaching top-bottom and left-right of the entire view */
+/*	Draws a colored shape reaching top-bottom and left-right of the entire view. */
 	
 	// Setup the fill color
 	CGColorRef cgColor = self.color.CGColor;
@@ -93,7 +93,7 @@
 	
 	// DRAW
 	
-	// circle mode
+	// circle mode (default)
 	if (self.mode == FCGraphEntryViewModeCircle)
 		CGContextFillEllipseInRect(context, CGRectMake(1.0f, 1.0f, self.frame.size.width-2, self.frame.size.height-2)); // one less on each side to avoid clipping
 	
@@ -102,17 +102,25 @@
 		CGContextFillRect(context, CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height));
 	
 	// icon mode
-	else if (self.mode == FCGraphEntryViewModeIcon) {
+	else if (self.mode == FCGraphEntryViewModeIcon && 
+			 self.delegate != nil && 
+			 [self.delegate conformsToProtocol:@protocol(FCGraphEntryViewDelegate)]) {
 		
-		if (self.delegate != nil && [self.delegate conformsToProtocol:@protocol(FCGraphEntryViewDelegate)]) {
+		// request the image
+		UIImage *anIcon = [self.delegate iconForEntryViewWithKey:self.key];
+		if (anIcon != nil) {
 			
-			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:self.frame];
-			newIcon.image = [self.delegate iconForEntryViewWithKey:self.key];
+			// draw it
 			
-			self.icon = newIcon;
-			[self addSubview:newIcon];
+			CGSize iconSize = anIcon.size;
+			CGSize viewSize = self.bounds.size;
 			
-			[newIcon release];
+			CGFloat width = viewSize.width < iconSize.width ? viewSize.width : iconSize.width; // whichever one is smaller
+			CGFloat height = viewSize.height < iconSize.height ? viewSize.height : iconSize.height; // whichever on is smaller
+			CGFloat xPos = (viewSize.width/2) - (width/2);
+			CGFloat yPos = (viewSize.height/2) - (height/2);
+			
+			[anIcon drawInRect:CGRectMake(xPos, yPos, width, height)];		
 		}
 	}
 }
