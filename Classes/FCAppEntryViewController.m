@@ -188,7 +188,7 @@
 		
 		// animate appearance
 		
-		[UIView animateWithDuration:kViewAppearDuration 
+		[UIView animateWithDuration:kAppearDuration 
 						 animations:^ { self.scrollView.transform = CGAffineTransformIdentity; } 
 						 completion:^ (BOOL finished) { [self createAndDisplayCloseButton]; } ];
 	}
@@ -221,7 +221,7 @@
 		
 		// animate appearance
 		
-		[UIView animateWithDuration:kViewDisappearDuration 
+		[UIView animateWithDuration:kDisappearDuration 
 						 animations:^ { self.scrollView.transform = transform; } 
 						 completion:^ (BOOL finished) { [self.scrollView removeFromSuperview]; self.scrollView = nil; } ];
 		
