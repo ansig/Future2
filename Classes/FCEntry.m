@@ -469,6 +469,35 @@
 	[sets release];
 }
 
+-(void)delete {
+/*	Deletes self from database.
+	Also removes attached entries, associated files and locations. */
+	
+	if (self.eid != nil) {
+		
+		// delete associated files
+		[self deleteAssocitedFiles];
+	
+		// delete self from database
+		NSString *table = @"entries";
+		NSString *criterion = [NSString stringWithFormat:@"eid = '%@'", self.eid];
+		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		[dbh deleteRowInTable:table withCriterion:criterion];
+		
+		[dbh release];
+	
+		// log
+		
+		NSLog(@"FCEntry -delete || DELETED entry");
+		
+		// notify
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryDeleted object:self];
+	}
+}
+
 -(NSString *)descriptionWithExtensions:(BOOL)addExtensions converted:(BOOL)doConvert {
 /*	Returns a string that describes the data content of this entry.
 	The extensions argument determines if things like unit abbreviations are included.

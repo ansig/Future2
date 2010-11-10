@@ -297,6 +297,33 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	NSInteger section = indexPath.section;
+	NSInteger row = indexPath.row;
+	
+	// delete the entry from database
+	FCEntry *entry = [[sections objectAtIndex:section] objectAtIndex:row];
+	[entry delete];
+	
+	if ([[self.sections objectAtIndex:section] count] == 1) {
+		
+		// remove section array
+		[sections removeObjectAtIndex:section];
+		
+		// remove the section
+		[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+		
+	} else {
+		
+		// remove the entry object from sections array
+		[[sections objectAtIndex:section] removeObjectAtIndex:row];
+		
+		// remove the row
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	}
+}
+
 #pragma mark FCGroupedTableSourceDelegate
 
 -(void)loadSectionsAndRows {

@@ -452,9 +452,37 @@
 	sqlite3_finalize(compiledStatement);
 }
 
-#pragma mark Custom
+-(void)deleteRowInTable:(NSString *)table withCriterion:(NSString *)criterion {
+	
+	if (table != nil && criterion != nil) {
+	
+		// * Compose a statement
+	
+		NSString *statementAsString = [[NSString alloc] initWithFormat:@"DELETE FROM %@ WHERE %@", table, criterion];
+		const char *statement = [statementAsString UTF8String];
+		
+		// * Compile and execute the statement
+		
+		sqlite3_stmt *compiledStatement;
+		if (sqlite3_prepare(_database, statement, -1, &compiledStatement, NULL) == SQLITE_OK) {
+			
+			if (sqlite3_step(compiledStatement) != SQLITE_DONE) {
+				
+				NSLog(@"FCDatabaseHandler -deleteRowFromTable:withCriterion: || Could not execute statement with message: %s", sqlite3_errmsg(_database));
+				NSLog(@"Statement: %@", [NSString stringWithUTF8String:statement]);
+			}
+			
+		} else {
+			
+			NSLog(@"FCDatabaseHandler -deleteRowFromTable:withCriterion: || Could not compile statement with message: %s", sqlite3_errmsg(_database));
+			NSLog(@"Statement: %@", [NSString stringWithUTF8String:statement]);
+		}
+		
+		sqlite3_finalize(compiledStatement);
+	}
+}
 
-#pragma mark Private
+#pragma mark Custom
 
 -(NSString *)primaryKeyColumnNameForTable:(NSString *)table {
 /*	Returns the column name for the primary key column of table. */

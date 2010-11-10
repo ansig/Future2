@@ -78,7 +78,10 @@
 // Custom
 
 -(void)save;
+-(void)delete;
+
 -(void)makeNew;
+
 -(void)copyEntry:(FCEntry *)anotherEntry; 
 -(void)convertToNewUnit:(FCUnit *)newUnit;
 

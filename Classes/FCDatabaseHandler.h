@@ -48,6 +48,7 @@
 // Set
 -(void)insertSets:(NSArray *)sets intoTable:(NSString *)table;
 -(void)updateTable:(NSString *)table withSets:(NSArray *)sets filters:(NSString *)filters;
+-(void)deleteRowInTable:(NSString *)table withCriterion:(NSString *)criterion;
 
 // Custom
 -(NSString *)primaryKeyColumnNameForTable:(NSString *)table;
