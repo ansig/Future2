@@ -867,7 +867,7 @@
 		
 	} else if (self.textView != nil) {
 	
-		self.entry.string = self.textView.text;
+		self.entry.string = [self.textView.text sqlite3String];
 	}
 }
 

@@ -17,4 +17,5 @@
 	#import "FCDateFormatterHelper.h"
 	#import "FCNumberHelper.h"
 	#import "FCImageHelper.h"
+	#import "FCStringHelper.h"
 #endif
