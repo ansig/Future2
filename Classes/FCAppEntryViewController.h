@@ -29,10 +29,11 @@
 #import "FCAppOverlayViewController.h"  // superclass
 
 
+#import "FCAppEntryAttachmentsView.h"
 #import "TKGlobal.h"
 #import "FCModelsFramework.h"
 
-@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, UIScrollViewDelegate> {
+@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, FCGroupedTableSourceDelegate, UIScrollViewDelegate> {
 	
 	FCEntry *entry;
 	
@@ -51,6 +52,12 @@
 	UIScrollView *scrollView;
 	UIImageView *imageView;
 	UIButton *closeButton;
+	
+	FCAppEntryAttachmentsView *attachmentsView;
+	
+	UITableView *tableView;
+	NSMutableArray *sectionTitles;
+	NSMutableArray *sections;
 }
 
 @property (nonatomic, retain) FCEntry *entry;
@@ -71,6 +78,12 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UIButton *closeButton;
 
+@property (nonatomic, retain) FCAppEntryAttachmentsView *attachmentsView;
+
+@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) NSMutableArray *sectionTitles;
+@property (nonatomic, retain) NSMutableArray *sections;
+
 // Init
 
 -(id)initWithEntry:(FCEntry *)theEntry;
@@ -87,5 +100,6 @@
 -(void)save;
 
 -(void)createAndDisplayCloseButton;
+-(void)setNewFrameForTableView;
 
 @end

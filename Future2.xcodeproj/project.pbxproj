@@ -32,6 +32,8 @@
 		9A7FC811123C04E700A7C6C9 /* FCNumberHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A7FC810123C04E700A7C6C9 /* FCNumberHelper.m */; };
 		9A804791125A3141006ADD63 /* entryInfoViewClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A804790125A3141006ADD63 /* entryInfoViewClose.png */; };
 		9A81067B124274F80013F7FB /* FCAppEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A81067A124274F80013F7FB /* FCAppEntryViewController.m */; };
+		9A813A25128D7DBE00FD0A07 /* FCStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A813A24128D7DBE00FD0A07 /* FCStringHelper.m */; };
+		9A813A40128D868F00FD0A07 /* FCAppEntryAttachmentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A813A3F128D868F00FD0A07 /* FCAppEntryAttachmentsView.m */; };
 		9A81772D1280064600E33838 /* FCAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A81772C1280064600E33838 /* FCAppViewController.m */; };
 		9A8269A6125C931400E60D6F /* FCGraphHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8269A5125C931400E60D6F /* FCGraphHandleView.m */; };
 		9A82C489121D4F4C00E87717 /* FCProfileHealthInfoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A82C488121D4F4C00E87717 /* FCProfileHealthInfoDataSource.m */; };
@@ -138,6 +140,10 @@
 		9A804790125A3141006ADD63 /* entryInfoViewClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entryInfoViewClose.png; path = resources/images/buttons/entryInfoViewClose.png; sourceTree = "<group>"; };
 		9A810679124274F80013F7FB /* FCAppEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppEntryViewController.h; sourceTree = "<group>"; };
 		9A81067A124274F80013F7FB /* FCAppEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppEntryViewController.m; sourceTree = "<group>"; };
+		9A813A23128D7DBE00FD0A07 /* FCStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCStringHelper.h; sourceTree = "<group>"; };
+		9A813A24128D7DBE00FD0A07 /* FCStringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCStringHelper.m; sourceTree = "<group>"; };
+		9A813A3E128D868F00FD0A07 /* FCAppEntryAttachmentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppEntryAttachmentsView.h; sourceTree = "<group>"; };
+		9A813A3F128D868F00FD0A07 /* FCAppEntryAttachmentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppEntryAttachmentsView.m; sourceTree = "<group>"; };
 		9A81772B1280064600E33838 /* FCAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppViewController.h; sourceTree = "<group>"; };
 		9A81772C1280064600E33838 /* FCAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppViewController.m; sourceTree = "<group>"; };
 		9A8269A4125C931400E60D6F /* FCGraphHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphHandleView.h; sourceTree = "<group>"; };
@@ -358,6 +364,8 @@
 				9A81067A124274F80013F7FB /* FCAppEntryViewController.m */,
 				9AB0C0F91279CEE600A63CCA /* FCAppNewEntryViewController.h */,
 				9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */,
+				9A813A3E128D868F00FD0A07 /* FCAppEntryAttachmentsView.h */,
+				9A813A3F128D868F00FD0A07 /* FCAppEntryAttachmentsView.m */,
 			);
 			name = Entries;
 			sourceTree = "<group>";
@@ -675,6 +683,8 @@
 				9A7FC810123C04E700A7C6C9 /* FCNumberHelper.m */,
 				9A8C054B12806718006DE01B /* FCImageHelper.h */,
 				9A8C054C12806718006DE01B /* FCImageHelper.m */,
+				9A813A23128D7DBE00FD0A07 /* FCStringHelper.h */,
+				9A813A24128D7DBE00FD0A07 /* FCStringHelper.m */,
 			);
 			name = Helpers;
 			path = Classes;
@@ -877,6 +887,8 @@
 				9A8FD63A12800CD900FDF9CC /* FCAppOverlayViewController.m in Sources */,
 				9A8C054012806395006DE01B /* FCAppCameraViewController.m in Sources */,
 				9A8C054D12806718006DE01B /* FCImageHelper.m in Sources */,
+				9A813A25128D7DBE00FD0A07 /* FCStringHelper.m in Sources */,
+				9A813A40128D868F00FD0A07 /* FCAppEntryAttachmentsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

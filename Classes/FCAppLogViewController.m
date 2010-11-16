@@ -50,6 +50,9 @@
 
 - (void)dealloc {
 	
+	// remove self as observer from notification center
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[startDate release];
 	[endDate release];
 	
@@ -92,9 +95,18 @@
 	
 	[newTableView release];
 	
-	// Start listening to certain events
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
+	// Start listening to certain notifications
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	
+	// FCEntryList
+	[notificationCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
+	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
+	
+	// custom
+	[notificationCenter addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
 }
 
 /*
@@ -206,12 +218,8 @@
 
 -(void)onEntryUpdatedNotification {
 	
-	// reload table
 	[self loadSectionsAndRows];
 	[self.tableView reloadData];
-	
-	// stop listening to notifications about entry updates
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryUpdated object:nil];
 }
 
 -(void)onEntryDeletedNotification {
@@ -220,13 +228,15 @@
 
 -(void)onAttachmentAddedNotification {
 	
+	[self.tableView reloadData];
 }
 
 -(void)onAttachmentRemovedNotification {
 	
+	[self.tableView reloadData];
 }
 
-#pragma mark Table view
+#pragma mark FCGroupedTableSourceDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -266,14 +276,22 @@
 	cell.detailTextLabel.text = anEntry.timeDescription;
 	cell.imageView.image = [UIImage imageNamed:anEntry.category.icon];
 	
+	if ([anEntry.attachments count] > 0) {
+	
+		UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"attachmentsIcon.png"]];
+		cell.accessoryView = imageView;
+		[imageView release];
+	
+	} else {
+		
+		cell.accessoryView = nil;
+	}
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	// start listening to entry updated notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
-	
+		
 	// get the entry
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
@@ -302,9 +320,8 @@
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	// delete the entry from database
-	FCEntry *entry = [[sections objectAtIndex:section] objectAtIndex:row];
-	[entry delete];
+	// retain the entry
+	FCEntry *entry = [[[sections objectAtIndex:section] objectAtIndex:row] retain];
 	
 	if ([[self.sections objectAtIndex:section] count] == 1) {
 		
@@ -322,6 +339,11 @@
 		// remove the row
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
+	
+	// delete the entry from database afer delay that allows 
+	// table view row animations to finish
+	[entry performSelector:@selector(delete) withObject:nil afterDelay:0.25f];
+	[entry performSelector:@selector(release) withObject:nil afterDelay:0.25f];
 }
 
 #pragma mark FCGroupedTableSourceDelegate
@@ -348,7 +370,7 @@
 	NSMutableArray *newSections = [[NSMutableArray alloc] init];
 	
 	// get all the distinct dates within the date range
-	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@'", [formatter stringFromDate:self.startDate], [formatter stringFromDate:self.endDate]];
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [formatter stringFromDate:self.startDate], [formatter stringFromDate:self.endDate]];
 	NSArray *resultForTitles = [dbh getColumns:@"distinct(date(timestamp))" fromTable:@"entries" withFilters:titlesFilter options:@"ORDER BY timestamp DESC"];
 	[titlesFilter release];
 	
@@ -382,6 +404,7 @@
 		for (NSDictionary *row in resultForRows) {
 			
 			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
 			[section addObject:anEntry];
 			[anEntry release];
 		}

@@ -158,8 +158,6 @@
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 	
-	// stop listening to notifications about category updates
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationCategoryUpdated object:nil];
 }
 
 -(void)loadEntryViewController {
@@ -548,6 +546,27 @@
 #pragma mark Notifications
 
 -(void)onEntryCreatedNotification {
+	
+	// save attachments
+	// OBS! ugly tmp solution, a special case due to owner entry needing to be
+	// saved first, which conflicts with this solution for resetting the glucose
+	// reading when it is saved
+	
+	NSMutableArray *attachments = [self.entry.attachments copy];
+	FCEntry *dummy = [[FCEntry alloc] init];
+	dummy.eid = self.entry.eid;
+	
+	for (FCEntry *attachment in attachments) {
+	
+		if (attachment.eid == nil) {
+		
+			attachment.owner = dummy;
+			[attachment save];
+		}
+	}
+	
+	[attachments release];
+	[dummy release];
 	
 	// reset the entry
 	[self.entry makeNew];

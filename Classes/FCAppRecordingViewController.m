@@ -110,7 +110,7 @@
 }
 */
 
-#pragma mark Table view data source
+#pragma mark FCGroupedTableSourceDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
     
@@ -127,8 +127,6 @@
 	return [sectionTitles objectAtIndex:section];
 }
 
-#pragma mark Table view delegate
-
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // cell
@@ -137,7 +135,7 @@
     UITableViewCell *cell = [theTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
 	}
 	
 	NSInteger section = indexPath.section;

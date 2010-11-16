@@ -106,13 +106,25 @@
 
 #pragma mark View
 
-/*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
-
-	[super loadView];
+	
+	// overrides supers method because FCAppEntryViewController sets up a scroll view,
+	// which doesn't work well with picker views and buttons here
+	
+	// * Main view
+	
+	UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
+	
+	if (self.isOpaque)
+		newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	
+	else
+		newView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.75f];
+	
+	self.view = newView;
+	[newView release];
 }
-*/
 
 /*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -177,16 +189,13 @@
 }
 
 -(void)loadEntryViewControllerWithEntry:(FCEntry *)anEntry {
-
-	// load the last created entry
-	FCEntry *newEntry = [FCEntry lastEntryWithCID:self.entry.cid];
 	
 	// create an entry view controller and transition to it
-	FCAppEntryViewController *entryViewController = [[FCAppEntryViewController alloc] initWithEntry:newEntry];
+	FCAppEntryViewController *entryViewController = [[FCAppEntryViewController alloc] initWithEntry:self.entry];
 	entryViewController.navigationControllerFadesInOut = YES;
 	entryViewController.isOpaque = YES;
 	entryViewController.shouldAnimateToCoverTabBar = YES;
-	entryViewController.title = newEntry.category.name;
+	entryViewController.title = self.entry.category.name;
 	
 	[self transitionTo:entryViewController];
 	
@@ -331,6 +340,19 @@
 		[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
 		
 		// dismiss
+		[super dismiss];
+		
+	} else if (self.owner != nil) {
+		
+		// add as attachment to the owner
+		[self.owner addAttachment:self.entry];
+		
+		// if the owner already is saved (has en eid),
+		// save the attachment individually
+		if (self.owner.eid != nil)
+			[self.entry save];
+		
+		// dismiss self
 		[super dismiss];
 		
 	} else {

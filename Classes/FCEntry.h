@@ -34,6 +34,8 @@
 
 @interface FCEntry : NSObject {
 
+	FCEntry *owner;
+	
 	NSString *eid;
 	
 	NSString *title;
@@ -47,7 +49,11 @@
 	
 	NSString *cid;
 	NSString *uid;
+	
+	NSMutableArray *attachments;
 }
+
+@property (nonatomic, assign) FCEntry *owner;
 
 @property (nonatomic, retain) NSString *eid;
 
@@ -63,27 +69,50 @@
 @property (nonatomic, retain) NSString *cid;
 @property (nonatomic, retain) NSString *uid;
 
+@property (nonatomic, retain) NSMutableArray *attachments;
+
 // Class
 +(FCEntry *)lastEntryWithCID:(NSString *)theCID;
 +(FCEntry *)newEntryWithCID:(NSString *)theCID;
 +(FCEntry *)entryWithEID:(NSString *)theEID;
 
 // Init
+
 -(id)initWithDictionary:(NSDictionary *)theDictionary;
 
 // Get
+
 -(FCCategory *)category;
 -(FCUnit *)unit;
 
 // Custom
 
+// read/write
+
 -(void)save;
 -(void)delete;
+-(void)loadAttachments;
+-(void)createLinkToOwner;
+-(void)removeLinkToOwner;
+
+// files
+
+-(NSString *)filePath;
+-(void)deleteAssocitedFiles;
+
+// attachments
+
+-(void)addAttachment:(FCEntry *)attachment;
+-(void)unloadAttachments;
+-(void)removeAttachment:(FCEntry *)attachment andDelete:(BOOL)doDelete;
+
+// setup
 
 -(void)makeNew;
-
 -(void)copyEntry:(FCEntry *)anotherEntry; 
 -(void)convertToNewUnit:(FCUnit *)newUnit;
+
+// descriptions
 
 -(NSString *)fullDescription;
 -(NSString *)convertedFullDescription;
@@ -94,8 +123,5 @@
 -(NSString *)timestampDescription;
 -(NSString *)dateDescription;
 -(NSString *)timeDescription;
-
--(NSString *)filePath;
--(void)deleteAssocitedFiles;
 
 @end

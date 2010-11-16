@@ -30,11 +30,13 @@
 
 @implementation FCEntry
 
+@synthesize owner;
 @synthesize eid;
 @synthesize title;
 @synthesize string, integer, decimal;
 @synthesize timestamp, created;
 @synthesize cid, uid;
+@synthesize attachments;
 
 #pragma mark Class
 
@@ -210,6 +212,8 @@
 	[cid release];
 	[uid release];
 	
+	[attachments release];
+	
 	[super dealloc];
 }
 
@@ -237,10 +241,12 @@
 
 -(id)copyWithZone:(NSZone *)zone {
 
-	// implements shallow copying (i.e. shares pointer ivars with copy)
+	// implements SHALLOW copying (i.e. shares pointer ivars with copy)
 	// (see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmImplementCopy.html )
 	
 	FCEntry *copy = [[[self class] allocWithZone:zone] init];
+	
+	copy.owner = self.owner;
 	
 	copy.eid = self.eid;
 	
@@ -256,78 +262,19 @@
 	copy.cid = self.cid;
 	copy.uid = self.uid;
 	
+	copy.attachments = self.attachments;
+	
 	return (copy);
 }
 
 #pragma mark Custom
 
--(void)makeNew {
-/*	This removes any specific information about the entry, leaving only its data and
-	category information, so that the object can be used as a template for a new entry. */
-	
-	self.eid = nil;
-	
-	self.title = nil;
-	
-	self.timestamp = nil;
-	self.created = nil;
-	
-	self.uid = nil;
-}
-
--(void)copyEntry:(FCEntry *)anotherEntry {
-/*	Implements shallow copying, i.e. shares pointer ivars with original. */
-	
-	self.eid = anotherEntry.eid;
-	
-	self.title = anotherEntry.title;
-	
-	self.string = anotherEntry.string;
-	self.integer = anotherEntry.integer;
-	self.decimal = anotherEntry.decimal;
-	
-	self.timestamp = anotherEntry.timestamp;
-	self.created = anotherEntry.created;
-	
-	self.cid = anotherEntry.cid;
-	self.uid = anotherEntry.uid;
-}
-
--(void)convertToNewUnit:(FCUnit *)newUnit {
-/*	This converts any set numerical data to the given unit.
-	Does NOT update the corresponding category. */
-	
-	if (![self.uid isEqualToString:newUnit.uid]) {
-	
-		if (self.integer != nil) {
-			
-			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
-			
-			NSNumber *convertedNumber = [converter convertNumber:self.integer withUnit:self.unit roundedToScale:0];
-			
-			self.integer = convertedNumber;
-						
-			[converter release];
-			
-		} else if (self.decimal != nil) {
-			
-			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
-			
-			NSInteger scale = [self.category.decimals integerValue];
-			NSNumber *convertedNumber = [converter convertNumber:self.decimal withUnit:self.unit roundedToScale:scale];
-			
-			self.decimal = convertedNumber;
-			
-			[converter release];
-		}
-		
-		self.uid = newUnit.uid;
-	}
-}
+#pragma mark Read/write
 
 -(void)save {
 /*	Saves the current entry to the database, either by a new INSERT if it is not already saved (ie has no eid) or by an UPDATE if it does.
-	Gets all currently set properties and inserts/updates the corresponding columns in the database. */
+	Gets all currently set properties and inserts/updates the corresponding columns in the database. 
+	Also creates an attachment link if there is an owning entry. */
 	
 	// * Compose an array with the column-value pairs that are to be set or updated
 	NSMutableArray *sets = [[NSMutableArray alloc] init];
@@ -438,13 +385,36 @@
 		NSRange range = NSMakeRange(0, [sets count]);
 		[dbh insertSets:[sets subarrayWithRange:range] intoTable:table];
 		
+		// * load EID and CREATED
+		
+		NSString *columns = @"eid, max(created) as created";
+		NSString *filters = [NSString stringWithFormat:@"cid = '%@'", self.cid];
+		
+		NSArray *result = [dbh getColumns:columns fromTable:table withFilters:filters];
+		
+		NSDictionary *row = [result objectAtIndex:0];
+		
+		self.eid = [row objectForKey:@"eid"];
+		self.created = [row objectForKey:@"created"];
+		
 		[dbh release];
 		
-		// post notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryCreated object:self];
-		
 		// log
-		NSLog(@"FCEntry -save: || SAVED entry.");
+		
+		if (self.owner == nil)
+			NSLog(@"FCEntry -save: || SAVED entry.");
+		
+		else
+			NSLog(@"FCEntry -save: || SAVED attached entry");
+		
+		// * make link to OWNER
+		
+		if (self.owner != nil)
+			[self createLinkToOwner];
+		
+		// * post notification
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryCreated object:self];
 		
 	} else {
 		
@@ -460,10 +430,16 @@
 		[dbh release];
 		
 		// post notification
+		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryUpdated object:self];
 		
 		// log
-		NSLog(@"FCEntry -save: || UPDATED entry.");
+		
+		if (self.owner == nil)
+			NSLog(@"FCEntry -save: || UPDATED entry.");
+		
+		else
+			NSLog(@"FCEntry -save: || UPDATED attached entry");
 	}
 	
 	[sets release];
@@ -471,14 +447,28 @@
 
 -(void)delete {
 /*	Deletes self from database.
-	Also removes attached entries, associated files and locations. */
+	Also removes attached entries, links to owner, and associated files and locations. */
 	
 	if (self.eid != nil) {
 		
+		// delete all attachments
+		
+		[self loadAttachments];
+		
+		for (FCEntry *attachment in self.attachments)
+			[attachment delete];
+		
+		// remove link to owner
+		
+		if (self.owner != nil)
+			[self removeLinkToOwner];
+		
 		// delete associated files
+		
 		[self deleteAssocitedFiles];
 	
 		// delete self from database
+		
 		NSString *table = @"entries";
 		NSString *criterion = [NSString stringWithFormat:@"eid = '%@'", self.eid];
 		
@@ -488,15 +478,286 @@
 		
 		[dbh release];
 	
-		// log
+		// notify and log
 		
-		NSLog(@"FCEntry -delete || DELETED entry");
+		if (self.owner == nil) {
+			
+			NSLog(@"FCEntry -delete || DELETED entry.");
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryDeleted object:self];
 		
-		// notify
+		} else {
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryDeleted object:self];
+			NSLog(@"FCEntry -delete || DELETED attached entry");
+		}
 	}
 }
+
+-(void)loadAttachments {
+/*	Loads all attachments to this entry from database and
+	adds them to the attachments array. */
+	
+	// create a new attachments array if there is none
+	
+	if (self.attachments == nil) {
+	
+		NSMutableArray *newAttachments = [[NSMutableArray alloc] init];
+		self.attachments = newAttachments;
+		[newAttachments release];
+	}
+	
+	// remove any already loaded attachments
+	
+	[self.attachments removeAllObjects];
+	
+	// retrieve all attached entries from db
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	NSString *table = @"entries";
+	NSString *columns = @"*";
+	NSString *joints = @"LEFT JOIN attachments ON attachments.attachment_eid = entries.eid";
+	NSString *filters = [NSString stringWithFormat:@"attachments.owner_eid = '%@'", self.eid];
+	
+	NSArray *result = [dbh getColumns:columns 
+							fromTable:table 
+						   withJoints:joints 
+							  filters:filters];
+	
+	[dbh release];
+	
+	// add each attached entry to attachments array
+	
+	for (NSDictionary *row in result) {
+	
+		FCEntry *attachment = [[FCEntry alloc] initWithDictionary:row];
+		attachment.owner = self;
+		[self.attachments addObject:attachment];
+		[attachment release];
+	}
+}
+
+-(void)createLinkToOwner {
+/*	Creates a link in the database with self as attachment to owner. */
+	
+	if (self.eid != nil && self.owner.eid != nil) {
+	
+		// add link in database
+		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		NSString *table = @"attachments";
+		
+		NSString *value = [NSString stringWithFormat:@"'%@'", self.owner.eid];
+		NSDictionary *ownerSet = [[NSDictionary alloc] initWithObjectsAndKeys:@"owner_eid", @"Column", value, @"Value", nil];
+		
+		value = [NSString stringWithFormat:@"'%@'", self.eid];
+		NSDictionary *attachmentSet = [[NSDictionary alloc] initWithObjectsAndKeys:@"attachment_eid", @"Column", value, @"Value", nil];
+		
+		NSArray *sets = [[NSArray alloc] initWithObjects:ownerSet, attachmentSet, nil];
+		
+		[ownerSet release];
+		[attachmentSet release];
+		
+		[dbh insertSets:sets intoTable:table];
+		
+		[sets release];
+		[dbh release];
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentAdded object:self];
+		
+		// log
+		NSLog(@"FCEntry -createLinkToOwner: || CREATED attachments link");
+	}
+}
+
+-(void)removeLinkToOwner {
+/*	Removes the link in the database which attaches self to owner. */
+	
+	if (self.eid != nil && self.owner.eid != nil) {
+		
+		// remove link in database
+		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		NSString *table = @"attachments";
+		NSString *criterion = [NSString stringWithFormat:@"owner_eid = '%@' AND attachment_eid = '%@'", self.owner.eid, self.eid];
+		
+		[dbh deleteRowInTable:table withCriterion:criterion];
+		
+		[dbh release];
+		
+		// notify
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentRemoved object:self];
+		
+		// log
+		NSLog(@"FCEntry -removeLinkToOwner: || REMOVED attachments link");
+	}
+}
+
+#pragma mark Files
+
+-(NSString *)filePath {
+/*	Returns a path if the entry had a file associated with it.
+	Nil if no file. */
+	
+	NSString *documentsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+	
+	NSString *filePath = [documentsFolder stringByAppendingPathComponent:self.string];
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
+		return filePath;
+	
+	return nil;
+}
+
+-(void)deleteAssocitedFiles {
+/*	Removes any files associated with the entry. */
+	
+	if ([self.category.datatype isEqualToString:@"photo"] || 
+		[self.category.datatype isEqualToString:@"audio"]) {
+		
+		if (self.string != nil) {
+			
+			// get path
+			NSString *path = self.filePath;
+			
+			if (path != nil) {
+				
+				// remove files
+				[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+				
+				// log
+				NSLog(@"FCEntry -deleteAssociatedFiles: || Removed file at path: %@", path);
+			}
+		}
+	}
+}
+
+#pragma mark Attachments
+
+-(void)addAttachment:(FCEntry *)attachment {
+/*	Adds the given attachment to attachments array. */
+	
+	// make sure attachments are loaded
+		
+	if (self.attachments == nil)
+		[self loadAttachments];
+	
+	// set self to owner and add to attachments array
+	
+	attachment.owner = self;
+	
+	[self.attachments addObject:attachment];
+	
+	// post notification
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentAdded object:self];
+}
+
+-(void)unloadAttachments {
+/*	Removes all attachments from attachments array without
+	also deleting them from database. */
+	
+	if (self.attachments != nil) {
+	
+		for (FCEntry *attachment in self.attachments)
+			[self removeAttachment:attachment andDelete:NO];
+	}
+}
+
+-(void)removeAttachment:(FCEntry *)attachment andDelete:(BOOL)doDelete {
+/*	Removes given attachment from attachments array and
+	also deletes it from database if flagged. */
+	
+	if (self.attachments != nil) {
+	
+		if (doDelete) {
+			
+			[attachment delete];
+		
+		} else {
+			
+			attachment.owner = nil;
+		}
+		
+		[self.attachments removeObject:attachment];
+	}
+}
+
+#pragma mark Setup
+
+-(void)makeNew {
+/*	This removes any specific information about the entry, leaving only its data and
+	category information, so that the object can be used as a template for a new entry. */
+	
+	self.owner = nil;
+	
+	self.eid = nil;
+	
+	self.title = nil;
+	
+	self.timestamp = nil;
+	self.created = nil;
+	
+	self.uid = nil;
+	
+	self.attachments = nil;
+}
+
+-(void)copyEntry:(FCEntry *)anotherEntry {
+/*	Implements shallow copying, i.e. shares pointer ivars with original. */
+	
+	self.owner = anotherEntry.owner;
+	
+	self.eid = anotherEntry.eid;
+	
+	self.title = anotherEntry.title;
+	
+	self.string = anotherEntry.string;
+	self.integer = anotherEntry.integer;
+	self.decimal = anotherEntry.decimal;
+	
+	self.timestamp = anotherEntry.timestamp;
+	self.created = anotherEntry.created;
+	
+	self.cid = anotherEntry.cid;
+	self.uid = anotherEntry.uid;
+}
+
+-(void)convertToNewUnit:(FCUnit *)newUnit {
+/*	This converts any set numerical data to the given unit.
+	Does NOT update the corresponding category. */
+	
+	if (![self.uid isEqualToString:newUnit.uid]) {
+		
+		if (self.integer != nil) {
+			
+			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
+			
+			NSNumber *convertedNumber = [converter convertNumber:self.integer withUnit:self.unit roundedToScale:0];
+			
+			self.integer = convertedNumber;
+			
+			[converter release];
+			
+		} else if (self.decimal != nil) {
+			
+			FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:newUnit];
+			
+			NSInteger scale = [self.category.decimals integerValue];
+			NSNumber *convertedNumber = [converter convertNumber:self.decimal withUnit:self.unit roundedToScale:scale];
+			
+			self.decimal = convertedNumber;
+			
+			[converter release];
+		}
+		
+		self.uid = newUnit.uid;
+	}
+}
+
+#pragma mark Descriptions
 
 -(NSString *)descriptionWithExtensions:(BOOL)addExtensions converted:(BOOL)doConvert {
 /*	Returns a string that describes the data content of this entry.
@@ -655,43 +916,6 @@
 	
 	// return nil if there is no timestamp
 	return nil;
-}
-
--(NSString *)filePath {
-/*	Returns a path if the entry had a file associated with it.
-	Nil if no file. */
-	
-	NSString *documentsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-	
-	NSString *filePath = [documentsFolder stringByAppendingPathComponent:self.string];
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
-		return filePath;
-	
-	return nil;
-}
-
--(void)deleteAssocitedFiles {
-/*	Removes any files associated with the entry. */
-
-	if ([self.category.datatype isEqualToString:@"photo"] || 
-		[self.category.datatype isEqualToString:@"audio"]) {
-		
-		if (self.string != nil) {
-			
-			// get path
-			NSString *path = self.filePath;
-			
-			if (path != nil) {
-			
-				// remove files
-				[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-			
-				// log
-				NSLog(@"FCEntry -deleteAssociatedFiles: || Removed file at path: %@", path);
-			}
-		}
-	}
 }
 
 @end
