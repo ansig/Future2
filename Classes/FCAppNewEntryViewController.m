@@ -277,22 +277,29 @@
 	NSString *text;
 	if (component < 1 && self.pickerView.numberOfComponents > 1) {
 		
-		// fractionals
+		// integer on decimal number
 		
 		// for localisation purposes, we need to get the decimal separator
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		NSString *decimalSeparator = [formatter decimalSeparator];
 		
-		text = [[NSString alloc] initWithFormat:@"%d%@", row, decimalSeparator];
+		NSInteger integer = [self.category.minimum integerValue] + row;
+		text = [[NSString alloc] initWithFormat:@"%d%@", integer, decimalSeparator];
 		
 		[formatter release];
 	
-	} else {
+	} else if (component < 1 && self.pickerView.numberOfComponents == 1) {
 		
 		// integer
 		
 		NSInteger integer = [self.category.minimum integerValue] + row;
 		text = [[NSString alloc] initWithFormat:@"%d", integer];
+	
+	} else {
+	
+		// decimal
+		
+		text = [[NSString alloc] initWithFormat:@"%d", row];
 	}
 	
 	aLabel.text = text;
