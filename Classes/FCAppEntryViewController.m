@@ -270,15 +270,23 @@
 	[self updateUIContent];
 	
 	// update the attachments view table
-	if (self.attachmentsView != nil && self.attachmentsView.tableView != nil)
+	if (self.attachmentsView != nil && self.attachmentsView.tableView != nil) {
+		
 		[self.attachmentsView.tableView reloadData];
+	}
 }
 
 -(void)onAttachmentAddedNotification {
 	
-	// update the attachments view
-	if (self.attachmentsView != nil)
+	if (self.attachmentsView != nil) {
+		
+		// update the attachments view
 		[self.attachmentsView loadAttachments];
+		
+		// scroll to top
+		UIScrollView *mainScrollView = (UIScrollView *)self.view;
+		[mainScrollView scrollRectToVisible:self.view.frame animated:YES];
+	}
 }
 
 -(void)onAttachmentRemovedNotification {
