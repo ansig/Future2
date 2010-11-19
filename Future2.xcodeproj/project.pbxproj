@@ -55,6 +55,7 @@
 		9A859C7E1275E67700987FBD /* UIImage+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859C7D1275E67700987FBD /* UIImage+TKCategory.m */; };
 		9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9A859D141275E83E00987FBD /* TapkuLibrary.bundle */; };
 		9A859DCE1275EA1400987FBD /* UIView+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */; };
+		9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */; };
 		9A878C671238E6B400784F9D /* Future2Record.rdb in Resources */ = {isa = PBXBuildFile; fileRef = 9A878C661238E6B400784F9D /* Future2Record.rdb */; };
 		9A8C054012806395006DE01B /* FCAppCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C053F12806395006DE01B /* FCAppCameraViewController.m */; };
 		9A8C054D12806718006DE01B /* FCImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C054C12806718006DE01B /* FCImageHelper.m */; };
@@ -184,6 +185,8 @@
 		9A859D141275E83E00987FBD /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = resources/images/TapkuLibrary.bundle; sourceTree = "<group>"; };
 		9A859DCC1275EA1400987FBD /* UIImage+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TKCategory.h"; path = "Tapku Library/UIImage+TKCategory.h"; sourceTree = "<group>"; };
 		9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+TKCategory.m"; path = "Tapku Library/UIView+TKCategory.m"; sourceTree = "<group>"; };
+		9A873BB41293C32300C3D0BF /* FCAppCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCategoryViewController.h; sourceTree = "<group>"; };
+		9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppCategoryViewController.m; sourceTree = "<group>"; };
 		9A878C661238E6B400784F9D /* Future2Record.rdb */ = {isa = PBXFileReference; lastKnownFileType = file; name = Future2Record.rdb; path = resources/database/Future2Record.rdb; sourceTree = "<group>"; };
 		9A878C691238EFB100784F9D /* create_database.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = create_database.sql; path = resources/scripts/create_database.sql; sourceTree = "<group>"; };
 		9A8C053E12806395006DE01B /* FCAppCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCameraViewController.h; sourceTree = "<group>"; };
@@ -447,6 +450,15 @@
 			name = Additions;
 			sourceTree = "<group>";
 		};
+		9A873BB71293C32C00C3D0BF /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				9A873BB41293C32300C3D0BF /* FCAppCategoryViewController.h */,
+				9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		9A8C1A861248D4B300124E25 /* Log */ = {
 			isa = PBXGroup;
 			children = (
@@ -704,6 +716,7 @@
 			children = (
 				9AA8569A120FFF2D008DA1BA /* FCAppRootViewController.h */,
 				9AA8569B120FFF2D008DA1BA /* FCAppRootViewController.m */,
+				9A873BB71293C32C00C3D0BF /* Categories */,
 				9A8106781242749D0013F7FB /* Entries */,
 				9A9680BD123E57C500ED80EE /* Custom */,
 				9AD2E84B122E43F100A4445B /* Profile */,
@@ -889,6 +902,7 @@
 				9A8C054D12806718006DE01B /* FCImageHelper.m in Sources */,
 				9A813A25128D7DBE00FD0A07 /* FCStringHelper.m in Sources */,
 				9A813A40128D868F00FD0A07 /* FCAppEntryAttachmentsView.m in Sources */,
+				9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

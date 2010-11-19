@@ -27,7 +27,7 @@
  */
 
 @protocol FCGroupedTableDataSource <UITableViewDataSource>
-/* For classes that act as a data source for table views with sections */
+/* For classes that act as a data source for table views with sections. */
 
 @required
 -(void)loadSectionsAndRows;
@@ -35,16 +35,23 @@
 @end
 
 @protocol FCGroupedTableSourceDelegate <UITableViewDelegate, UITableViewDataSource>
-/* For classes that act as both delegte and data source for table views with sections */
+/* For classes that act as both delegte and data source for table views with sections. */
 
 @required
 -(void)loadSectionsAndRows;
 
 @end
 
+@protocol FCPlainTableSourceDelegate <UITableViewDelegate, UITableViewDataSource>
+/*	For classes that act as both delegate and data source for plain table views. */
+
+@required
+-(void)loadRows;
+
+@end
 
 @protocol FCEntryList
-/* For view controller classes that display a list of entries of different categories */
+/* For view controller classes that display a list of entries of different categories. */
 
 @required
 -(void)onEntryCreatedNotification;
@@ -92,7 +99,7 @@
 
 
 @protocol FCAttachmentsDisplay
-/* For view controller classes that display a single entry with a list of attachments (entries of different categories) */
+/* For view controller classes that display a single entry with a list of attachments (entries of different categories). */
 
 @required
 -(void)onAttachmentAddedNotification;
@@ -109,7 +116,7 @@
 @end
 
 @protocol FCGraphDelegate <NSObject>
-/* For classes which act as delegates to graph view controllers */
+/* For classes which act as delegates to graph view controllers. */
 
 @optional
 
@@ -140,7 +147,7 @@
 @end
 
 @protocol FCGraphEntryViewDelegate <NSObject>
-/* For classes that act as delegates for entry info views */
+/* For classes that act as delegates for entry info views. */
 
 @required
 -(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey;
@@ -150,7 +157,7 @@
 @end
 
 @protocol FCGraphHandleViewDelegate <NSObject>
-/* For classes that act as delegates for handle views */
+/* For classes that act as delegates for handle views. */
 
 @optional
 -(void)handleWillAddOffset:(CGFloat)addend withAnimation:(BOOL)animated;

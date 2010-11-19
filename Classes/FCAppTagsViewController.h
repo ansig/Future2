@@ -25,9 +25,28 @@
 //  Created by Anders Sigfridsson on 09/08/2010.
 //
 
+#import "FCAppViewController.h" // superclass
 
-@interface FCAppTagsViewController : UIViewController {
+#import "FCModelsFramework.h"
+#import "FCIOFramework.h"
 
+#import "FCAppCategoryViewController.h"
+
+@interface FCAppTagsViewController : FCAppViewController <FCPlainTableSourceDelegate, FCCategoryList> {
+
+	NSMutableArray *section;
+	UITableView *tableView;
 }
+
+@property (nonatomic, retain) NSMutableArray *section;
+@property (nonatomic, retain) UITableView *tableView;
+
+// View
+
+-(void)loadNewCategoryViewController;
+
+// Events
+
+-(void)editButtonPressed:(UIButton *)theEditButton;
 
 @end

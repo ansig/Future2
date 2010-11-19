@@ -569,6 +569,10 @@
 		} else if (self.imageButton != nil) {
 			
 			yPos = self.imageButton.frame.origin.y + self.imageButton.frame.size.height + kAppSpacing;
+		
+		} else if (self.timestampLabel != nil) {
+		
+			yPos = self.timestampLabel.frame.origin.y + self.timestampLabel.frame.size.height + kAppSpacing;
 		}
 		
 		CGRect frame = CGRectMake(0.0f, yPos, 320.0f, 30.0f);

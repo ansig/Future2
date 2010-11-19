@@ -822,8 +822,8 @@
 		
 	} else {
 	
-		// if no data was set, return nil
-		return nil;
+		// if no data was set, return the category name
+		description = self.category.name;
 	}
 	
 	return description;

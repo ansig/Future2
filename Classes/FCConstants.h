@@ -179,6 +179,10 @@ extern NSString * const FCKeyUIDGlucoseMillimolesPerLitre;
 extern NSString * const FCKeyUIDGlucoseMilligramsPerDecilitre;
 extern NSString * const FCKeyUidInsulinUnits;
 
+extern NSString * const FCKeyDIDString;
+extern NSString * const FCKeyDIDInteger;
+extern NSString * const FCKeyDIDDecimal;
+
 // * Defaults
 
 // profile

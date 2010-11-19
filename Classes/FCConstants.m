@@ -45,6 +45,10 @@ NSString * const FCKeyUIDGlucoseMillimolesPerLitre = @"system_0_1";
 NSString * const FCKeyUIDGlucoseMilligramsPerDecilitre = @"system_0_2";
 NSString * const FCKeyUidInsulinUnits = @"system_0_30";
 
+NSString * const FCKeyDIDString = @"system_0_1";
+NSString * const FCKeyDIDInteger = @"system_0_2";
+NSString * const FCKeyDIDDecimal = @"system_0_3";
+
 #pragma mark Defaults
 
 // profile

@@ -249,7 +249,7 @@
 		return 10;
 	
 	// the integer
-	return [self.entry.category.maximum integerValue];
+	return [self.entry.category.maximum integerValue] - [self.entry.category.minimum integerValue] + 1; // +1 to wrap
 }
 
 #pragma mark UIPickerViewDelegate
@@ -317,7 +317,8 @@
 		[self.textView becomeFirstResponder];
 	
 	// update category's unit (only executes if applicable)
-	[self.category saveNewUnit:self.entry.unit andConvert:YES];
+	if (self.entry.uid != nil)
+		[self.category saveNewUnit:self.entry.unit andConvert:YES];
 	
 	// update UI content
 	[self updateUIContent];
@@ -344,7 +345,8 @@
 		[self.originalEntry save];
 		
 		// update category's unit (only executes if applicable)
-		[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
+		if (self.originalEntry.uid != nil)
+			[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
 		
 		// dismiss
 		[super dismiss];
@@ -761,7 +763,7 @@
 	
 	// make sure category's unit is equal to original entry's unit
 	// (only executes if applicable)
-	if (self.originalEntry != nil)
+	if (self.originalEntry != nil && self.originalEntry.uid != nil)
 		[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
 	
 	// remove any files that might have been saved

@@ -381,6 +381,19 @@
 	
 		// * SAVE
 		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		NSRange range = NSMakeRange(0, [sets count]);
+		[dbh insertSets:[sets subarrayWithRange:range] intoTable:table];
+		
+		[dbh release];
+		
+		// log
+		NSLog(@"FCCategory -save || SAVED new category.");
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryCreated object:self];
+		
 	} else {
 		
 		// * UPDATE
@@ -393,6 +406,12 @@
 		[dbh updateTable:table withSets:[sets subarrayWithRange:range] filters:filter];
 		
 		[dbh release];
+		
+		// log
+		NSLog(@"FCCategory -save || UPDATED category.");
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryUpdated object:self];
 	}
 	
 	[sets release];
@@ -400,6 +419,11 @@
 
 -(void)saveNewUnit:(FCUnit *)newUnit andConvert:(BOOL)doConvert {
 
+	// for now, do not try to convert either from or two
+	// NO unit.
+	if (self.uid == nil || newUnit == nil)
+		return;
+	
 	if (![self.uid isEqualToString:newUnit.uid]) {
 	
 		// the sets to be passed to the databasehandler
@@ -463,6 +487,9 @@
 		[dbh release];
 		
 		[sets release];
+		
+		// log
+		NSLog(@"FCCategory -saveNewUnit:andConvert: || UPDATED category.");
 		
 		// post notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryUpdated object:self];

@@ -30,6 +30,8 @@
 
 @implementation FCAppTagsViewController
 
+@synthesize section, tableView;
+
 #pragma mark Init
 
 /*
@@ -46,6 +48,11 @@
 
 - (void)dealloc {
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[section release];
+	[tableView release];
+	
     [super dealloc];
 }
 
@@ -55,10 +62,39 @@
 - (void)loadView {
 	
 	// * Main view
-	UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	
+	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
 	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
 	self.view = view;
 	[view release];
+	
+	// * Right button
+	
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Create new tag" style:UIBarButtonItemStyleDone target:self action:@selector(loadNewCategoryViewController)];
+	self.navigationItem.rightBarButtonItem = newRightButton;
+	[newRightButton release];
+	
+	// * Table view
+	
+	[self loadRows];
+	
+	UITableView *newTableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+	newTableView.backgroundColor = [UIColor clearColor];
+	newTableView.delegate = self;
+	newTableView.dataSource = self;
+	
+	self.tableView = newTableView;
+	[self.view addSubview:newTableView];
+	
+	[newTableView release];
+	
+	// * Notifications
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	
+	[notificationCenter addObserver:self selector:@selector(onCategoryCreatedNotification) name:FCNotificationCategoryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryDeletedNotification) name:FCNotificationCategoryDeleted object:nil];
 }
 
 /*
@@ -80,6 +116,17 @@
 	// e.g. self.myOutlet = nil;
 }
 
+-(void)loadNewCategoryViewController {
+	
+	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] init];
+	newCategoryViewController.shouldAnimateContent = YES;
+	newCategoryViewController.title = @"New tag";
+	
+	[self presentOverlayViewController:newCategoryViewController];
+	
+	[newCategoryViewController release];
+}
+
 #pragma mark Orientation
 
 /*
@@ -88,5 +135,101 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
  */
+
+#pragma mark Events
+
+-(void)editButtonPressed:(UIButton *)theEditButton {
+
+	NSLog(@"button nr %d", theEditButton.tag);
+}
+
+#pragma mark FCPlainTableSourceDelegate
+
+-(void)loadRows {
+	
+	if (self.section != nil)
+		self.section = nil;
+	
+	NSArray *tags = [FCCategory allCategoriesWithOwner:@"system_0_5"];
+	
+	NSMutableArray *newSection = [[NSMutableArray alloc] initWithArray:tags];
+	
+	self.section = newSection;
+	
+	[newSection release];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+	return [self.section count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // cell
+	static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [theTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+	}
+	
+	FCCategory *category = [self.section objectAtIndex:indexPath.row];
+	
+	cell.textLabel.text = category.name;
+	
+	if ([category.datatype isEqualToString:@"integer"] || [category.datatype isEqualToString:@"decimal"]) {
+		
+		if (category.uid != nil)
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"Countable, %@", category.unit.name];
+		
+		else
+			cell.detailTextLabel.text = @"Countable";
+	}
+	
+	cell.imageView.image = [UIImage imageNamed:category.icon];
+	
+	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	editButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+	editButton.tag = indexPath.row;
+	
+	[editButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+	[editButton addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	
+	cell.accessoryView = editButton;
+	
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	// finally deselect the row
+	[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+}
+
+#pragma mark FCCategoryList
+
+-(void)onCategoryCreatedNotification {
+	
+	[self loadRows];
+	[self.tableView reloadData];
+}
+
+-(void)onCategoryUpdatedNotification {
+	
+	[self loadRows];
+	[self.tableView reloadData];
+}
+
+-(void)onCategoryDeletedNotification {
+	
+}
 
 @end
