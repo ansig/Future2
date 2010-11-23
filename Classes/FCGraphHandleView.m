@@ -149,7 +149,7 @@
 			
 			// inform delegate after delay allowing for the animation to complete
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleDidTapScrollToBottom)])
-				[(UIResponder *)self.delegate performSelector:@selector(handleDidTapScrollToBottom) withObject:nil afterDelay:kLockDuration];
+				[(UIResponder *)self.delegate performSelector:@selector(handleDidTapScrollToBottom) withObject:nil afterDelay:kGraphHandleLockDuration];
 			
 		} else {
 			
@@ -158,7 +158,7 @@
 			
 			// inform delegate after delay allowing for the animation to complete
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleDidTapScrollToTop)])
-				[(UIResponder *)self.delegate performSelector:@selector(handleDidTapScrollToTop) withObject:nil afterDelay:kLockDuration];
+				[(UIResponder *)self.delegate performSelector:@selector(handleDidTapScrollToTop) withObject:nil afterDelay:kGraphHandleLockDuration];
 		}
 	}
 }
@@ -254,7 +254,7 @@
 
 -(void)animateToNewFrame:(CGRect)newFrame {
 	
-	[UIView	animateWithDuration:kLockDuration 
+	[UIView	animateWithDuration:kGraphHandleLockDuration 
 						  delay:0.0f 
 						options:UIViewAnimationCurveEaseOut 
 					 animations:^ { self.frame = newFrame; } 

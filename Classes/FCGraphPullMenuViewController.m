@@ -272,7 +272,7 @@
 
 	if (animated) {
 		
-		[UIView animateWithDuration:kLockDuration 
+		[UIView animateWithDuration:kGraphHandleLockDuration 
 						 animations:^ { self.view.frame = newViewFrame; } ];
 		
 	} else {

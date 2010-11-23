@@ -77,6 +77,7 @@
 #define kGraphPullMenuHandleUpperThreshold	FCGraphHandleThresholdOpposite;	// the fractional distance from the end point at which the handle locks to the side
 																			// ("Opposite" means that the reverse threshold is used (e.g. lower for upper and vice versa)
 
+#define kGraphHandleLockDuration	0.25f // duration of the animation when handle views lock to a side
 
 #define kTintColor			[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
 #define kButtonTitleColor	[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
@@ -88,10 +89,9 @@
 #define kAppearDuration		0.25f // duration for UI elements (eg date pickers) to animate onto screen
 #define kDisappearDuration	0.25f // duration for UI elements (eg date pickers) to animate off screen
 
-#define kGrowthDuration		0.1f // duration of the growth animation of graph entry views (should be related to kShrinkDuration)
-#define kShrinkDuration		0.3f // duration of the shrink animation of graph entry views (should be related to kGrowthDuration)
-
-#define kLockDuration		0.25f // duration of the animation when handle views lock to a side
+#define kGrowthDuration		0.1f // duration of the growth animation for views in both app and graph (should be related to kShrinkDuration)
+#define kShrinkDuration		0.3f // duration of the shrink animation for views in both app and graph (should be related to kGrowthDuration)
+#define kGrowthScale		1.5f // default scale to which views grow eg when pulsating
 
 #define kPerceptionDelay	0.5f // delay until animations that the user should be made aware of are executed (makes sure they see it)
 

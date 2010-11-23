@@ -663,7 +663,7 @@
 	if (animated) {
 		
 		[UIView 
-					animateWithDuration:kLockDuration 
+					animateWithDuration:kGraphHandleLockDuration 
 						animations:^ { self.view.frame = newViewFrame; self.scrollView.frame = newScrollViewFrame; } ];
 		
 	} else {
@@ -685,7 +685,7 @@
 		if (animated) {
 			
 			[UIView 
-						animateWithDuration:kLockDuration 
+						animateWithDuration:kGraphHandleLockDuration 
 							animations:^ { self.twin.view.frame = newTwinViewFrame; self.twin.scrollView.frame = newTwinScrollViewFrame; } ];
 			
 		} else {
