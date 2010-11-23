@@ -58,6 +58,10 @@
 	if (self = [self initWithCategory:theCategory]) {
 		
 		owner = [theOwner retain];
+		
+		NSDate *newTimestamp = [theOwner.timestamp copy];
+		self.entry.timestamp = newTimestamp;
+		[newTimestamp release];
 	}
 	
 	return self;
