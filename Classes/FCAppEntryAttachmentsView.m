@@ -212,6 +212,33 @@
 	[self loadAttachments];
 }
 
+#pragma mark Animation
+
+-(void)animateDoublePulseForButton:(UIButton *)theButton {
+	
+	[self animatePulseForButton:theButton];
+	[self performSelector:@selector(animatePulseForButton:) withObject:theButton afterDelay:kGrowthDuration+kShrinkDuration];
+}
+
+-(void)animatePulseForButton:(UIButton *)theButton {
+	
+	[UIView	animateWithDuration:kGrowthDuration 
+					 animations:^{ theButton.transform = CGAffineTransformMakeScale(kGrowthScale, kGrowthScale); }
+					 completion: ^(BOOL finished) { [self animateShrinkForButton:theButton]; } ];
+}
+
+-(void)animateGrowthForButton:(UIButton *)theButton {
+	
+	[UIView	animateWithDuration:kGrowthDuration 
+					 animations:^{ theButton.transform = CGAffineTransformMakeScale(kGrowthScale, kGrowthScale); } ];
+}
+
+-(void)animateShrinkForButton:(UIButton *)theButton {
+	
+	[UIView	animateWithDuration:kShrinkDuration 
+					 animations:^{ theButton.transform = CGAffineTransformIdentity; } ];
+}
+
 #pragma mark Custom
 
 -(void)loadAttachments {
@@ -345,6 +372,16 @@
 		
 		// replace row left->right
 		[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+	}
+}
+
+-(void)flagLatestAttachment {
+/*	If there is at least one entry, this method visibly highlights it for the user. */
+	
+	if ([self.attachmentButtons count] > 0) {
+		
+		// animate pulse for last button
+		[self animateDoublePulseForButton:[self.attachmentButtons lastObject]];
 	}
 }
 

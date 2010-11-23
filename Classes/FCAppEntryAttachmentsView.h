@@ -70,9 +70,17 @@
 
 -(FCEntry *)getSelectedAttachment;
 
+// Animation
+
+-(void)animateDoublePulseForButton:(UIButton *)theButton;
+-(void)animatePulseForButton:(UIButton *)theButton;
+-(void)animateGrowthForButton:(UIButton *)theButton;
+-(void)animateShrinkForButton:(UIButton *)theButton;
+
 // Custom
 
 -(void)loadAttachments;
 -(void)updateTableView;
+-(void)flagLatestAttachment;
 
 @end
