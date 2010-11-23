@@ -101,5 +101,6 @@
 
 -(void)createAndDisplayCloseButton;
 -(void)setNewFrameForTableView;
+-(void)scrollToTop;
 
 @end

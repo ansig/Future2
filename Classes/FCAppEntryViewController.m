@@ -283,12 +283,11 @@
 		// update the attachments view
 		[self.attachmentsView loadAttachments];
 		
-		// make sure we are visible in superview
-		UIScrollView *mainScrollView = (UIScrollView *)self.view;
-		[mainScrollView scrollRectToVisible:self.view.frame animated:YES];
+		// scroll to top
+		[self performSelector:@selector(scrollToTop) withObject:nil afterDelay:kPerceptionDelay];
 		
 		// flag the new attachment
-		[self.attachmentsView performSelector:@selector(flagLatestAttachment) withObject:nil afterDelay:kPerceptionDelay];
+		[self.attachmentsView performSelector:@selector(flagLatestAttachment) withObject:nil afterDelay:kPerceptionDelay*2];
 	}
 }
 
@@ -778,6 +777,12 @@
 	
 	UIScrollView *mainScrollView = (UIScrollView *)self.view;
 	mainScrollView.contentSize = CGSizeMake(320.0f, yPos + height);
+}
+
+-(void)scrollToTop {
+	
+	UIScrollView *mainScrollView = (UIScrollView *)self.view;
+	[mainScrollView scrollRectToVisible:self.view.frame animated:YES];
 }
 
 @end
