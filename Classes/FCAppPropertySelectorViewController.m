@@ -30,7 +30,7 @@
 
 @implementation FCAppPropertySelectorViewController
 
-@synthesize entry;
+@synthesize entry, category;
 @synthesize propertyToSelect;
 @synthesize timestampLabel, datePicker;
 @synthesize tableView, rows;
@@ -43,6 +43,16 @@
 	if (self = [super init]) {
 		
 		entry = [theEntry retain];
+	}
+	
+	return self;
+}
+
+-(id)initWithCategory:(FCCategory *)theCategory {
+	
+	if (self = [super init]) {
+		
+		category = [theCategory retain];
 	}
 	
 	return self;
@@ -63,6 +73,7 @@
 - (void)dealloc {
 	
 	[entry release];
+	[category release];
 	
 	[timestampLabel release];
 	[datePicker release];
@@ -100,6 +111,40 @@
 	// e.g. self.myOutlet = nil;
 }
 
+-(void)pushUnitSystemSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = self.category != nil ? [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category] : [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
+	selectorViewController.parent = self.parent;
+	selectorViewController.title = @"System";
+	selectorViewController.quantity = self.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnitSystem;
+	
+	[selectorViewController createUIContent];
+	[selectorViewController showUIContent];
+	
+	[self.navigationController pushViewController:selectorViewController animated:YES];
+	
+	[selectorViewController release];
+}
+
+-(void)pushUnitSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = self.category != nil ? [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category] : [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
+	selectorViewController.parent = self.parent;
+	selectorViewController.shouldAnimateContent = YES;
+	selectorViewController.title = FCUnitQuantityAsString(self.quantity);
+	selectorViewController.system = self.system;
+	selectorViewController.quantity = self.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnit;
+	
+	[selectorViewController createUIContent];
+	[selectorViewController showUIContent];
+	
+	[self.navigationController pushViewController:selectorViewController animated:YES];
+	
+	[selectorViewController release];
+}
+
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -124,19 +169,57 @@
 	}
 	
 	NSInteger row = [indexPath row];
-	NSDictionary *object = [self.rows objectAtIndex:row];
-	NSString *text = [[NSString alloc] initWithFormat:@"%@ (%@)", [object objectForKey:@"name"], [object objectForKey:@"abbreviation"]];
 	
-	cell.textLabel.text = text;
+	id object = [self.rows objectAtIndex:row];
+	if ([object isKindOfClass:[NSDictionary class]]) {
+		
+		NSDictionary *dictionary = [object copy];
+		NSString *text = [[NSString alloc] initWithFormat:@"%@ (%@)", [dictionary objectForKey:@"name"], [dictionary objectForKey:@"abbreviation"]];
+		
+		cell.textLabel.text = text;
+		
+		[text release];
+		[dictionary release];
+		
+		cell.accessoryType = UITableViewCellAccessoryNone;
 	
-	[text release];
+	} else if ([object isKindOfClass:[NSString class]]) {
+	
+		NSString *string = [object copy];
+		cell.textLabel.text = string;
+		[string release];
+		
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	
     return cell;
 }
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	[self save];
+	if (self.propertyToSelect == FCPropertyDateTime || self.propertyToSelect == FCPropertyUnit) {
+	
+		[self save];
+		
+	} else if (self.propertyToSelect == FCPropertyUnitSystem) {
+
+		self.system = indexPath.row;
+		[self pushUnitSelectionViewController];
+	
+	} else if (self.propertyToSelect == FCPropertyUnitQuantity) {
+		
+		
+		self.quantity = indexPath.row;
+		
+		if (self.quantity == FCUnitQuantityWeight || self.quantity == FCUnitQuantityLength || self.quantity == FCUnitQuantityVolume)
+			[self pushUnitSystemSelectionViewController];
+		
+		else
+			[self pushUnitSelectionViewController];
+
+	}
+	
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark FCGroupedTableSourceDelegate
@@ -154,17 +237,29 @@
 	if (self.propertyToSelect == FCPropertyUnit)
 		[self createContentForUnitSelection];
 	
+	else if (self.propertyToSelect == FCPropertyUnitSystem)
+		[self createContentForUnitSystemSelection];
+	
+	else if (self.propertyToSelect == FCPropertyUnitQuantity)
+		[self createContentForUnitQuantitySelection];
+	
 	else if (self.propertyToSelect == FCPropertyDateTime)
 		[self createContentForTimestampSelection];
 }
 
 -(void)presentUIContent {
 	
-	if (self.propertyToSelect == FCPropertyUnit)
+	if (self.propertyToSelect == FCPropertyUnit || self.propertyToSelect == FCPropertyUnitSystem || self.propertyToSelect == FCPropertyUnitQuantity)
 		[self presentContentForUnitSelection];
 	
 	else if (self.propertyToSelect == FCPropertyDateTime)
 		[self presentContentForTimestampSelection];
+}
+
+-(void)showUIContent {
+	
+	if (self.tableView != nil)
+		[self.view addSubview:self.tableView];
 }
 
 -(void)dismissUIContent {
@@ -191,43 +286,83 @@
 	}
 }
 
+#pragma mark Animation
+
+-(void)animateTableViewAppearance {
+
+	// animate table view appearance
+	CGFloat verticalOffset = self.view.frame.size.height - self.tableView.frame.origin.x;
+	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
+	
+	self.tableView.transform = translation;
+	
+	[self.view addSubview:self.tableView];
+	
+	[UIView animateWithDuration:kAppearDuration 
+					 animations:^ { self.tableView.transform = CGAffineTransformIdentity; } ];
+}
+
 #pragma mark Custom
 
 -(void)save {
 	
-	// save whatever data we have elements for
+	if (self.entry != nil) {
 	
-	if (self.datePicker != nil) {
-		
-		// timestamp
-		self.entry.timestamp = self.datePicker.date;
-		
-	} else if (self.tableView != nil) {
-		
-		// unit
-		NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
-		FCUnit *newUnit = [FCUnit unitWithUID:[[rows objectAtIndex:indexPath.row] objectForKey:@"uid"]];
-		
-		[self.entry convertToNewUnit:newUnit];
+		if (self.datePicker != nil) {
+			
+			// timestamp
+			self.entry.timestamp = self.datePicker.date;
+			
+		} else if (self.tableView != nil) {
+			
+			// unit
+			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+			FCUnit *newUnit = [FCUnit unitWithUID:[[rows objectAtIndex:indexPath.row] objectForKey:@"uid"]];
+			
+			[self.entry convertToNewUnit:newUnit];
+			
+			// post notification
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationConvertLogOrUnitChanged object:self];
+		}
 		
 		// post notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationConvertLogOrUnitChanged object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+		
+		// dismiss
+		[super dismiss];
+		
+	} else if (self.category != nil) {
+	
+		if (self.propertyToSelect == FCPropertyUnit) {
+		
+			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+			self.category.uid = [[rows objectAtIndex:indexPath.row] objectForKey:@"uid"];
+			
+			[super dismiss];
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryObjectUpdated object:self];
+		}
 	}
-	
-	// post notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
-	
-	// super dismiss
-	[super dismiss];
 }
 
 -(void)cancel {
 	
-	// remove the timestamp
-	self.entry.timestamp = nil;
+	if (self.entry != nil) {
 	
-	// post notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+		// remove the timestamp
+		self.entry.timestamp = nil;
+	
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryObjectUpdated object:self];
+	
+	} else if (self.category != nil) {
+	
+		// remove the unit
+		self.category.uid = nil;
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryObjectUpdated object:self];
+	}
 	
 	// super dismiss
 	[super dismiss];
@@ -276,40 +411,17 @@
 -(void)createContentForUnitSelection {
 	
 	// * Rows
+	
 	NSMutableArray *newRows = [[NSMutableArray alloc] init];
 
 	NSString *table = @"units";
 	NSString *columns = @"uid, name, abbreviation";
 	
-	NSString *filter = nil;
-	if (self.quantity == FCUnitQuantityMass) {
-		
-		filter = [NSString stringWithFormat:@"kilogram IS NOT NULL AND system = %d", self.system]; // masses
-	
-	} else if (self.quantity == FCUnitQuantityLength) {
-		
-		filter = [NSString stringWithFormat:@"metre IS NOT NULL AND exponent = 1 AND system = %d", self.system]; // lengths
-	
-	} else if (self.quantity == FCUnitQuantityVolume) {
-		
-		filter = [NSString stringWithFormat:@"metre IS NOT NULL AND exponent = 3 AND system = %d", self.system]; // volumes
-		
-	} else if (self.quantity == FCUnitQuantityTime) {
-		
-		filter = [NSString stringWithFormat:@"second IS NOT NULL AND system = %d", self.system]; // times
-		
-	} else if (self.quantity == FCUnitQuantityGlucose) {
-		
-		filter = [NSString stringWithFormat:@"uid = '%@' OR uid = '%@'", FCKeyUIDGlucoseMillimolesPerLitre, FCKeyUIDGlucoseMilligramsPerDecilitre]; // glucose
-		
-	} else if (self.quantity == FCUnitQuantityInsulin) {
-	
-		filter = [NSString stringWithFormat:@"uid = '%@'", FCKeyUidInsulinUnits];
-	}
+	NSString *filter = [NSString stringWithFormat:@"system = %d AND quantity = %d", self.system, self.quantity];
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSArray *result = [dbh getColumns:columns fromTable:table withFilters:filter];
+	NSArray *result = [dbh getColumns:columns fromTable:table withFilters:filter options:@"ORDER BY name"];
 	
 	[dbh release];
 	
@@ -322,22 +434,54 @@
 	[newRows release];
 	
 	// * Table
-	UITableView *newTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f) style:UITableViewStyleGrouped];
-	newTableView.backgroundColor = [UIColor clearColor];
-	newTableView.delegate = self;
-	newTableView.dataSource = self;
 	
-	self.tableView = newTableView;
-	
-	[newTableView release];
+	[self createTableView];
 }
 
 -(void)createContentForUnitQuantitySelection {
 	
+	// * Cancel button
+	
+	NSString *title;
+	if (self.category.uid == nil)
+		title = @"Cancel";
+	else
+		title = @"Remove";
+	
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	self.navigationItem.leftBarButtonItem = newLeftButton;
+	[newLeftButton release];
+	
+	// * Rows
+	
+	NSMutableArray *newRows = [[NSMutableArray alloc] init];
+	
+	for (int i = 0; i < FCUnitQuantityCount(); i++)
+		[newRows addObject:FCUnitQuantityAsString(i)];
+	
+	self.rows = newRows;
+	[newRows release];
+	
+	// * Table
+	
+	[self createTableView];
 }
 
 -(void)createContentForUnitSystemSelection {
 	
+	// * Rows
+	
+	NSMutableArray *newRows = [[NSMutableArray alloc] init];
+	
+	for (int i = 0; i < 3; i++)
+		[newRows addObject:FCUnitSystemAsString(i)];
+	
+	self.rows = newRows;
+	[newRows release];
+	
+	// * Table
+	
+	[self createTableView];
 }
 
 -(void)presentContentForTimestampSelection {
@@ -367,27 +511,21 @@
 
 -(void)presentContentForUnitSelection {
 	
-	// show navigation bar
 	[self.navigationController setNavigationBarHidden:NO animated:YES];
 	
-	// animate table view appearance
-	CGFloat verticalOffset = self.view.frame.size.height - self.tableView.frame.origin.x;
-	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, verticalOffset);
-	
-	self.tableView.transform = translation;
-	
-	[self.view addSubview:self.tableView];
-	
-	[UIView animateWithDuration:kAppearDuration 
-					 animations:^ { self.tableView.transform = CGAffineTransformIdentity; } ];
-}
+	[self animateTableViewAppearance];
+} 
 
--(void)showContentForUnitQuantitySelection {
-	
-}
+-(void)createTableView {
 
--(void)showContentForUnitSystemSelection {
+	UITableView *newTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f) style:UITableViewStyleGrouped];
+	newTableView.backgroundColor = [UIColor clearColor];
+	newTableView.delegate = self;
+	newTableView.dataSource = self;
 	
+	self.tableView = newTableView;
+	
+	[newTableView release];
 }
 
 @end

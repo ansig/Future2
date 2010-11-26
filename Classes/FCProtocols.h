@@ -70,7 +70,9 @@
 -(void)onEntryUpdatedNotification;
 -(void)onCategoryUpdatedNotification;
 -(void)onAttachmentAddedNotification;
+-(void)onAttachmentObjectAddedNotification;
 -(void)onAttachmentRemovedNotification;
+-(void)onAttachmentObjectRemovedNotification;
 
 @end
 
@@ -80,6 +82,7 @@
 @required
 -(void)onCategoryCreatedNotification;
 -(void)onCategoryUpdatedNotification;
+-(void)onCategoryObjectUpdatedNotification;
 -(void)onCategoryDeletedNotification;
 
 @optional

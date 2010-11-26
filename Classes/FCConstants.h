@@ -173,11 +173,23 @@ extern NSString * const FCKeyCIDBasalInsulin;
 extern NSString * const FCKeyCIDNote;
 extern NSString * const FCKeyCIDPhoto;
 
-extern NSString * const FCKeyCIDWeigth;
+extern NSString * const FCKeyCIDWeight;
 
 extern NSString * const FCKeyUIDGlucoseMillimolesPerLitre;
 extern NSString * const FCKeyUIDGlucoseMilligramsPerDecilitre;
-extern NSString * const FCKeyUidInsulinUnits;
+
+extern NSString * const FCKeyUIDKilogram;
+extern NSString * const FCKeyUIDPound;
+
+extern NSString * const FCKeyUIDCentimetre;
+extern NSString * const FCKeyUIDInch;
+extern NSString * const FCKeyUIDFoot;
+
+extern NSString * const FCKeyUIDInsulinUnits;
+
+extern NSString * const FCKeyUIDCarbohydrates;
+extern NSString * const FCKeyUIDProtein;
+extern NSString * const FCKeyUIDFat;
 
 extern NSString * const FCKeyDIDString;
 extern NSString * const FCKeyDIDInteger;
@@ -206,8 +218,7 @@ extern NSString * const FCDefaultProfileRapidInsulin; // string object
 extern NSString * const FCDefaultProfileInjectionPen; // string object
 extern NSString * const FCDefaultProfileInjectionPump; // string object
 
-extern NSString * const FCDefaultProfileHeight; // number object
-extern NSString * const FCDefaultProfileWeight; // number object
+extern NSString * const FCDefaultProfileHeight; // number object (always saved in cm)
 
 // settings
 
@@ -249,10 +260,13 @@ extern NSString * const FCNotificationEntryDeleted;
 
 extern NSString * const FCNotificationCategoryCreated;
 extern NSString * const FCNotificationCategoryUpdated;
+extern NSString * const FCNotificationCategoryObjectUpdated;
 extern NSString * const FCNotificationCategoryDeleted;
 
 extern NSString * const FCNotificationAttachmentAdded;
+extern NSString * const FCNotificationAttachmentObjectAdded;
 extern NSString * const FCNotificationAttachmentRemoved;
+extern NSString * const FCNotificationAttachmentObjectRemoved;
 
 // * Formats
 

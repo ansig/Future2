@@ -103,6 +103,7 @@
 	// FCEntryList
 	[notificationCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
 	[notificationCenter addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
 	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
 	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
 	
@@ -225,6 +226,8 @@
 
 -(void)onEntryDeletedNotification {
 	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
 }
 
 -(void)onAttachmentAddedNotification {

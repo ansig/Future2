@@ -25,7 +25,9 @@
 //  Created by Anders Sigfridsson on 19/08/2010.
 //
 
-#import <Foundation/Foundation.h>
+
+#import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
 @interface FCProfileHealthInfoDataSource: NSObject <FCGroupedTableDataSource> {
 	

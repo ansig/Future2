@@ -33,7 +33,7 @@
 
 #import "FCAppNewEntryViewController.h"
 
-@interface FCAppRecordingViewController : FCAppViewController <FCGroupedTableSourceDelegate> {
+@interface FCAppRecordingViewController : FCAppViewController <FCCategoryList, FCGroupedTableSourceDelegate> {
 
 	UITableView *tableView;
 	

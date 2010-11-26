@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 10/08/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 #import "FCAppSettingsSelectViewController.h"
 

@@ -92,6 +92,44 @@
 	return nil;
 }
 
++(NSArray *)allEntriesWithCID:(NSString *)theCID {
+
+	if (theCID != nil) {
+	
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		NSString *columns = @"*";
+		NSString *table = @"entries";
+		NSString *filters = [NSString stringWithFormat:@"cid = '%@'", theCID];
+		
+		NSArray *result = [dbh getColumns:columns fromTable:table withFilters:filters];
+		
+		[dbh release];
+		
+		if (result == nil)
+			return nil;
+		
+		NSMutableArray *mutableEntries = [[NSMutableArray alloc] init];
+		for (NSDictionary *row in result) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[mutableEntries addObject:anEntry];
+			[anEntry release];
+		}
+		
+		NSRange range = NSMakeRange(0, [mutableEntries count]);
+		NSArray *entries = [[NSArray alloc] initWithArray:[mutableEntries subarrayWithRange:range]];
+		
+		[mutableEntries release];
+		
+		[entries autorelease];
+		
+		return entries;
+	}
+	
+	return nil;
+}
+
 +(FCEntry *)entryWithEID:(NSString *)theEID {
 
 	if (theEID != nil) {
@@ -416,6 +454,9 @@
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryCreated object:self];
 		
+		if ([self.cid isEqualToString:FCKeyCIDWeight])
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
+		
 	} else {
 		
 		// * UPDATE
@@ -432,6 +473,9 @@
 		// post notification
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryUpdated object:self];
+		
+		if ([self.cid isEqualToString:FCKeyCIDWeight])
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
 		
 		// log
 		
@@ -458,10 +502,9 @@
 		for (FCEntry *attachment in self.attachments)
 			[attachment delete];
 		
-		// remove link to owner
+		// remove potential link to owner
 		
-		if (self.owner != nil)
-			[self removeLinkToOwner];
+		[self removeLinkToOwner];
 		
 		// delete associated files
 		
@@ -489,6 +532,9 @@
 		
 			NSLog(@"FCEntry -delete || DELETED attached entry");
 		}
+		
+		if ([self.cid isEqualToString:FCKeyCIDWeight])
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
 	}
 }
 
@@ -572,26 +618,27 @@
 }
 
 -(void)removeLinkToOwner {
-/*	Removes the link in the database which attaches self to owner. */
+/*	Removes the links in the database which attaches self to owner. */
 	
-	if (self.eid != nil && self.owner.eid != nil) {
-		
-		// remove link in database
+	if (self.eid != nil) {
 		
 		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 		
 		NSString *table = @"attachments";
-		NSString *criterion = [NSString stringWithFormat:@"owner_eid = '%@' AND attachment_eid = '%@'", self.owner.eid, self.eid];
+		NSString *criterion = [NSString stringWithFormat:@"attachment_eid = '%@'", self.eid];
 		
-		[dbh deleteRowInTable:table withCriterion:criterion];
+		NSArray *links = [dbh getColumns:@"attachment_eid" fromTable:@"attachments" withFilters:criterion];
+		
+		for (NSDictionary *link in links) {
+			
+			[dbh deleteRowInTable:table withCriterion:criterion];
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentRemoved object:self];
+			
+			NSLog(@"FCEntry -removeLinkToOwner: || REMOVED attachments link");
+		}
 		
 		[dbh release];
-		
-		// notify
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentRemoved object:self];
-		
-		// log
-		NSLog(@"FCEntry -removeLinkToOwner: || REMOVED attachments link");
 	}
 }
 
@@ -652,7 +699,7 @@
 	
 	// post notification
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentAdded object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentObjectAdded object:self];
 }
 
 -(void)unloadAttachments {
@@ -682,6 +729,8 @@
 		}
 		
 		[self.attachments removeObject:attachment];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationAttachmentObjectRemoved object:self];
 	}
 }
 

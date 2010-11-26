@@ -25,12 +25,13 @@
 //  Created by Anders Sigfridsson on 01/09/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 #import "FCAppOverlayViewController.h"  // superclass
 
-@interface FCAppProfileInputViewController : FCAppOverlayViewController {
+#import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
+
+@interface FCAppProfileInputViewController : FCAppOverlayViewController <UIPickerViewDelegate, UIPickerViewDataSource> {
 
 	BOOL cancelled;
 	
@@ -40,6 +41,7 @@
 	
 	UILabel *label;
 	UIDatePicker *datePicker;
+	UIPickerView *pickerView;
 }
 
 @property (nonatomic) BOOL cancelled;
@@ -47,16 +49,36 @@
 @property (nonatomic, retain) NSArray *defaultItems;
 
 @property (nonatomic, retain) UITextView *textView;
+
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UIDatePicker *datePicker;
+@property (nonatomic, retain) UIPickerView *pickerView;
 
 // Init
+
 -(id)initWithDefaultItems:(NSArray *)theDefaultItems;
 
+// View
+
+-(void)createNewLabel;
+-(void)createNewPickerView;
+-(void)createCancelButton;
+
 // Custom
+
 -(void)cancel;
 -(void)next;
 
 -(void)updateUserDefaults;
+
+-(NSNumber *)convertHeight:(NSNumber *)number;
+-(void)convertWeight:(FCEntry *)entry;
+
+-(void)setPickerViewRows;
+
+-(NSDictionary *)defaultItem;
+-(id)defaultObject;
+-(NSUInteger)indexInNavigationStack;
+-(BOOL)isLastInNavigationStack;
 
 @end

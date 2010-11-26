@@ -28,11 +28,13 @@
 #import "FCAppOverlayViewController.h" // superclass
 
 
+#import "FCAppPropertySelectorViewController.h"
 #import "FCModelsFramework.h"
 
-@interface FCAppCategoryViewController : FCAppOverlayViewController <FCGroupedTableSourceDelegate, UITextFieldDelegate> {
+@interface FCAppCategoryViewController : FCAppOverlayViewController <FCCategoryList, FCGroupedTableSourceDelegate, UITextFieldDelegate> {
 
 	FCCategory *category;
+	FCCategory *originalCategory;
 	
 	NSMutableArray *sections;
 	
@@ -50,6 +52,7 @@
 }
 
 @property (nonatomic, retain) FCCategory *category;
+@property (nonatomic, retain) FCCategory *originalCategory;
 
 @property (nonatomic, retain) NSMutableArray *sections;
 
@@ -65,6 +68,18 @@
 
 @property (nonatomic) BOOL beingEdited;
 
+// Init
+
+-(id)initWithCategory:(FCCategory *)theCategory;
+
+// View
+
+-(void)loadUnitQuantitySelectionViewController;
+-(void)loadUnitSystemSelectionViewController;
+-(void)loadUnitSelectionViewController;
+-(void)pushUnitSystemSelectionViewController;
+-(void)pushUnitSelectionViewController;
+
 // Events
 
 -(void)countableSwitchValueChanged;
@@ -74,5 +89,12 @@
 
 -(void)save;
 -(void)cancel;
+
+-(void)ensureMinMaxRelationship;
+
+-(void)loadSectionsAndRowsForNewCategory;
+-(void)loadSectionsAndRowsForExistingCategory;
+
+-(void)createCountableRows;
 
 @end

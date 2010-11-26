@@ -151,7 +151,6 @@
 	
 	NSString *str = [NSString stringWithFormat:@"%d",day];
 	
-
 	r.size.height -= 2;
 	[str drawInRect: r
 		   withFont: f1
@@ -159,16 +158,31 @@
 		  alignment: UITextAlignmentCenter];
 	
 	if(mark){
+		
+		/*
 		r.size.height = 10;
 		r.origin.y += 18;
 		
 		[@"•" drawInRect: r
 				withFont: f2
 		   lineBreakMode: UILineBreakModeWordWrap 
-			   alignment: UITextAlignmentCenter];
+			   alignment: UITextAlignmentCenter];*/
+		
+		// TiY edit: semi-transparent colored surface colors
+		// selected days.
+		// Anders
+		
+		r.size.height = 45;
+		r.origin.y -= 7;
+		
+		UIView *markupView = [[UILabel alloc] initWithFrame:r];
+		markupView.alpha = 0.5f;
+		markupView.backgroundColor = kTintColor;
+		
+		[self addSubview:markupView];
+		
+		[markupView release];
 	}
-	
-	
 }
 - (void) drawRect:(CGRect)rect {
 	

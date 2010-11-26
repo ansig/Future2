@@ -179,7 +179,7 @@
 		NSDictionary *heightPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 		[objects release];
 		
-		objects = [[NSArray alloc] initWithObjects:FCDefaultProfileWeight, kProfileItemWeight, nil];
+		objects = [[NSArray alloc] initWithObjects:FCKeyCIDWeight, kProfileItemWeight, nil];
 		NSDictionary *weightPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 		[objects release];
 		
@@ -256,110 +256,159 @@
 	NSInteger row = [indexPath row];
 	NSDictionary *item = [[sections objectAtIndex:section] objectAtIndex:row];
     
-	// title
+	// * title
 	UILabel *theLeftLabel = (UILabel *)[cell viewWithTag:1];
 	theLeftLabel.text = [item objectForKey:@"Title"];
 	
-	// content
+	// * content
 	UILabel *theRightLabel = (UILabel *)[cell viewWithTag:2];
 	theRightLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 	theRightLabel.textColor = [UIColor blackColor];
 	
-	NSString *contentString;
-	id object = [[NSUserDefaults standardUserDefaults] objectForKey:[item objectForKey:@"DefaultKey"]];
-	if ([object isKindOfClass:[NSString class]]) {
+	NSString *defaultKey = [item objectForKey:@"DefaultKey"];
+	if (defaultKey == FCKeyCIDWeight) {
 		
-		contentString = [[NSString alloc] initWithString:(NSString *)object];
+		// * weight 
 		
-	} else if ([object isKindOfClass:[NSDate class]]) {
+		FCEntry *lastWeightEntry = [FCEntry lastEntryWithCID:FCKeyCIDWeight];
 		
-		NSString *defaultKey = [item objectForKey:@"DefaultKey"];
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		NSInteger display = [defaults integerForKey:FCDefaultAgeDisplay];
-		if (defaultKey == FCDefaultProfileDateOfBirth && display == FCDateDisplayYears) {
+		if (lastWeightEntry != nil) {
 		
-			// special case if the user wants to see age in years rather than date
-			// (a user defaults setting)
-							
-			// change left label
-			theLeftLabel.text = kProfileItemAge;
+			NSInteger system = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultHeightWeigthSystem];
+			FCUnit *targetUnit = system == FCUnitSystemMetric ? [FCUnit unitWithUID:FCKeyUIDKilogram] : [FCUnit unitWithUID:FCKeyUIDPound];
+		
+			[lastWeightEntry convertToNewUnit:targetUnit];
+		
+			NSString *contentString = [[NSString alloc] initWithString:[lastWeightEntry fullDescription]];
+			theRightLabel.text = contentString;
+			[contentString release];
+		
+		} else {
 			
-			// show age in years
-			NSDate *birthDate = [(NSDate *)object copy];
-			NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
+			theRightLabel.font = [UIFont systemFontOfSize:18.0f];
+			theRightLabel.textColor = [UIColor lightGrayColor];
 			
-			NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-			NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:birthDate toDate:now options:0];
-			[gregorian release];
-			[now release];
-			[birthDate release];
-			
-			NSInteger years = [components year];
-			
-			contentString = [[NSString alloc] initWithFormat:@"%d", years];
-		
-		} else { 
-		
-			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-			[formatter setDateStyle:NSDateFormatterMediumStyle];
-			contentString = [[NSString alloc] initWithString:[formatter stringFromDate:(NSDate *)object]];
-			[formatter release];
+			NSString *contentString = [[NSString alloc] initWithString:@"not entered"];
+			theRightLabel.text = contentString;
+			[contentString release];
 		}
 		
-	} else if ([object isKindOfClass:[NSNumber class]]) {
-		
-		// TMP SOLUTION
-		
-		NSNumber *number = [object copy];
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		
-		NSString *defaultKey = [item objectForKey:@"DefaultKey"];
-		
-		NSInteger system = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultHeightWeigthSystem];
-		if (system == FCUnitSystemMetric) {
+	} else {
+	
+		id object = [[NSUserDefaults standardUserDefaults] objectForKey:defaultKey];
+		if ([object isKindOfClass:[NSString class]]) {
 			
-			// metric system
+			// * strings
 			
-			if ([defaultKey isEqualToString:FCDefaultProfileHeight]) {
+			NSString *contentString = [[NSString alloc] initWithString:(NSString *)object];
+			theRightLabel.text = contentString;
+			[contentString release];
+			
+		} else if ([object isKindOfClass:[NSDate class]]) {
+			
+			// * dates
+			
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+			NSInteger display = [defaults integerForKey:FCDefaultAgeDisplay];
+			
+			if (defaultKey == FCDefaultProfileDateOfBirth && display == FCDateDisplayYears) {
 				
-				// height
-				contentString = [[NSString alloc] initWithFormat:@"%@ cm", [formatter stringFromNumber:number]];
+				// special case if the user wants to see age in years rather
+				// than date (a user defaults setting)
 				
-			} else if ([defaultKey isEqualToString:FCDefaultProfileWeight]) {
+				// change left label
+				theLeftLabel.text = kProfileItemAge;
 				
-				// weight 
-				contentString = [[NSString alloc] initWithFormat:@"%@ kg", [formatter stringFromNumber:number]];
+				// show age in years
+				NSDate *birthDate = [(NSDate *)object copy];
+				NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
+				
+				NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+				NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:birthDate toDate:now options:0];
+				[gregorian release];
+				[now release];
+				[birthDate release];
+				
+				NSInteger years = [components year];
+				
+				NSString *contentString = [[NSString alloc] initWithFormat:@"%d years", years];
+				theRightLabel.text = contentString;
+				[contentString release];
+				
+			} else { 
+				
+				NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+				[formatter setDateStyle:NSDateFormatterMediumStyle];
+				
+				NSString *contentString = [[NSString alloc] initWithString:[formatter stringFromDate:(NSDate *)object]];
+				theRightLabel.text = contentString;
+				[contentString release];
+				
+				[formatter release];
 			}
+			
+		} else if ([object isKindOfClass:[NSNumber class]]) {
+			
+			// * numbers
+			
+			NSNumber *number = [object copy];
+			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+			
+			NSInteger system = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultHeightWeigthSystem];
+			if (system == FCUnitSystemMetric) {
+				
+				// metric system
+				
+				if ([defaultKey isEqualToString:FCDefaultProfileHeight]) {
+					
+					// height
+					NSString *contentString = [[NSString alloc] initWithFormat:@"%@ cm", [formatter stringFromNumber:number]];
+					theRightLabel.text = contentString;
+					[contentString release];
+				}
+				
+			} else {
+				
+				// imperial or customary
+				
+				if ([defaultKey isEqualToString:FCDefaultProfileHeight]) {
+					
+					// height
+					
+					FCUnit *targetUnit = [FCUnit unitWithUID:FCKeyUIDInch];
+					FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:targetUnit];
+					
+					FCUnit *originUnit = [FCUnit unitWithUID:FCKeyUIDCentimetre];
+					
+					NSNumber *convertedNumber = [converter convertNumber:number withUnit:originUnit roundedToScale:0];
+					
+					NSInteger inches = (NSInteger)[convertedNumber doubleValue];
+					NSInteger remainingInches = inches % 12;
+					NSInteger feet = (NSInteger)inches / 12;
+					
+					NSString *contentString = [[NSString alloc] initWithFormat:@"%d ft %d in", feet, remainingInches];
+					theRightLabel.text = contentString;
+					[contentString release];
+					
+					[converter release];
+					
+				}
+			}
+			
+			[number release];
+			[formatter release];
 			
 		} else {
 			
-			// imperial or customary
+			theRightLabel.font = [UIFont systemFontOfSize:18.0f];
+			theRightLabel.textColor = [UIColor lightGrayColor];
 			
-			if ([defaultKey isEqualToString:FCDefaultProfileHeight]) {
-				
-				// height
-				contentString = @"n/a";
-				
-			} else if ([defaultKey isEqualToString:FCDefaultProfileWeight]) {
-				
-				// weight 
-				contentString = @"n/a";
-			}
+			NSString *contentString = [[NSString alloc] initWithString:@"not entered"];
+			theRightLabel.text = contentString;
+			[contentString release];
 		}
-		
-		[number release];
-		[formatter release];
-		
-	} else {
-		
-		theRightLabel.font = [UIFont systemFontOfSize:18.0f];
-		theRightLabel.textColor = [UIColor lightGrayColor];
-		contentString = [[NSString alloc] initWithString:@"not entered"];
 	}
-	
-	theRightLabel.text = contentString;
-	[contentString release];
-	
+		
     return cell;
 }
 

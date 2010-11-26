@@ -26,3 +26,4 @@
 //
 
 #import "FCUnitConverter.h"
+#import "FCColorCollection.h"

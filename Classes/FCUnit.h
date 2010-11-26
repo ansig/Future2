@@ -41,6 +41,7 @@
 	NSNumber *exponent;
 	
 	FCUnitSystem system;
+	FCUnitQuantity quantity;
 }
 
 @property (nonatomic, retain) NSString *uid;
@@ -54,6 +55,7 @@
 @property (nonatomic, retain) NSNumber *exponent;
 
 @property (nonatomic) FCUnitSystem system;
+@property (nonatomic) FCUnitQuantity quantity;
 
 // Class
 
@@ -63,8 +65,8 @@
 
 -(id)initWithDictionary:(NSDictionary *)theDictionary;
 
-// Get
+// Custom
 
--(FCUnitQuantity)quantity;
+-(BOOL)isConvertibleWith:(FCUnit *)anotherUnit;
 
 @end

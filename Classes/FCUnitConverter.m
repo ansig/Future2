@@ -76,15 +76,11 @@
 
 -(NSNumber *)convertNumber:(NSNumber *)aNumber withUnit:(FCUnit *)aUnit roundedToScale:(NSInteger)scale withMode:(NSRoundingMode)mode {
 	
-	// if origin unit and target unit are the same, return original number
-	if ([aUnit.uid isEqualToString:self.target.uid])
+	if ([aUnit.uid isEqualToString:self.target.uid] || aUnit == nil || self.target == nil)
 		return aNumber;
-	
-	// determine if origin unit and target unit are comparable
-	if (aUnit.quantity != self.target.quantity)
+
+	if (![aUnit isConvertibleWith:self.target])
 		return nil;
-	
-	// if so, convert the number...
 	
 	// get bases
 	double originBase;

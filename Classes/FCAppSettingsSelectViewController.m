@@ -151,7 +151,6 @@
 		
 		section = [[NSArray alloc] initWithObjects:FCUnitSystemAsString(FCUnitSystemMetric), FCUnitSystemAsString(FCUnitSystemImperial), FCUnitSystemAsString(FCUnitSystemCustomary), nil];
 		
-		
 	// age display
 	} else if (defaultKey == FCDefaultAgeDisplay) {
 		

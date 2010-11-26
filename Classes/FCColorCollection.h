@@ -19,19 +19,27 @@
  */
 
 //
-//  FCProfilePersonalInfoTableDataSource.h
+//  FCColorCollection.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 19/08/2010.
+//  Created by Anders Sigfridsson on 25/11/2010.
 //
 
-@interface FCProfilePersonalInfoTableDataSource : NSObject <FCGroupedTableDataSource> {
+#import <Foundation/Foundation.h>
 
-	NSMutableArray *sections;
-	NSMutableArray *sectionTitles;
+
+@interface FCColorCollection : NSObject {
+	
+	NSArray *_systemColors;
+	NSArray *_freeColors;
 }
 
-@property (nonatomic, retain) NSMutableArray *sections;
-@property (nonatomic, retain) NSMutableArray *sectionTitles;
+// Custom
+
+-(void)loadSystemColors;
+-(void)loadFreeColors;
+
+-(UIColor *)colorForCID:(NSString *)cid;
+-(UIColor *)colorForIndex:(NSInteger)index;
 
 @end

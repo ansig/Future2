@@ -221,7 +221,6 @@
 		UILabel *rightLabel = [[UILabel alloc] initWithFrame:CGRectMake(180.0f, 12.0f, 120.0f, 20.0f)];
 		rightLabel.tag = 2;
 		rightLabel.textAlignment = UITextAlignmentRight;
-		rightLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 		[cell addSubview:rightLabel];
 		[rightLabel release];
 	}
@@ -238,28 +237,39 @@
 	// content
 	UILabel *theRightLabel = (UILabel *)[cell viewWithTag:2];
 	
-	NSString *contentString;
 	id object = [[NSUserDefaults standardUserDefaults] objectForKey:[item objectForKey:@"DefaultKey"]];
 	if ([object isKindOfClass:[NSString class]]) {
 		
-		contentString = [[NSString alloc] initWithString:(NSString *)object];
+		theRightLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+		theRightLabel.textColor = [UIColor blackColor];
+		
+		NSString *contentString = [[NSString alloc] initWithString:(NSString *)object];
+		theRightLabel.text = contentString;
+		[contentString release];
 		
 	} else if ([object isKindOfClass:[NSDate class]]) {
 		
 		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateStyle:NSDateFormatterMediumStyle];
-		contentString = [[NSString alloc] initWithString:[formatter stringFromDate:(NSDate *)object]];
+		
+		theRightLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+		theRightLabel.textColor = [UIColor blackColor];
+		
+		NSString *contentString = [[NSString alloc] initWithString:[formatter stringFromDate:(NSDate *)object]];
+		theRightLabel.text = contentString;
+		[contentString release];
+		
 		[formatter release];
 		
 	} else {
 		
 		theRightLabel.font = [UIFont systemFontOfSize:18.0f];
 		theRightLabel.textColor = [UIColor lightGrayColor];
-		contentString = [[NSString alloc] initWithString:@"not entered"];
+		
+		NSString *contentString = [[NSString alloc] initWithString:@"not entered"];
+		theRightLabel.text = contentString;
+		[contentString release];
 	}
-	
-	theRightLabel.text = contentString;
-	[contentString release];
 	
     return cell;
 }

@@ -157,8 +157,8 @@ typedef enum {
 	
 	FCPropertyDateTime,
 	FCPropertyUnit,
-	FCpropertyUnitQuantity,
-	FCpropertyUnitSystem
+	FCPropertyUnitQuantity,
+	FCPropertyUnitSystem
 	
 } FCProperty;
 
@@ -176,16 +176,19 @@ NSString * FCUnitSystemAsString(FCUnitSystem system);
 
 typedef enum {
 	
-	FCUnitQuantityMass, // default
-	FCUnitQuantityLength,
-	FCUnitQuantityVolume,
-	FCUnitQuantityTime,
 	FCUnitQuantityGlucose,
-	FCUnitQuantityInsulin
+	FCUnitQuantityInsulin,
+	FCUnitQuantityLength,
+	FCUnitQuantityNutrition,
+	FCUnitQuantityOther,
+	FCUnitQuantityTime,
+	FCUnitQuantityVolume,
+	FCUnitQuantityWeight
 	
 } FCUnitQuantity;
 
 NSString *FCUnitQuantityAsString(FCUnitQuantity quantity);
+NSInteger FCUnitQuantityCount();
 
 typedef enum {
 	

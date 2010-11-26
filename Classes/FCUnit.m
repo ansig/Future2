@@ -33,7 +33,7 @@
 @synthesize uid;
 @synthesize name, abbreviation;
 @synthesize metre, kilogram, second, exponent;
-@synthesize system;
+@synthesize system, quantity;
 
 #pragma mark Class
 
@@ -43,7 +43,7 @@
 		
 		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 		
-		NSString *columns = @"name, abbreviation, metre, kilogram, second, exponent, system";
+		NSString *columns = @"name, abbreviation, metre, kilogram, second, exponent, system, quantity";
 		NSString *table = @"units";
 		NSString *filter = [NSString stringWithFormat:@"uid = '%@'", theUID];
 		
@@ -105,6 +105,11 @@
 				
 				NSNumber *number = [theDictionary objectForKey:key];
 				self.system = [number integerValue];
+			
+			} else if ([key isEqualToString:@"quantity"]) {
+				
+				NSNumber *number = [theDictionary objectForKey:key];
+				self.quantity = [number integerValue];
 			}
 		}
 	}
@@ -138,38 +143,27 @@
 	[super dealloc];
 }
 
-#pragma mark Get
+#pragma mark Custom
 
--(FCUnitQuantity)quantity {
+-(BOOL)isConvertibleWith:(FCUnit *)anotherUnit {
+
+	if ([self.exponent isEqualToNumber:anotherUnit.exponent]) {
 	
-	// * special cases
+		if (self.metre != nil && anotherUnit.metre != nil)
+			return YES;
+		
+		else if (self.kilogram != nil && anotherUnit.kilogram != nil)
+			return YES;
+		
+		else if (self.second != nil && anotherUnit.second != nil)
+			return YES;
+	}
 	
-	// glucose
-	if ([self.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre] || [self.uid isEqualToString:FCKeyUIDGlucoseMilligramsPerDecilitre])
-		return FCUnitQuantityGlucose;
+	// special case: glucose
+	if (self.quantity == FCUnitQuantityGlucose && anotherUnit.quantity == FCUnitQuantityGlucose)
+		return YES;
 	
-	// insulin
-	else if ([self.uid isEqualToString:FCKeyUidInsulinUnits])
-		return FCUnitQuantityInsulin;
-	
-	// * normal cases
-	
-	// time
-	else if (self.second != nil)
-		return FCUnitQuantityTime;
-	
-	// length
-	else if (self.metre != nil && [self.exponent intValue] == 1)
-		return FCUnitQuantityLength;
-	
-	// volume
-	else if (self.metre != nil && [self.exponent intValue] == 3)
-		return FCUnitQuantityVolume;
-	
-	// * default			 
-	
-	// mass
-	return FCUnitQuantityMass;
+	return NO;
 }
 
 @end

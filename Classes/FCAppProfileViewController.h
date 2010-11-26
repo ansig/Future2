@@ -67,4 +67,8 @@
 
 -(void)loadSettingsViewController;
 
+// Custom
+
+-(void)updateNameLabel;
+
 @end

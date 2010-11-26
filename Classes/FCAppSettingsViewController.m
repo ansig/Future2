@@ -385,7 +385,9 @@
 	NSArray *unitsSection = [[NSArray alloc] initWithObjects:heightWeigthPair, convertLogPair, nil];
 	[newSections addObject:unitsSection];
 	
+	[convertLogPair release];
 	[heightWeigthPair release];
+	
 	[unitsSection release];
 	
 	// profile

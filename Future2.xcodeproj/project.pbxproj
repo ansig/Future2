@@ -61,6 +61,7 @@
 		9A8C054D12806718006DE01B /* FCImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C054C12806718006DE01B /* FCImageHelper.m */; };
 		9A8C1A951248F63200124E25 /* FCAppLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C1A941248F63200124E25 /* FCAppLogDateSelectorViewController.m */; };
 		9A8C7AB7122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */; };
+		9A8D0F7F129ECE7F0032F18D /* FCColorCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */; };
 		9A8F740F1250A08300DDD1A4 /* FCGraphEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */; };
 		9A8FD63A12800CD900FDF9CC /* FCAppOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FD63912800CD900FDF9CC /* FCAppOverlayViewController.m */; };
 		9A9648C3127841B200A410C1 /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A9648C2127841B200A410C1 /* editButton.png */; };
@@ -197,6 +198,8 @@
 		9A8C1A941248F63200124E25 /* FCAppLogDateSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppLogDateSelectorViewController.m; sourceTree = "<group>"; };
 		9A8C7AB5122FA0BA008D2A71 /* FCAppSettingsSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppSettingsSelectViewController.h; sourceTree = "<group>"; };
 		9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppSettingsSelectViewController.m; sourceTree = "<group>"; };
+		9A8D0F7D129ECE7F0032F18D /* FCColorCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCColorCollection.h; sourceTree = "<group>"; };
+		9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCColorCollection.m; sourceTree = "<group>"; };
 		9A8F740D1250A08300DDD1A4 /* FCGraphEntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphEntryView.h; sourceTree = "<group>"; };
 		9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphEntryView.m; sourceTree = "<group>"; };
 		9A8FD63812800CD900FDF9CC /* FCAppOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppOverlayViewController.h; sourceTree = "<group>"; };
@@ -536,6 +539,8 @@
 			children = (
 				9A968261123F982100ED80EE /* FCUnitConverter.h */,
 				9A968262123F982100ED80EE /* FCUnitConverter.m */,
+				9A8D0F7D129ECE7F0032F18D /* FCColorCollection.h */,
+				9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */,
 			);
 			name = Functions;
 			sourceTree = "<group>";
@@ -903,6 +908,7 @@
 				9A813A25128D7DBE00FD0A07 /* FCStringHelper.m in Sources */,
 				9A813A40128D868F00FD0A07 /* FCAppEntryAttachmentsView.m in Sources */,
 				9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */,
+				9A8D0F7F129ECE7F0032F18D /* FCColorCollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 02/09/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 @interface FCAppSettingsSelectViewController : UIViewController <FCGroupedTableSourceDelegate> {
 

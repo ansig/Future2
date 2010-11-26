@@ -69,6 +69,7 @@
 -(void)loadUnitSelectorViewController;
 -(void)loadEntryViewControllerWithEntry:(FCEntry *)anEntry;
 -(void)loadCameraViewController;
+-(void)pushUnitSelectionViewController;
 
 // Events
 

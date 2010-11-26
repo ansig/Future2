@@ -90,7 +90,7 @@ NSString * FCGraphModeAsString(FCGraphMode mode) {
 		string = @"Horizontal day comparison";
 	
 	else
-		string = @"n/a";
+		string = nil;
 	
 	return string;
 }
@@ -109,7 +109,7 @@ NSString * FCUnitSystemAsString(FCUnitSystem system) {
 		string = @"Customary";
 		
 	else
-		string = @"n/a";
+		string =nil;
 	
 	return string;
 }
@@ -118,7 +118,7 @@ NSString *FCUnitQuantityAsString(FCUnitQuantity quantity) {
 	
 	NSString *string;
 	
-	if (quantity == FCUnitQuantityMass)
+	if (quantity == FCUnitQuantityWeight)
 		string = @"Weight";
 	
 	else if (quantity == FCUnitQuantityLength)
@@ -136,10 +136,29 @@ NSString *FCUnitQuantityAsString(FCUnitQuantity quantity) {
 	else if (quantity == FCUnitQuantityInsulin)
 		string = @"Insulin";
 	
+	else if (quantity == FCUnitQuantityNutrition)
+		string = @"Nutrition";
+	
+	else if (quantity == FCUnitQuantityOther)
+		string = @"Other";
+	
 	else
-		string = @"n/a";
+		string = nil;
 	
 	return string;
+}
+
+NSInteger FCUnitQuantityCount() {
+
+	NSInteger count = 0;
+	NSString *name = FCUnitQuantityAsString(count);
+	while (name != nil) {
+	
+		count++;
+		name = FCUnitQuantityAsString(count);
+	}
+	
+	return count;
 }
 
 NSString * FCDateDisplayAsString(FCDateDisplay display) {
@@ -153,7 +172,7 @@ NSString * FCDateDisplayAsString(FCDateDisplay display) {
 		string = @"Years";
 	
 	else
-		string = @"n/a";
+		string = nil;
 	
 	return string;
 }
@@ -178,7 +197,7 @@ NSString * FCTabAsString(FCTab tab) {
 		string = @"Log";
 	
 	else
-		string = @"n/a";
+		string = nil;
 	
 	return string;
 }

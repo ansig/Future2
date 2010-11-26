@@ -52,7 +52,7 @@
 		
 		// start listening to certain notifications
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAttachmentObjectAddedNotification) name:FCNotificationAttachmentObjectAdded object:nil];
 	}
 	
 	return self;
@@ -276,7 +276,7 @@
 	}
 }
 
--(void)onAttachmentAddedNotification {
+-(void)onAttachmentObjectAddedNotification {
 	
 	if (self.attachmentsView != nil) {
 		

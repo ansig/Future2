@@ -39,11 +39,23 @@ NSString * const FCKeyCIDBasalInsulin = @"system_0_3";
 NSString * const FCKeyCIDNote = @"system_0_4";
 NSString * const FCKeyCIDPhoto = @"system_0_5";
 
-NSString * const FCKeyCIDWeigth = @"system_0_6";
+NSString * const FCKeyCIDWeight = @"system_0_6";
 
 NSString * const FCKeyUIDGlucoseMillimolesPerLitre = @"system_0_1";
 NSString * const FCKeyUIDGlucoseMilligramsPerDecilitre = @"system_0_2";
-NSString * const FCKeyUidInsulinUnits = @"system_0_30";
+
+NSString * const FCKeyUIDKilogram = @"system_0_12";
+NSString * const FCKeyUIDPound = @"system_0_16";
+
+NSString * const FCKeyUIDCentimetre = @"system_0_5";
+NSString * const FCKeyUIDInch = @"system_0_8";
+NSString * const FCKeyUIDFoot = @"system_0_9";
+
+NSString * const FCKeyUIDInsulinUnits = @"system_0_31";
+
+NSString * const FCKeyUIDCarbohydrates = @"system_0_32";
+NSString * const FCKeyUIDProtein = @"system_0_33";
+NSString * const FCKeyUIDFat = @"system_0_34";
 
 NSString * const FCKeyDIDString = @"system_0_1";
 NSString * const FCKeyDIDInteger = @"system_0_2";
@@ -72,7 +84,6 @@ NSString * const FCDefaultProfileInjectionPen  = @"ProfileInjectionPen";
 NSString * const FCDefaultProfileInjectionPump  = @"ProfileInjectionPump";
 
 NSString * const FCDefaultProfileHeight = @"ProfileHeight";
-NSString * const FCDefaultProfileWeight = @"ProfileWeight";
 
 // settings
 
@@ -114,10 +125,13 @@ NSString * const FCNotificationEntryDeleted = @"EntryDeleted";
 
 NSString * const FCNotificationCategoryCreated = @"CategoryCreated";
 NSString * const FCNotificationCategoryUpdated = @"CategoryUpdated";
+NSString * const FCNotificationCategoryObjectUpdated = @"CategoryObjectUpdated";
 NSString * const FCNotificationCategoryDeleted = @"CategoryDeleted";
 
 NSString * const FCNotificationAttachmentAdded = @"AttachmentAdded";
+NSString * const FCNotificationAttachmentObjectAdded = @"AttachmentObjectAdded";
 NSString * const FCNotificationAttachmentRemoved = @"AttachmentRemoved";
+NSString * const FCNotificationAttachmentObjectRemoved = @"AttachmentObjectRemoved";
 
 #pragma mark Format
 

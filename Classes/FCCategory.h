@@ -88,6 +88,7 @@
 // Custom
 -(void)save;
 -(void)saveNewUnit:(FCUnit *)newUnit andConvert:(BOOL)convert;
+-(void)delete;
 
 -(NSDictionary *)generateDefaultGraphSet;
 

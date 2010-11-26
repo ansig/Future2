@@ -273,7 +273,7 @@ int gcd(int a, int b) {
 #pragma mark Custom
 
 -(NSMutableArray *)createLabelsArray {
-/*	Creates and returns an array with a string describing each primary unit covered by the scale. */
+/*	Creates and returns an array with strings describing each primary unit covered by the scale. */
 	
 	NSMutableArray *labels = [[NSMutableArray alloc] init];
 	

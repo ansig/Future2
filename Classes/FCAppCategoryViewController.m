@@ -30,7 +30,7 @@
 
 @implementation FCAppCategoryViewController
 
-@synthesize category;
+@synthesize category, originalCategory;
 @synthesize sections;
 @synthesize tableView;
 @synthesize nameTextField, countableSwitch;
@@ -38,6 +38,17 @@
 @synthesize beingEdited;
 
 #pragma mark Init
+
+-(id)initWithCategory:(FCCategory *)theCategory {
+
+	if (self = [self init]) {
+		
+		category = [theCategory copy];
+		originalCategory = [theCategory retain];
+	}
+	
+	return self;
+}
 
 -(id)init {
 	
@@ -48,6 +59,8 @@
 			// create empty category for saving
 			category = [[FCCategory alloc] init];
 		}
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCategoryObjectUpdatedNotification) name:FCNotificationCategoryObjectUpdated object:nil];
 	}
 	
 	return self;
@@ -67,7 +80,10 @@
 
 - (void)dealloc {
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[category release];
+	[originalCategory release];
 	
 	[tableView release];
 	
@@ -111,6 +127,96 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+-(void)loadUnitQuantitySelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.shouldAnimateContent = YES;
+	
+	selectorViewController.title = @"Quantity";
+	selectorViewController.propertyToSelect = FCPropertyUnitQuantity;
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
+-(void)loadUnitSystemSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.shouldAnimateContent = YES;
+	
+	FCUnit *unit = self.category.unit;
+	selectorViewController.quantity = unit.quantity;
+	
+	selectorViewController.propertyToSelect = FCPropertyUnitSystem;
+	
+	selectorViewController.title = @"System";
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
+-(void)loadUnitSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.shouldAnimateContent = YES;
+	
+	FCUnit *unit = self.category.unit;
+	
+	selectorViewController.system = unit.system;
+	selectorViewController.quantity = unit.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnit;
+	
+	selectorViewController.title = FCUnitQuantityAsString(unit.quantity);
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
+-(void)pushUnitSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.parent = self;
+	selectorViewController.shouldAnimateContent = YES;
+	
+	FCUnit *unit = self.category.unit;
+	
+	selectorViewController.system = unit.system;
+	selectorViewController.quantity = unit.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnit;
+	
+	selectorViewController.title = FCUnitQuantityAsString(unit.quantity);
+	
+	[selectorViewController createUIContent];
+	[selectorViewController showUIContent];
+	
+	[self.overlaidNavigationController pushViewController:selectorViewController animated:YES];
+	
+	[selectorViewController release];
+}
+
+-(void)pushUnitSystemSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.parent = self;
+	
+	FCUnit *unit = self.category.unit;
+	selectorViewController.quantity = unit.quantity;
+	
+	selectorViewController.propertyToSelect = FCPropertyUnitSystem;
+	
+	selectorViewController.title = @"System";
+	
+	[selectorViewController createUIContent];
+	[selectorViewController showUIContent];
+	
+	[self.overlaidNavigationController pushViewController:selectorViewController animated:YES];
+	
+	[selectorViewController release];
 }
 
 #pragma mark Orientation
@@ -168,6 +274,7 @@
 	UITextField *newMinimumTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 220.0f, 22.0f)];
 	newMinimumTextField.delegate = self;
 	newMinimumTextField.placeholder = @"1";
+	[newMinimumTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
 	newMinimumTextField.textAlignment = UITextAlignmentRight;
 	newMinimumTextField.font = [UIFont boldSystemFontOfSize:18.0f];
 	
@@ -180,6 +287,7 @@
 	UITextField *newMaximumTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 220.0f, 22.0f)];
 	newMaximumTextField.delegate = self;
 	newMaximumTextField.placeholder = @"10";
+	[newMaximumTextField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
 	newMaximumTextField.textAlignment = UITextAlignmentRight;
 	newMaximumTextField.font = [UIFont boldSystemFontOfSize:18.0f];
 	
@@ -205,6 +313,7 @@
 	[newUnitButton addTarget:self action:@selector(unitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 	
 	UILabel *buttonLabel = [[UILabel alloc] initWithFrame:newUnitButton.bounds];
+	buttonLabel.tag = 1;
 	buttonLabel.textAlignment = UITextAlignmentRight;
 	buttonLabel.textColor = [UIColor lightGrayColor];
 	buttonLabel.font = [UIFont boldSystemFontOfSize:18.0f];
@@ -248,7 +357,34 @@
 
 -(void)updateUIContent {
 	
-	// sets or updates the content of ui elements (e.g. text in UILabels, images in UIImageViews, etc)
+	if (self.category.uid != nil) {
+	
+		FCUnit *unit = self.category.unit;
+		
+		UILabel *buttonLabel = (UILabel *)[self.unitButton viewWithTag:1];
+		buttonLabel.textColor = [UIColor blackColor];
+		buttonLabel.text = unit.name;
+	
+	} else if (self.category.uid == nil) {
+	
+		UILabel *buttonLabel = (UILabel *)[self.unitButton viewWithTag:1];
+		buttonLabel.textColor = [UIColor lightGrayColor];
+		buttonLabel.text = @"Click to select unit";
+	}
+	
+	if (self.category.cid != nil) {
+	
+		self.nameTextField.text = self.category.name;
+		
+		if (self.category.minimum != nil && self.category.maximum != nil) {
+			
+			self.countableSwitch.on = YES;
+		
+			self.minimumTextField.text = [self.category.minimum stringValue];
+			self.maximumTextField.text = [self.category.maximum stringValue];
+			self.decimalsSegmentedControl.selectedSegmentIndex = [self.category.decimals integerValue];
+		}
+	}
 }
 
 -(void)dismissUIContent {
@@ -265,34 +401,11 @@
 
 -(void)loadSectionsAndRows {
 	
-	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	if (self.category.cid == nil)
+		[self loadSectionsAndRowsForNewCategory];
 	
-	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
-	NSArray *objects;
-	
-	// name
-	
-	objects = [[NSArray alloc] initWithObjects:@"Name", self.nameTextField, nil];
-	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-	[objects release];
-	
-	// type
-	
-	objects = [[NSArray alloc] initWithObjects:@"Countable", self.countableSwitch, nil];
-	NSDictionary *countablePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-	[objects release];
-	
-	// compose the section
-	
-	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, countablePair, nil];
-	
-	[namePair release];
-	[keys release];
-	
-	[newSections addObject:basicSection];
-	
-	self.sections = newSections;
-	[newSections release];
+	else
+		[self loadSectionsAndRowsForExistingCategory];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -329,9 +442,6 @@
 	UILabel *theLeftLabel = (UILabel *)[cell viewWithTag:1];
 	theLeftLabel.text = [item objectForKey:@"Title"];
 	
-	// control object
-	//id controlObject = [item objectForKey:@"ControlObject"];
-	
 	cell.accessoryView = [item objectForKey:@"ControlObject"];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	
@@ -340,6 +450,25 @@
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+}
+
+#pragma mark FCCategoryView
+
+-(void)onCategoryCreatedNotification {
+	
+}
+
+-(void)onCategoryUpdatedNotification {
+	
+}
+
+-(void)onCategoryObjectUpdatedNotification {
+	
+	[self updateUIContent];
+}
+
+-(void)onCategoryDeletedNotification {
+	
 }
 
 #pragma mark UITextFieldDelegate
@@ -368,6 +497,15 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	
+	if (textField == self.minimumTextField || textField == self.maximumTextField) {
+	
+		self.minimumTextField.text = [self.minimumTextField.text numberString];
+		self.maximumTextField.text = [self.maximumTextField.text numberString];
+		
+		[self ensureMinMaxRelationship];
+	
+	}
+	
 	// exit edit mode
 	
 	self.beingEdited = NO;
@@ -393,52 +531,9 @@
 	
 	if (self.countableSwitch.on) {
 	
-		// * Create new rows and add to section
+		// create new rows and add to section
 		
-		NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
-		NSArray *objects;
-		
-		// minimum
-		
-		objects = [[NSArray alloc] initWithObjects:@"Minimum", self.minimumTextField, nil];
-		NSDictionary *minimumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-		[objects release];
-		
-		[[self.sections objectAtIndex:0] addObject:minimumPair];
-		
-		[minimumPair release];
-		
-		// maximum
-		
-		objects = [[NSArray alloc] initWithObjects:@"Maximum", self.maximumTextField, nil];
-		NSDictionary *maximumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-		[objects release];
-		
-		[[self.sections objectAtIndex:0] addObject:maximumPair];
-		
-		[maximumPair release];
-		
-		// decimals
-		
-		objects = [[NSArray alloc] initWithObjects:@"Decimals", self.decimalsSegmentedControl, nil];
-		NSDictionary *decimalsPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-		[objects release];
-		
-		[[self.sections objectAtIndex:0] addObject:decimalsPair];
-		
-		[decimalsPair release];
-		
-		// unit
-		
-		objects = [[NSArray alloc] initWithObjects:@"Unit", self.unitButton, nil];
-		NSDictionary *unitPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-		[objects release];
-		
-		[[self.sections objectAtIndex:0] addObject:unitPair];
-		
-		[unitPair release];
-		
-		[keys release];
+		[self createCountableRows];
 		
 		// update table
 		
@@ -481,7 +576,43 @@
 
 -(void)unitButtonPressed {
 
-	NSLog(@"Unit button pressed!");
+	if (self.category.cid == nil) {
+	
+		[self loadUnitQuantitySelectionViewController];
+		
+		if (self.category.uid != nil) {
+			
+			FCUnit *unit = self.category.unit;
+			if (unit.quantity == FCUnitQuantityWeight || unit.quantity == FCUnitQuantityLength || unit.quantity == FCUnitQuantityVolume) {
+				
+				[self performSelector:@selector(pushUnitSystemSelectionViewController) withObject:nil afterDelay:kViewAppearDuration+kAppearDuration];
+				[self performSelector:@selector(pushUnitSelectionViewController) withObject:nil afterDelay:kViewAppearDuration+kAppearDuration+0.5f];
+				
+			} else {
+				
+				[self performSelector:@selector(pushUnitSelectionViewController) withObject:nil afterDelay:kViewAppearDuration+kAppearDuration];
+			}
+		}
+	
+	} else if (self.category.uid == nil) {
+		
+		[self loadUnitQuantitySelectionViewController];
+		
+	} else {
+		
+		FCUnit *unit = self.category.unit;
+		if (unit.quantity == FCUnitQuantityWeight || unit.quantity == FCUnitQuantityLength || unit.quantity == FCUnitQuantityVolume) {
+			
+			[self loadUnitSystemSelectionViewController];
+			
+			[self performSelector:@selector(pushUnitSelectionViewController) withObject:nil afterDelay:kViewAppearDuration+kAppearDuration];
+			
+		} else {
+			
+			[self loadUnitSelectionViewController];
+		}
+	}
+
 }
 
 #pragma mark Custom
@@ -491,6 +622,9 @@
 	// * Set all category's properties from filled in form
 	
 	// name
+	
+	if (self.nameTextField.text != nil)
+		self.nameTextField.text = [self.nameTextField.text sqlite3String];
 	
 	self.category.name = self.nameTextField.text;
 	
@@ -545,8 +679,138 @@
 
 -(void)cancel {
 	
-	// dismiss
 	[self dismiss];
+}
+
+-(void)ensureMinMaxRelationship {
+
+	NSInteger minimum = [self.minimumTextField.text integerValue];
+	NSInteger maximum = [self.maximumTextField.text integerValue];
+	
+	if (minimum > maximum) {
+		
+		maximum = minimum + 10;
+		self.maximumTextField.text = [NSString stringWithFormat:@"%d", maximum];
+	}
+}
+
+-(void)loadSectionsAndRowsForNewCategory {
+	
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
+	NSArray *objects;
+	
+	// name
+	
+	objects = [[NSArray alloc] initWithObjects:@"Name", self.nameTextField, nil];
+	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	// type
+	
+	objects = [[NSArray alloc] initWithObjects:@"Countable", self.countableSwitch, nil];
+	NSDictionary *countablePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	// compose the section
+	
+	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, countablePair, nil];
+	
+	[countablePair release];
+	[namePair release];
+	
+	[keys release];
+	
+	[newSections addObject:basicSection];
+	[basicSection release];
+	
+	self.sections = newSections;
+	[newSections release];
+}
+
+-(void)loadSectionsAndRowsForExistingCategory {
+	
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
+	NSArray *objects;
+	
+	// name
+	
+	objects = [[NSArray alloc] initWithObjects:@"Name", self.nameTextField, nil];
+	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	// compose the section
+	
+	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, nil];
+	
+	[namePair release];
+	[keys release];
+	
+	[newSections addObject:basicSection];
+	
+	[basicSection release];
+	
+	self.sections = newSections;
+	[newSections release];
+	
+	if (self.category.minimum != nil && self.category.maximum != nil) {
+		
+		[self createCountableRows];
+	}
+	
+	// update UI content
+	[self updateUIContent];
+}
+
+-(void)createCountableRows {
+	
+	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
+	NSArray *objects;
+	
+	// minimum
+	
+	objects = [[NSArray alloc] initWithObjects:@"Minimum", self.minimumTextField, nil];
+	NSDictionary *minimumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	[[self.sections objectAtIndex:0] addObject:minimumPair];
+	
+	[minimumPair release];
+	
+	// maximum
+	
+	objects = [[NSArray alloc] initWithObjects:@"Maximum", self.maximumTextField, nil];
+	NSDictionary *maximumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	[[self.sections objectAtIndex:0] addObject:maximumPair];
+	
+	[maximumPair release];
+	
+	// decimals
+	
+	objects = [[NSArray alloc] initWithObjects:@"Decimals", self.decimalsSegmentedControl, nil];
+	NSDictionary *decimalsPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	[[self.sections objectAtIndex:0] addObject:decimalsPair];
+	
+	[decimalsPair release];
+	
+	// unit
+	
+	objects = [[NSArray alloc] initWithObjects:@"Unit", self.unitButton, nil];
+	NSDictionary *unitPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	[[self.sections objectAtIndex:0] addObject:unitPair];
+	
+	[unitPair release];
+	
+	[keys release];
 }
 
 @end

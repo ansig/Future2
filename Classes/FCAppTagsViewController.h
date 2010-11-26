@@ -32,14 +32,16 @@
 
 #import "FCAppCategoryViewController.h"
 
-@interface FCAppTagsViewController : FCAppViewController <FCPlainTableSourceDelegate, FCCategoryList> {
+@interface FCAppTagsViewController : FCAppViewController <FCPlainTableSourceDelegate, FCCategoryList, UIActionSheetDelegate> {
 
 	NSMutableArray *section;
 	UITableView *tableView;
+	NSIndexPath *deleteIndexPath;
 }
 
 @property (nonatomic, retain) NSMutableArray *section;
 @property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) NSIndexPath *deleteIndexPath;
 
 // View
 
@@ -48,5 +50,9 @@
 // Events
 
 -(void)editButtonPressed:(UIButton *)theEditButton;
+
+// Custom
+
+-(void)purgeDefaultGraphSetsWithCID:(NSString *)theCID;
 
 @end

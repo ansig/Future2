@@ -74,6 +74,7 @@
 // Class
 +(FCEntry *)lastEntryWithCID:(NSString *)theCID;
 +(FCEntry *)newEntryWithCID:(NSString *)theCID;
++(NSArray *)allEntriesWithCID:(NSString *)theCID;
 +(FCEntry *)entryWithEID:(NSString *)theEID;
 
 // Init

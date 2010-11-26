@@ -138,12 +138,12 @@
 	// save image to unique path
 	
 	int i = 0; 
-	NSString *imageName = @"image-0.png";
+	NSString *imageName = @"TiY-0.png";
 	NSString *uniquePath = [DOCSFOLDER stringByAppendingPathComponent:imageName]; 
 	
 	while ([[NSFileManager defaultManager] fileExistsAtPath:uniquePath]) {
 		
-		imageName = [NSString stringWithFormat:@"%@-%d.%@", @"image", ++i, @"png"];
+		imageName = [NSString stringWithFormat:@"%@-%d.%@", @"TiY", ++i, @"png"];
 		uniquePath = [NSString stringWithFormat:@"%@/%@", DOCSFOLDER, imageName];
 	}
 	

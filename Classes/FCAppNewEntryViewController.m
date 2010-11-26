@@ -180,16 +180,40 @@
 	[self setEntryValue];
 	
 	// create and present a new selector view controller
-	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
-	selectorViewController.shouldAnimateContent = YES;
-	selectorViewController.title = [NSString stringWithFormat:@"%@ unit", self.category.name];
-	selectorViewController.system = self.entry.unit.system;
-	selectorViewController.quantity = self.entry.unit.quantity;
-	selectorViewController.propertyToSelect = FCPropertyUnit;
 	
-	[self presentOverlayViewController:selectorViewController];
-	
-	[selectorViewController release];
+	FCUnit *unit = self.entry.unit;
+	if (unit.quantity == FCUnitQuantityWeight || unit.quantity == FCUnitQuantityLength || unit.quantity == FCUnitQuantityVolume) {
+		
+		FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
+		selectorViewController.shouldAnimateContent = YES;
+		
+		FCUnit *unit = self.category.unit;
+		selectorViewController.quantity = unit.quantity;
+		
+		selectorViewController.propertyToSelect = FCPropertyUnitSystem;
+		
+		selectorViewController.title = @"System";
+		
+		[self presentOverlayViewController:selectorViewController];
+		
+		[selectorViewController release];
+		
+		[self performSelector:@selector(pushUnitSelectionViewController) withObject:nil afterDelay:kViewAppearDuration+kAppearDuration];
+		
+	} else {
+		
+		FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
+		selectorViewController.shouldAnimateContent = YES;
+		selectorViewController.title = [NSString stringWithFormat:@"%@ unit", self.category.name];
+		selectorViewController.system = self.entry.unit.system;
+		selectorViewController.quantity = self.entry.unit.quantity;
+		selectorViewController.propertyToSelect = FCPropertyUnit;
+		
+		[self presentOverlayViewController:selectorViewController];
+		
+		[selectorViewController release];
+	}
+
 }
 
 -(void)loadEntryViewControllerWithEntry:(FCEntry *)anEntry {
@@ -216,6 +240,28 @@
 	[self presentModalViewController:cameraController animated:YES];
 	
 	[cameraController release];
+}
+
+-(void)pushUnitSelectionViewController {
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
+	selectorViewController.parent = self;
+	selectorViewController.shouldAnimateContent = YES;
+	
+	FCUnit *unit = self.entry.unit;
+	
+	selectorViewController.system = unit.system;
+	selectorViewController.quantity = unit.quantity;
+	selectorViewController.propertyToSelect = FCPropertyUnit;
+	
+	selectorViewController.title = FCUnitQuantityAsString(unit.quantity);
+	
+	[selectorViewController createUIContent];
+	[selectorViewController showUIContent];
+	
+	[self.overlaidNavigationController pushViewController:selectorViewController animated:YES];
+	
+	[selectorViewController release];
 }
 
 #pragma mark Orientation

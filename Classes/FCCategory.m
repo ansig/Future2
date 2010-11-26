@@ -27,6 +27,7 @@
 
 #import "FCCategory.h"
 
+#import "FCEntry.h"
 
 @implementation FCCategory
 
@@ -232,6 +233,38 @@
 	return self;
 }
 
+#pragma mark NSCopying
+
+-(id)copyWithZone:(NSZone *)zone {
+	
+	// implements SHALLOW copying (i.e. shares pointer ivars with copy)
+	// (see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmImplementCopy.html )
+	
+	FCCategory *copy = [[[self class] allocWithZone:zone] init];
+	
+	copy.cid = self.cid;
+	
+	copy.name = self.name;
+	
+	copy.minimum = self.minimum;
+	copy.maximum = self.maximum;
+	copy.decimals = self.decimals;
+	
+	copy.created = self.created;
+	copy.modified = self.modified;
+	
+	copy.datatype = self.datatype;
+	copy.icon = self.icon;
+	
+	copy.lid = self.lid;
+	copy.oid = self.oid;
+	copy.uid = self.uid;
+	copy.did = self.did;
+	copy.iid = self.iid;
+	
+	return (copy);
+}
+
 #pragma mark Dealloc
 
 -(void)dealloc {
@@ -419,14 +452,14 @@
 
 -(void)saveNewUnit:(FCUnit *)newUnit andConvert:(BOOL)doConvert {
 
-	// for now, do not try to convert either from or two
-	// NO unit.
+	// for now, do not try to convert either 
+	// from or to NO unit.
 	if (self.uid == nil || newUnit == nil)
 		return;
 	
 	if (![self.uid isEqualToString:newUnit.uid]) {
 	
-		// the sets to be passed to the databasehandler
+		// the sets to be passed to the database handler
 		NSMutableArray *sets = [[NSMutableArray alloc] init];
 		NSDictionary *set;
 		
@@ -444,6 +477,11 @@
 			self.minimum = convertedMinimum;		
 			
 			[converter release];
+			
+			// make sure maximum is always at least 1
+			NSInteger max = [convertedMaximum integerValue];
+			if (max < 1)
+				self.maximum = [NSNumber numberWithInteger:1];
 			
 			// add them to the sets to be updated
 			
@@ -494,6 +532,38 @@
 		// post notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryUpdated object:self];
 		
+	}
+}
+
+-(void)delete {
+/*	Deletes the category from database. Also attempts to delete any entries of this category. */
+	
+	if (self.cid != nil) {
+	
+		// remove entries
+		
+		NSArray *entries = [FCEntry allEntriesWithCID:self.cid];
+		for (FCEntry *entry in entries)
+			[entry delete];
+		
+		// delete self
+		
+		NSString *table = @"categories";
+		NSString *criterion = [NSString stringWithFormat:@"cid = '%@'", self.cid];
+		
+		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+		
+		[dbh deleteRowInTable:table withCriterion:criterion];
+		
+		[dbh release];
+		
+		// log
+		
+		NSLog(@"FCCategory -delete || DELETED category.");
+		
+		// notification
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryDeleted object:self];
 	}
 }
 

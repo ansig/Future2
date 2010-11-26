@@ -30,7 +30,7 @@
 
 @implementation FCAppTagsViewController
 
-@synthesize section, tableView;
+@synthesize section, tableView, deleteIndexPath;
 
 #pragma mark Init
 
@@ -52,6 +52,7 @@
 	
 	[section release];
 	[tableView release];
+	[deleteIndexPath release];
 	
     [super dealloc];
 }
@@ -139,8 +140,17 @@
 #pragma mark Events
 
 -(void)editButtonPressed:(UIButton *)theEditButton {
+	
+	FCCategory *theCategory = [self.section objectAtIndex:theEditButton.tag];
 
-	NSLog(@"button nr %d", theEditButton.tag);
+	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] initWithCategory:theCategory];
+	newCategoryViewController.shouldAnimateContent = YES;
+	
+	newCategoryViewController.title = theCategory.name;
+	
+	[self presentOverlayViewController:newCategoryViewController];
+	
+	[newCategoryViewController release];
 }
 
 #pragma mark FCPlainTableSourceDelegate
@@ -186,7 +196,12 @@
 		
 		else
 			cell.detailTextLabel.text = @"Countable";
+	
+	} else {
+		
+		cell.detailTextLabel.text = nil;
 	}
+
 	
 	cell.imageView.image = [UIImage imageNamed:category.icon];
 	
@@ -212,6 +227,35 @@
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
+	self.deleteIndexPath = indexPath;
+	
+	UIActionSheet *deleteMenu = [[UIActionSheet alloc] initWithTitle:@"Do you really want to delete this tag?" delegate:self cancelButtonTitle:@"No, do not delete!" destructiveButtonTitle:@"Yes, delete!" otherButtonTitles:nil];
+	deleteMenu.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];	
+	[deleteMenu showFromRect:cell.frame inView:self.tableView animated:YES];
+	
+	[deleteMenu release];
+}
+
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+	if (buttonIndex == 0) {
+	
+		FCCategory *category = [[self.section objectAtIndex:self.deleteIndexPath.row] retain];
+		
+		[self.section removeObjectAtIndex:self.deleteIndexPath.row];
+	
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.deleteIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		
+		[category delete];
+		
+		[self purgeDefaultGraphSetsWithCID:category.cid];
+		
+		[category release];
+	}
 }
 
 #pragma mark FCCategoryList
@@ -230,6 +274,46 @@
 
 -(void)onCategoryDeletedNotification {
 	
+}
+
+-(void)onCategoryObjectUpdatedNotification {
+	
+}
+
+#pragma mark Custom
+
+-(void)purgeDefaultGraphSetsWithCID:(NSString *)theCID; {
+	
+	[theCID retain];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSArray *defaultGraphs = [defaults objectForKey:FCDefaultGraphs];
+	if (defaultGraphs != nil) {
+	
+		NSDictionary *graphSetToRemove = nil;
+		for (NSDictionary *graphSet in defaultGraphs) {
+			
+			if ([theCID isEqualToString:[graphSet objectForKey:@"Key"]])
+				graphSetToRemove = graphSet;
+		}
+		
+		if (graphSetToRemove != nil) {
+			
+			NSMutableArray *mutableNewDefaultGraphs = [[NSMutableArray alloc] initWithArray:defaultGraphs];
+			[mutableNewDefaultGraphs removeObject:graphSetToRemove];
+			
+			NSRange range = NSMakeRange(0, [mutableNewDefaultGraphs count]);
+			NSArray *newDefaultGraphs = [[NSArray alloc] initWithArray:[mutableNewDefaultGraphs subarrayWithRange:range]];
+			[mutableNewDefaultGraphs release];
+			
+			[defaults setObject:newDefaultGraphs forKey:FCDefaultGraphs];
+			
+			[newDefaultGraphs release];
+		}
+	}
+	
+	[theCID release];
 }
 
 @end

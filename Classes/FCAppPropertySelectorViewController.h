@@ -33,6 +33,7 @@
 @interface FCAppPropertySelectorViewController : FCAppOverlayViewController <FCGroupedTableSourceDelegate> {
 
 	FCEntry *entry;
+	FCCategory *category;
 	
 	FCProperty propertyToSelect;
 	
@@ -49,6 +50,7 @@
 }
 
 @property (nonatomic, retain) FCEntry *entry;
+@property (nonatomic, retain) FCCategory *category;
 
 @property (nonatomic) FCProperty propertyToSelect;
 
@@ -63,7 +65,17 @@
 
 // Init
 
--(id)initWithEntry:(FCEntry *)entry;
+-(id)initWithEntry:(FCEntry *)theEntry;
+-(id)initWithCategory:(FCCategory *)theCategory;
+
+// View
+
+-(void)pushUnitSystemSelectionViewController;
+-(void)pushUnitSelectionViewController;
+
+// Animation
+
+-(void)animateTableViewAppearance;
 
 // Custom
 
@@ -78,7 +90,6 @@
 -(void)presentContentForTimestampSelection;
 -(void)presentContentForUnitSelection;
 
--(void)showContentForUnitQuantitySelection;
--(void)showContentForUnitSystemSelection;
+-(void)createTableView;
 
 @end

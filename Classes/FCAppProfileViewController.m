@@ -51,6 +51,8 @@
 
 - (void)dealloc {
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[scrollView release];
 	
 	[pageControl release];
@@ -106,17 +108,12 @@
 	label.font = [UIFont boldSystemFontOfSize:18.0f];
 	label.backgroundColor = [UIColor clearColor];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *firstName = [defaults stringForKey:FCDefaultProfileFirstName];
-	NSString *surname = [defaults stringForKey:FCDefaultProfileSurname];
-	NSString *title = [[NSString alloc] initWithFormat:@"%@ %@", firstName, surname];
-	label.text = title;
-	[title release];
-	
 	self.nameLabel = label;
 	[self.view addSubview:label];
 	
 	[label release];
+	
+	[self updateNameLabel];
 	
 	// * Page label
 	
@@ -307,7 +304,7 @@
 	}
 }
 
-#pragma mark Protocol
+#pragma mark FCProfileDisplay
 
 -(void)onUserDefaultsUpdate {
 	
@@ -316,12 +313,46 @@
 	[self.healthInfoTableView reloadData];
 	
 	// update the name label 
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *firstName = [defaults stringForKey:FCDefaultProfileFirstName];
-	NSString *surname = [defaults stringForKey:FCDefaultProfileSurname];
-	NSString *title = [[NSString alloc] initWithFormat:@"%@ %@", firstName, surname];
-	self.nameLabel.text = title;
-	[title release];
+	[self updateNameLabel];
+}
+
+#pragma mark Custom
+
+-(void)updateNameLabel {
+	
+	if (self.nameLabel != nil) {
+		
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		NSString *firstName = [defaults stringForKey:FCDefaultProfileFirstName];
+		NSString *surname = [defaults stringForKey:FCDefaultProfileSurname];
+		
+		NSString *title = [[NSString alloc] initWithString:@"Your profile"];
+		
+		NSString *oldTitle;
+		
+		if (firstName != nil) {
+		
+			oldTitle = title;
+			title = [[NSString alloc] initWithFormat:@"%@", firstName];
+			[oldTitle release];
+		}
+		
+		if (firstName == nil && surname != nil) {
+			
+			oldTitle = title;
+			title = [[NSString alloc] initWithFormat:@"%@", surname];
+			[oldTitle release];
+		
+		} else if (firstName != nil && surname != nil) {
+			
+			oldTitle = title;
+			title = [[NSString alloc] initWithFormat:@"%@ %@", oldTitle, surname];
+			[oldTitle release];
+		}
+		
+		self.nameLabel.text = title;
+		[title release];
+	}
 }
 
 @end

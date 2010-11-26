@@ -100,7 +100,7 @@
 -(void)showWelcomeMessage {
 	
 	NSString *title = @"Welcome to TiY!";
-	NSString *message = @"A profile will automatically be created for this test version.";
+	NSString *message = @"A profile will automatically be created for this test version. Please fill in your details under the Profile tab.";
 	
 	UIAlertView *profileSaveAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
 	[profileSaveAlert show];
@@ -116,9 +116,12 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	// * TMP TEST PROFILE
-	NSString *username = @"Ash";
+	
+	NSString *username = @"User1";
 	[defaults setObject:username forKey:FCDefaultProfileUsername];
 	
+	/*
+	 
 	NSString *email = @"ash.williams@boomstick.com";
 	[defaults setObject:email forKey:FCDefaultProfileEmail];
 	
@@ -147,14 +150,7 @@
 	
 	NSString *injectionPen = @"NovoPen 4";
 	[defaults setObject:injectionPen forKey:FCDefaultProfileInjectionPen];
-	
-	NSNumber *weight = [[NSNumber alloc] initWithInt:81];
-	[defaults setObject:weight forKey:FCDefaultProfileWeight];
-	[weight release];
-	
-	NSNumber *height = [[NSNumber alloc] initWithInt:185];
-	[defaults setObject:height forKey:FCDefaultProfileHeight];
-	[height release];
+	 */
 	
 	// * SETTINGS
 	[defaults setInteger:FCTabGlucose forKey:FCDefaultTabBarIndex]; // Glucose tab

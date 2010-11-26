@@ -49,6 +49,8 @@
 
 - (void)dealloc {
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[tableView release];
 	
 	[sectionTitles release];
@@ -78,8 +80,17 @@
 	newTableView.delegate = self;
 	newTableView.dataSource = self;
 	
+	self.tableView = newTableView;
 	[self.view addSubview:newTableView];
+	
 	[newTableView release];
+	
+	// * Notifications
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	
+	[notificationCenter addObserver:self selector:@selector(onCategoryCreatedNotification) name:FCNotificationCategoryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryDeletedNotification) name:FCNotificationCategoryDeleted object:nil];
 }
 
 /*
@@ -109,6 +120,30 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
+
+#pragma mark FCCategoryList
+
+-(void)onCategoryCreatedNotification {
+	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+}
+
+-(void)onCategoryUpdatedNotification {
+
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+}
+
+-(void)onCategoryDeletedNotification {
+	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+}
+
+-(void)onCategoryObjectUpdatedNotification {
+	
+}
 
 #pragma mark FCGroupedTableSourceDelegate
 
@@ -223,20 +258,6 @@
 	
 	self.sections = newSections;
 	[newSections release];
-}
-
-#pragma mark FCCategoryList
-
--(void)onCategoryCreatedNotification {
-	
-}
-
--(void)onCategoryUpdatedNotification {
-	
-}
-
--(void)onCategoryDeletedNotification {
-	
 }
 
 @end

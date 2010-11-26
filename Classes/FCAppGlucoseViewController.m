@@ -581,11 +581,12 @@
 }
 
 -(void)onCategoryUpdatedNotification {
-
+		
 	[self.entry convertToNewUnit:self.entry.category.unit];
 	
 	[self updateUnitLabel];
 	
+	[self setEntryValue];
 	[self.pickerView reloadAllComponents];
 	[self setPickerRows];
 }

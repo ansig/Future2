@@ -32,7 +32,8 @@
 #import "FCGraphPullMenuViewController.h"
 #import "FCGraphEntryInfoView.h"
 #import "FCGraphHandleView.h"
-#import "FCDatabaseHandler.h"
+#import "FCIOFramework.h"
+#import "FCFunctionsFramework.h"
 #import "FCEntry.h"
 
 @interface FCGraphRootViewController : UIViewController <FCGraphDelegate> {
@@ -47,7 +48,7 @@
 	FCGraphPullMenuViewController *pullMenuViewController;
 	FCGraphHandleView *pullMenuHandleView;
 	
-	NSMutableArray *availableColors;
+	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) UIScrollView *scrollView;
@@ -60,7 +61,7 @@
 @property (nonatomic, retain) FCGraphPullMenuViewController *pullMenuViewController;
 @property (nonatomic, retain) FCGraphHandleView *pullMenuHandleView;
 
-@property (nonatomic, retain) NSMutableArray *availableColors;
+@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // Notifications
 
