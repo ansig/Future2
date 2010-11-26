@@ -306,15 +306,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>73</integer>
-									<integer>69</integer>
-									<integer>47</integer>
-									<integer>1</integer>
+									<integer>203</integer>
+									<integer>155</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1239}, {291, 914}}</string>
+							<string>{{0, 2688}, {291, 914}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -344,14 +342,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>FCAppProfileInputViewController.m</string>
+								<string>Future2-Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -359,11 +355,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>FCAppProfileInputViewController.m</string>
+										<string>Future2-Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>9A82EFA712A01B4800F48F27</string>
+										<string>9A82EFAB12A01D4D00F48F27</string>
 										<key>history</key>
 										<array>
 											<string>9A9CCDD31120A6E500BAB27A</string>
@@ -500,7 +496,6 @@
 											<string>9A8C09E61291B9C300A80C56</string>
 											<string>9A8C09EA1291B9C300A80C56</string>
 											<string>9A7FFCCB12928DDF00D469B6</string>
-											<string>9A7FFE2A12932B5400D469B6</string>
 											<string>9A7FFE2B12932B5400D469B6</string>
 											<string>9A873C001293FBF600C3D0BF</string>
 											<string>9A0B61F112945C2100F1B549</string>
@@ -592,7 +587,8 @@
 											<string>9A82EFA412A01B4800F48F27</string>
 											<string>9A82EFA512A01B4800F48F27</string>
 											<string>9A82EFA612A01B4800F48F27</string>
-											<string>9A8D0F99129ED6BF0032F18D</string>
+											<string>9A82EFA912A01D4D00F48F27</string>
+											<string>9A82EFAA12A01D4D00F48F27</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
