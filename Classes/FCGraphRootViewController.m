@@ -884,8 +884,8 @@
 	FCEntry *entry = [entries objectAtIndex:0];
 	
 	NSNumber *value = entry.integer != nil ? entry.integer : entry.decimal;
-	double maximum = [value doubleValue];
-	double minimum = [value doubleValue] - 1;
+	double maximum = [value doubleValue] > 0 ? [value doubleValue] : 1;
+	double minimum = [value doubleValue] > 1 ? [value doubleValue] - 1 : 0;
 	
 	// loop through the rest and find the true min and max
 	
