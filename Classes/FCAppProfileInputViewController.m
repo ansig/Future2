@@ -545,6 +545,10 @@
 				
 				FCEntry *newWeightEntry = [FCEntry newEntryWithCID:FCKeyCIDWeight];
 				
+				NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0];
+				newWeightEntry.timestamp = now;
+				[now release];
+				
 				NSInteger system = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultHeightWeigthSystem];
 				FCUnit *targetUnit = system == FCUnitSystemMetric ? [FCUnit unitWithUID:FCKeyUIDKilogram] : [FCUnit unitWithUID:FCKeyUIDPound];
 				newWeightEntry.uid = targetUnit.uid;

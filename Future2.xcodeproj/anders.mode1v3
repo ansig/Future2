@@ -197,48 +197,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>9A82CD5C12A3D6FE00F4AE97</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>FCTypedef.h</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>9A82CD5D12A3D6FE00F4AE97</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>FCTypedef.h</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>9A82CD5E12A3D6FE00F4AE97</string>
-						<key>history</key>
-						<array>
-							<string>9A82CD2D12A3D5F800F4AE97</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {1240, 779}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>134 -826 1240 820 0 -900 1440 900 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -351,16 +310,15 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>113</integer>
-									<integer>111</integer>
-									<integer>101</integer>
-									<integer>95</integer>
+									<integer>73</integer>
+									<integer>69</integer>
+									<integer>47</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1480}, {291, 914}}</string>
+							<string>{{0, 1095}, {291, 914}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -397,7 +355,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>FCGraphView.m</string>
+								<string>FCAppProfileInputViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -405,11 +363,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>FCGraphView.m</string>
+										<string>FCAppProfileInputViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>9A82CD5B12A3D6FE00F4AE97</string>
+										<string>9A82CD6912A3E32900F4AE97</string>
 										<key>history</key>
 										<array>
 											<string>9A9CCDD31120A6E500BAB27A</string>
@@ -540,7 +498,6 @@
 											<string>9A82EFA312A01B4800F48F27</string>
 											<string>9A82EFA412A01B4800F48F27</string>
 											<string>9A82EFA612A01B4800F48F27</string>
-											<string>9A82EFA912A01D4D00F48F27</string>
 											<string>9A82CBF412A3AB3B00F4AE97</string>
 											<string>9A82CBF612A3AB3B00F4AE97</string>
 											<string>9A82CC6612A3B0E900F4AE97</string>
@@ -636,9 +593,10 @@
 											<string>9A82CD5512A3D6FE00F4AE97</string>
 											<string>9A82CD5612A3D6FE00F4AE97</string>
 											<string>9A82CD5712A3D6FE00F4AE97</string>
-											<string>9A82CD5812A3D6FE00F4AE97</string>
-											<string>9A82CD5912A3D6FE00F4AE97</string>
-											<string>9A82CD5A12A3D6FE00F4AE97</string>
+											<string>9A82CD6612A3E32900F4AE97</string>
+											<string>9A82CD6712A3E32900F4AE97</string>
+											<string>9A82CD6812A3E32900F4AE97</string>
+											<string>9A82EFA912A01D4D00F48F27</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -834,14 +792,13 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>9A82CD5F12A3D6FE00F4AE97</string>
+		<string>9A82CD6A12A3E32900F4AE97</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>9A82CC0B12A3AEC900F4AE97</string>
 		<string>9A82CC0412A3AB3B00F4AE97</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>9AF7D9DD111AE156008E90F6</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>9A82CD5C12A3D6FE00F4AE97</string>
 		<string>/Users/anders/Desktop/iPhoneDevelopment/Future2/Future2.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
