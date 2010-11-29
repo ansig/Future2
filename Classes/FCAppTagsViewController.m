@@ -201,7 +201,6 @@
 		
 		cell.detailTextLabel.text = nil;
 	}
-
 	
 	cell.imageView.image = [UIImage imageNamed:category.icon];
 	

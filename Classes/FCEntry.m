@@ -844,6 +844,8 @@
 		
 			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 			
+			[formatter setMinimumIntegerDigits:1];
+			
 			FCCategory *category = self.category;
 			[formatter setMinimumFractionDigits:[category.decimals intValue]];
 			[formatter setMaximumFractionDigits:[category.decimals intValue]];
