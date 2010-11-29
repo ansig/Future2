@@ -273,7 +273,7 @@ int gcd(int a, int b) {
 #pragma mark Custom
 
 -(NSMutableArray *)createLabelsArray {
-/*	Creates and returns an array with strings describing each primary unit covered by the scale. */
+/*	Creates and returns an array with strings describing each significant primary unit covered by the scale. */
 	
 	NSMutableArray *labels = [[NSMutableArray alloc] init];
 	
@@ -311,7 +311,7 @@ int gcd(int a, int b) {
 				formatter.dateFormat = @"d/M";
 			
 			else if (currentDateComponents.hour != previousDateComponents.hour)
-				formatter.dateFormat = @"HH";
+				formatter.dateFormat = @"HH:00";
 
 			else
 				formatter.dateFormat = @"d/M";

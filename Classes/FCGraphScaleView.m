@@ -84,7 +84,7 @@
 	
 	// Text setup
 	const char* text;
-	CGContextSelectFont(context, "Courier", 14.0f, kCGEncodingMacRoman);
+	CGContextSelectFont(context, "Courier", 12.0f, kCGEncodingMacRoman);
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 	
 	// Transform the context so that the text is shown right way up
@@ -119,7 +119,7 @@
 		step = (length-totalPadding)/range;
 	}
 	
-	UIFont *font = [UIFont fontWithName:@"Courier" size:14.0f];		// For determining the length of the text and centering its position
+	UIFont *font = [UIFont fontWithName:@"Courier" size:12.0f];		// For determining the length of the text and centering its position
 	CGSize textSize;												// OBS! Make sure font here is the same as is set in the context above!
 	
 	CGFloat xPos;

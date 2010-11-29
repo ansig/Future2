@@ -132,6 +132,8 @@
 
 -(void)loadTimePlotHorizontalGraphForDataRange:(FCDataRange)theDataRange withinDateRange:(FCDateRange)theDateRange {
 	
+	[self validateDataRange:theDataRange dateRange:theDateRange];
+		
 	// * Mode
 	
 	self.mode = FCGraphModeTimePlotHorizontal;
@@ -189,6 +191,8 @@
 
 -(void)loadTimePlotHorizontalGraphForDataRange:(FCDataRange)theDataRange withinDateRange:(FCDateRange)theDateRange withAncestor:(FCGraphViewController *)theAncestor {
 /*	Creates a graph with appropriate mode and displays it within main view. */
+	
+	[self validateDataRange:theDataRange dateRange:theDateRange];
 	
 	// * Mode
 	
@@ -267,6 +271,8 @@
 -(void)loadTimePlotHorizontalGraphForDataRange:(FCDataRange)theDataRange withinDateRange:(FCDateRange)theDateRange withTwin:(FCGraphViewController *)theTwin {
 /*	Creates a graph with appropriate mode and displays it within main view. */
 	
+	[self validateDataRange:theDataRange dateRange:theDateRange];
+	
 	// * Mode
 	
 	self.mode = FCGraphModeTwinTimePlotHorizontal;
@@ -337,6 +343,8 @@
 
 -(void)loadTimeBandHorizontalGraphForDataRange:(FCDataRange)theDataRange withingDateRange:(FCDateRange)theDateRange {
 	
+	[self validateDataRange:theDataRange dateRange:theDateRange];
+	
 	// * Scales
 	
 	[self createXScaleWithDateRange:theDateRange];
@@ -396,6 +404,8 @@
 }
 
 -(void)loadTimeBandHorizontalGraphForDataRange:(FCDataRange)theDataRange withingDateRange:(FCDateRange)theDateRange withAncestor:(FCGraphViewController *)theAncestor {
+	
+	[self validateDataRange:theDataRange dateRange:theDateRange];
 	
 	// * Mode
 	
@@ -983,6 +993,31 @@
 	CGRect frame = CGRectMake(xPos, yPos, width, height);
 	
 	[self.scrollView scrollRectToVisible:frame animated:YES];
+}
+
+-(void)validateDataRange:(FCDataRange)theDataRange dateRange:(FCDateRange)theDateRange {
+	
+	BOOL dataRangeIsValid = [self evaluateDataRange:theDataRange];
+	NSAssert1(dataRangeIsValid, @"FCGraphViewController -validateDataRange:dateRange: || %@", @"Failed to load graph because data range is not valid!");
+	
+	BOOL dateRangeIsValid = [self evaluateDateRange:theDateRange];
+	NSAssert1(dateRangeIsValid, @"FCGraphViewController -validateDataRange:dateRange: || %@", @"Failed to load graph because date range is not valid!");
+}
+
+-(BOOL)evaluateDataRange:(FCDataRange)theDataRange {
+
+	if (theDataRange.minimum >= theDataRange.maximum)
+		return NO;
+	
+	return YES;
+}
+
+-(BOOL)evaluateDateRange:(FCDateRange)theDateRange {
+	
+	if (theDateRange.interval <= 0)
+		return NO;
+	
+	return YES;
 }
 
 @end

@@ -710,6 +710,9 @@
 	
 		// formatter for the entry view labels
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+		
+		[formatter setMinimumIntegerDigits:1];
+		
 		[formatter setMinimumFractionDigits:[category.decimals intValue]];
 		[formatter setMaximumFractionDigits:[category.decimals intValue]];
 		
@@ -808,7 +811,7 @@
 	return newHandle;
 }
 
--(NSArray *)loadEntriesWithCID:(NSString *)theCID  betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate {
+-(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate {
 /*	Loads entries from the database between the given start and end dates.
 	Returns an array with FCEntry objects.
 	Returns nil if no entries existed. */

@@ -129,4 +129,8 @@
 -(void)scrollToLastEntryInDataSet:(FCGraphDataSet *)theDataSet;
 -(void)scrollToEntryView:(FCGraphEntryView *)theEntryView;
 
+-(void)validateDataRange:(FCDataRange)theDataRange dateRange:(FCDateRange)theDateRange;
+-(BOOL)evaluateDataRange:(FCDataRange)theDataRange;
+-(BOOL)evaluateDateRange:(FCDateRange)theDateRange;
+
 @end
