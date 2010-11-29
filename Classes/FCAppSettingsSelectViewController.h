@@ -26,6 +26,8 @@
 //
 
 
+#import "FCModelsFramework.h"
+
 @interface FCAppSettingsSelectViewController : UIViewController <FCGroupedTableSourceDelegate> {
 
 	NSDictionary *defaultItem;

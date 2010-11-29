@@ -210,8 +210,29 @@
 	NSInteger row = [indexPath row];
 
 	// Update user defaults
+	NSString *defaultKey = [defaultItem objectForKey:@"DefaultKey"];
+	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setInteger:row forKey:[defaultItem objectForKey:@"DefaultKey"]];
+	[defaults setInteger:row forKey:defaultKey];
+	
+	// Sepcial case for weight: also update the weight category unit
+	if ([defaultKey isEqualToString:FCDefaultHeightWeigthSystem]) {
+	
+		if (row == FCUnitSystemMetric) {
+		
+			FCUnit *newUnit = [FCUnit unitWithUID:FCKeyUIDKilogram];
+			
+			FCCategory *weightCategory = [FCCategory categoryWithCID:FCKeyCIDWeight];
+			[weightCategory saveNewUnit:newUnit andConvert:YES];
+		
+		} else {
+			
+			FCUnit *newUnit = [FCUnit unitWithUID:FCKeyUIDPound];
+			
+			FCCategory *weightCategory = [FCCategory categoryWithCID:FCKeyCIDWeight];
+			[weightCategory saveNewUnit:newUnit andConvert:YES];
+		}
+	}
 	
 	// Send notification about the update
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
