@@ -848,6 +848,10 @@
 		else
 			anEntry = [FCEntry lastEntryWithCID:self.category.cid];
 		
+		// make sure the currently set category unit is used
+		FCUnit *unit = self.category.unit;
+		[anEntry convertToNewUnit:unit];
+		
 		if (anEntry.integer != nil) {
 			
 			// integer
