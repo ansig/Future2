@@ -185,27 +185,10 @@ int gcd(int a, int b) {
 	return 0;
 }
 
--(NSInteger)integerDataRange {
-/*	Returns the data range as an integer which can contain the whole of the true range. */
-	
-	if (self.mode == FCGraphScaleModeData) {
-	
-		NSInteger range = (NSInteger)self.dataRange.range;
-		if (range < self.dataRange.range)
-			range += 1;
-		
-		return range;
-	}
-	
-	NSLog(@"FCGraphScale -(int)intDataRange || Warning, intDataRange called on scale NOT in data mode! Returning 0.");
-	
-	return 0;
-}
-
--(NSInteger)integerDataRangeDivisor {
+-(NSInteger)wrappedDataRangeDivisor {
 /*	A divisor for stepping through the intDataRange in either 4, 3, or 2 steps (including the first integer) */
 	
-	NSInteger range = self.integerDataRange;
+	NSInteger range = self.wrappedRange;
 	NSInteger divisor;
 	
 	// Try for 4
@@ -239,7 +222,7 @@ int gcd(int a, int b) {
 	
 	} else if (mode == FCGraphScaleModeData) {
 	
-		return self.integerDataRange + 1; // +1 to include first integer
+		return self.wrappedRange + 1; // +1 to include first integer
 	
 	} 
 	
@@ -254,6 +237,31 @@ int gcd(int a, int b) {
 		return self.dataRange.range;
 	
 	return self.dateRange.interval;
+}
+
+-(NSInteger)wrappedRange {
+/*	Returns the range as an integer which can contain the true range. */
+	
+	if (self.mode == FCGraphScaleModeData) {
+		
+		NSInteger range = (NSInteger)self.dataRange.range;
+		if (range < self.dataRange.range)
+			range += 1;
+		
+		return range;
+	
+	} else if (self.mode == FCGraphScaleModeDates) {
+		
+		NSInteger range = (NSInteger)self.dateRange.interval;
+		if (range < self.dateRange.interval)
+			range += 1;
+		
+		return range;
+	}
+	
+	NSLog(@"FCGraphScale -(NSInteger)wrappedRange || Warning, did not recognize graph scale mode! Returning 0.");
+	
+	return 0;
 }
 
 -(CGFloat)requiredLength {
@@ -329,7 +337,7 @@ int gcd(int a, int b) {
 	// * Data mode
 	} else if (self.mode == FCGraphScaleModeData) {
 		
-		NSInteger divisor = self.integerDataRangeDivisor;		
+		NSInteger divisor = self.wrappedDataRangeDivisor;		
 		for (int i = 0; i < self.units; i++) {
 			
 			if (i % divisor == 0) {

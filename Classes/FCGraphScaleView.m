@@ -115,7 +115,7 @@
 	
 	} else if (self.scaleRef.mode == FCGraphScaleModeData) {
 		
-		NSInteger range = self.scaleRef.integerDataRange;
+		NSInteger range = self.scaleRef.wrappedRange;
 		step = (length-totalPadding)/range;
 	}
 	
@@ -137,7 +137,7 @@
 		
 		if (self.scaleRef.mode == FCGraphScaleModeData) {
 		
-			if (i % self.scaleRef.integerDataRangeDivisor == 0)
+			if (i % self.scaleRef.wrappedDataRangeDivisor == 0)
 				display = YES;
 			
 			else

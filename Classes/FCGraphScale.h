@@ -60,10 +60,10 @@
 // Calculations
 
 -(NSInteger)dateRangeInUnits;
--(NSInteger)integerDataRange;
--(NSInteger)integerDataRangeDivisor;
+-(NSInteger)wrappedDataRangeDivisor;
 -(NSInteger)units;
 -(double)range;
+-(NSInteger)wrappedRange;
 -(CGFloat)requiredLength;
 
 // Custom
