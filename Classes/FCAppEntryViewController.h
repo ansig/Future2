@@ -29,11 +29,12 @@
 #import "FCAppOverlayViewController.h"  // superclass
 
 
+#import "FCAppCategoryViewController.h"
 #import "FCAppEntryAttachmentsView.h"
 #import "TKGlobal.h"
 #import "FCModelsFramework.h"
 
-@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, FCGroupedTableSourceDelegate, UIScrollViewDelegate> {
+@interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, FCCategoryList, FCGroupedTableSourceDelegate, UIScrollViewDelegate> {
 	
 	FCEntry *entry;
 	
@@ -91,6 +92,9 @@
 // View
 
 -(void)loadNewEntryViewController;
+-(void)loadNewEntryViewControllerWithCategory:(FCCategory *)aCategory;
+-(void)loadNewEntryViewControllerWithLastCategory;
+-(void)loadNewCategoryViewController;
 
 -(void)loadScrollViewForImage;
 -(void)unloadScrollViewForImage;

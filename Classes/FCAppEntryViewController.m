@@ -51,8 +51,11 @@
 		entry = [theEntry retain];
 		
 		// start listening to certain notifications
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAttachmentObjectAddedNotification) name:FCNotificationAttachmentObjectAdded object:nil];
+		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+		
+		[defaultCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+		[defaultCenter addObserver:self selector:@selector(onAttachmentObjectAddedNotification) name:FCNotificationAttachmentObjectAdded object:nil];
+		[defaultCenter addObserver:self selector:@selector(onCategoryCreatedNotification) name:FCNotificationCategoryCreated object:nil];
 	}
 	
 	return self;
@@ -153,6 +156,35 @@
 	
 	// release the entry input view controller
 	[newEntryViewController release];
+}
+
+-(void)loadNewEntryViewControllerWithCategory:(FCCategory *)aCategory {
+	
+	FCAppNewEntryViewController *newEntryViewController = [[FCAppNewEntryViewController alloc] initWithCategory:aCategory owner:self.entry];
+	newEntryViewController.title = aCategory.name;
+	newEntryViewController.shouldAnimateContent = YES;
+	
+	[self presentOverlayViewController:newEntryViewController];
+	
+	[newEntryViewController release];
+}
+
+-(void)loadNewEntryViewControllerWithLastCategory {
+
+	FCCategory *lastCategory = [FCCategory lastCategory];
+	
+	[self loadNewEntryViewControllerWithCategory:lastCategory];
+}
+
+-(void)loadNewCategoryViewController {
+	
+	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] init];
+	newCategoryViewController.shouldAnimateContent = YES;
+	newCategoryViewController.title = @"New tag";
+	
+	[self presentOverlayViewController:newCategoryViewController];
+	
+	[newCategoryViewController release];
 }
 
 -(void)loadScrollViewForImage {
@@ -295,6 +327,30 @@
 	
 }
 
+#pragma mark FCCategoryList
+
+-(void)onCategoryCreatedNotification {
+	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+	[self setNewFrameForTableView];
+	
+	NSTimeInterval delay = kDisappearDuration + kViewDisappearDuration + kPerceptionDelay;
+	[self performSelector:@selector(loadNewEntryViewControllerWithLastCategory) withObject:nil afterDelay:delay];
+}
+
+-(void)onCategoryUpdatedNotification {
+	
+}
+
+-(void)onCategoryObjectUpdatedNotification {
+	
+}
+
+-(void)onCategoryDeletedNotification {
+	
+}
+
 #pragma mark UIScrollViewDelegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)aScrollView {
@@ -349,6 +405,9 @@
 		[section release];
 	}
 	
+	// add a "New Tag" row in the Tags section
+	[[newSections lastObject] insertObject:@"New Tag" atIndex:0];
+	
 	// store new section titles and sections
 	
 	self.sectionTitles = newSectionTitles;
@@ -387,10 +446,22 @@
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	id object = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
-	cell.textLabel.text = aCategory.name;
-	cell.imageView.image = [UIImage imageNamed:aCategory.icon];
+	if ([object isKindOfClass:[FCCategory class]]) {
+	
+		FCCategory *aCategory = (FCCategory *)object;
+		
+		cell.textLabel.text = aCategory.name;
+		cell.imageView.image = [UIImage imageNamed:aCategory.icon];
+	
+	} else if ([object isKindOfClass:[NSString class]]) {
+	
+		NSString *string = (NSString *)object;
+		
+		cell.textLabel.text = string;
+		cell.imageView.image = nil;
+	}
 	
 	return cell;
 }
@@ -403,20 +474,25 @@
 	
 	if (aTableView.tag == 1) {
 		
-		// load new entry view controller to make an attachment
-		
 		NSInteger section = indexPath.section;
 		NSInteger row = indexPath.row;
 		
-		FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
+		id object = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		
-		FCAppNewEntryViewController *newEntryViewController = [[FCAppNewEntryViewController alloc] initWithCategory:aCategory owner:self.entry];
-		newEntryViewController.title = aCategory.name;
-		newEntryViewController.shouldAnimateContent = YES;
+		if ([object isKindOfClass:[FCCategory class]]) {
+			
+			// load new entry view controller to make an attachment
+			
+			FCCategory *aCategory = (FCCategory *)object;
 		
-		[self presentOverlayViewController:newEntryViewController];
+			[self loadNewEntryViewControllerWithCategory:aCategory];
 		
-		[newEntryViewController release];
+		} else if ([object isKindOfClass:[NSString class]]) {
+		
+			// load new category view controller to create a new tag
+			
+			[self loadNewCategoryViewController];
+		}
 		
 	} else {
 	

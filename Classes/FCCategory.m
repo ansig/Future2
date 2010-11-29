@@ -55,6 +55,9 @@
 		
 		[dbh release];
 		
+		if (result == nil)
+			return nil;
+		
 		FCCategory *category = [[FCCategory alloc] initWithDictionary:[result objectAtIndex:0]];
 		
 		category.cid = theCID;
@@ -66,6 +69,29 @@
 	
 	// if theCID was nil
 	return nil;
+}
+
++(FCCategory *)lastCategory {
+/*	Loads and returns the last created category. */
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	NSString *columns = @"cid, categories.name, minimum, maximum, decimals, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid, max(categories.created)";
+	NSString *table = @"categories";
+	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+	
+	NSArray *result = [dbh getColumns:columns fromTable:table withJoints:joints];
+	
+	[dbh release];
+	
+	if (result == nil)
+		return nil;
+	
+	FCCategory *category = [[FCCategory alloc] initWithDictionary:[result objectAtIndex:0]];
+	
+	[category autorelease];
+	
+	return category;
 }
 
 +(NSArray *)allCategories {

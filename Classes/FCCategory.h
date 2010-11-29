@@ -76,6 +76,7 @@
 
 // Class
 +(FCCategory *)categoryWithCID:(NSString *)theCID;
++(FCCategory *)lastCategory;
 +(NSArray *)allCategories;
 +(NSArray *)allCategoriesWithOwner:(NSString *)theOwnersCID;
 
