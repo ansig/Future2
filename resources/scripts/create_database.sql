@@ -73,35 +73,46 @@ created TEXT(512),
 modified TEXT(512));
 
 INSERT INTO icons (iid, name) VALUES ('system_0_1', 'glucoseIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_2', 'rapidIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_3', 'basalIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_2', 'insulin1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_3', 'insulin2Icon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_4', 'tagIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_5', 'noteIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_6', 'photoIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_7', 'arrowIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_8', 'boleIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_9', 'clockIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_10', 'cogIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_11', 'computerIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_12', 'drinkIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_13', 'editIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_14', 'face1Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_15', 'face2Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_16', 'face3Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_17', 'face4Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_18', 'face5Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_19', 'flaskeIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_20', 'flowerIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_21', 'hangerIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_22', 'heartIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_23', 'houseIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_24', 'pasteIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_25', 'profileIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_26', 'shoppingIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_27', 'starIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_28', 'sunIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_29', 'travel1Icon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_30', 'travel2Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_7', 'ballIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_8', 'bikeIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_9', 'bottle1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_10', 'bottle2Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_11', 'cartonIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_12', 'catIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_13', 'clockIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_14', 'cloudIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_15', 'cogIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_16', 'computerIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_17', 'cutleryIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_18', 'face1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_19', 'face2Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_20', 'face3Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_21', 'face4Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_22', 'face5Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_23', 'flakeIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_24', 'flowerIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_25', 'fruitIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_26', 'glassIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_27', 'hangerIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_28', 'heartIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_29', 'houseIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_30', 'luggageIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_31', 'mugIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_32', 'planeIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_33', 'potIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_34', 'searchIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_35', 'starIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_36', 'sunIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_37', 'tiyIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_38', 'treesIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_39', 'trolleyIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_40', 'tubeIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_41', 'wrenchIcon.png');
 
 CREATE TABLE datatypes (
 did Varchar(512)  NOT NULL  PRIMARY KEY DEFAULT '-1',
@@ -130,6 +141,7 @@ name Varchar(512),
 minimum INTEGER,
 maximum INTEGER,
 decimals INTEGER,
+color INTEGER,
 created TEXT,
 modified TEXT,
 deleted Boolean  NOT NULL DEFAULT FALSE,
