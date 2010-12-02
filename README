@@ -1,16 +1,16 @@
-TiY(tm) - Tag-it-Yourself v0.x.x
+# TiY(tm) - Tag-it-Yourself v0.x.x #
 
-OVERVIEW
+## OVERVIEW ##
+
 TiY(tm) (Tag-it-Yourself) is an open source iPhone application that supports self-management of type 1 diabetes. It is designed as an open-ended editor journaling platform that can be tailored to individual user needs. TiY(tm) is developed at the Interaction Design Centre (University of Limerick, Ireland) and is part of a broader research project called FutureCOMM (funded by HEA Ireland under the PRTLI 4 program). "Future2" is the name of the open source project which was created to share the results and, hopefully, enhance the further development of this particular branch of the work.
 
-THE TIY(tm) APP
+## THE TIY(tm) APP ##
+
 The TiY(tm) app itself is a comprehensive product available to diabetics who are looking for alternative tools that bring personal journaling practices to another level. It is designed as an open-ended editor that allows bottom-up appropriation and personalization. The main goal is to provide personalized support for the wide-ranging and varying sense-making activities necessary in relation to the diabetes condition, and that it will be adapted to the individual through actual usage rather than specified by preconceptions and abstractions of users needs.
 
 Thus, the app not only allow users to record and track blood glucose levels and insulin injections, but also to extend the records to virtually anything they find relevant to their condition by defining their own personal 'tags' and making links between any type of entry through attachments. The ability to design their own categories for data enables users to find meaningful correlations and patterns that fit with their unique situation. This is further augmented with the ability to visualize any sets of data that have been recorded.
 
-(For more information about current features see the information leaflet in "TiY.pdf".
-
-OPEN SOURCE PROJECT
+## OPEN SOURCE PROJECT ##
 
 Distributing TiY(tm) within the Future2 open source project has two purposes.
 
@@ -22,6 +22,6 @@ We retain the right to control the development of the TiY(tm) product and tradem
 
 (*either by bundling it with the distribution or by providing a HTTP link to a working public repository.)
 
-CODING GUIDELINES
+## CODING GUIDELINES ##
 
 To be...continued.
