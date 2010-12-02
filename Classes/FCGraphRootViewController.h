@@ -34,6 +34,7 @@
 #import "FCGraphHandleView.h"
 #import "FCIOFramework.h"
 #import "FCFunctionsFramework.h"
+#import "FCViewFramework.h"
 #import "FCEntry.h"
 
 @interface FCGraphRootViewController : UIViewController <FCGraphDelegate> {

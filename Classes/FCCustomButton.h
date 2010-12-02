@@ -19,18 +19,22 @@
  */
 
 //
-//  FCImageHelper.h
+//  FCCustomButton.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 02/11/2010.
+//  Created by Anders Sigfridsson on 01/12/2010.
 //
 
 
-@interface UIImage (FCImageHelper)
+#import <QuartzCore/QuartzCore.h>
 
-+(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
-+(UIImage *)imageWithImage:(UIImage *)theImage scaledToScale:(CGFloat)theScale;
--(UIImage*)imageScaledToSize:(CGSize)size;
--(UIImage *)resizeImage:(CGSize)newSize;
+@interface FCCustomButton : UIButton {
+
+}
+
+-(void)addBorder;
+-(void)removeBorder;
+
+-(void)addBackgroundColorBorder;
 
 @end

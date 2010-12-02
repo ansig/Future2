@@ -86,12 +86,10 @@
 	
 	NSMutableArray *mutableNewFreeColors = [[NSMutableArray alloc] init];
 	
+	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.77734375 green:0.08203125 blue:0.51953125 alpha:1.0f]]; // Medium violet red
 	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.99609375 green:0.64453125 blue:0 alpha:1.0f]]; // Orange
-	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.21875 green:0.5546875 blue:0.5546875 alpha:1.0f]]; // Teal
 	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.6015625 green:0.80078125 blue:0.1953125 alpha:1.0f]]; // Olive
 	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.125 green:0.6953125 blue:0.6640625 alpha:1.0f]]; // Light sea green
-	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.77734375 green:0.08203125 blue:0.51953125 alpha:1.0f]]; // Medium violet red
-	[mutableNewFreeColors addObject:[UIColor colorWithRed:0.99609375 green:0.546875 blue:0 alpha:1.0f]]; // Dark orange
 	
 	NSRange range = NSMakeRange(0, [mutableNewFreeColors count]);
 	NSArray *newFreeColors = [[NSMutableArray alloc] initWithArray:[mutableNewFreeColors subarrayWithRange:range]];
@@ -143,6 +141,16 @@
 		return nil;
 	
 	return [_freeColors objectAtIndex:index];
+}
+
+-(NSArray *)allSystemColors{
+
+	return _systemColors;
+}
+
+-(NSArray *)allFreeColors {
+	
+	return _freeColors;
 }
 
 @end

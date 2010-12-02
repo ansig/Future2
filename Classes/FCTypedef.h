@@ -158,7 +158,9 @@ typedef enum {
 	FCPropertyDateTime,
 	FCPropertyUnit,
 	FCPropertyUnitQuantity,
-	FCPropertyUnitSystem
+	FCPropertyUnitSystem,
+	FCPropertyIcon,
+	FCPropertyColor
 	
 } FCProperty;
 

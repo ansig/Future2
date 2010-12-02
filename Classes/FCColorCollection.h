@@ -42,4 +42,7 @@
 -(UIColor *)colorForCID:(NSString *)cid;
 -(UIColor *)colorForIndex:(NSInteger)index;
 
+-(NSArray *)allSystemColors;
+-(NSArray *)allFreeColors;
+
 @end

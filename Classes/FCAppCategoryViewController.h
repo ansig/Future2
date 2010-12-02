@@ -29,7 +29,9 @@
 
 
 #import "FCAppPropertySelectorViewController.h"
+#import "FCViewFramework.h"
 #import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
 @interface FCAppCategoryViewController : FCAppOverlayViewController <FCCategoryList, FCGroupedTableSourceDelegate, UITextFieldDelegate> {
 
@@ -41,6 +43,9 @@
 	UITableView *tableView;
 	
 	UITextField *nameTextField;
+	FCColorCollection *colorCollection;
+	UIButton *colorButton;
+	UIButton *iconButton;
 	UISwitch *countableSwitch;
 	
 	UITextField *minimumTextField;
@@ -59,6 +64,9 @@
 @property (nonatomic, retain) UITableView *tableView;
 
 @property (nonatomic, retain) UITextField *nameTextField;
+@property (nonatomic, retain) FCColorCollection *colorCollection;
+@property (nonatomic, retain) UIButton *colorButton;
+@property (nonatomic, retain) UIButton *iconButton;
 @property (nonatomic, retain) UISwitch *countableSwitch;
 
 @property (nonatomic, retain) UITextField *minimumTextField;
@@ -74,9 +82,13 @@
 
 // View
 
+-(void)loadIconSeclectionViewController;
+-(void)loadColorSelectionViewController;
+
 -(void)loadUnitQuantitySelectionViewController;
 -(void)loadUnitSystemSelectionViewController;
 -(void)loadUnitSelectionViewController;
+
 -(void)pushUnitSystemSelectionViewController;
 -(void)pushUnitSelectionViewController;
 
@@ -84,11 +96,15 @@
 
 -(void)countableSwitchValueChanged;
 -(void)unitButtonPressed;
+-(void)iconButtonPressed;
+-(void)colorButtonPressed;
 
 // Custom
 
 -(void)save;
 -(void)cancel;
+
+-(void)setCategoryProperties;
 
 -(void)ensureMinMaxRelationship;
 

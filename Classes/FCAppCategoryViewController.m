@@ -33,7 +33,7 @@
 @synthesize category, originalCategory;
 @synthesize sections;
 @synthesize tableView;
-@synthesize nameTextField, countableSwitch;
+@synthesize nameTextField, colorCollection, colorButton, iconButton, countableSwitch;
 @synthesize minimumTextField, maximumTextField, decimalsSegmentedControl, unitButton;
 @synthesize beingEdited;
 
@@ -42,6 +42,9 @@
 -(id)initWithCategory:(FCCategory *)theCategory {
 
 	if (self = [self init]) {
+		
+		if (category != nil)
+			[category release];
 		
 		category = [theCategory copy];
 		originalCategory = [theCategory retain];
@@ -54,11 +57,8 @@
 	
 	if (self = [super init]) {
 	
-		if (self.category == nil) {
-		
-			// create empty category for saving
-			category = [[FCCategory alloc] init];
-		}
+		// create empty category for saving
+		category = [[FCCategory alloc] init];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCategoryObjectUpdatedNotification) name:FCNotificationCategoryObjectUpdated object:nil];
 	}
@@ -90,6 +90,9 @@
 	[sections release];
 	
 	[nameTextField release];
+	[colorCollection release];
+	[colorButton release];
+	[iconButton release];
 	[countableSwitch release];
 	
 	[minimumTextField release];
@@ -129,7 +132,40 @@
     // e.g. self.myOutlet = nil;
 }
 
+-(void)loadIconSeclectionViewController {
+	
+	[self setCategoryProperties]; // ensures any changes are retained
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.shouldAnimateContent = YES;
+	
+	selectorViewController.title = @"Icon";
+	selectorViewController.propertyToSelect = FCPropertyIcon;
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
+-(void)loadColorSelectionViewController {
+	
+	[self setCategoryProperties]; // ensures any changes are retained
+	
+	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
+	selectorViewController.shouldAnimateContent = YES;
+	
+	selectorViewController.title = @"Color";
+	selectorViewController.propertyToSelect = FCPropertyColor;
+	selectorViewController.colorCollection =  self.colorCollection;
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
 -(void)loadUnitQuantitySelectionViewController {
+	
+	[self setCategoryProperties]; // ensures any changes are retained
 	
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
 	selectorViewController.shouldAnimateContent = YES;
@@ -143,6 +179,8 @@
 }
 
 -(void)loadUnitSystemSelectionViewController {
+	
+	[self setCategoryProperties]; // ensures any changes are retained
 	
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
 	selectorViewController.shouldAnimateContent = YES;
@@ -160,6 +198,8 @@
 }
 
 -(void)loadUnitSelectionViewController {
+	
+	[self setCategoryProperties]; // ensures any changes are retained
 	
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithCategory:self.category];
 	selectorViewController.shouldAnimateContent = YES;
@@ -259,6 +299,40 @@
 	
 	[newNameTextField release];
 	
+	// icon button
+	
+	UIButton *newIconButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	newIconButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+	
+	[newIconButton setImage:[UIImage imageNamed:@"wrench1Icon.png"] forState:UIControlStateNormal];
+	
+	[newIconButton addTarget:self action:@selector(iconButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		
+	self.iconButton	= newIconButton;
+	
+	// color button
+	
+	UIButton *newColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	newColorButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+	
+	[newColorButton addTarget:self action:@selector(colorButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		
+	FCBorderedLabel *colorButtonLabel = [[FCBorderedLabel alloc] initWithFrame:newColorButton.bounds];
+	colorButtonLabel.tag = 1;
+	
+	if (self.colorCollection == nil) {
+		
+		FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
+		self.colorCollection = newColorCollection;
+		[newColorCollection release];
+	}
+	
+	colorButtonLabel.backgroundColor = [colorCollection colorForIndex:0];
+	
+	[newColorButton addSubview:colorButtonLabel];
+	
+	self.colorButton = newColorButton;
+	
 	// countable switch
 	
 	UISwitch *newCountableSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 94.0f, 27.0f)];
@@ -312,15 +386,15 @@
 	
 	[newUnitButton addTarget:self action:@selector(unitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 	
-	UILabel *buttonLabel = [[UILabel alloc] initWithFrame:newUnitButton.bounds];
-	buttonLabel.tag = 1;
-	buttonLabel.textAlignment = UITextAlignmentRight;
-	buttonLabel.textColor = [UIColor lightGrayColor];
-	buttonLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+	UILabel *unitButtonLabel = [[UILabel alloc] initWithFrame:newUnitButton.bounds];
+	unitButtonLabel.tag = 1;
+	unitButtonLabel.textAlignment = UITextAlignmentRight;
+	unitButtonLabel.textColor = [UIColor lightGrayColor];
+	unitButtonLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 	
-	buttonLabel.text = @"Click to select unit";
+	unitButtonLabel.text = @"Click to select unit";
 	
-	[newUnitButton addSubview:buttonLabel];
+	[newUnitButton addSubview:unitButtonLabel];
 	
 	self.unitButton = newUnitButton;
 	
@@ -372,14 +446,27 @@
 		buttonLabel.text = @"Click to select unit";
 	}
 	
-	if (self.category.cid != nil) {
+	if (self.category.colorIndex != nil) {
+		
+		NSInteger colorIndex = [self.category.colorIndex integerValue];
+		UILabel *label = (UILabel *)[self.colorButton viewWithTag:1];
+		[label setBackgroundColor:[self.colorCollection colorForIndex:colorIndex]];
+	}
 	
+	if (self.category.iconName != nil) {
+		
+		UIImage *icon = [UIImage imageNamed:self.category.iconName];
+		[self.iconButton setImage:icon forState:UIControlStateNormal];
+	}
+	
+	if (self.category.cid != nil) {
+		
 		self.nameTextField.text = self.category.name;
 		
 		if (self.category.minimum != nil && self.category.maximum != nil) {
 			
 			self.countableSwitch.on = YES;
-		
+			
 			self.minimumTextField.text = [self.category.minimum stringValue];
 			self.maximumTextField.text = [self.category.maximum stringValue];
 			self.decimalsSegmentedControl.selectedSegmentIndex = [self.category.decimals integerValue];
@@ -538,10 +625,10 @@
 		// update table
 		
 		NSArray *insertIndexPaths = [NSArray arrayWithObjects:	
-									 [NSIndexPath indexPathForRow:2 inSection:0],
-									 [NSIndexPath indexPathForRow:3 inSection:0],
 									 [NSIndexPath indexPathForRow:4 inSection:0],
 									 [NSIndexPath indexPathForRow:5 inSection:0],
+									 [NSIndexPath indexPathForRow:6 inSection:0],
+									 [NSIndexPath indexPathForRow:7 inSection:0],
 									 nil];
 		
 		[self.tableView beginUpdates];
@@ -554,16 +641,16 @@
 		
 		// * Remove four lower rows from section
 		
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
 		
 		NSArray *deleteIndexPaths = [NSArray arrayWithObjects:	
-									 [NSIndexPath indexPathForRow:2 inSection:0],
-									 [NSIndexPath indexPathForRow:3 inSection:0],
 									 [NSIndexPath indexPathForRow:4 inSection:0],
 									 [NSIndexPath indexPathForRow:5 inSection:0],
+									 [NSIndexPath indexPathForRow:6 inSection:0],
+									 [NSIndexPath indexPathForRow:7 inSection:0],
 									 nil];
 		
 		[self.tableView beginUpdates];
@@ -615,11 +702,34 @@
 
 }
 
+-(void)iconButtonPressed {
+
+	[self loadIconSeclectionViewController];
+}
+
+-(void)colorButtonPressed {
+	
+	[self loadColorSelectionViewController];
+}
+
 #pragma mark Custom
 
 -(void)save {
 	
-	// * Set all category's properties from filled in form
+	[self setCategoryProperties];
+	
+	[self.category save];
+	
+	[self dismiss];
+}
+
+-(void)cancel {
+	
+	[self dismiss];
+}
+
+-(void)setCategoryProperties {
+/*	Sets all category's properties taken from filled in form. */
 	
 	// name
 	
@@ -630,10 +740,20 @@
 	
 	// icon
 	
-	self.category.iid = @"system_0_4"; // TMP
+	if (self.category.iid == nil)
+		self.category.iid = @"system_0_49"; // default = wrench1Icon.png
+	
+	// color
+	
+	if (self.category.colorIndex == nil) {
+	
+		NSNumber *color = [[NSNumber alloc] initWithInteger:0];
+		self.category.colorIndex = color;
+		[color release];
+	}
 	
 	if (self.countableSwitch.on) {
-	
+		
 		// minium
 		
 		NSString *minimumString = self.minimumTextField.text != nil ? self.minimumTextField.text : self.minimumTextField.placeholder;
@@ -651,35 +771,20 @@
 		// decimals
 		
 		if (self.decimalsSegmentedControl.selectedSegmentIndex > 0) {
-		
+			
 			NSNumber *decimals = [[NSNumber alloc] initWithInteger:self.decimalsSegmentedControl.selectedSegmentIndex];
 			self.category.decimals = decimals;
 			[decimals release];
 		}
 	}
 	
-	// datatype (only if not already set)
+	// datatype
 	
-	if (self.category.datatype == nil) {
-		
-		if (self.countableSwitch.on && self.decimalsSegmentedControl.selectedSegmentIndex > 0)
-			self.category.did = FCKeyDIDDecimal;
-		
-		else if (self.countableSwitch.on && self.decimalsSegmentedControl.selectedSegmentIndex == 0)
-			self.category.did = FCKeyDIDInteger;
-	}
+	if (self.countableSwitch.on && self.decimalsSegmentedControl.selectedSegmentIndex > 0)
+		self.category.did = FCKeyDIDDecimal;
 	
-	// * Save the category
-	
-	[self.category save];
-	
-	// dismiss
-	[self dismiss];
-}
-
--(void)cancel {
-	
-	[self dismiss];
+	else if (self.countableSwitch.on && self.decimalsSegmentedControl.selectedSegmentIndex == 0)
+		self.category.did = FCKeyDIDInteger;
 }
 
 -(void)ensureMinMaxRelationship {
@@ -707,6 +812,18 @@
 	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
+	// icon
+	
+	objects = [[NSArray alloc] initWithObjects:@"Icon", self.iconButton, nil];
+	NSDictionary *iconPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	// color
+	
+	objects = [[NSArray alloc] initWithObjects:@"Color", self.colorButton, nil];
+	NSDictionary *colorPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
 	// type
 	
 	objects = [[NSArray alloc] initWithObjects:@"Countable", self.countableSwitch, nil];
@@ -715,8 +832,10 @@
 	
 	// compose the section
 	
-	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, countablePair, nil];
+	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, iconPair, colorPair, countablePair, nil];
 	
+	[iconPair release];
+	[colorPair release];
 	[countablePair release];
 	[namePair release];
 	
@@ -742,10 +861,24 @@
 	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
+	// icon
+	
+	objects = [[NSArray alloc] initWithObjects:@"Icon", self.iconButton, nil];
+	NSDictionary *iconPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
+	// color
+	
+	objects = [[NSArray alloc] initWithObjects:@"Color", self.colorButton, nil];
+	NSDictionary *colorPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
 	// compose the section
 	
-	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, nil];
+	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, iconPair, colorPair, nil];
 	
+	[iconPair release];
+	[colorPair release];
 	[namePair release];
 	[keys release];
 	

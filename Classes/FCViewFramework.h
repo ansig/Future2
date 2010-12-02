@@ -19,18 +19,11 @@
  */
 
 //
-//  FCImageHelper.h
+//  FCViewFramework.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 02/11/2010.
+//  Created by Anders Sigfridsson on 01/12/2010.
 //
 
-
-@interface UIImage (FCImageHelper)
-
-+(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
-+(UIImage *)imageWithImage:(UIImage *)theImage scaledToScale:(CGFloat)theScale;
--(UIImage*)imageScaledToSize:(CGSize)size;
--(UIImage *)resizeImage:(CGSize)newSize;
-
-@end
+#import "FCCustomButton.h"
+#import "FCBorderedLabel.h"

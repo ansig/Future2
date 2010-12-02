@@ -661,8 +661,8 @@
 -(void)deleteAssocitedFiles {
 /*	Removes any files associated with the entry. */
 	
-	if ([self.category.datatype isEqualToString:@"photo"] || 
-		[self.category.datatype isEqualToString:@"audio"]) {
+	if ([self.category.datatypeName isEqualToString:@"photo"] || 
+		[self.category.datatypeName isEqualToString:@"audio"]) {
 		
 		if (self.string != nil) {
 			

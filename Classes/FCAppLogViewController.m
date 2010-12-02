@@ -106,6 +106,7 @@
 	[notificationCenter addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
 	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
 	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
 	
 	// custom
 	[notificationCenter addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
@@ -240,6 +241,11 @@
 	[self.tableView reloadData];
 }
 
+-(void)onCategoryUpdatedNotification {
+
+	[self.tableView reloadData];
+}
+
 #pragma mark FCGroupedTableSourceDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -278,7 +284,7 @@
 	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
 	cell.detailTextLabel.text = anEntry.timeDescription;
-	cell.imageView.image = [UIImage imageNamed:anEntry.category.icon];
+	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
 	
 	if ([anEntry.attachments count] > 0) {
 	

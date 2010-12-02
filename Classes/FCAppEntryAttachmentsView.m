@@ -44,7 +44,7 @@
 		
 		entryRef = anEntry;
 		
-		self.backgroundColor = [UIColor lightGrayColor];
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"attachmentsBandBackground.png"]];
 		
 		selectedIndex = -1;
 		previouslySelectedIndex = -1;
@@ -122,17 +122,7 @@
 	self.previouslySelectedIndex = self.selectedIndex;
 	self.selectedIndex = theButton.tag;
 	
-	// highlight the button
-	
-	[theButton setBackgroundColor:[UIColor darkGrayColor]];
-		
-	// un-highlight previous button
-	
-	if (self.previouslySelectedIndex > -1) {
-	
-		UIButton *previouslySelectedButton = (UIButton *)[self.attachmentButtons objectAtIndex:self.previouslySelectedIndex];
-		[previouslySelectedButton setBackgroundColor:[UIColor clearColor]];
-	}
+	[self highlightSelectedButton];
 	
 	// update the table
 
@@ -179,7 +169,7 @@
 	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
 	cell.detailTextLabel.text = anEntry.timeDescription;
-	cell.imageView.image = [UIImage imageNamed:anEntry.category.icon];
+	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -281,11 +271,11 @@
 	NSInteger i = 0;
 	for (FCEntry *attachment in self.entryRef.attachments) {
 	
-		UIButton *newAttachmentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		FCCustomButton *newAttachmentButton = [FCCustomButton buttonWithType:UIButtonTypeCustom];
 		
 		newAttachmentButton.tag = i;
 		
-		UIImage *icon = [UIImage imageNamed:attachment.category.icon];
+		UIImage *icon = [UIImage imageNamed:attachment.category.iconName];
 		[newAttachmentButton setImage:icon forState:UIControlStateNormal];
 		
 		CGFloat xPos = spacing + ((spacing + width) * i);
@@ -307,9 +297,12 @@
 		
 		// no attachments label
 		
-		UILabel *newNoAttachmentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(spacing, 0.0f, 320.0f-(spacing*2), height)];
+		CGFloat xPos = spacing;
+		CGFloat yPos = (self.frame.size.height/2) - (height/2);
+		
+		UILabel *newNoAttachmentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(xPos, yPos, 320.0f-(spacing*2), height)];
 		newNoAttachmentsLabel.backgroundColor = [UIColor clearColor];
-		newNoAttachmentsLabel.textColor = [UIColor whiteColor];
+		newNoAttachmentsLabel.textColor = [UIColor blackColor];
 		newNoAttachmentsLabel.font = [UIFont systemFontOfSize:12.0f];
 		
 		newNoAttachmentsLabel.text = @"No attachments.";
@@ -329,11 +322,7 @@
 	
 		// make sure selected button is still highlighted
 		
-		 if (self.selectedIndex > -1) {
-		 
-			 UIButton *selectedButton = (UIButton *)[self viewWithTag:self.selectedIndex];
-			 [selectedButton setBackgroundColor:[UIColor darkGrayColor]];
-		 }
+		[self highlightSelectedButton];
 	}
 }
 
@@ -382,6 +371,30 @@
 		
 		// animate pulse for last button
 		[self animateDoublePulseForButton:[self.attachmentButtons lastObject]];
+	}
+}
+
+-(void)highlightSelectedButton {
+	
+	if (self.attachmentButtons != nil && [self.attachmentButtons count] > 0) {
+	
+		// highlight selected button
+		
+		if (self.selectedIndex > -1) {
+			
+			FCCustomButton *selectedButton = [self.attachmentButtons objectAtIndex:self.selectedIndex];
+			[selectedButton setBackgroundColor:kHighlightColor];
+			[selectedButton addBorder];
+		}
+		
+		// un-highlight previous button
+		
+		if (self.previouslySelectedIndex > -1) {
+			
+			FCCustomButton *previouslySelectedButton = [self.attachmentButtons objectAtIndex:self.previouslySelectedIndex];
+			[previouslySelectedButton setBackgroundColor:[UIColor clearColor]];
+			[previouslySelectedButton removeBorder];
+		}
 	}
 }
 

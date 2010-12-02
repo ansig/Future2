@@ -79,7 +79,7 @@
 
 -(void)cancel;
 -(void)setPickerViewRows;
--(void)setEntryValue;
+-(void)setEntryProperties;
 
 -(void)createImageButton;
 -(void)createImageView;

@@ -49,6 +49,17 @@
 	return [self imageWithImage:theImage scaledToSize:newSize];
 }
 
+- (UIImage*)imageScaledToSize:(CGSize)size {
+
+    UIGraphicsBeginImageContext(size);
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+	return image;
+}
+
+
 -(UIImage *)resizeImage:(CGSize)newSize {
 /*	This solution is borrowed from the Trevor's Bike Shed blog:
 	http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/

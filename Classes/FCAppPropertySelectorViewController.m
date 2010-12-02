@@ -35,6 +35,7 @@
 @synthesize timestampLabel, datePicker;
 @synthesize tableView, rows;
 @synthesize quantity, system;
+@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -80,6 +81,8 @@
  
 	[tableView release];
 	[rows release];
+	
+	[colorCollection release];
 	
 	[super dealloc];
 }
@@ -174,11 +177,21 @@
 	if ([object isKindOfClass:[NSDictionary class]]) {
 		
 		NSDictionary *dictionary = [object copy];
-		NSString *text = [[NSString alloc] initWithFormat:@"%@ (%@)", [dictionary objectForKey:@"name"], [dictionary objectForKey:@"abbreviation"]];
 		
-		cell.textLabel.text = text;
+		if (self.propertyToSelect == FCPropertyUnit) {
+			
+			NSString *text = [[NSString alloc] initWithFormat:@"%@ (%@)", [dictionary objectForKey:@"name"], [dictionary objectForKey:@"abbreviation"]];
+			cell.textLabel.text = text;
+			[text release];
+	
+		} else if (self.propertyToSelect == FCPropertyIcon) {
+			
+			UIImage *icon = [UIImage imageNamed:[dictionary objectForKey:@"name"]];
+			cell.imageView.image = icon;
 		
-		[text release];
+			cell.textLabel.text = [[dictionary objectForKey:@"name"] stringByReplacingOccurrencesOfString:@"Icon.png" withString:@""];
+		} 
+	
 		[dictionary release];
 		
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -190,6 +203,11 @@
 		[string release];
 		
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	} else if ([object isKindOfClass:[UIColor class]]) {
+	
+		UIColor *color = (UIColor *)object;
+		cell.backgroundColor = color; 
 	}
 	
     return cell;
@@ -197,17 +215,12 @@
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	if (self.propertyToSelect == FCPropertyDateTime || self.propertyToSelect == FCPropertyUnit) {
-	
-		[self save];
-		
-	} else if (self.propertyToSelect == FCPropertyUnitSystem) {
+	if (self.propertyToSelect == FCPropertyUnitSystem) {
 
 		self.system = indexPath.row;
 		[self pushUnitSelectionViewController];
 	
 	} else if (self.propertyToSelect == FCPropertyUnitQuantity) {
-		
 		
 		self.quantity = indexPath.row;
 		
@@ -216,7 +229,10 @@
 		
 		else
 			[self pushUnitSelectionViewController];
-
+	
+	} else {
+		
+		[self save];
 	}
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -245,15 +261,26 @@
 	
 	else if (self.propertyToSelect == FCPropertyDateTime)
 		[self createContentForTimestampSelection];
+	
+	else if (self.propertyToSelect == FCPropertyIcon)
+		[self createContentForIconSelection];
+	
+	else if (self.propertyToSelect == FCPropertyColor)
+		[self createContentForColorSelection];
 }
 
 -(void)presentUIContent {
 	
-	if (self.propertyToSelect == FCPropertyUnit || self.propertyToSelect == FCPropertyUnitSystem || self.propertyToSelect == FCPropertyUnitQuantity)
-		[self presentContentForUnitSelection];
-	
-	else if (self.propertyToSelect == FCPropertyDateTime)
+	if (self.propertyToSelect == FCPropertyDateTime) {
+		
 		[self presentContentForTimestampSelection];
+		
+	} else {
+	
+		[self.navigationController setNavigationBarHidden:NO animated:YES];
+		
+		[self animateTableViewAppearance];
+	}
 }
 
 -(void)showUIContent {
@@ -337,11 +364,28 @@
 		
 			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
 			self.category.uid = [[rows objectAtIndex:indexPath.row] objectForKey:@"uid"];
+		
+		} else if (self.propertyToSelect == FCPropertyIcon) {
+		
+			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+			NSDictionary *dictionary = [rows objectAtIndex:indexPath.row];
 			
-			[super dismiss];
+			self.category.iid = [dictionary objectForKey:@"iid"];
+			self.category.iconName = [dictionary objectForKey:@"name"];
+		
+		} else if (self.propertyToSelect == FCPropertyColor) {
+		
+			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+			NSInteger colorIndex = indexPath.row;
 			
-			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryObjectUpdated object:self];
+			NSNumber *color = [[NSNumber alloc] initWithInteger:colorIndex];
+			self.category.colorIndex = color;
+			[color release];
 		}
+		
+		[super dismiss];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryObjectUpdated object:self];
 	}
 }
 
@@ -467,6 +511,34 @@
 	[self createTableView];
 }
 
+-(void)createContentForIconSelection {
+	
+	// * Rows
+	
+	NSMutableArray *newRows = [[NSMutableArray alloc] init];
+	
+	NSString *table = @"icons";
+	NSString *columns = @"iid, name";
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	NSArray *result = [dbh getColumns:columns fromTable:table withOptions:@"ORDER BY name"];
+	
+	[dbh release];
+	
+	for (NSDictionary *row in result) {
+		
+		[newRows addObject:row];
+	}
+	
+	self.rows = newRows;
+	[newRows release];
+	
+	// * Table
+	
+	[self createTableView];
+}
+
 -(void)createContentForUnitSystemSelection {
 	
 	// * Rows
@@ -475,6 +547,26 @@
 	
 	for (int i = 0; i < 3; i++)
 		[newRows addObject:FCUnitSystemAsString(i)];
+	
+	self.rows = newRows;
+	[newRows release];
+	
+	// * Table
+	
+	[self createTableView];
+}
+
+-(void)createContentForColorSelection {
+	
+	// * Rows
+	
+	NSMutableArray *newRows = [[NSMutableArray alloc] init];
+	
+	if (self.colorCollection != nil) {
+	
+		for (UIColor *color in [colorCollection allFreeColors])
+			[newRows addObject:color];
+	}
 	
 	self.rows = newRows;
 	[newRows release];
@@ -508,13 +600,6 @@
 					 animations:^ { self.datePicker.transform = CGAffineTransformIdentity; } 
 					 completion:^ (BOOL finished) { if (self.entry.timestamp != nil) [self.datePicker setDate:self.entry.timestamp]; }];
 }
-
--(void)presentContentForUnitSelection {
-	
-	[self.navigationController setNavigationBarHidden:NO animated:YES];
-	
-	[self animateTableViewAppearance];
-} 
 
 -(void)createTableView {
 

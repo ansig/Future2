@@ -35,7 +35,7 @@
 @synthesize name;
 @synthesize minimum, maximum, decimals;
 @synthesize created, modified;
-@synthesize datatype, icon;
+@synthesize datatypeName, iconName, colorIndex;
 @synthesize lid, uid, oid, did, iid;
 
 #pragma mark Class
@@ -46,7 +46,7 @@
 		
 		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 		
-		NSString *columns = @"categories.name, minimum, maximum, decimals, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid";
+		NSString *columns = @"categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid";
 		NSString *table = @"categories";
 		NSString *filters = [NSString stringWithFormat:@"cid = '%@'", theCID];
 		NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
@@ -76,7 +76,7 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"cid, categories.name, minimum, maximum, decimals, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid, max(categories.created)";
+	NSString *columns = @"cid, categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid, max(categories.created)";
 	NSString *table = @"categories";
 	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
 	
@@ -98,7 +98,7 @@
 
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
+	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
 	NSString *table = @"categories";
 	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
 	NSString *options = @"ORDER BY name";
@@ -132,7 +132,7 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
+	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
 	NSString *table = @"categories";
 	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
 	NSString *filters = [[NSString alloc] initWithFormat:@"categories.oid = '%@'", theOwnersCID];
@@ -212,12 +212,17 @@
 			// datatype
 			} else if ([key isEqualToString:@"datatype"]) {
 				
-				self.datatype = [theDictionary objectForKey:key];
+				self.datatypeName = [theDictionary objectForKey:key];
 				
 			// icon
 			} else if ([key isEqualToString:@"icon"]) {
 				
-				self.icon = [theDictionary objectForKey:key];
+				self.iconName = [theDictionary objectForKey:key];
+				
+			// color
+			} else if ([key isEqualToString:@"color"]) {
+				
+				self.colorIndex = [theDictionary objectForKey:key];
 				
 			// lid
 			} else if ([key isEqualToString:@"lid"]) {
@@ -279,8 +284,9 @@
 	copy.created = self.created;
 	copy.modified = self.modified;
 	
-	copy.datatype = self.datatype;
-	copy.icon = self.icon;
+	copy.datatypeName = self.datatypeName;
+	copy.iconName = self.iconName;
+	copy.colorIndex = self.colorIndex;
 	
 	copy.lid = self.lid;
 	copy.oid = self.oid;
@@ -306,8 +312,9 @@
 	[created release];
 	[modified release];
 	
-	[datatype release];
-	[icon release];
+	[datatypeName release];
+	[iconName release];
+	[colorIndex release];
 	
 	[lid release];
 	[oid release];
@@ -422,6 +429,16 @@
 	
 		NSString *value = [[NSString alloc] initWithFormat:@"%d", [self.decimals intValue]];
 		NSDictionary *set = [[NSDictionary alloc] initWithObjectsAndKeys:@"decimals", @"Column", value, @"Value", nil];
+		[sets addObject:set];
+		
+		[value release];
+		[set release];
+	}
+	
+	if (self.colorIndex != nil) {
+		
+		NSString *value = [[NSString alloc] initWithFormat:@"%d", [self.colorIndex intValue]];
+		NSDictionary *set = [[NSDictionary alloc] initWithObjectsAndKeys:@"color", @"Column", value, @"Value", nil];
 		[sets addObject:set];
 		
 		[value release];
@@ -609,15 +626,23 @@
 	
 	NSNumber *entryViewMode;
 	
-	// special cases
 	if ([self.cid isEqualToString:FCKeyCIDRapidInsulin] || [self.cid isEqualToString:FCKeyCIDBasalInsulin])
 		entryViewMode = [[NSNumber alloc] initWithInteger:FCGraphEntryViewModeBarVertical];
 	
-	else if ([self.datatype isEqualToString:@"integer"] || [self.datatype isEqualToString:@"decimal"])
+	else if ([self.datatypeName isEqualToString:@"integer"] || [self.datatypeName isEqualToString:@"decimal"])
 		entryViewMode = [[NSNumber alloc] initWithInteger:FCGraphEntryViewModeCircle];
 	
 	else
 		entryViewMode = [[NSNumber alloc] initWithInteger:FCGraphEntryViewModeIcon];
+	
+	// other special cases
+	
+	if ([self.cid isEqualToString:FCKeyCIDGlucose]) {
+		
+		NSNumber *oldDrawLines = drawLines;
+		drawLines = [[NSNumber alloc] initWithBool:YES];
+		[oldDrawLines release];
+	}
 	
 	NSArray *keys = [[NSArray alloc] initWithObjects:
 					 @"Key", 

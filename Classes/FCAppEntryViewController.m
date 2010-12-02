@@ -453,7 +453,7 @@
 		FCCategory *aCategory = (FCCategory *)object;
 		
 		cell.textLabel.text = aCategory.name;
-		cell.imageView.image = [UIImage imageNamed:aCategory.icon];
+		cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
 	
 	} else if ([object isKindOfClass:[NSString class]]) {
 	
@@ -547,10 +547,10 @@
 	
 	// icon
 	
-	height = 20.0f;
+	height = 30.0f;
 	yPos = (kAppHeaderHeight/2) - (height/2);
-	UIImageView *newIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kAppSpacing, yPos, 20.0f, height)];
-	newIconImageView.image = [UIImage imageNamed:self.entry.category.icon];
+	UIImageView *newIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kAppSpacing, yPos, 30.0f, height)];
+	newIconImageView.image = [UIImage imageNamed:self.entry.category.iconName];
 	
 	self.iconImageView = newIconImageView;
 	
@@ -602,7 +602,7 @@
 	
 	} else {
 	
-		NSString *datatype = self.entry.category.datatype;
+		NSString *datatype = self.entry.category.datatypeName;
 		if ([datatype isEqualToString:@"string"]) {
 			
 			// text view
@@ -661,7 +661,7 @@
 			yPos = self.timestampLabel.frame.origin.y + self.timestampLabel.frame.size.height + kAppSpacing;
 		}
 		
-		CGRect frame = CGRectMake(0.0f, yPos, 320.0f, 30.0f);
+		CGRect frame = CGRectMake(0.0f, yPos, 320.0f, 40.0f);
 		FCAppEntryAttachmentsView *newAttachmentsView = [[FCAppEntryAttachmentsView alloc] initWithEntry:self.entry frame:frame];
 		newAttachmentsView.tableViewDelegate = self;
 		[newAttachmentsView loadAttachments];
@@ -686,12 +686,12 @@
 		[newTableView release];
 		
 		UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 30.0f)];
-		tableHeaderView.backgroundColor = [UIColor lightGrayColor];
+		tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"30pxBandBackground.png"]];
 		
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 300.0f, 30.0f)];
 		label.backgroundColor = [UIColor clearColor];
 		label.font = [UIFont systemFontOfSize:12.0f];
-		label.textColor = [UIColor whiteColor];
+		label.textColor = [UIColor blackColor];
 		label.text = @"Available attachments:";
 		
 		[tableHeaderView addSubview:label];
@@ -703,7 +703,6 @@
 		[tableHeaderView release];
 		
 		[self setNewFrameForTableView];
-		
 	}
 }
 

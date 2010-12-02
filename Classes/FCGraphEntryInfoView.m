@@ -78,7 +78,7 @@
 		
 		[newTimestampLabel release];
 		
-		if ([category.datatype isEqualToString:@"string"]) {
+		if ([category.datatypeName isEqualToString:@"string"]) {
 			
 			// text view
 			
@@ -98,7 +98,7 @@
 			
 			[self createAndDisplayCloseButton];
 			
-		} else if ([category.datatype isEqualToString:@"photo"]) {
+		} else if ([category.datatypeName isEqualToString:@"photo"]) {
 			
 			// image
 			
@@ -164,7 +164,7 @@
 			// icon
 			
 			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5.0f, 25.0f, 20.0f, 20.0f)];
-			newIcon.image = [UIImage imageNamed:category.icon];
+			newIcon.image = [UIImage imageNamed:category.iconName];
 			
 			self.icon = newIcon;
 			[self addSubview:newIcon];

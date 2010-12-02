@@ -59,6 +59,7 @@
 -(void)onEntryDeletedNotification;
 -(void)onAttachmentAddedNotification;
 -(void)onAttachmentRemovedNotification;
+-(void)onCategoryUpdatedNotification;
 
 @end
 

@@ -247,7 +247,7 @@
 			NSDictionary *graphSet = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 			FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 			cell.textLabel.text = category.name;
-			cell.imageView.image = [UIImage imageNamed:category.icon];
+			cell.imageView.image = [UIImage imageNamed:category.iconName];
 			
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
@@ -351,7 +351,7 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.icon];
+		cell.imageView.image = [UIImage imageNamed:category.iconName];
 		
 		cell.accessoryView = nil;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -404,7 +404,7 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.icon];
+		cell.imageView.image = [UIImage imageNamed:category.iconName];
 	
 		if ([self.selectedIndexPaths indexOfObjectIdenticalTo:indexPath] != NSNotFound)
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -630,7 +630,7 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.icon];
+		cell.imageView.image = [UIImage imageNamed:category.iconName];
 		
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}

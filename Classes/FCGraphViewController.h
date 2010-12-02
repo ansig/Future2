@@ -25,8 +25,8 @@
 //  Created by Anders Sigfridsson on 22/09/2010.
 //
 
-#import <UIKit/UIKit.h>
 
+#import "FCViewFramework.h"
 
 #import "FCGraphView.h"
 #import "FCGraphScaleView.h"
@@ -56,6 +56,8 @@
 
 	FCGraphView *graphView;
 	UIScrollView *scrollView;
+	
+	FCBorderedLabel *label;
 
 	NSMutableArray *dataSets;
 	
@@ -81,6 +83,8 @@
 
 @property (nonatomic, retain) FCGraphView *graphView;
 @property (nonatomic, retain) UIScrollView *scrollView;
+
+@property (nonatomic, retain) FCBorderedLabel *label;
 
 @property (nonatomic, retain) NSMutableArray *dataSets;
 

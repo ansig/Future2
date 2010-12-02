@@ -79,8 +79,9 @@
 
 #define kGraphHandleLockDuration	0.25f // duration of the animation when handle views lock to a side
 
-#define kTintColor			[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
-#define kButtonTitleColor	[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
+#define kTintColor				[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
+#define kButtonTitleColor		[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
+#define kHighlightColor			[UIColor colorWithRed:0.96484375f green:0.95875f blue:0.9453125f alpha:1.0f]
 
 #define kViewAppearDuration		0.5f // duration of view appearance animations
 #define kViewDisappearDuration	0.5f // duration of view disappearance animations

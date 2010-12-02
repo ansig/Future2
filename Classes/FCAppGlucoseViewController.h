@@ -72,7 +72,7 @@
 -(void)updateUnitLabel;
 
 -(void)setPickerRows;
--(void)setEntryValue;
+-(void)setEntryProperties;
 
 -(void)startTimer;
 -(void)stopTimer;

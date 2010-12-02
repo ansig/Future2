@@ -28,7 +28,9 @@
 
 #import "FCAppOverlayViewController.h"  // superclass
 
+
 #import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
 @interface FCAppPropertySelectorViewController : FCAppOverlayViewController <FCGroupedTableSourceDelegate> {
 
@@ -47,6 +49,9 @@
 	
 	FCUnitQuantity quantity;
 	FCUnitSystem system;
+	
+	// color
+	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) FCEntry *entry;
@@ -62,6 +67,8 @@
 
 @property (nonatomic) FCUnitQuantity quantity;
 @property (nonatomic) FCUnitSystem system;
+
+@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // Init
 
@@ -86,9 +93,10 @@
 -(void)createContentForUnitSelection;
 -(void)createContentForUnitQuantitySelection;
 -(void)createContentForUnitSystemSelection;
+-(void)createContentForIconSelection;
+-(void)createContentForColorSelection;
 
 -(void)presentContentForTimestampSelection;
--(void)presentContentForUnitSelection;
 
 -(void)createTableView;
 

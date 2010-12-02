@@ -295,11 +295,14 @@
 	
 	UIColor *color = [self.colorCollection colorForCID:[graphSet objectForKey:@"Key"]];
 	
-	if (color == nil)
-		color = [self.colorCollection colorForIndex:0];
-	
-	if (color == nil)
-		NSLog(@"Color is nil!");
+	if (color == nil) {
+		
+		NSString *key = [graphSet objectForKey:@"Key"];
+		FCCategory *category = [FCCategory categoryWithCID:key];
+		
+		NSInteger colorIndex = [category.colorIndex integerValue];
+		color = [self.colorCollection colorForIndex:colorIndex];
+	}
 	
 	return [NSArray arrayWithObject:color];
 }
@@ -309,7 +312,7 @@
 	// TMP, VERY SLOW!
 	
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
-	NSString *imageName = anEntry.category.icon;
+	NSString *imageName = anEntry.category.iconName;
 	UIImage *icon = [UIImage imageNamed:imageName];
 	
 	return icon;
@@ -385,7 +388,8 @@
 	
 	// find corrent size and position for entries with integer or decimal values
 	
-	if (entry.integer != nil || entry.decimal != nil) {
+	NSString *datatype = entry.category.datatypeName;
+	if (![datatype isEqualToString:@"string"] && ![datatype isEqualToString:@"photo"]) {
 	
 		// set width and height to constant values
 		
@@ -767,6 +771,30 @@
 		
 		[newGraphViewController addDataSet:dataSet];
 	}
+	
+	// TMP SOLUTION: sets up a label and add it to the new graph controller
+	// add a label for this data set
+	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
+	
+	UIColor *color = [self.colorCollection colorForCID:category.cid];
+	
+	if (color == nil)
+		color = [self.colorCollection colorForIndex:[category.colorIndex integerValue]];
+	
+	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
+	
+	label.textColor = [UIColor whiteColor];
+	label.font = [UIFont systemFontOfSize:12.0f];
+	label.textAlignment = UITextAlignmentRight;
+	label.text = category.name;
+	
+	UIImage *image = [UIImage imageNamed:category.iconName];
+	label.imageView.image = image;
+	
+	newGraphViewController.label = label;
+	[newGraphViewController.view addSubview:label];
+	
+	[label release];
 	
 	[category release];
 	

@@ -31,6 +31,7 @@
 @implementation FCAppTagsViewController
 
 @synthesize section, tableView, deleteIndexPath;
+@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -53,6 +54,8 @@
 	[section release];
 	[tableView release];
 	[deleteIndexPath release];
+	
+	[colorCollection release];
 	
     [super dealloc];
 }
@@ -89,6 +92,12 @@
 	
 	[newTableView release];
 	
+	// * Color collection
+	
+	FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
+	self.colorCollection = newColorCollection;
+	[newColorCollection release];
+	
 	// * Notifications
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -122,6 +131,7 @@
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] init];
 	newCategoryViewController.shouldAnimateContent = YES;
 	newCategoryViewController.title = @"New tag";
+	newCategoryViewController.colorCollection = self.colorCollection;
 	
 	[self presentOverlayViewController:newCategoryViewController];
 	
@@ -145,7 +155,7 @@
 
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] initWithCategory:theCategory];
 	newCategoryViewController.shouldAnimateContent = YES;
-	
+	newCategoryViewController.colorCollection = self.colorCollection;
 	newCategoryViewController.title = theCategory.name;
 	
 	[self presentOverlayViewController:newCategoryViewController];
@@ -183,13 +193,14 @@
     if (cell == nil) {
         
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		
 	}
 	
 	FCCategory *category = [self.section objectAtIndex:indexPath.row];
 	
 	cell.textLabel.text = category.name;
 	
-	if ([category.datatype isEqualToString:@"integer"] || [category.datatype isEqualToString:@"decimal"]) {
+	if ([category.datatypeName isEqualToString:@"integer"] || [category.datatypeName isEqualToString:@"decimal"]) {
 		
 		if (category.uid != nil)
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"Countable, %@", category.unit.name];
@@ -202,7 +213,24 @@
 		cell.detailTextLabel.text = nil;
 	}
 	
-	cell.imageView.image = [UIImage imageNamed:category.icon];
+	cell.imageView.image = [UIImage imageNamed:category.iconName];
+	
+	UILabel *label = [[UILabel alloc] initWithFrame:cell.imageView.frame];
+	label.backgroundColor = [UIColor blackColor];
+	
+	if (category.colorIndex != nil) {
+	
+		NSInteger colorIndex = [category.colorIndex integerValue];
+		UIColor *color = [self.colorCollection colorForIndex:colorIndex];
+		
+		CALayer *cellImageViewLayer = cell.imageView.layer;
+		
+		[cellImageViewLayer setBorderWidth:2.0];
+		[cellImageViewLayer setCornerRadius:5.0];
+		[cellImageViewLayer setBorderColor:[color CGColor]];
+		
+		cell.imageView.backgroundColor = [color colorWithAlphaComponent:0.5f];
+	}
 	
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	editButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
@@ -249,11 +277,10 @@
 	
 		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.deleteIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
-		[category delete];
-		
 		[self purgeDefaultGraphSetsWithCID:category.cid];
 		
-		[category release];
+		[category performSelector:@selector(delete) withObject:nil afterDelay:0.25f];
+		[category performSelector:@selector(release) withObject:nil afterDelay:0.25f];
 	}
 }
 
@@ -272,7 +299,8 @@
 }
 
 -(void)onCategoryDeletedNotification {
-	
+
+	[self.tableView reloadData];
 }
 
 -(void)onCategoryObjectUpdatedNotification {

@@ -19,18 +19,41 @@
  */
 
 //
-//  FCImageHelper.h
+//  FCCustomButton.m
 //  Future2
 //
-//  Created by Anders Sigfridsson on 02/11/2010.
+//  Created by Anders Sigfridsson on 01/12/2010.
 //
 
+#import "FCCustomButton.h"
 
-@interface UIImage (FCImageHelper)
 
-+(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
-+(UIImage *)imageWithImage:(UIImage *)theImage scaledToScale:(CGFloat)theScale;
--(UIImage*)imageScaledToSize:(CGSize)size;
--(UIImage *)resizeImage:(CGSize)newSize;
+@implementation FCCustomButton
+
+-(void)addBorder {
+
+	[self.layer setBorderWidth:1.0];
+	[self.layer setCornerRadius:5.0];
+	[self.layer setBorderColor:[[UIColor colorWithWhite:0.3 alpha:0.7] CGColor]];	
+	
+	[self setNeedsDisplay];
+}
+
+-(void)removeBorder {
+	
+	[self.layer setBorderWidth:0.0];	
+	
+	[self setNeedsDisplay];
+}
+
+-(void)addBackgroundColorBorder {
+
+	[self.layer setBorderWidth:1.0];
+	
+	[self.layer setBorderColor:[self.backgroundColor CGColor]];
+	
+	UIColor *oldBackground = self.backgroundColor;
+	self.backgroundColor = [oldBackground colorWithAlphaComponent:0.5f];
+}
 
 @end

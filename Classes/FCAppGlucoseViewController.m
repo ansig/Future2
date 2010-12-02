@@ -167,7 +167,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
 	
 	// update the entry's value
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	// if there isn't a timestamp for the entry, set it to now
 	if (self.entry.timestamp == nil) {
@@ -195,7 +195,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	// create and present a new selector view controller
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
@@ -213,7 +213,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	// create a new selector view controller
 	FCAppPropertySelectorViewController *selectorViewController = [[FCAppPropertySelectorViewController alloc] initWithEntry:self.entry];
@@ -529,7 +529,7 @@
 	[self.pickerView selectRow:fractional inComponent:1 animated:YES];
 }
 
--(void)setEntryValue {
+-(void)setEntryProperties {
 	
 	// for localisation purposes, we need to get the decimal separator
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -586,7 +586,7 @@
 	
 	[self updateUnitLabel];
 	
-	[self setEntryValue];
+	[self setEntryProperties];
 	[self.pickerView reloadAllComponents];
 	[self setPickerRows];
 }

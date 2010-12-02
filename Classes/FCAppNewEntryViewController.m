@@ -155,7 +155,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value (retains whatever is currently selected through the update)
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	// hide keyboard
 	if (self.textView != nil)
@@ -177,7 +177,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryObjectUpdatedNotification) name:FCNotificationEntryObjectUpdated object:nil];
 	
 	// update the entry's value (retains whatever is currently selected through the update)
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	// create and present a new selector view controller
 	
@@ -280,7 +280,7 @@
 
 	// for decimal numbers
 	
-	if ([self.category.datatype isEqualToString:@"decimal"]) {
+	if ([self.category.datatypeName isEqualToString:@"decimal"]) {
 		
 		NSInteger decimals = [self.category.decimals integerValue];
 		
@@ -380,7 +380,7 @@
 -(void)save {
 	
 	// update entry's value
-	[self setEntryValue];
+	[self setEntryProperties];
 	
 	if (self.originalEntry != nil) {
 		
@@ -487,7 +487,7 @@
 	// * Input views and controllers
 	
 	// picker view
-	NSString *datatype = self.category.datatype;
+	NSString *datatype = self.category.datatypeName;
 	if ([datatype isEqualToString:@"integer"] || [datatype isEqualToString:@"decimal"]) {
 		
 		UIPickerView *newPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, kAppHeaderHeight, 320.0f, 216.0f)];
@@ -899,7 +899,7 @@
 	}
 }
 
--(void)setEntryValue {
+-(void)setEntryProperties {
 /*	Sets correct numerical value of the entry to the currently selected rows in the pickerview. */
 	
 	if (self.pickerView != nil) {
@@ -910,7 +910,7 @@
 		// initial string value
 		NSString *stringValue = [[NSString alloc] initWithFormat:@"%d", integer];
 		
-		if ([self.category.datatype isEqualToString:@"decimal"]) {
+		if ([self.category.datatypeName isEqualToString:@"decimal"]) {
 			
 			// add decimal separator (localised)
 			

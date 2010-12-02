@@ -25,6 +25,8 @@
 //  Created by Anders Sigfridsson on 12/11/2010.
 //
 
+
+#import "FCViewFramework.h"
 #import "FCModelsFramework.h"
 
 @interface FCAppEntryAttachmentsView : UIScrollView <UITableViewDataSource> {
@@ -82,5 +84,6 @@
 -(void)loadAttachments;
 -(void)updateTableView;
 -(void)flagLatestAttachment;
+-(void)highlightSelectedButton;
 
 @end

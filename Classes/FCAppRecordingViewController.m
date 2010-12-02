@@ -90,6 +90,7 @@
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	
 	[notificationCenter addObserver:self selector:@selector(onCategoryCreatedNotification) name:FCNotificationCategoryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
 	[notificationCenter addObserver:self selector:@selector(onCategoryDeletedNotification) name:FCNotificationCategoryDeleted object:nil];
 }
 
@@ -179,7 +180,7 @@
 	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	cell.textLabel.text = aCategory.name;
-	cell.imageView.image = [UIImage imageNamed:aCategory.icon];
+	cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
 	
     return cell;
 }

@@ -37,6 +37,7 @@
 @synthesize yScale, yScaleView;
 @synthesize xScale, xScaleView;
 @synthesize graphView, scrollView;
+@synthesize label;
 @synthesize dataSets;
 @synthesize availableColors;
 
@@ -87,6 +88,8 @@
 	
 	[graphView release];
 	[scrollView release];
+	
+	[label release];
 	
 	[dataSets release];
 	
