@@ -1,6 +1,5 @@
-# TiY(tm) - Tag-it-Yourself v0.x.x #
-
-## OVERVIEW ##
+TiY(tm) - Tag-it-Yourself v0.x.x
+================================
 
 TiY(tm) (Tag-it-Yourself) is an open source iPhone application that supports self-management of type 1 diabetes. It is designed as an open-ended editor journaling platform that can be tailored to individual user needs. TiY(tm) is developed at the Interaction Design Centre (University of Limerick, Ireland) and is part of a broader research project called FutureCOMM (funded by HEA Ireland under the PRTLI 4 program). "Future2" is the name of the open source project which was created to share the results and, hopefully, enhance the further development of this particular branch of the work.
 
