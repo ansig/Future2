@@ -33,6 +33,7 @@
 @synthesize startDate, endDate;
 @synthesize tableView;
 @synthesize sectionTitles, sections;
+@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -60,6 +61,8 @@
 	
 	[sectionTitles release];
 	[sections release];
+	
+	[colorCollection release];
 	
     [super dealloc];
 }
@@ -95,6 +98,11 @@
 	[self.view addSubview:newTableView];
 	
 	[newTableView release];
+	
+	// * Color collection
+	FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
+	self.colorCollection = newColorCollection;
+	[newColorCollection release];
 	
 	// Start listening to certain notifications
 	
@@ -282,8 +290,26 @@
 	// default is to use the entry's own description, but uses converted description
 	// if the user has enabled the convert log option
 	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
-	
 	cell.detailTextLabel.text = anEntry.timeDescription;
+	
+	FCCategory *category = anEntry.category;
+	
+	UIColor *color = [self.colorCollection colorForCID:category.cid];
+	
+	if (color == nil) {
+		
+		NSInteger colorIndex = [category.colorIndex integerValue];
+		color = [self.colorCollection colorForIndex:colorIndex];
+	}
+	
+	CALayer *cellImageViewLayer = cell.imageView.layer;
+	
+	[cellImageViewLayer setBorderWidth:2.0];
+	[cellImageViewLayer setCornerRadius:5.0];
+	[cellImageViewLayer setBorderColor:[color CGColor]];
+	
+	cell.imageView.backgroundColor = [color colorWithAlphaComponent:0.5f];
+	
 	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
 	
 	if ([anEntry.attachments count] > 0) {

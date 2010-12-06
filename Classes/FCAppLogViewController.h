@@ -40,6 +40,8 @@
 	
 	NSMutableArray *sectionTitles;
 	NSMutableArray *sections;
+	
+	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) NSDate *startDate;
@@ -49,6 +51,8 @@
 
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableArray *sections;
+
+@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // View
 
