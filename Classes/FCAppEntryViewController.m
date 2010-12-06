@@ -790,7 +790,7 @@
 			// attachments view
 			
 			CGFloat yPos = self.textView.frame.origin.y + self.textView.frame.size.height + kAppSpacing;
-			self.attachmentsView.frame = CGRectMake(0.0f, yPos, 320.0f, 30.0f);
+			self.attachmentsView.frame = CGRectMake(0.0f, yPos, 320.0f, 40.0f);
 			
 			// table view
 			
