@@ -385,7 +385,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9A859BC01275DE9D00987FBD /* Tapku Library */,
 				9AF7D9EE111AE3B1008E90F6 /* Models */,
 				9A968260123F980100ED80EE /* Functions */,
 				9AF7D9F0111AE3D9008E90F6 /* IO functionality */,
@@ -411,6 +410,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				9A19874F12AD312000199569 /* Libraries */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -474,6 +474,14 @@
 			name = Subclasses;
 			sourceTree = "<group>";
 		};
+		9A19874F12AD312000199569 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				9A859BC01275DE9D00987FBD /* Tapku Library */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		9A8106781242749D0013F7FB /* Entries */ = {
 			isa = PBXGroup;
 			children = (
@@ -517,6 +525,7 @@
 				9A859BC11275DEA600987FBD /* Calendar */,
 			);
 			name = "Tapku Library";
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		9A859BC11275DEA600987FBD /* Calendar */ = {
