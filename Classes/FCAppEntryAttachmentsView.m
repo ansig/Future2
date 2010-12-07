@@ -44,7 +44,7 @@
 		
 		entryRef = anEntry;
 		
-		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"attachmentsBandBackground.png"]];
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
 		
 		selectedIndex = -1;
 		previouslySelectedIndex = -1;

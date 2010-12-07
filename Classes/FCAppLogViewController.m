@@ -77,12 +77,14 @@
 	[view release];
 	
 	// * Left button
-	UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(loadDateSelectorViewController)];
-	self.navigationItem.leftBarButtonItem = newButton;
-	[newButton release];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(loadDateSelectorViewController)];
+	self.navigationItem.leftBarButtonItem = newLeftButton;
+	[newLeftButton release];
 	
-	// * Dates and left button title
-	[self onLogDateChangedNotification]; // OBS! also loads sections and rows!
+	// * Left button
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sort" style:UIBarButtonItemStylePlain target:self action:@selector(loadDateSelectorViewController)];
+	self.navigationItem.rightBarButtonItem = newRightButton;
+	[newRightButton release];
 	
 	// * Table view
 	
@@ -95,6 +97,66 @@
 	[self.view addSubview:newTableView];
 	
 	[newTableView release];
+	
+	// * Table header view
+	
+	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
+	tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	
+	UILabel *tableHeaderViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 270.0f, 40.0f)];
+	tableHeaderViewLabel.tag = 1;
+	tableHeaderViewLabel.backgroundColor = [UIColor clearColor];
+	tableHeaderViewLabel.font = kAppSmallLabelFont;
+	tableHeaderViewLabel.textColor = [UIColor blackColor];
+	tableHeaderViewLabel.textAlignment = UITextAlignmentLeft;
+	
+	[tableHeaderView addSubview:tableHeaderViewLabel];
+	
+	[tableHeaderViewLabel release];
+	
+	UIButton *tableHeaderViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	tableHeaderViewButton.frame = CGRectMake(280.0f, 5.0f, 30.0f, 30.0f);
+	
+	[tableHeaderViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+	[tableHeaderViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
+	
+	[tableHeaderView addSubview:tableHeaderViewButton];
+	
+	self.tableView.tableHeaderView = tableHeaderView;
+	
+	[tableHeaderView release];
+	
+	// * Table footer view
+	
+	UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
+	tableFooterView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	
+	UILabel *tableFooterViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 275.0f, 40.0f)];
+	tableFooterViewLabel.tag = 1;
+	tableFooterViewLabel.backgroundColor = [UIColor clearColor];
+	tableFooterViewLabel.font = kAppSmallLabelFont;
+	tableFooterViewLabel.textColor = [UIColor blackColor];
+	tableFooterViewLabel.textAlignment = UITextAlignmentLeft;
+	
+	[tableFooterView addSubview:tableFooterViewLabel];
+	
+	[tableFooterViewLabel release];
+	
+	UIButton *tableFooterViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	tableFooterViewButton.frame = CGRectMake(280.0f, 5.0f, 30.0f, 30.0f);
+	
+	[tableFooterViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+	[tableFooterViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
+	
+	[tableFooterView addSubview:tableFooterViewButton];
+	
+	self.tableView.tableFooterView = tableFooterView;
+	
+	[tableFooterView release];
+	
+	// * Log dates
+	
+	[self onLogDateChangedNotification]; // OBS! also loads sections and rows!
 	
 	// Start listening to certain notifications
 	
@@ -191,13 +253,19 @@
 	
 	self.startDate = [logDates objectForKey:@"StartDate"];
 	self.endDate = [logDates objectForKey:@"EndDate"];
-	
-	// also compose title for the select button
 		
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	formatter.dateStyle = NSDateFormatterShortStyle;
-		
-	self.navigationItem.leftBarButtonItem.title = [NSString stringWithFormat:@"%@-%@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
+	formatter.dateStyle = NSDateFormatterMediumStyle;
+	
+	NSString *logDatesString = [[NSString alloc] initWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
+	
+	UILabel *headerLabel = (UILabel *)[self.tableView.tableHeaderView viewWithTag:1];
+	headerLabel.text = logDatesString;
+	
+	UILabel *footerLabel = (UILabel *)[self.tableView.tableFooterView viewWithTag:1];
+	footerLabel.text = logDatesString;
+	
+	[logDatesString release];
 		
 	[formatter release];
 
@@ -430,6 +498,12 @@
 	[dbh release];
 	[formatter release];
 	[stringFormatter release];
+	
+	if (resultForTitles == nil) {
+	
+		[newSectionTitles addObject:@"There are no entries for this period."];
+		[newSections addObject:[NSArray arrayWithObjects:nil]];
+	}
 	
 	// finally, save the new sections
 	
