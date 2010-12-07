@@ -44,6 +44,11 @@
 		9A30170812AE3E8500EC03AD /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3016FB12AE3E8500EC03AD /* ASIHTTPRequest.m */; };
 		9A30170912AE3E8500EC03AD /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A3016FF12AE3E8500EC03AD /* ASIInputStream.m */; };
 		9A30170A12AE3E8500EC03AD /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A30170112AE3E8500EC03AD /* ASINetworkQueue.m */; };
+		9A30170D12AE3F5900EC03AD /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A30170C12AE3F5900EC03AD /* Reachability.m */; };
+		9A30171B12AE3F8B00EC03AD /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A30171A12AE3F8B00EC03AD /* CFNetwork.framework */; };
+		9A30171F12AE3FC000EC03AD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */; };
+		9A30172312AE3FD500EC03AD /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */; };
+		9A30172712AE400900EC03AD /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A30172612AE400900EC03AD /* libz.1.2.3.dylib */; };
 		9A421F15120C2B9200D370F8 /* FCTypedef.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F11120C2B9200D370F8 /* FCTypedef.m */; };
 		9A421F16120C2B9200D370F8 /* FCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F14120C2B9200D370F8 /* FCConstants.m */; };
 		9A421F28120C2F3900D370F8 /* FCNavigationBarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F27120C2F3900D370F8 /* FCNavigationBarHelper.m */; };
@@ -228,6 +233,12 @@
 		9A30170012AE3E8500EC03AD /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = Classes/ASIHTTPRequest/ASINetworkQueue.h; sourceTree = "<group>"; };
 		9A30170112AE3E8500EC03AD /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = Classes/ASIHTTPRequest/ASINetworkQueue.m; sourceTree = "<group>"; };
 		9A30170212AE3E8500EC03AD /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIProgressDelegate.h; path = Classes/ASIHTTPRequest/ASIProgressDelegate.h; sourceTree = "<group>"; };
+		9A30170B12AE3F5900EC03AD /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Classes/ASIHTTPRequest/External/Reachability/Reachability.h; sourceTree = "<group>"; };
+		9A30170C12AE3F5900EC03AD /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Classes/ASIHTTPRequest/External/Reachability/Reachability.m; sourceTree = "<group>"; };
+		9A30171A12AE3F8B00EC03AD /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		9A30172612AE400900EC03AD /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		9A421F10120C2B9200D370F8 /* FCProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCProtocols.h; path = Classes/FCProtocols.h; sourceTree = "<group>"; };
 		9A421F11120C2B9200D370F8 /* FCTypedef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCTypedef.m; path = Classes/FCTypedef.m; sourceTree = "<group>"; };
 		9A421F12120C2B9200D370F8 /* FCTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCTypedef.h; path = Classes/FCTypedef.h; sourceTree = "<group>"; };
@@ -438,6 +449,10 @@
 				9A5C811A124D03F500FA92ED /* QuartzCore.framework in Frameworks */,
 				9A5C8120124D043100FA92ED /* libsqlite3.dylib in Frameworks */,
 				9A9EDC50127C1FDA00322158 /* CoreFoundation.framework in Frameworks */,
+				9A30171B12AE3F8B00EC03AD /* CFNetwork.framework in Frameworks */,
+				9A30171F12AE3FC000EC03AD /* SystemConfiguration.framework in Frameworks */,
+				9A30172312AE3FD500EC03AD /* MobileCoreServices.framework in Frameworks */,
+				9A30172712AE400900EC03AD /* libz.1.2.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +536,10 @@
 				9A5C8119124D03F500FA92ED /* QuartzCore.framework */,
 				9A5C811F124D043100FA92ED /* libsqlite3.dylib */,
 				9A9EDC4F127C1FDA00322158 /* CoreFoundation.framework */,
+				9A30171A12AE3F8B00EC03AD /* CFNetwork.framework */,
+				9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */,
+				9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */,
+				9A30172612AE400900EC03AD /* libz.1.2.3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -581,6 +600,8 @@
 				9A30170012AE3E8500EC03AD /* ASINetworkQueue.h */,
 				9A30170112AE3E8500EC03AD /* ASINetworkQueue.m */,
 				9A30170212AE3E8500EC03AD /* ASIProgressDelegate.h */,
+				9A30170B12AE3F5900EC03AD /* Reachability.h */,
+				9A30170C12AE3F5900EC03AD /* Reachability.m */,
 			);
 			name = ASIHTTPRequest;
 			sourceTree = "<group>";
@@ -1291,6 +1312,7 @@
 				9A30170812AE3E8500EC03AD /* ASIHTTPRequest.m in Sources */,
 				9A30170912AE3E8500EC03AD /* ASIInputStream.m in Sources */,
 				9A30170A12AE3E8500EC03AD /* ASINetworkQueue.m in Sources */,
+				9A30170D12AE3F5900EC03AD /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
