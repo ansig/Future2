@@ -82,7 +82,7 @@
 	[newLeftButton release];
 	
 	// * Left button
-	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sort" style:UIBarButtonItemStylePlain target:self action:@selector(loadDateSelectorViewController)];
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sort" style:UIBarButtonItemStylePlain target:self action:@selector(loadSortByActionSheet)];
 	self.navigationItem.rightBarButtonItem = newRightButton;
 	[newRightButton release];
 	
@@ -234,6 +234,29 @@
 	[selectorViewController release];
 }
 
+-(void)loadSortByActionSheet {
+
+	UIActionSheet *sortByActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select what to sort on:" 
+																   delegate:self 
+														  cancelButtonTitle:nil
+													 destructiveButtonTitle:nil 
+														  otherButtonTitles:nil];
+	
+	
+	NSInteger count = FCSortByCount();
+	for (int i = 0; i < count; i++)
+		[sortByActionSheet addButtonWithTitle:FCSortByAsString(i)];
+	
+	[sortByActionSheet addButtonWithTitle:@"Cancel"];
+	sortByActionSheet.cancelButtonIndex = count;
+	
+	sortByActionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	[sortByActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+	
+	[sortByActionSheet release];
+}
+
 #pragma mark Orientation
 
 /*
@@ -312,6 +335,26 @@
 -(void)onCategoryUpdatedNotification {
 
 	[self.tableView reloadData];
+}
+
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	
+	if (buttonIndex != FCSortByCount()) {
+	
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		FCSortBy currentSortBy = [defaults integerForKey:FCDefaultLogSortBy];
+		
+		if (currentSortBy != buttonIndex) {
+			
+			[defaults setInteger:buttonIndex forKey:FCDefaultLogSortBy];
+		
+			[self loadSectionsAndRows];
+			[self.tableView reloadData];
+		}
+	}
 }
 
 #pragma mark FCGroupedTableSourceDelegate
@@ -430,35 +473,64 @@
 /*	Loads section titles and all entries within the start date - end date interval from the database */
 	
 	// release old
+	
 	if (self.sectionTitles != nil)
 		self.sectionTitles = nil;
 	
 	if (self.sections != nil)
 		self.sections = nil;
 	
-	// database handler
-	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	// load new
 	
-	// date formatter for converting dates to/from strings
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	formatter.dateFormat = FCFormatDate;
+	NSDictionary *newSectionTitlesAndSections = nil;
 	
-	// new titles and sections arrays
+	FCSortBy sortyBy = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultLogSortBy];
+	switch (sortyBy) {
+			
+		case FCSortByDate:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByDate];
+			break;
+			
+		case FCSortByCategory:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByCategory];
+			break;
+			
+		case FCSortByAttachment:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByAttachment];
+			break;
+			
+		default:
+			break;
+	}
+	
+	// save new
+	
+	self.sectionTitles = [newSectionTitlesAndSections objectForKey:@"SectionTitles"];
+	self.sections = [newSectionTitlesAndSections objectForKey:@"Sections"];
+}
+
+-(NSDictionary *)sectionsAndRowsSortedByDate {
+	
 	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
 	NSMutableArray *newSections = [[NSMutableArray alloc] init];
 	
-	// get all the distinct dates within the date range
-	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [formatter stringFromDate:self.startDate], [formatter stringFromDate:self.endDate]];
-	NSArray *resultForTitles = [dbh getColumns:@"distinct(date(timestamp))" fromTable:@"entries" withFilters:titlesFilter options:@"ORDER BY timestamp DESC"];
-	[titlesFilter release];
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
 	
 	// date formatter for formatting title strings from dates
-	NSDateFormatter *stringFormatter = [[NSDateFormatter alloc] init];
-	stringFormatter.dateStyle = NSDateFormatterLongStyle;
+	NSDateFormatter *titlesFormatter = [[NSDateFormatter alloc] init];
+	titlesFormatter.dateStyle = NSDateFormatterLongStyle;
 	
-	// loop through the section titles
-	for (NSDictionary *row in resultForTitles) {
+	// get all the distinct dates within the date range
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSArray *titlesResult = [dbh getColumns:@"distinct(date(timestamp))" fromTable:@"entries" withFilters:titlesFilter options:@"ORDER BY timestamp DESC"];
+	[titlesFilter release];
 	
+	for (NSDictionary *row in titlesResult) {
+		
 		// get the current date as a string
 		NSString *dateAsString;
 		
@@ -466,20 +538,20 @@
 		for (NSString *key in keys)
 			dateAsString = [row objectForKey:key];
 		
-		// format and add the title
-		NSDate *date = [formatter dateFromString:dateAsString];
-		[newSectionTitles addObject:[stringFormatter stringFromDate:date]];
+		// format and add the title to section titles array
+		NSDate *date = [dateFormatter dateFromString:dateAsString];
+		[newSectionTitles addObject:[titlesFormatter stringFromDate:date]];
 		
 		// get all the rows within the date range
-		NSString *rowFilters = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND date(timestamp) = '%@'", dateAsString];
-		NSArray *resultForRows = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowFilters options:@"ORDER BY timestamp DESC"];
-		[rowFilters release];
+		NSString *rowsFilters = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND date(timestamp) = '%@'", dateAsString];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilters options:@"ORDER BY timestamp DESC"];
+		[rowsFilters release];
 		
 		// add the result entries to an array
 		
 		NSMutableArray *section = [[NSMutableArray alloc] init];
-
-		for (NSDictionary *row in resultForRows) {
+		
+		for (NSDictionary *row in rowsResult) {
 			
 			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
 			[anEntry loadAttachments];
@@ -493,25 +565,50 @@
 		[section release];
 	}
 	
-	// release
+	[dbh release];
+	[dateFormatter release];
+	[titlesFormatter release];
+	
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
+	
+	[newSectionTitles release];
+	[newSections release];
+	
+	return sectionTitlesAndSections;
+}
+
+-(NSDictionary *)sectionsAndRowsSortedByCategory {
+	
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
 	[dbh release];
-	[formatter release];
-	[stringFormatter release];
 	
-	if (resultForTitles == nil) {
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
 	
-		[newSectionTitles addObject:@"There are no entries for this period."];
-		[newSections addObject:[NSArray arrayWithObjects:nil]];
-	}
-	
-	// finally, save the new sections
-	
-	self.sectionTitles = newSectionTitles;
 	[newSectionTitles release];
-	
-	self.sections = newSections;
 	[newSections release];
+	
+	return sectionTitlesAndSections;
+}
+
+-(NSDictionary *)sectionsAndRowsSortedByAttachment {
+
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	[dbh release];
+	
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
+	
+	[newSectionTitles release];
+	[newSections release];
+	
+	return sectionTitlesAndSections;
 }
 
 @end

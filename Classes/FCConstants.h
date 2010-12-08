@@ -234,6 +234,7 @@ extern NSString * const FCDefaultAgeDisplay; // integer
 // log/graph
 
 extern NSString * const FCDefaultLogDates; // dictionary with date objects
+extern NSString * const FCDefaultLogSortBy; // integer
 extern NSString * const FCDefaultGraphs; // array of dictionary objects
 
 extern NSString * const FCDefaultGraphSettingScrollRelatives; // boolean

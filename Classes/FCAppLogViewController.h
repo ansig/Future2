@@ -31,7 +31,7 @@
 #import "FCAppLogDateSelectorViewController.h"
 #import "FCAppEntryViewController.h"
 
-@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList> {
+@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate> {
 
 	NSDate *startDate;
 	NSDate *endDate;
@@ -53,10 +53,17 @@
 // View
 
 -(void)loadDateSelectorViewController;
+-(void)loadSortByActionSheet;
 
 // Notifications
 
 -(void)onLogDateChangedNotification;
 -(void)onConvertLogOrUnitChange;
+
+// Custom
+
+-(NSDictionary *)sectionsAndRowsSortedByDate;
+-(NSDictionary *)sectionsAndRowsSortedByCategory;
+-(NSDictionary *)sectionsAndRowsSortedByAttachment;
 
 @end
