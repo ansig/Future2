@@ -33,6 +33,7 @@
 @synthesize startDate, endDate;
 @synthesize tableView;
 @synthesize sectionTitles, sections;
+@synthesize searchBar, searchWasActive;
 
 #pragma mark Init
 
@@ -61,6 +62,8 @@
 	[sectionTitles release];
 	[sections release];
 	
+	[searchBar release];
+	
     [super dealloc];
 }
 
@@ -77,7 +80,7 @@
 	[view release];
 	
 	// * Left button
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(loadDateSelectorViewController)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(enterSearchMode)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	
@@ -97,6 +100,128 @@
 	[self.view addSubview:newTableView];
 	
 	[newTableView release];
+	
+	// * Table view header and footer
+	
+	[self loadTableHeaderAndFooter];
+	
+	// * Search bar and search display controller
+	
+	[self loadSearchBarAndSearchDisplayController];
+	
+	// * Log dates
+	
+	[self onLogDateChangedNotification]; // OBS! also loads sections and rows!
+	
+	// Start listening to certain notifications
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	
+	// FCEntryList
+	[notificationCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
+	[notificationCenter addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
+	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
+	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
+	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
+	
+	// custom
+	[notificationCenter addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
+}
+
+/*
+ // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+ - (void)viewDidLoad {
+ [super viewDidLoad];
+ }
+ */
+
+// NOTE: I put the operations for notifying whether rotation is allowed or not
+// in did/will respectively because of the custom solution in FCAppRootViewController's 
+// UINavigationBarDelegare and UITabBarDelegare methods to make sure
+// the view controllers gets callbacks.
+
+-(void)viewDidAppear:(BOOL)animated {
+
+	// Notify that rotation is allowed
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
+	
+	// Also make sure that the user default setting is not to show log on startup (makes FCAppRootViewController
+	// select whatever FCDefaultTabBarIndex the user has specified as the tab when loaded).
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:NO forKey:FCDefaultShowLog];
+	
+	// Reactivate search display
+	if (self.searchWasActive)
+		[self enterSearchMode];
+	
+	[super viewWillAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+	
+	// Rotation no longer allowed
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationNotAllowed object:self];
+	
+	// Deactivate search display
+	self.searchWasActive = self.searchDisplayController.active;
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController setActive:NO animated:YES];
+	
+	[super viewWillDisappear:animated];
+}
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)viewDidUnload {
+	// Release any retained subviews of the main view.
+	// e.g. self.myOutlet = nil;
+}
+
+-(void)loadDateSelectorViewController {
+	
+	// start listening to date changed notifications
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogDateChangedNotification) name:FCNotificationLogDateChanged object:nil];
+	
+	// create and present a new selector view controller
+	FCAppLogDateSelectorViewController *selectorViewController = [[FCAppLogDateSelectorViewController alloc] init];
+	selectorViewController.shouldAnimateContent = YES;
+	selectorViewController.title = @"Select log period";
+	
+	[self presentOverlayViewController:selectorViewController];
+	
+	[selectorViewController release];
+}
+
+-(void)loadSortByActionSheet {
+
+	UIActionSheet *sortByActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select what to sort on:" 
+																   delegate:self 
+														  cancelButtonTitle:nil
+													 destructiveButtonTitle:nil 
+														  otherButtonTitles:nil];
+	
+	
+	NSInteger count = FCSortByCount();
+	for (int i = 0; i < count; i++)
+		[sortByActionSheet addButtonWithTitle:FCSortByAsString(i)];
+	
+	[sortByActionSheet addButtonWithTitle:@"Cancel"];
+	sortByActionSheet.cancelButtonIndex = count;
+	
+	sortByActionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+	
+	[sortByActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+	
+	[sortByActionSheet release];
+}
+
+-(void)loadTableHeaderAndFooter {
 	
 	// * Table header view
 	
@@ -153,108 +278,22 @@
 	self.tableView.tableFooterView = tableFooterView;
 	
 	[tableFooterView release];
-	
-	// * Log dates
-	
-	[self onLogDateChangedNotification]; // OBS! also loads sections and rows!
-	
-	// Start listening to certain notifications
-	
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	
-	// FCEntryList
-	[notificationCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
-	[notificationCenter addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
-	[notificationCenter addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
-	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
-	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
-	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
-	
-	// custom
-	[notificationCenter addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
 }
 
-/*
- // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
- - (void)viewDidLoad {
- [super viewDidLoad];
- }
- */
-
-// NOTE: I put the operations for notifying whether rotation is allowed or not
-// in did/will respectively because of the custom solution in FCAppRootViewController's 
-// UINavigationBarDelegare and UITabBarDelegare methods to make sure
-// the view controllers gets callbacks.
-
--(void)viewDidAppear:(BOOL)animated {
-
-	// Notify that rotation is allowed
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
+-(void)loadSearchBarAndSearchDisplayController {
 	
-	// Also make sure that the user default setting is not to show log on startup (makes FCAppRootViewController
-	// select whatever FCDefaultTabBarIndex the user has specified as the tab when loaded).
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:NO forKey:FCDefaultShowLog];
+	UISearchBar *newSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	newSearchBar.tintColor = kTintColor;
+	newSearchBar.placeholder = @"Example: glucose";
 	
-	[super viewWillAppear:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated {
+	self.searchBar = newSearchBar;
 	
-	// Rotation no longer allowed
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationNotAllowed object:self];
+	[newSearchBar release];
 	
-	[super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
--(void)loadDateSelectorViewController {
-	
-	// start listening to date changed notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogDateChangedNotification) name:FCNotificationLogDateChanged object:nil];
-	
-	// create and present a new selector view controller
-	FCAppLogDateSelectorViewController *selectorViewController = [[FCAppLogDateSelectorViewController alloc] init];
-	selectorViewController.shouldAnimateContent = YES;
-	selectorViewController.title = @"Select log period";
-	
-	[self presentOverlayViewController:selectorViewController];
-	
-	[selectorViewController release];
-}
-
--(void)loadSortByActionSheet {
-
-	UIActionSheet *sortByActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select what to sort on:" 
-																   delegate:self 
-														  cancelButtonTitle:nil
-													 destructiveButtonTitle:nil 
-														  otherButtonTitles:nil];
-	
-	
-	NSInteger count = FCSortByCount();
-	for (int i = 0; i < count; i++)
-		[sortByActionSheet addButtonWithTitle:FCSortByAsString(i)];
-	
-	[sortByActionSheet addButtonWithTitle:@"Cancel"];
-	sortByActionSheet.cancelButtonIndex = count;
-	
-	sortByActionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-	
-	[sortByActionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
-	
-	[sortByActionSheet release];
+	UISearchDisplayController *newSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:newSearchBar contentsController:self];
+	newSearchDisplayController.delegate = self;
+	newSearchDisplayController.searchResultsDataSource = self;
+	newSearchDisplayController.searchResultsDelegate = self;
 }
 
 #pragma mark Orientation
@@ -413,7 +452,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		
 	// get the entry
 	NSInteger section = indexPath.section;
@@ -435,10 +474,10 @@
 	[anEntryViewController release];
 	
 	// finally deselect the row
-	[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+	[theTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)tableView:(UITableView *)theTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
@@ -448,11 +487,12 @@
 	
 	if ([[self.sections objectAtIndex:section] count] == 1) {
 		
-		// remove section array
+		// remove section array and section title
 		[sections removeObjectAtIndex:section];
+		[sectionTitles removeObjectAtIndex:section];
 		
 		// remove the section
-		[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+		[theTableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
 		
 	} else {
 		
@@ -460,7 +500,7 @@
 		[[sections objectAtIndex:section] removeObjectAtIndex:row];
 		
 		// remove the row
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[theTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	
 	// delete the entry from database afer delay that allows 
@@ -510,6 +550,17 @@
 	self.sectionTitles = [newSectionTitlesAndSections objectForKey:@"SectionTitles"];
 	self.sections = [newSectionTitlesAndSections objectForKey:@"Sections"];
 }
+
+#pragma mark UISearchDisplayControllerDelegate
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
+	
+	[self.searchBar removeFromSuperview];
+}
+
+#pragma mark Custom
 
 -(NSDictionary *)sectionsAndRowsSortedByDate {
 	
@@ -642,6 +693,47 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
+	
+	// get all the distinct categories within the date range
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(e1.timestamp) >= '%@' AND date(e1.timestamp) <= '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments as a ON e1.eid = a.owner_eid LEFT JOIN entries as e2 on e2.eid = a.attachment_eid LEFT JOIN categories as c ON e2.cid = c.cid"];
+	
+	NSArray *titlesResult = [dbh getColumns:@"e1.eid, c.name" fromTable:@"entries AS e1" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY c.name ASC"];
+	
+	[titlesFilter release];
+	[titlesJoints release];
+	
+	[dateFormatter release];
+	
+	for (NSDictionary *row in titlesResult) {
+		
+		NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", [row objectForKey:@"name"]];
+		[newSectionTitles addObject:title];
+		[title release];
+		
+		NSString *anEID = [row objectForKey:@"eid"];
+		
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid = '%@'", anEID];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
+		
+		NSMutableArray *section = [[NSMutableArray alloc] init];
+		
+		for (NSDictionary *row in rowsResult) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
+			[section addObject:anEntry];
+			[anEntry release];
+		}
+		
+		[newSections addObject:section];
+		[section release];
+	}
+	
 	[dbh release];
 	
 	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
@@ -650,6 +742,15 @@
 	[newSections release];
 	
 	return sectionTitlesAndSections;
+}
+
+-(void)enterSearchMode {
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationNotAllowed object:self];
+	
+	[self.view addSubview:self.searchBar];
+	
+	[self.searchDisplayController setActive:YES animated:YES];
 }
 
 @end

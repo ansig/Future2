@@ -31,7 +31,7 @@
 #import "FCAppLogDateSelectorViewController.h"
 #import "FCAppEntryViewController.h"
 
-@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate> {
+@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate, UISearchDisplayDelegate> {
 
 	NSDate *startDate;
 	NSDate *endDate;
@@ -40,6 +40,9 @@
 	
 	NSMutableArray *sectionTitles;
 	NSMutableArray *sections;
+	
+	UISearchBar *searchBar;
+	BOOL searchWasActive;
 }
 
 @property (nonatomic, retain) NSDate *startDate;
@@ -50,10 +53,16 @@
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableArray *sections;
 
+@property (nonatomic, retain) UISearchBar *searchBar;
+@property (nonatomic) BOOL searchWasActive;
+
 // View
 
 -(void)loadDateSelectorViewController;
 -(void)loadSortByActionSheet;
+
+-(void)loadTableHeaderAndFooter;
+-(void)loadSearchBarAndSearchDisplayController;
 
 // Notifications
 
@@ -65,5 +74,7 @@
 -(NSDictionary *)sectionsAndRowsSortedByDate;
 -(NSDictionary *)sectionsAndRowsSortedByCategory;
 -(NSDictionary *)sectionsAndRowsSortedByAttachment;
+
+-(void)enterSearchMode;
 
 @end
