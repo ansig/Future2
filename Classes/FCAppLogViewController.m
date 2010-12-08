@@ -543,9 +543,9 @@
 		[newSectionTitles addObject:[titlesFormatter stringFromDate:date]];
 		
 		// get all the rows within the date range
-		NSString *rowsFilters = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND date(timestamp) = '%@'", dateAsString];
-		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilters options:@"ORDER BY timestamp DESC"];
-		[rowsFilters release];
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND date(timestamp) = '%@'", dateAsString];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
 		
 		// add the result entries to an array
 		
@@ -583,6 +583,45 @@
 	NSMutableArray *newSections = [[NSMutableArray alloc] init];
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
+	
+	// get all the distinct categories within the date range
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"LEFT JOIN categories ON categories.cid = entries.cid"];
+	
+	NSArray *titlesResult = [dbh getColumns:@"distinct(entries.cid), categories.name" fromTable:@"entries" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY categories.name ASC"];
+	
+	[titlesFilter release];
+	[titlesJoints release];
+	
+	[dateFormatter release];
+	
+	for (NSDictionary *row in titlesResult) {
+		
+		[newSectionTitles addObject:[row objectForKey:@"name"]];
+		
+		NSString *aCID = [row objectForKey:@"cid"];
+		
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND cid = '%@'", aCID];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
+		
+		NSMutableArray *section = [[NSMutableArray alloc] init];
+		
+		for (NSDictionary *row in rowsResult) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
+			[section addObject:anEntry];
+			[anEntry release];
+		}
+		
+		[newSections addObject:section];
+		[section release];
+	}
 	
 	[dbh release];
 	
