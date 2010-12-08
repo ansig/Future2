@@ -390,11 +390,13 @@
 	
 	FCEntry *anEntry = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
 	// default is to use the entry's own description, but uses converted description
 	// if the user has enabled the convert log option
-	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
+	cell.textLabel.text = [defaults boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
-	cell.detailTextLabel.text = anEntry.timeDescription;
+	cell.detailTextLabel.text = [defaults integerForKey:FCDefaultLogSortBy] == FCSortByDate ? anEntry.timeDescription : anEntry.timestampDescription;
 	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
 	
 	if ([anEntry.attachments count] > 0) {
