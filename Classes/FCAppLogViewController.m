@@ -33,6 +33,7 @@
 @synthesize startDate, endDate;
 @synthesize tableView;
 @synthesize sectionTitles, sections;
+@synthesize filteredSectionTitles, filteredSections;
 @synthesize searchBar, searchWasActive;
 
 #pragma mark Init
@@ -61,6 +62,9 @@
 	
 	[sectionTitles release];
 	[sections release];
+	
+	[filteredSectionTitles release];
+	[filteredSections release];
 	
 	[searchBar release];
 	
@@ -225,22 +229,22 @@
 	
 	// * Table header view
 	
-	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
-	tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	tableHeaderView.backgroundColor = [UIColor clearColor];
 	
-	UILabel *tableHeaderViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 270.0f, 40.0f)];
+	UILabel *tableHeaderViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, 320.0f, 40.0f)];
 	tableHeaderViewLabel.tag = 1;
-	tableHeaderViewLabel.backgroundColor = [UIColor clearColor];
+	tableHeaderViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
 	tableHeaderViewLabel.font = kAppSmallLabelFont;
 	tableHeaderViewLabel.textColor = [UIColor blackColor];
-	tableHeaderViewLabel.textAlignment = UITextAlignmentLeft;
+	tableHeaderViewLabel.textAlignment = UITextAlignmentCenter;
 	
 	[tableHeaderView addSubview:tableHeaderViewLabel];
 	
 	[tableHeaderViewLabel release];
 	
 	UIButton *tableHeaderViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	tableHeaderViewButton.frame = CGRectMake(280.0f, 5.0f, 30.0f, 30.0f);
+	tableHeaderViewButton.frame = CGRectMake(280.0f, 9.0f, 30.0f, 30.0f);
 	
 	[tableHeaderViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
 	[tableHeaderViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -253,22 +257,22 @@
 	
 	// * Table footer view
 	
-	UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
-	tableFooterView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	tableFooterView.backgroundColor = [UIColor clearColor];
 	
-	UILabel *tableFooterViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 275.0f, 40.0f)];
+	UILabel *tableFooterViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, 320.0f, 40.0f)];
 	tableFooterViewLabel.tag = 1;
-	tableFooterViewLabel.backgroundColor = [UIColor clearColor];
+	tableFooterViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
 	tableFooterViewLabel.font = kAppSmallLabelFont;
 	tableFooterViewLabel.textColor = [UIColor blackColor];
-	tableFooterViewLabel.textAlignment = UITextAlignmentLeft;
+	tableFooterViewLabel.textAlignment = UITextAlignmentCenter;
 	
 	[tableFooterView addSubview:tableFooterViewLabel];
 	
 	[tableFooterViewLabel release];
 	
 	UIButton *tableFooterViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	tableFooterViewButton.frame = CGRectMake(280.0f, 5.0f, 30.0f, 30.0f);
+	tableFooterViewButton.frame = CGRectMake(280.0f, 9.0f, 30.0f, 30.0f);
 	
 	[tableFooterViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
 	[tableFooterViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -409,17 +413,26 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
+	if (self.searchDisplayController.active)
+		return [self.filteredSections count];
+	
 	return [self.sections count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	
+	if (self.searchDisplayController.active)
+		return [[self.filteredSections objectAtIndex:section] count];
     
 	return [[self.sections objectAtIndex:section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	
-	return [sectionTitles objectAtIndex:section];
+	if (self.searchDisplayController.active)
+		return [self.filteredSectionTitles objectAtIndex:section];
+	
+	return [self.sectionTitles objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -436,7 +449,9 @@
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	FCEntry *anEntry = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	BOOL searching = self.searchDisplayController.active;
+	
+	FCEntry *anEntry = searching ? [[self.filteredSections objectAtIndex:section] objectAtIndex:row] : [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
@@ -467,7 +482,9 @@
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	
-	FCEntry *anEntry = [[self.sections objectAtIndex:section] objectAtIndex:row];
+	BOOL searching = self.searchDisplayController.active;
+	
+	FCEntry *anEntry = searching ? [[self.filteredSections objectAtIndex:section] objectAtIndex:row] : [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	// create an entry input view controller
 	FCAppEntryViewController *anEntryViewController = [[FCAppEntryViewController alloc] initWithEntry:anEntry];
@@ -566,7 +583,31 @@
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
 	
+	if (self.filteredSectionTitles != nil)
+		self.filteredSectionTitles = nil;
+	
+	if (self.filteredSections != nil)
+		self.filteredSections = nil;
+}
+
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+
 	[self animateSearchBarFadeOut];
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    
+	BOOL searchSuccess = [self doSearchWithSearchString:searchString searchScope:0];
+	
+	// Return YES to cause the search result table view to be reloaded.
+    return searchSuccess;
+}
+
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return NO;
 }
 
 #pragma mark Custom
@@ -753,6 +794,190 @@
 	return sectionTitlesAndSections;
 }
 
+-(NSDictionary *)sectionsAndRowsSortedByDateWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
+	
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
+	
+	// date formatter for formatting title strings from dates
+	NSDateFormatter *titlesFormatter = [[NSDateFormatter alloc] init];
+	titlesFormatter.dateStyle = NSDateFormatterLongStyle;
+	
+	// get all the distinct dates within the date range
+	NSString *searchFilter = [[self searchFilterWithSearchString:searchString searchScope:searchOption] retain];	
+	NSString *joint = [[NSString alloc] initWithString:@"LEFT JOIN categories ON entries.cid = categories.cid"];
+					   
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND (%@)", searchFilter];
+	NSArray *titlesResult = [dbh getColumns:@"distinct(date(timestamp))" fromTable:@"entries" withJoints:joint filters:titlesFilter options:@"ORDER BY timestamp DESC"];
+	[titlesFilter release];
+	
+	for (NSDictionary *row in titlesResult) {
+		
+		// get the current date as a string
+		NSString *dateAsString = [row objectForKey:@"(date(timestamp))"];
+		
+		// format and add the title to section titles array
+		NSDate *date = [dateFormatter dateFromString:dateAsString];
+		[newSectionTitles addObject:[titlesFormatter stringFromDate:date]];
+		
+		// get all the rows within the date range
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND date(timestamp) = '%@' AND (%@)", dateAsString, searchFilter];
+		NSArray *rowsResult = [dbh getColumns:@"eid, string, integer, decimal, timestamp, entries.created, entries.modified, entries.uid, entries.cid" fromTable:@"entries" withJoints:joint filters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
+		
+		// add the result entries to an array
+		
+		NSMutableArray *section = [[NSMutableArray alloc] init];
+		
+		for (NSDictionary *row in rowsResult) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
+			[section addObject:anEntry];
+			[anEntry release];
+		}
+		
+		// add the array to the sections array
+		
+		[newSections addObject:section];
+		[section release];
+	}
+	
+	[searchFilter release];
+	[joint release];
+	
+	[dbh release];
+	[dateFormatter release];
+	[titlesFormatter release];
+	
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
+	
+	[newSectionTitles release];
+	[newSections release];
+	
+	return sectionTitlesAndSections;
+}
+
+-(NSDictionary *)sectionsAndRowsSortedByCategoryWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
+	
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
+	
+	// get all the distinct categories within the date range
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"LEFT JOIN categories ON categories.cid = entries.cid"];
+	
+	NSArray *titlesResult = [dbh getColumns:@"distinct(entries.cid), categories.name" fromTable:@"entries" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY categories.name ASC"];
+	
+	[titlesFilter release];
+	[titlesJoints release];
+	
+	[dateFormatter release];
+	
+	for (NSDictionary *row in titlesResult) {
+		
+		[newSectionTitles addObject:[row objectForKey:@"name"]];
+		
+		NSString *aCID = [row objectForKey:@"cid"];
+		
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND cid = '%@'", aCID];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
+		
+		NSMutableArray *section = [[NSMutableArray alloc] init];
+		
+		for (NSDictionary *row in rowsResult) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
+			[section addObject:anEntry];
+			[anEntry release];
+		}
+		
+		[newSections addObject:section];
+		[section release];
+	}
+	
+	[dbh release];
+	
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
+	
+	[newSectionTitles release];
+	[newSections release];
+	
+	return sectionTitlesAndSections;
+}
+
+-(NSDictionary *)sectionsAndRowsSortedByAttachmentWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
+	
+	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
+	NSMutableArray *newSections = [[NSMutableArray alloc] init];
+	
+	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
+	
+	// date formatter for converting dates to/from strings
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	dateFormatter.dateFormat = FCFormatDate;
+	
+	// get all the distinct categories within the date range
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(e1.timestamp) >= '%@' AND date(e1.timestamp) <= '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments as a ON e1.eid = a.owner_eid LEFT JOIN entries as e2 on e2.eid = a.attachment_eid LEFT JOIN categories as c ON e2.cid = c.cid"];
+	
+	NSArray *titlesResult = [dbh getColumns:@"e1.eid, c.name" fromTable:@"entries AS e1" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY c.name ASC"];
+	
+	[titlesFilter release];
+	[titlesJoints release];
+	
+	[dateFormatter release];
+	
+	for (NSDictionary *row in titlesResult) {
+		
+		NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", [row objectForKey:@"name"]];
+		[newSectionTitles addObject:title];
+		[title release];
+		
+		NSString *anEID = [row objectForKey:@"eid"];
+		
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid = '%@'", anEID];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		[rowsFilter release];
+		
+		NSMutableArray *section = [[NSMutableArray alloc] init];
+		
+		for (NSDictionary *row in rowsResult) {
+			
+			FCEntry *anEntry = [[FCEntry alloc] initWithDictionary:row];
+			[anEntry loadAttachments];
+			[section addObject:anEntry];
+			[anEntry release];
+		}
+		
+		[newSections addObject:section];
+		[section release];
+	}
+	
+	[dbh release];
+	
+	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
+	
+	[newSectionTitles release];
+	[newSections release];
+	
+	return sectionTitlesAndSections;
+}
+
 -(void)enterSearchMode {
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationNotAllowed object:self];
@@ -760,6 +985,47 @@
 	[self animateSearchBarFadeIn];
 	
 	[self.searchDisplayController setActive:YES animated:YES];
+}
+
+-(BOOL)doSearchWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
+
+	if (self.filteredSectionTitles != nil)
+		self.filteredSectionTitles = nil;
+	
+	if (self.filteredSections != nil)
+		self.filteredSections = nil;
+	
+	NSDictionary *newSectionTitlesAndSections = nil;
+	
+	FCSortBy sortyBy = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultLogSortBy];
+	switch (sortyBy) {
+			
+		case FCSortByDate:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByDateWithSearchString:searchString searchScope:searchOption];
+			break;
+			
+		case FCSortByCategory:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByCategoryWithSearchString:searchString searchScope:searchOption];
+			break;
+			
+		case FCSortByAttachment:
+			newSectionTitlesAndSections = [self sectionsAndRowsSortedByAttachmentWithSearchString:searchString searchScope:searchOption];
+			break;
+			
+		default:
+			break;
+	}
+	
+	self.filteredSectionTitles = [newSectionTitlesAndSections objectForKey:@"SectionTitles"];
+	self.filteredSections = [newSectionTitlesAndSections objectForKey:@"Sections"];
+	
+	return YES;
+}
+
+-(NSString *)searchFilterWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
+/*	Composes a filter for use in SQL queries. */
+
+	return [NSString stringWithFormat:@"string LIKE '%@%%' OR integer LIKE '%@%%' OR decimal LIKE '%@%%' OR categories.name LIKE '%@%%'", searchString, searchString, searchString, searchString];
 }
 
 @end
