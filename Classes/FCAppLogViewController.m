@@ -296,15 +296,24 @@
 	newSearchDisplayController.searchResultsDelegate = self;
 }
 
-#pragma mark Orientation
+#pragma mark Animation
 
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-   
-	// Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+-(void)animateSearchBarFadeIn {
+	
+	self.searchBar.alpha = 0.0f;
+	
+	[self.view addSubview:self.searchBar];
+	
+	[UIView animateWithDuration:0.25f 
+					 animations:^ { self.searchBar.alpha = 1.0f; } ];
 }
-*/
+
+-(void)animateSearchBarFadeOut {
+
+	[UIView animateWithDuration:0.25f 
+					 animations:^ { self.searchBar.alpha = 0.0f; } 
+					 completion:^ (BOOL finished) { [self.searchBar removeFromSuperview]; } ];
+}
 
 #pragma mark Notifications
 
@@ -557,7 +566,7 @@
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
 	
-	[self.searchBar removeFromSuperview];
+	[self animateSearchBarFadeOut];
 }
 
 #pragma mark Custom
@@ -748,7 +757,7 @@
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationNotAllowed object:self];
 	
-	[self.view addSubview:self.searchBar];
+	[self animateSearchBarFadeIn];
 	
 	[self.searchDisplayController setActive:YES animated:YES];
 }

@@ -69,6 +69,11 @@
 -(void)onLogDateChangedNotification;
 -(void)onConvertLogOrUnitChange;
 
+// Animation
+
+-(void)animateSearchBarFadeIn;
+-(void)animateSearchBarFadeOut;
+
 // Custom
 
 -(NSDictionary *)sectionsAndRowsSortedByDate;
