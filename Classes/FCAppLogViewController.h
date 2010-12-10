@@ -31,7 +31,7 @@
 #import "FCAppLogDateSelectorViewController.h"
 #import "FCAppEntryViewController.h"
 
-@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate, UISearchDisplayDelegate> {
+@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate> {
 
 	NSDate *startDate;
 	NSDate *endDate;

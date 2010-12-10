@@ -257,7 +257,7 @@
 	
 	// * Table footer view
 	
-	UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 48.0f)];
 	tableFooterView.backgroundColor = [UIColor clearColor];
 	
 	UILabel *tableFooterViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, 320.0f, 40.0f)];
@@ -289,6 +289,7 @@
 	UISearchBar *newSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
 	newSearchBar.tintColor = kTintColor;
 	newSearchBar.placeholder = @"Example: glucose";
+	newSearchBar.delegate = self;
 	
 	self.searchBar = newSearchBar;
 	
@@ -304,18 +305,32 @@
 
 -(void)animateSearchBarFadeIn {
 	
+	// This is specifically designed and timed to fit with
+	// the searchDisplayController's setActive animation!
+	
 	self.searchBar.alpha = 0.0f;
 	
 	[self.view addSubview:self.searchBar];
 	
-	[UIView animateWithDuration:0.25f 
-					 animations:^ { self.searchBar.alpha = 1.0f; } ];
+	// add 44 to table view height to cover gap to tab bar when the navigation bar disappears
+	CGRect newFrame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height + 44.0f);
+	CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - 44.0f);
+	
+	[UIView animateWithDuration:0.3f 
+					 animations:^ { self.searchBar.alpha = 1.0f; self.tableView.frame = newFrame; self.tableView.contentOffset = newOffset; } ];
 }
 
 -(void)animateSearchBarFadeOut {
+	
+	// This is specifically designed and timed to fit with
+	// the searchDisplayController's setActive animation!
+	
+	// remove 44 to table view height to adjust for when the navigation bar re-appears 
+	CGRect newFrame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height - 44);
+	CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + 44.0f);
 
-	[UIView animateWithDuration:0.25f 
-					 animations:^ { self.searchBar.alpha = 0.0f; } 
+	[UIView animateWithDuration:0.3f 
+					 animations:^ { self.searchBar.alpha = 0.0f; self.tableView.frame = newFrame; self.tableView.contentOffset = newOffset; } 
 					 completion:^ (BOOL finished) { [self.searchBar removeFromSuperview]; } ];
 }
 
@@ -509,13 +524,24 @@
 	NSInteger row = indexPath.row;
 	
 	// retain the entry
-	FCEntry *entry = [[[sections objectAtIndex:section] objectAtIndex:row] retain];
+	BOOL searching = self.searchDisplayController.active;
 	
-	if ([[self.sections objectAtIndex:section] count] == 1) {
+	FCEntry *entry = searching ? [[[self.filteredSections objectAtIndex:section] objectAtIndex:row] retain] : [[[self.sections objectAtIndex:section] objectAtIndex:row] retain];
+	
+	NSInteger count = searching ? [[self.filteredSections objectAtIndex:section] count] : [[self.sections objectAtIndex:section] count];
+	if (count == 1) {
 		
 		// remove section array and section title
-		[sections removeObjectAtIndex:section];
-		[sectionTitles removeObjectAtIndex:section];
+		if (searching) {
+			
+			[filteredSections removeObjectAtIndex:section];
+			[filteredSectionTitles removeObjectAtIndex:section];
+			
+		} else {
+		
+			[sections removeObjectAtIndex:section];
+			[sectionTitles removeObjectAtIndex:section];
+		}
 		
 		// remove the section
 		[theTableView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
@@ -523,7 +549,11 @@
 	} else {
 		
 		// remove the entry object from sections array
-		[[sections objectAtIndex:section] removeObjectAtIndex:row];
+		if (searching)
+			[[filteredSections objectAtIndex:section] removeObjectAtIndex:row];
+
+		else
+			[[sections objectAtIndex:section] removeObjectAtIndex:row];
 		
 		// remove the row
 		[theTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -597,10 +627,7 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     
-	BOOL searchSuccess = [self doSearchWithSearchString:searchString searchScope:0];
-	
-	// Return YES to cause the search result table view to be reloaded.
-    return searchSuccess;
+    return NO;
 }
 
 
@@ -608,6 +635,16 @@
     
     // Return YES to cause the search result table view to be reloaded.
     return NO;
+}
+
+#pragma mark UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
+
+	BOOL searchSuccess = [self doSearchWithSearchString:theSearchBar.text searchScope:theSearchBar.selectedScopeButtonIndex];
+	
+	if (searchSuccess)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark Custom
@@ -748,29 +785,44 @@
 	dateFormatter.dateFormat = FCFormatDate;
 	
 	// get all the distinct categories within the date range
-	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(e1.timestamp) >= '%@' AND date(e1.timestamp) <= '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
-	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments as a ON e1.eid = a.owner_eid LEFT JOIN entries as e2 on e2.eid = a.attachment_eid LEFT JOIN categories as c ON e2.cid = c.cid"];
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(entries.timestamp) >= '%@' AND date(entries.timestamp) <= '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments ON entries.eid = attachments.owner_eid LEFT JOIN entries as attached_entries on attached_entries.eid = attachments.attachment_eid LEFT JOIN categories ON attached_entries.cid = categories.cid"];
 	
-	NSArray *titlesResult = [dbh getColumns:@"e1.eid, c.name" fromTable:@"entries AS e1" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY c.name ASC"];
+	NSArray *titlesResult = [dbh getColumns:@"entries.eid, categories.name" fromTable:@"entries" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY categories.name ASC"];
 	
 	[titlesFilter release];
 	[titlesJoints release];
 	
 	[dateFormatter release];
 	
+	NSMutableArray *section = nil;
+	NSString *previousSectionName = nil;
 	for (NSDictionary *row in titlesResult) {
 		
-		NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", [row objectForKey:@"name"]];
-		[newSectionTitles addObject:title];
-		[title release];
+		NSString *sectionName = [row objectForKey:@"name"];
+		
+		if (![sectionName isEqualToString:previousSectionName]) {
+			
+			// start a new section
+		
+			NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", sectionName];
+			[newSectionTitles addObject:title];
+			[title release];
+			
+			if (section != nil) {
+				
+				[newSections addObject:section];
+				[section release];
+			}
+		
+			section = [[NSMutableArray alloc] init];
+		}
 		
 		NSString *anEID = [row objectForKey:@"eid"];
 		
 		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid = '%@'", anEID];
 		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
 		[rowsFilter release];
-		
-		NSMutableArray *section = [[NSMutableArray alloc] init];
 		
 		for (NSDictionary *row in rowsResult) {
 			
@@ -780,8 +832,7 @@
 			[anEntry release];
 		}
 		
-		[newSections addObject:section];
-		[section release];
+		previousSectionName = sectionName;
 	}
 	
 	[dbh release];
@@ -871,20 +922,15 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	// date formatter for converting dates to/from strings
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	dateFormatter.dateFormat = FCFormatDate;
-	
 	// get all the distinct categories within the date range
-	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments)", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
-	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"LEFT JOIN categories ON categories.cid = entries.cid"];
+	NSString *searchFilter = [[self searchFilterWithSearchString:searchString searchScope:searchOption] retain];
+	NSString *joint = [[NSString alloc] initWithFormat:@"LEFT JOIN categories ON categories.cid = entries.cid"];
 	
-	NSArray *titlesResult = [dbh getColumns:@"distinct(entries.cid), categories.name" fromTable:@"entries" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY categories.name ASC"];
+	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND (%@)", searchFilter];
+	
+	NSArray *titlesResult = [dbh getColumns:@"distinct(entries.cid), categories.name" fromTable:@"entries" withJoints:joint filters:titlesFilter options:@"ORDER BY categories.name ASC"];
 	
 	[titlesFilter release];
-	[titlesJoints release];
-	
-	[dateFormatter release];
 	
 	for (NSDictionary *row in titlesResult) {
 		
@@ -892,8 +938,8 @@
 		
 		NSString *aCID = [row objectForKey:@"cid"];
 		
-		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND cid = '%@'", aCID];
-		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND entries.cid = '%@' AND (%@)", aCID, searchFilter];
+		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withJoints:joint filters:rowsFilter options:@"ORDER BY timestamp DESC"];
 		[rowsFilter release];
 		
 		NSMutableArray *section = [[NSMutableArray alloc] init];
@@ -909,6 +955,9 @@
 		[newSections addObject:section];
 		[section release];
 	}
+	
+	[searchFilter release];
+	[joint release];
 	
 	[dbh release];
 	
@@ -927,34 +976,45 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	// date formatter for converting dates to/from strings
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	dateFormatter.dateFormat = FCFormatDate;
-	
 	// get all the distinct categories within the date range
-	NSString *titlesFilter = [[NSString alloc] initWithFormat:@"date(e1.timestamp) >= '%@' AND date(e1.timestamp) <= '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate]];
-	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments as a ON e1.eid = a.owner_eid LEFT JOIN entries as e2 on e2.eid = a.attachment_eid LEFT JOIN categories as c ON e2.cid = c.cid"];
+	NSString *searchFilter = [[self searchFilterWithSearchString:searchString searchScope:searchOption] retain];
+	NSString *titlesJoints = [[NSString alloc] initWithFormat:@"INNER JOIN attachments ON entries.eid = attachments.owner_eid LEFT JOIN entries as attached_entries on attached_entries.eid = attachments.attachment_eid LEFT JOIN categories ON attached_entries.cid = categories.cid"];
 	
-	NSArray *titlesResult = [dbh getColumns:@"e1.eid, c.name" fromTable:@"entries AS e1" withJoints:titlesJoints filters:titlesFilter options:@"ORDER BY c.name ASC"];
+	NSArray *titlesResult = [dbh getColumns:@"entries.eid, categories.name" fromTable:@"entries" withJoints:titlesJoints filters:searchFilter options:@"ORDER BY categories.name ASC"];
 	
-	[titlesFilter release];
 	[titlesJoints release];
+	[searchFilter release];
 	
-	[dateFormatter release];
-	
+	NSMutableArray *section = nil;
+	NSString *previousSectionName = nil;
 	for (NSDictionary *row in titlesResult) {
 		
-		NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", [row objectForKey:@"name"]];
-		[newSectionTitles addObject:title];
-		[title release];
+		NSString *sectionName = [row objectForKey:@"name"];
+		
+		NSLog(@"sectionName = %@", sectionName);
+		
+		if (![sectionName isEqualToString:previousSectionName]) {
+			
+			// start a new section
+			
+			NSString *title = [[NSString alloc] initWithFormat:@"Have %@'s attached:", sectionName];
+			[newSectionTitles addObject:title];
+			[title release];
+			
+			if (section != nil) {
+				
+				[newSections addObject:section];
+				[section release];
+			}
+			
+			section = [[NSMutableArray alloc] init];
+		}
 		
 		NSString *anEID = [row objectForKey:@"eid"];
 		
 		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid = '%@'", anEID];
 		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
 		[rowsFilter release];
-		
-		NSMutableArray *section = [[NSMutableArray alloc] init];
 		
 		for (NSDictionary *row in rowsResult) {
 			
@@ -964,8 +1024,7 @@
 			[anEntry release];
 		}
 		
-		[newSections addObject:section];
-		[section release];
+		previousSectionName = sectionName;
 	}
 	
 	[dbh release];
@@ -1025,7 +1084,7 @@
 -(NSString *)searchFilterWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption {
 /*	Composes a filter for use in SQL queries. */
 
-	return [NSString stringWithFormat:@"string LIKE '%@%%' OR integer LIKE '%@%%' OR decimal LIKE '%@%%' OR categories.name LIKE '%@%%'", searchString, searchString, searchString, searchString];
+	return [NSString stringWithFormat:@"entries.string LIKE '%@%%' OR entries.integer LIKE '%@%%' OR entries.decimal LIKE '%@%%' OR categories.name LIKE '%@%%'", searchString, searchString, searchString, searchString];
 }
 
 @end
