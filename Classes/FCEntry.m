@@ -37,6 +37,7 @@
 @synthesize timestamp, created;
 @synthesize cid, uid;
 @synthesize attachments;
+@synthesize category, unit;
 
 #pragma mark Class
 
@@ -252,15 +253,20 @@
 	
 	[attachments release];
 	
+	[category release];
+	[unit release];
+	
 	[super dealloc];
 }
 
 #pragma mark Get
 
 -(FCCategory *)category {
-/*	Returns the entry's corresponding category as a new FCCategory object */
+/*	Returns the entry's corresponding category as a new FCCategory object.
+	Loads and retains the category object if it was not already loaded. */
 	
-	FCCategory *category = [FCCategory categoryWithCID:self.cid];
+	if (category == nil)
+		self.category = [FCCategory categoryWithCID:self.cid];
 	
 	return category;
 }
@@ -269,10 +275,16 @@
 /*	Returns the entry's unit or the corresponding category's unit if no unit has been set. 
 	Nil if there is no unit. */
 	
-	if (self.uid == nil)
-		return [FCUnit unitWithUID:self.category.uid];
+	if (unit == nil) {
 		
-	return [FCUnit unitWithUID:self.uid];
+		if (self.uid == nil)
+			self.unit = [FCUnit unitWithUID:self.category.uid];
+	
+		else
+			self.unit = [FCUnit unitWithUID:self.uid];
+	}
+	
+	return unit;
 }
 
 #pragma mark NSCopying
@@ -306,6 +318,14 @@
 }
 
 #pragma mark Custom
+
+#pragma mark MemoryMgmt
+
+-(void)didReceiveMemoryWarning {
+	
+	self.unit = nil;
+	self.category = nil;
+}
 
 #pragma mark Read/write
 
@@ -376,9 +396,8 @@
 	} else if (self.decimal != nil) {
 		
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		FCCategory *category = self.category;
-		[formatter setMinimumFractionDigits:[category.decimals intValue]];
-		[formatter setMaximumFractionDigits:[category.decimals intValue]];
+		[formatter setMinimumFractionDigits:[self.category.decimals intValue]];
+		[formatter setMaximumFractionDigits:[self.category.decimals intValue]];
 		[formatter setDecimalSeparator:@"."]; // makes sure the decimal separator is always a dot regardless of location, or there will be an SQl error on insert
 		
 		NSString *value = [[NSString alloc] initWithFormat:@"%@", [formatter stringFromNumber:self.decimal]];
@@ -803,6 +822,8 @@
 		}
 		
 		self.uid = newUnit.uid;
+		
+		self.unit = nil;
 	}
 }
 
@@ -823,14 +844,12 @@
 	// numbers
 	} else if (self.integer != nil || self.decimal != nil) {
 		
-		FCCategory *category = self.category;
-		
 		FCUnitConverter *converter;
 		FCUnit *categoryUnit;
 		if (doConvert) {
 			
-			converter = [[FCUnitConverter alloc] initWithTarget:category.unit];
-			categoryUnit = category.unit;
+			converter = [[FCUnitConverter alloc] initWithTarget:self.category.unit];
+			categoryUnit = self.category.unit;
 		}
 		
 		// integer
@@ -846,7 +865,7 @@
 			
 			NSDecimal decimalValue = [trueDecimal decimalValue];
 			NSDecimal roundedDecimalValue;
-			NSDecimalRound(&roundedDecimalValue, &decimalValue, [category.decimals integerValue], NSRoundPlain);
+			NSDecimalRound(&roundedDecimalValue, &decimalValue, [self.category.decimals integerValue], NSRoundPlain);
 			
 			description = [[NSString alloc] initWithFormat:@"%@", NSDecimalString(&roundedDecimalValue, FCUserLocale())];
 		}
@@ -854,11 +873,11 @@
 		if (addExtensions) {
 			
 			// add unit abbreviation
-			FCUnit *unit = doConvert ? categoryUnit : self.unit;
-			if (unit) {
+			FCUnit *trueUnit = doConvert ? categoryUnit : self.unit;
+			if (trueUnit) {
 				
 				NSString *oldDescription = description;
-				description = [[NSString alloc] initWithFormat:@"%@ %@", oldDescription, unit.abbreviation];
+				description = [[NSString alloc] initWithFormat:@"%@ %@", oldDescription, trueUnit.abbreviation];
 				[oldDescription release];
 			}
 		}

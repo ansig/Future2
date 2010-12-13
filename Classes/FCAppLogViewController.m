@@ -74,11 +74,29 @@
 #pragma mark Memory warning
 
 - (void)didReceiveMemoryWarning {
+	
+	// Log
+	NSLog(@"FCAppLogViewController -didReceiveMemoryWarning!");
+	
+	// Release any superfluous objects from all entries currently in memory
+	
+	for (NSMutableArray *section in self.sections) {
+	
+		for (FCEntry *entry in section)
+			[entry didReceiveMemoryWarning];
+	}
+	
+	if (self.searchDisplayController.active) {
+	
+		for (NSMutableArray *section in self.filteredSections) {
+			
+			for (FCEntry *entry in section)
+				[entry didReceiveMemoryWarning];
+		}
+	}
+	
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-	NSLog(@"FCAppLogViewController -didReceiveMemoryWarning!");
 }
 
 #pragma mark View

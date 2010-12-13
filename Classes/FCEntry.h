@@ -51,6 +51,9 @@
 	NSString *uid;
 	
 	NSMutableArray *attachments;
+	
+	FCCategory *category;
+	FCUnit *unit;
 }
 
 @property (nonatomic, assign) FCEntry *owner;
@@ -71,6 +74,9 @@
 
 @property (nonatomic, retain) NSMutableArray *attachments;
 
+@property (nonatomic, retain) FCCategory *category;
+@property (nonatomic, retain) FCUnit *unit;
+
 // Class
 +(FCEntry *)lastEntryWithCID:(NSString *)theCID;
 +(FCEntry *)newEntryWithCID:(NSString *)theCID;
@@ -81,12 +87,10 @@
 
 -(id)initWithDictionary:(NSDictionary *)theDictionary;
 
-// Get
-
--(FCCategory *)category;
--(FCUnit *)unit;
-
 // Custom
+
+// memorymgmt
+-(void)didReceiveMemoryWarning;
 
 // read/write
 
