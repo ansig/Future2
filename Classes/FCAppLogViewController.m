@@ -835,6 +835,10 @@
 		previousSectionName = sectionName;
 	}
 	
+	// adding the last or only section
+	[newSections addObject:section];
+	[section release];
+	
 	[dbh release];
 	
 	NSDictionary *sectionTitlesAndSections = [NSDictionary dictionaryWithObjectsAndKeys:newSectionTitles, @"SectionTitles", newSections, @"Sections", nil];
@@ -991,8 +995,6 @@
 		
 		NSString *sectionName = [row objectForKey:@"name"];
 		
-		NSLog(@"sectionName = %@", sectionName);
-		
 		if (![sectionName isEqualToString:previousSectionName]) {
 			
 			// start a new section
@@ -1026,6 +1028,10 @@
 		
 		previousSectionName = sectionName;
 	}
+	
+	// adding the last or only section
+	[newSections addObject:section];
+	[section release];
 	
 	[dbh release];
 	
