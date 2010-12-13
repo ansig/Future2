@@ -104,6 +104,33 @@ NSString * FCUnitSystemAsString(FCUnitSystem system) {
 	return nil;
 }
 
+NSString * FCSortByAsString(FCSortBy sortBy) {
+
+	if (sortBy == FCSortByDate)
+		return @"Date";
+	
+	else if (sortBy == FCSortByCategory)
+		return @"Category";
+	
+	else if (sortBy == FCSortByAttachment)
+		return @"Attachment";
+	
+	return nil;
+}
+
+NSInteger FCSortByCount() {
+	
+	NSInteger count = 0;
+	NSString *name = FCSortByAsString(count);
+	while (name != nil) {
+		
+		count++;
+		name = FCSortByAsString(count);
+	}
+	
+	return count;
+}
+
 NSString *FCUnitQuantityAsString(FCUnitQuantity quantity) {
 	
 	if (quantity == FCUnitQuantityWeight)

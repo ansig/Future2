@@ -31,7 +31,7 @@
 #import "FCAppLogDateSelectorViewController.h"
 #import "FCAppEntryViewController.h"
 
-@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList> {
+@interface FCAppLogViewController : FCAppViewController <FCGroupedTableSourceDelegate, FCEntryList, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate> {
 
 	NSDate *startDate;
 	NSDate *endDate;
@@ -40,6 +40,12 @@
 	
 	NSMutableArray *sectionTitles;
 	NSMutableArray *sections;
+	
+	NSMutableArray *filteredSectionTitles;
+	NSMutableArray *filteredSections;
+	
+	UISearchBar *searchBar;
+	BOOL searchWasActive;
 }
 
 @property (nonatomic, retain) NSDate *startDate;
@@ -50,13 +56,43 @@
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableArray *sections;
 
+@property (nonatomic, retain) NSMutableArray *filteredSectionTitles;
+@property (nonatomic, retain) NSMutableArray *filteredSections;
+
+@property (nonatomic, retain) UISearchBar *searchBar;
+@property (nonatomic) BOOL searchWasActive;
+
 // View
 
 -(void)loadDateSelectorViewController;
+-(void)loadSortByActionSheet;
+
+-(void)loadTableHeaderAndFooter;
+-(void)loadSearchBarAndSearchDisplayController;
 
 // Notifications
 
 -(void)onLogDateChangedNotification;
 -(void)onConvertLogOrUnitChange;
+
+// Animation
+
+-(void)animateSearchBarFadeIn;
+-(void)animateSearchBarFadeOut;
+
+// Custom
+
+-(NSDictionary *)sectionsAndRowsSortedByDate;
+-(NSDictionary *)sectionsAndRowsSortedByCategory;
+-(NSDictionary *)sectionsAndRowsSortedByAttachment;
+
+-(NSDictionary *)sectionsAndRowsSortedByDateWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption;
+-(NSDictionary *)sectionsAndRowsSortedByCategoryWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption;
+-(NSDictionary *)sectionsAndRowsSortedByAttachmentWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption;
+
+-(void)enterSearchMode;
+
+-(BOOL)doSearchWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption;
+-(NSString *)searchFilterWithSearchString:(NSString *)searchString searchScope:(NSInteger)searchOption;
 
 @end

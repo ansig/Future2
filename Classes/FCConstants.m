@@ -96,6 +96,7 @@ NSString * const FCDefaultAgeDisplay = @"DefaultDateOfBirthDisplay";
 // log/graph
 
 NSString * const FCDefaultLogDates = @"DefaultLogDates";
+NSString * const FCDefaultLogSortBy = @"DefaultLogSortBy";
 NSString * const FCDefaultGraphs = @"DefaultGraphs";
 
 NSString * const FCDefaultGraphSettingScrollRelatives = @"GraphSettingScrollRelatives";
