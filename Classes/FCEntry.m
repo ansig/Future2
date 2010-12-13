@@ -837,23 +837,18 @@
 		if (self.integer != nil) {
 			
 			NSNumber *trueInteger = doConvert ? [converter convertNumber:self.integer withUnit:self.unit] : self.integer;
-			description = [[NSString alloc] initWithFormat:@"%d", [trueInteger intValue]];
+			description = [[NSString alloc] initWithFormat:@"%d", [trueInteger integerValue]];
 		
 		// decimal
 		} else {
-		
-			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-			
-			[formatter setMinimumIntegerDigits:1];
-			
-			FCCategory *category = self.category;
-			[formatter setMinimumFractionDigits:[category.decimals intValue]];
-			[formatter setMaximumFractionDigits:[category.decimals intValue]];
 			
 			NSNumber *trueDecimal = doConvert ? [converter convertNumber:self.decimal withUnit:self.unit] : self.decimal;
-			description = [[NSString alloc] initWithFormat:@"%@", [formatter stringFromNumber:trueDecimal]];
 			
-			[formatter release];
+			NSDecimal decimalValue = [trueDecimal decimalValue];
+			NSDecimal roundedDecimalValue;
+			NSDecimalRound(&roundedDecimalValue, &decimalValue, [category.decimals integerValue], NSRoundPlain);
+			
+			description = [[NSString alloc] initWithFormat:@"%@", NSDecimalString(&roundedDecimalValue, FCUserLocale())];
 		}
 		
 		if (addExtensions) {
