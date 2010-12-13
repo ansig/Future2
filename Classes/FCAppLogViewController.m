@@ -435,28 +435,28 @@
 
 #pragma mark FCGroupedTableSourceDelegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView {
     
-	if (self.searchDisplayController.active)
-		return [self.filteredSections count];
-	
-	return [self.sections count];
+	if (theTableView == self.tableView)
+		return [self.sections count];
+		
+	return [self.filteredSections count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section {
 	
-	if (self.searchDisplayController.active)
-		return [[self.filteredSections objectAtIndex:section] count];
-    
-	return [[self.sections objectAtIndex:section] count];
+	if (theTableView == self.tableView)
+		return [[self.sections objectAtIndex:section] count];
+		
+	return [[self.filteredSections objectAtIndex:section] count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)theTableView titleForHeaderInSection:(NSInteger)section {
 	
-	if (self.searchDisplayController.active)
-		return [self.filteredSectionTitles objectAtIndex:section];
-	
-	return [self.sectionTitles objectAtIndex:section];
+	if (theTableView == self.tableView)
+		return [self.sectionTitles objectAtIndex:section];
+		
+	return [self.filteredSectionTitles objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -568,7 +568,7 @@
 		[theTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	
-	// delete the entry from database afer delay that allows 
+	// delete the entry from database after a delay that allows 
 	// table view row animations to finish
 	[entry performSelector:@selector(delete) withObject:nil afterDelay:0.25f];
 	[entry performSelector:@selector(release) withObject:nil afterDelay:0.25f];
