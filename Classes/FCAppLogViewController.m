@@ -381,6 +381,9 @@
 	
 	[self loadSectionsAndRows];
 	[self.tableView reloadData];
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onEntryDeletedNotification {
@@ -392,11 +395,17 @@
 -(void)onAttachmentAddedNotification {
 	
 	[self.tableView reloadData];
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onAttachmentRemovedNotification {
 	
 	[self.tableView reloadData];
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onCategoryUpdatedNotification {
@@ -633,7 +642,6 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
     
-    // Return YES to cause the search result table view to be reloaded.
     return NO;
 }
 
