@@ -276,6 +276,16 @@
 		
 		newAttachmentButton.tag = i;
 		
+		UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:attachment.cid];
+		
+		if (color == nil) {
+			
+			NSInteger colorIndex = [attachment.category.colorIndex integerValue];
+			color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
+		}
+		
+		newAttachmentButton.backgroundColor = color;
+		
 		UIImage *icon = [UIImage imageNamed:attachment.category.iconName];
 		[newAttachmentButton setImage:icon forState:UIControlStateNormal];
 		
@@ -384,8 +394,7 @@
 		if (self.selectedIndex > -1) {
 			
 			FCCustomButton *selectedButton = [self.attachmentButtons objectAtIndex:self.selectedIndex];
-			[selectedButton setBackgroundColor:kHighlightColor];
-			[selectedButton addBorder];
+			[selectedButton showBorder];
 		}
 		
 		// un-highlight previous button
@@ -393,8 +402,7 @@
 		if (self.previouslySelectedIndex > -1) {
 			
 			FCCustomButton *previouslySelectedButton = [self.attachmentButtons objectAtIndex:self.previouslySelectedIndex];
-			[previouslySelectedButton setBackgroundColor:[UIColor clearColor]];
-			[previouslySelectedButton removeBorder];
+			[previouslySelectedButton hideBorder];
 		}
 	}
 }
