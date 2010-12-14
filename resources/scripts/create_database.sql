@@ -99,8 +99,8 @@ INSERT INTO icons (iid, name) VALUES ('system_0_24', 'figure3Icon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_25', 'figure4Icon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_26', 'flakeIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_27', 'flowerIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_28', 'fruitIcon.png');
-INSERT INTO icons (iid, name) VALUES ('system_0_29', 'glassIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_28', 'fruit1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_29', 'glass1Icon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_30', 'hangerIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_31', 'heartIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_32', 'houseIcon.png');
@@ -122,6 +122,16 @@ INSERT INTO icons (iid, name) VALUES ('system_0_47', 'tubeIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_48', 'weightIcon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_49', 'wrench1Icon.png');
 INSERT INTO icons (iid, name) VALUES ('system_0_50', 'wrench2Icon.png');
+
+INSERT INTO icons (iid, name) VALUES ('system_0_51', 'birdIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_52', 'firstAidIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_53', 'food1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_54', 'glass2Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_55', 'kitchen1Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_56', 'kitchen2Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_57', 'kitchen3Icon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_58', 'roadIcon.png');
+INSERT INTO icons (iid, name) VALUES ('system_0_59', 'rulerIcon.png');
 
 CREATE TABLE datatypes (
 did Varchar(512)  NOT NULL  PRIMARY KEY DEFAULT '-1',
