@@ -60,6 +60,17 @@
     [super dealloc];
 }
 
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCAppTagsViewController -didReceiveMemoryWarning!");
+}
+
 #pragma mark View
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -113,13 +124,6 @@
  [super viewDidLoad];
  }
  */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
@@ -223,13 +227,7 @@
 		NSInteger colorIndex = [category.colorIndex integerValue];
 		UIColor *color = [self.colorCollection colorForIndex:colorIndex];
 		
-		CALayer *cellImageViewLayer = cell.imageView.layer;
-		
-		[cellImageViewLayer setBorderWidth:2.0];
-		[cellImageViewLayer setCornerRadius:5.0];
-		[cellImageViewLayer setBorderColor:[color CGColor]];
-		
-		cell.imageView.backgroundColor = [color colorWithAlphaComponent:0.5f];
+		[cell.imageView setBorderAndBackgroundWithColor:color];
 	}
 	
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];

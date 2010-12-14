@@ -37,6 +37,7 @@
 @synthesize created, modified;
 @synthesize datatypeName, iconName, colorIndex;
 @synthesize lid, uid, oid, did, iid;
+@synthesize unit;
 
 #pragma mark Class
 
@@ -322,16 +323,26 @@
 	[did release];
 	[iid release];
 	
+	[unit release];
+	
 	[super dealloc];
 }
 
 #pragma mark Get
 
 -(FCUnit *)unit {
-
-	FCUnit *unit = [FCUnit unitWithUID:self.uid]; // will be nil if there is no unit
 	
+	if (unit == nil)
+		self.unit = [FCUnit unitWithUID:self.uid]; // will be nil if there is no unit
+		
 	return unit;
+}
+
+#pragma mark MemoryMgmt
+
+-(void)didReceiveMemoryWarning {
+	
+	self.unit = nil;
 }
 
 #pragma mark Custom

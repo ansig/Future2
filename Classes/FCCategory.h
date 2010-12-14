@@ -53,6 +53,8 @@
 	NSString *uid;
 	NSString *did;
 	NSString *iid;
+	
+	FCUnit *unit;
 }
 
 @property (nonatomic, retain) NSString *cid;
@@ -76,6 +78,8 @@
 @property (nonatomic, retain) NSString *did;
 @property (nonatomic, retain) NSString *iid;
 
+@property (nonatomic, retain) FCUnit *unit;
+
 // Class
 +(FCCategory *)categoryWithCID:(NSString *)theCID;
 +(FCCategory *)lastCategory;
@@ -84,9 +88,6 @@
 
 // Init
 -(id)initWithDictionary:(NSDictionary *)theDictionary;
-
-// Get
--(FCUnit *)unit;
 
 // Custom
 -(void)save;

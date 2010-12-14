@@ -75,77 +75,89 @@ FCBoxPlot FCBoxPlotMake(double median, double lowerQuartile, double upperQuartil
 
 NSString * FCGraphModeAsString(FCGraphMode mode) {
 
-	NSString *string;
-	
 	if (mode == FCGraphModeTimePlotHorizontal)
-		string = @"Horizontal time plot";
+		return @"Horizontal time plot";
 	
 	else if (mode == FCGraphModeDescendantTimePlotHorizontal)
-		string = @"Horizontal descendant time plot";
+		return @"Horizontal descendant time plot";
 	
 	else if (mode == FCGraphModeTwinTimePlotHorizontal)
-		string = @"Horizontal twin time plot";
+		return @"Horizontal twin time plot";
 	
 	else if (mode == FCGraphModeDayComparisonHorizontal)
-		string = @"Horizontal day comparison";
+		return @"Horizontal day comparison";
 	
-	else
-		string = nil;
-	
-	return string;
+	return nil;
 }
 
 NSString * FCUnitSystemAsString(FCUnitSystem system) {
 
-	NSString *string;
-	
 	if (system == FCUnitSystemMetric)
-		string = @"Metric";
+		return @"Metric";
 		
 	else if (system == FCUnitSystemImperial)
-		string = @"Imperial";
+		return @"Imperial";
 		
 	else if (system == FCUnitSystemCustomary)
-		string = @"Customary";
-		
-	else
-		string =nil;
+		return @"Customary";
 	
-	return string;
+	return nil;
+}
+
+NSString * FCSortByAsString(FCSortBy sortBy) {
+
+	if (sortBy == FCSortByDate)
+		return @"Date";
+	
+	else if (sortBy == FCSortByCategory)
+		return @"Category";
+	
+	else if (sortBy == FCSortByAttachment)
+		return @"Attachment";
+	
+	return nil;
+}
+
+NSInteger FCSortByCount() {
+	
+	NSInteger count = 0;
+	NSString *name = FCSortByAsString(count);
+	while (name != nil) {
+		
+		count++;
+		name = FCSortByAsString(count);
+	}
+	
+	return count;
 }
 
 NSString *FCUnitQuantityAsString(FCUnitQuantity quantity) {
 	
-	NSString *string;
-	
 	if (quantity == FCUnitQuantityWeight)
-		string = @"Weight";
+		return @"Weight";
 	
 	else if (quantity == FCUnitQuantityLength)
-		string = @"Length";
+		return @"Length";
 	
 	else if (quantity == FCUnitQuantityVolume)
-		string = @"Volume";
+		return @"Volume";
 	
 	else if (quantity == FCUnitQuantityTime)
-		string = @"Time";
+		return @"Time";
 	
 	else if (quantity == FCUnitQuantityGlucose)
-		string = @"Glucose";
+		return @"Glucose";
 	
 	else if (quantity == FCUnitQuantityInsulin)
-		string = @"Insulin";
+		return @"Insulin";
 	
 	else if (quantity == FCUnitQuantityNutrition)
-		string = @"Nutrition";
+		return @"Nutrition";
 	
 	else if (quantity == FCUnitQuantityOther)
-		string = @"Other";
+		return @"Other";
 	
-	else
-		string = nil;
-	
-	return string;
+	return nil;
 }
 
 NSInteger FCUnitQuantityCount() {
@@ -163,41 +175,31 @@ NSInteger FCUnitQuantityCount() {
 
 NSString * FCDateDisplayAsString(FCDateDisplay display) {
 
-	NSString *string;
-	
 	if (display == FCDateDisplayDate)
-		string = @"Date";
+		return @"Date";
 	
 	else if (display == FCDateDisplayYears)
-		string = @"Years";
+		return @"Years";
 	
-	else
-		string = nil;
-	
-	return string;
+	return nil;
 }
 
 NSString * FCTabAsString(FCTab tab) {
 
-	NSString *string;
-	
 	if (tab == FCTabProfile)
-		string = @"Profile";
+		return @"Profile";
 	
 	else if (tab == FCTabGlucose)
-		string = @"Glucose";
+		return @"Glucose";
 
 	else if (tab == FCTabTags)
-		string = @"Tags";
+		return @"Tags";
 	
 	else if (tab == FCTabRecording)
-		string = @"Record";
+		return @"Record";
 	
 	else if (tab == FCTabLog)
-		string = @"Log";
+		return @"Log";
 	
-	else
-		string = nil;
-	
-	return string;
+	return nil;
 }

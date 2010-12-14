@@ -64,7 +64,7 @@ FCBoxPlot FCBoxPlotMake(double median, double lowerQuartile, double upperQuartil
 
 /* ENUM */
 
-// * graph modes
+// * GRAPH MODES
 
 typedef enum {
 	
@@ -142,7 +142,7 @@ typedef enum {
 	
 } FCGraphMenuMode;
 
-// * app modes
+// * APP MODES
 
 typedef enum {
 	
@@ -164,7 +164,18 @@ typedef enum {
 	
 } FCProperty;
 
-// * system structures
+typedef enum {
+	
+	FCSortByDate, // default
+	FCSortByCategory,
+	FCSortByAttachment
+	
+} FCSortBy;
+
+NSString * FCSortByAsString(FCSortBy sortBy);
+NSInteger FCSortByCount();
+
+// * SYSTEM STRUCTURES
 
 typedef enum {
 

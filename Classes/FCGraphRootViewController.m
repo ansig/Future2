@@ -60,12 +60,7 @@
 }
 */
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
+#pragma mark Dealloc
 
 - (void)dealloc {
 	
@@ -85,6 +80,17 @@
 	[colorCollection release];
 	
     [super dealloc];
+}
+
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCGraphRootViewController -didReceiveMemoryWarning!");
 }
 
 #pragma mark Views

@@ -133,8 +133,9 @@
 	
 	/*	OBS!
 		It would make it easier for the caller who has to compose complex filters
-		(e.g. see FCAppPropertySelectorViewController -createContentForUnitSelection)
-		if filters were an array instead of a string.
+		(e.g. see FCAppPropertySelectorViewController -createContentForUnitSelection
+		and search methods in FCAppLogViewController) if filters were an array 
+		instead of a string.
 	 
 		/anders
 	*/
