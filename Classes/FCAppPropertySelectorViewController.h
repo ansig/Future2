@@ -49,9 +49,6 @@
 	
 	FCUnitQuantity quantity;
 	FCUnitSystem system;
-	
-	// color
-	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) FCEntry *entry;
@@ -67,8 +64,6 @@
 
 @property (nonatomic) FCUnitQuantity quantity;
 @property (nonatomic) FCUnitSystem system;
-
-@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // Init
 

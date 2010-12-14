@@ -169,7 +169,8 @@
 	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
 	cell.detailTextLabel.text = anEntry.timeDescription;
-	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
+	
+	[cell.imageView configureImageViewForCategory:anEntry.category];
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	

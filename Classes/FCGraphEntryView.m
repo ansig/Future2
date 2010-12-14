@@ -110,6 +110,14 @@
 		UIImage *anIcon = [self.delegate iconForEntryViewWithKey:self.key];
 		if (anIcon != nil) {
 			
+			CALayer *caLayer = self.layer;
+			
+			[caLayer setBorderWidth:2.0];
+			[caLayer setCornerRadius:5.0];
+			[caLayer setBorderColor:[self.color CGColor]];
+			
+			[caLayer setBackgroundColor:[[self.color colorWithAlphaComponent:0.5f] CGColor]];
+			
 			// draw it
 			
 			CGSize iconSize = anIcon.size;

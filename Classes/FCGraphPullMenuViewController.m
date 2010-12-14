@@ -354,7 +354,8 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.iconName];
+		
+		[cell.imageView configureImageViewForCategory:category];
 		
 		cell.accessoryView = nil;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -407,7 +408,8 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.iconName];
+		
+		[cell.imageView configureImageViewForCategory:category];
 	
 		if ([self.selectedIndexPaths indexOfObjectIdenticalTo:indexPath] != NSNotFound)
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;

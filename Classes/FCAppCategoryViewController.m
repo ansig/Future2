@@ -33,7 +33,7 @@
 @synthesize category, originalCategory;
 @synthesize sections;
 @synthesize tableView;
-@synthesize nameTextField, colorCollection, colorButton, iconButton, countableSwitch;
+@synthesize nameTextField, colorButton, iconButton, countableSwitch;
 @synthesize minimumTextField, maximumTextField, decimalsSegmentedControl, unitButton;
 @synthesize beingEdited;
 
@@ -90,7 +90,6 @@
 	[sections release];
 	
 	[nameTextField release];
-	[colorCollection release];
 	[colorButton release];
 	[iconButton release];
 	[countableSwitch release];
@@ -156,7 +155,6 @@
 	
 	selectorViewController.title = @"Color";
 	selectorViewController.propertyToSelect = FCPropertyColor;
-	selectorViewController.colorCollection =  self.colorCollection;
 	
 	[self presentOverlayViewController:selectorViewController];
 	
@@ -320,14 +318,7 @@
 	FCBorderedLabel *colorButtonLabel = [[FCBorderedLabel alloc] initWithFrame:newColorButton.bounds];
 	colorButtonLabel.tag = 1;
 	
-	if (self.colorCollection == nil) {
-		
-		FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-		self.colorCollection = newColorCollection;
-		[newColorCollection release];
-	}
-	
-	colorButtonLabel.backgroundColor = [colorCollection colorForIndex:0];
+	colorButtonLabel.backgroundColor = [[FCColorCollection sharedColorCollection] colorForIndex:0];
 	
 	[newColorButton addSubview:colorButtonLabel];
 	
@@ -450,7 +441,7 @@
 		
 		NSInteger colorIndex = [self.category.colorIndex integerValue];
 		UILabel *label = (UILabel *)[self.colorButton viewWithTag:1];
-		[label setBackgroundColor:[self.colorCollection colorForIndex:colorIndex]];
+		[label setBackgroundColor:[[FCColorCollection sharedColorCollection] colorForIndex:colorIndex]];
 	}
 	
 	if (self.category.iconName != nil) {

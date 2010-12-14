@@ -35,7 +35,6 @@
 @synthesize timestampLabel, datePicker;
 @synthesize tableView, rows;
 @synthesize quantity, system;
-@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -81,8 +80,6 @@
  
 	[tableView release];
 	[rows release];
-	
-	[colorCollection release];
 	
 	[super dealloc];
 }
@@ -555,11 +552,8 @@
 	
 	NSMutableArray *newRows = [[NSMutableArray alloc] init];
 	
-	if (self.colorCollection != nil) {
-	
-		for (UIColor *color in [colorCollection allFreeColors])
-			[newRows addObject:color];
-	}
+	for (UIColor *color in [[FCColorCollection sharedColorCollection] allFreeColors])
+		[newRows addObject:color];
 	
 	self.rows = newRows;
 	[newRows release];

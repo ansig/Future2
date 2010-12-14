@@ -37,7 +37,6 @@
 @synthesize graphControllers, graphHandles;
 @synthesize entryInfoView;
 @synthesize pullMenuViewController, pullMenuHandleView;
-@synthesize colorCollection;
 
 #pragma mark Instance
 
@@ -76,8 +75,6 @@
 	
 	[pullMenuViewController release];
 	[pullMenuHandleView release];
-	
-	[colorCollection release];
 	
     [super dealloc];
 }
@@ -118,12 +115,6 @@
 	 [self.view addSubview:newScrollView];
 	 
 	 [newScrollView release];
-	 
-	 // * Colors
-	 
-	 FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-	 self.colorCollection = newColorCollection;
-	 [colorCollection release];
 	
 	 // * Load default state
 	 
@@ -299,7 +290,7 @@
 	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
 	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
 	
-	UIColor *color = [self.colorCollection colorForCID:[graphSet objectForKey:@"Key"]];
+	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:[graphSet objectForKey:@"Key"]];
 	
 	if (color == nil) {
 		
@@ -307,7 +298,7 @@
 		FCCategory *category = [FCCategory categoryWithCID:key];
 		
 		NSInteger colorIndex = [category.colorIndex integerValue];
-		color = [self.colorCollection colorForIndex:colorIndex];
+		color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
 	}
 	
 	return [NSArray arrayWithObject:color];
@@ -782,10 +773,10 @@
 	// add a label for this data set
 	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
 	
-	UIColor *color = [self.colorCollection colorForCID:category.cid];
+	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:category.cid];
 	
 	if (color == nil)
-		color = [self.colorCollection colorForIndex:[category.colorIndex integerValue]];
+		color = [[FCColorCollection sharedColorCollection] colorForIndex:[category.colorIndex integerValue]];
 	
 	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
 	

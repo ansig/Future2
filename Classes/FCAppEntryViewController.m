@@ -446,7 +446,7 @@
 		FCCategory *aCategory = (FCCategory *)object;
 		
 		cell.textLabel.text = aCategory.name;
-		cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
+		[cell.imageView configureImageViewForCategory:aCategory];
 	
 	} else if ([object isKindOfClass:[NSString class]]) {
 	
@@ -543,7 +543,8 @@
 	height = 30.0f;
 	yPos = (kAppHeaderHeight/2) - (height/2);
 	UIImageView *newIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kAppSpacing, yPos, 30.0f, height)];
-	newIconImageView.image = [UIImage imageNamed:self.entry.category.iconName];
+	
+	[newIconImageView configureImageViewForCategory:self.entry.category];
 	
 	self.iconImageView = newIconImageView;
 	

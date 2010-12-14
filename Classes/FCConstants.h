@@ -27,15 +27,13 @@
 
 /* SIMPLE */
 
-#define kColorCollection		[[FColorCollection alloc] init]
-
 #define kAppCommonLabelFont		[UIFont systemFontOfSize:18.0f]
 #define kAppBoldCommonLabelFont	[UIFont boldSystemFontOfSize:18.0f]
 #define kAppLargeLabelFont		[UIFont boldSystemFontOfSize:36.0f]
 #define kAppSmallLabelFont		[UIFont systemFontOfSize:14.0f]
 
 #define kAppSpacing				15.0f // standard distance between any UI element (button, label, text view, image, etc) and any other UI element and screen edge
-#define kAppAdjacentSpacing		10.0f  // distance between any UI element and another UI element to which it is visually associated (e.g. a number label and a unit label)
+#define kAppAdjacentSpacing		10.0f  // distance between any UI element and another UI element to which it is visually associated (e.g. a timestamp label and its edit-button)
 #define kAppHeaderHeight		60.0f // distance between navigation bar and body content (often contains icon, timestamp and edit-button)
 
 #define kGraphPadding		12.5f // minimum distance to all edges in the graph view (should be about half kGraphEntryViewDiameter)

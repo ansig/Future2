@@ -33,7 +33,6 @@
 @synthesize startDate, endDate;
 @synthesize tableView;
 @synthesize sectionTitles, sections;
-@synthesize colorCollection;
 @synthesize filteredSectionTitles, filteredSections;
 @synthesize searchBar, searchWasActive;
 
@@ -63,8 +62,6 @@
 	
 	[sectionTitles release];
 	[sections release];
-	
-	[colorCollection release];
 
 	[filteredSectionTitles release];
 	[filteredSections release];
@@ -135,11 +132,6 @@
 	[self.view addSubview:newTableView];
 	
 	[newTableView release];
-	
-	// * Color collection
-	FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-	self.colorCollection = newColorCollection;
-	[newColorCollection release];
 
 	// * Table view header and footer
 	
@@ -513,19 +505,8 @@
 
 	cell.textLabel.text = [defaults boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;	
 	cell.detailTextLabel.text = [defaults integerForKey:FCDefaultLogSortBy] == FCSortByDate ? anEntry.timeDescription : anEntry.timestampDescription;
-	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
 	
-	FCCategory *category = anEntry.category;
-	
-	UIColor *color = [self.colorCollection colorForCID:category.cid];
-	
-	if (color == nil) {
-		
-		NSInteger colorIndex = [category.colorIndex integerValue];
-		color = [self.colorCollection colorForIndex:colorIndex];
-	}
-	
-	[cell.imageView setBorderAndBackgroundWithColor:color];
+	[cell.imageView configureImageViewForCategory:anEntry.category];
 	
 	if ([anEntry.attachments count] > 0) {
 	

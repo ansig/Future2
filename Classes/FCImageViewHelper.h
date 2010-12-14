@@ -19,34 +19,20 @@
  */
 
 //
-//  FCColorCollection.h
+//  FCImageViewHelper.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 25/11/2010.
+//  Created by Anders Sigfridsson on 14/12/2010.
 //
 
-#import <Foundation/Foundation.h>
 
+#import <QuartzCore/QuartzCore.h>
+#import "FCModelsFramework.h"
+#import "FCFunctionsFramework.h"
 
-@interface FCColorCollection : NSObject {
-	
-	NSArray *_systemColors;
-	NSArray *_freeColors;
-}
+@interface UIImageView (FCImageViewHelper)
 
-// Class
-
-+(id)sharedColorCollection;
-
-// Custom
-
--(void)loadSystemColors;
--(void)loadFreeColors;
-
--(UIColor *)colorForCID:(NSString *)cid;
--(UIColor *)colorForIndex:(NSInteger)index;
-
--(NSArray *)allSystemColors;
--(NSArray *)allFreeColors;
+-(void)configureImageViewForCategory:(FCCategory *)category;
+-(void)setBorderAndBackgroundWithColor:(UIColor *)color;
 
 @end

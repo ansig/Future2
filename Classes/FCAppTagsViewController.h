@@ -32,7 +32,7 @@
 
 #import "FCModelsFramework.h"
 #import "FCIOFramework.h"
-#import "FCColorCollection.h"
+#import "FCFunctionsFramework.h"
 
 #import "FCAppCategoryViewController.h"
 
@@ -41,15 +41,11 @@
 	NSMutableArray *section;
 	UITableView *tableView;
 	NSIndexPath *deleteIndexPath;
-	
-	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) NSMutableArray *section;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSIndexPath *deleteIndexPath;
-
-@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // View
 

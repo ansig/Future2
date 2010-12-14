@@ -183,7 +183,8 @@
 	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	cell.textLabel.text = aCategory.name;
-	cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
+	
+	[cell.imageView configureImageViewForCategory:aCategory];
 	
     return cell;
 }

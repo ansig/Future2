@@ -31,7 +31,6 @@
 @implementation FCAppTagsViewController
 
 @synthesize section, tableView, deleteIndexPath;
-@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -54,8 +53,6 @@
 	[section release];
 	[tableView release];
 	[deleteIndexPath release];
-	
-	[colorCollection release];
 	
     [super dealloc];
 }
@@ -103,12 +100,6 @@
 	
 	[newTableView release];
 	
-	// * Color collection
-	
-	FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-	self.colorCollection = newColorCollection;
-	[newColorCollection release];
-	
 	// * Notifications
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -135,7 +126,6 @@
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] init];
 	newCategoryViewController.shouldAnimateContent = YES;
 	newCategoryViewController.title = @"New tag";
-	newCategoryViewController.colorCollection = self.colorCollection;
 	
 	[self presentOverlayViewController:newCategoryViewController];
 	
@@ -159,7 +149,6 @@
 
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] initWithCategory:theCategory];
 	newCategoryViewController.shouldAnimateContent = YES;
-	newCategoryViewController.colorCollection = self.colorCollection;
 	newCategoryViewController.title = theCategory.name;
 	
 	[self presentOverlayViewController:newCategoryViewController];
@@ -217,18 +206,7 @@
 		cell.detailTextLabel.text = nil;
 	}
 	
-	cell.imageView.image = [UIImage imageNamed:category.iconName];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:cell.imageView.frame];
-	label.backgroundColor = [UIColor blackColor];
-	
-	if (category.colorIndex != nil) {
-	
-		NSInteger colorIndex = [category.colorIndex integerValue];
-		UIColor *color = [self.colorCollection colorForIndex:colorIndex];
-		
-		[cell.imageView setBorderAndBackgroundWithColor:color];
-	}
+	[cell.imageView configureImageViewForCategory:category];
 	
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	editButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);

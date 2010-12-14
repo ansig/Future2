@@ -40,8 +40,6 @@
 	
 	NSMutableArray *sectionTitles;
 	NSMutableArray *sections;
-	
-	FCColorCollection *colorCollection;
 
 	NSMutableArray *filteredSectionTitles;
 	NSMutableArray *filteredSections;
@@ -57,8 +55,6 @@
 
 @property (nonatomic, retain) NSMutableArray *sectionTitles;
 @property (nonatomic, retain) NSMutableArray *sections;
-
-@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 @property (nonatomic, retain) NSMutableArray *filteredSectionTitles;
 @property (nonatomic, retain) NSMutableArray *filteredSections;

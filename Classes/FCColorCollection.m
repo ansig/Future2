@@ -28,7 +28,27 @@
 #import "FCColorCollection.h"
 
 
+static FCColorCollection *sharedColorCollection = nil;
+
 @implementation FCColorCollection
+
+#pragma mark Class
+
++(id)sharedColorCollection {
+	
+	@synchronized (self) {
+	
+		if (sharedColorCollection == nil)
+			sharedColorCollection = [[super allocWithZone:NULL] init];
+	}
+	
+	return sharedColorCollection;
+}
+
++(id)allocWithZone:(NSZone *)zone {
+	
+    return [[self sharedColorCollection] retain];
+}
 
 #pragma mark Init
 
@@ -46,14 +66,31 @@
 	return self;
 }
 
-#pragma mark Dealloc
+#pragma mark Override
 
--(void)dealloc {
+- (id)copyWithZone:(NSZone *)zone {
 	
-	[_systemColors release];
-	[_freeColors release];
+    return self;	
+}
+
+- (id)retain {
 	
-	[super dealloc];
+    return self;	
+}
+
+- (NSUInteger)retainCount {
+	
+    return NSUIntegerMax;  //denotes an object that cannot be released
+}
+
+- (void)release {
+
+	//do nothing
+}
+
+- (id)autorelease {
+	
+    return self;
 }
 
 #pragma mark Custom
@@ -103,6 +140,9 @@
 	if (_systemColors == nil)
 		return nil;
 	
+	if (cid == nil)
+		return nil;
+	
 	if ([cid isEqualToString:FCKeyCIDGlucose]) {
 	
 		return [_systemColors objectAtIndex:0];
@@ -126,7 +166,6 @@
 	} else if ([cid isEqualToString:FCKeyCIDWeight]) {
 		
 		return [_systemColors objectAtIndex:5];
-		
 	}
 	
 	return nil;
@@ -137,7 +176,7 @@
 	if (_freeColors == nil)
 		return nil;
 
-	if (index > [_freeColors count])
+	if (index < 0 || index > [_freeColors count])
 		return nil;
 	
 	return [_freeColors objectAtIndex:index];

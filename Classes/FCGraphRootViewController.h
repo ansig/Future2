@@ -48,8 +48,6 @@
 	
 	FCGraphPullMenuViewController *pullMenuViewController;
 	FCGraphHandleView *pullMenuHandleView;
-	
-	FCColorCollection *colorCollection;
 }
 
 @property (nonatomic, retain) UIScrollView *scrollView;
@@ -61,8 +59,6 @@
 
 @property (nonatomic, retain) FCGraphPullMenuViewController *pullMenuViewController;
 @property (nonatomic, retain) FCGraphHandleView *pullMenuHandleView;
-
-@property (nonatomic, retain) FCColorCollection *colorCollection;
 
 // Notifications
 
