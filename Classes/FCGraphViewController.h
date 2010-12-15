@@ -58,10 +58,10 @@
 	UIScrollView *scrollView;
 	
 	FCBorderedLabel *label;
+	UIColor *baseColor;
+	NSArray *additionalColors;
 
 	NSMutableArray *dataSets;
-	
-	NSMutableArray *availableColors;
 }
 
 @property (assign) id <FCGraphDelegate> delegate;
@@ -85,10 +85,10 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 
 @property (nonatomic, retain) FCBorderedLabel *label;
+@property (nonatomic, retain) UIColor *baseColor;
+@property (nonatomic, retain) NSArray *additionalColors;
 
 @property (nonatomic, retain) NSMutableArray *dataSets;
-
-@property (nonatomic, retain) NSMutableArray *availableColors;
 
 // Init
 
@@ -107,6 +107,8 @@
 -(void)loadXScaleViewWithLength:(CGFloat)actualLength yOffset:(CGFloat)yOffset;
 -(void)loadYScaleViewWithHeight:(CGFloat)height;
 
+-(void)didFinishLoadingGraph;
+
 // Animation
 
 -(void)animatePulseForAllEntryViewsInDataSet:(NSArray *)theDataSet;
@@ -116,8 +118,7 @@
 -(void)loadTwin;
 -(void)unloadTwin;
 
--(void)loadAvailableColors;
--(void)requestMoreColors;
+-(UIColor *)colorForDataSetWithIndex:(NSInteger)index;
 
 -(void)createXScaleWithDataRange:(FCDataRange)theDataRange;
 -(void)createYScaleWithDataRange:(FCDataRange)theDataRange;

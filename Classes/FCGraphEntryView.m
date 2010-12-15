@@ -139,7 +139,7 @@
 	
 	// inform delegate
 	if (self.delegate != nil && [self.delegate conformsToProtocol:@protocol(FCGraphEntryViewDelegate)])
-		[self.delegate touchOnEntryWithAnchorPoint:self.anchor inSuperview:self.superview andKey:self.key];
+		[self.delegate touchOnEntryWithAnchorPoint:self.anchor superview:self.superview key:self.key];
 	
 	// pulse
 	[self animateDoublePulse];

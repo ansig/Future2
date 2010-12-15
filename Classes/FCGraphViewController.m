@@ -37,9 +37,8 @@
 @synthesize yScale, yScaleView;
 @synthesize xScale, xScaleView;
 @synthesize graphView, scrollView;
-@synthesize label;
+@synthesize label, baseColor, additionalColors;
 @synthesize dataSets;
-@synthesize availableColors;
 
 #pragma mark Init
 
@@ -90,10 +89,10 @@
 	[scrollView release];
 	
 	[label release];
+	[baseColor release];
+	[additionalColors release];
 	
 	[dataSets release];
-	
-	[availableColors release];
 	
     [super dealloc];
 }
@@ -193,6 +192,10 @@
 	
 	[self.view addSubview:self.scrollView];
 	[self.view addSubview:self.yScaleView];
+	
+	// * Announce finished
+	
+	[self didFinishLoadingGraph];
 }
 
 -(void)loadTimePlotHorizontalGraphForDataRange:(FCDataRange)theDataRange withinDateRange:(FCDateRange)theDateRange withAncestor:(FCGraphViewController *)theAncestor {
@@ -272,6 +275,10 @@
 	// * Scroll to same offset as relative
 	
 	self.scrollView.contentOffset = theAncestor.scrollView.contentOffset;
+	
+	// * Announce finished
+	
+	[self didFinishLoadingGraph];
 }
 
 -(void)loadTimePlotHorizontalGraphForDataRange:(FCDataRange)theDataRange withinDateRange:(FCDateRange)theDateRange withTwin:(FCGraphViewController *)theTwin {
@@ -345,6 +352,10 @@
 	// * Scroll to same offset as twin
 	
 	self.scrollView.contentOffset = CGPointMake(self.twin.scrollView.contentOffset.x + self.twin.scrollView.frame.size.width, self.twin.scrollView.contentOffset.y);
+
+	// * Announce finished
+	
+	[self didFinishLoadingGraph];
 }
 
 -(void)loadTimeBandHorizontalGraphForDataRange:(FCDataRange)theDataRange withingDateRange:(FCDateRange)theDateRange {
@@ -407,6 +418,10 @@
 	[self.scrollView addSubview:self.xScaleView];
 	
 	[self.view addSubview:self.scrollView];
+	
+	// * Announce finished
+	
+	[self didFinishLoadingGraph];
 }
 
 -(void)loadTimeBandHorizontalGraphForDataRange:(FCDataRange)theDataRange withingDateRange:(FCDateRange)theDateRange withAncestor:(FCGraphViewController *)theAncestor {
@@ -439,6 +454,10 @@
 	// * Scroll to same offset as relative
 	
 	self.scrollView.contentOffset = theAncestor.scrollView.contentOffset;
+	
+	// * Announce finished
+	
+	[self didFinishLoadingGraph];
 }
 
 -(void)loadGraphViewWithLength:(CGFloat)actualLength height:(CGFloat)height {
@@ -471,6 +490,12 @@
 	[newYScaleView release];
 }
 
+-(void)didFinishLoadingGraph {
+/*	Sets up a label and loads preferences. */
+	
+	[self loadPreferences];
+}
+
 #pragma mark Animation
 
 -(void)animatePulseForAllEntryViewsInDataSet:(NSArray *)theDataSet {
@@ -486,6 +511,43 @@
 	}
 }
 
+#pragma mark Get
+
+-(UIColor *)baseColor {
+
+	if (baseColor == nil) {
+	
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(baseColorForGraphViewController:)])
+			self.baseColor = [self.delegate baseColorForGraphViewController:self];
+		
+		else {
+		
+			self.baseColor = [UIColor purpleColor]; // DEFAULT BASE COLOR
+		}
+	}
+	
+	return baseColor;
+}
+
+-(NSArray *)additionalColors {
+
+	if (additionalColors == nil) {
+	
+		NSArray *defaultColors = [[NSArray alloc] initWithObjects:	// DEFAULT ADDITIONAL COLORS
+								  [UIColor orangeColor],
+								  [UIColor blueColor],
+								  [UIColor brownColor],
+								  [UIColor redColor],
+								  nil];
+		
+		self.additionalColors = defaultColors;
+		
+		[defaultColors release];
+	}
+	
+	return additionalColors;
+}
+
 #pragma mark FCGraphEntryViewDelegate
 
 -(CGSize)sizeForEntryViewWithAnchor:(CGPoint)theAnchor {
@@ -496,11 +558,11 @@
 	return CGSizeMake(0.0f, 0.0f);
 }
 
--(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey {
+-(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey {
 	
 	// inform delegate
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(touchOnEntryWithAnchorPoint:inSuperview:andKey:)])
-		[self.delegate touchOnEntryWithAnchorPoint:theAnchor inSuperview:theSuperview andKey:theKey];
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(touchOnEntryWithAnchorPoint:superview:key:)])
+		[self.delegate touchOnEntryWithAnchorPoint:theAnchor superview:theSuperview key:theKey];
 }
 
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
@@ -515,20 +577,20 @@
 #pragma mark FCGraphDelegate
 
 // OBS! FCGraphViewController implements the FCGraphDelegate protocol for the purpose of
-// acting as a twin and simply tries to pass on any callbacks to its own delegate.
+// acting as a twin and simply tries to pass on any calls to its own delegate.
 
--(NSArray *)colorsForGraphViewController:(id)theGraphViewController {
+-(UIColor *)baseColorForGraphViewController:(id)theGraphViewController {
 
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(colorsForGraphViewController:)])
-		return [self.delegate colorsForGraphViewController:self];
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(baseColorForGraphViewController:)])
+		return [self.delegate baseColorForGraphViewController:self];
 	
 	return nil;
 }
 
--(NSArray *)additionalColorsForGraphViewController:(id)theGraphViewController {
-	
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(additionalColorsForGraphViewController:)])
-		return [self.delegate additionalColorsForGraphViewController:self];
+-(UIColor *)colorForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController {
+
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(colorForDataSetWithIndex:inGraphViewController:)])
+		return [self.delegate colorForDataSetWithIndex:index inGraphViewController:self];
 	
 	return nil;
 }
@@ -757,41 +819,36 @@
 	}
 }
 
--(void)loadAvailableColors {
-/*	Ask delegate for colors or creates a default set of colors. */
+-(UIColor *)colorForDataSetWithIndex:(NSInteger)index {
 	
-	// create default available colors
-	NSMutableArray *newAvailableColors = [[NSMutableArray alloc] init];
+	if (index == 0)
+		return self.baseColor;
 	
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(colorsForGraphViewController:)]) {
-		
-		// get colors from delegate
-		[newAvailableColors addObjectsFromArray:[self.delegate colorsForGraphViewController:self]];
-		
-	} else {
-
-		// DEFAULT:
-		[newAvailableColors addObject:[UIColor purpleColor]]; // purple
-		[newAvailableColors addObject:[UIColor orangeColor]]; // orange
-		[newAvailableColors addObject:[UIColor blueColor]]; // blue
-		[newAvailableColors addObject:[UIColor brownColor]]; // brown
-		[newAvailableColors addObject:[UIColor redColor]]; // red
+	UIColor *color = nil;
+	
+	if (self.delegate != nil &&
+		[self.delegate respondsToSelector:@selector(colorForDataSetWithIndex:inGraphViewController:)]) {
+	
+		color = [self.delegate colorForDataSetWithIndex:index inGraphViewController:self];
 	}
 	
-	self.availableColors = newAvailableColors;
-	[newAvailableColors release];
-}
-
--(void)requestMoreColors {
-/*	Asks the delegate for more colors and adds to available colors array. */
+	if (color == nil) {
 	
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(additionalColorsForGraphViewController:)]) {
+		NSArray *defaultColors = self.additionalColors;
 		
-		NSArray *moreColors = [self.delegate additionalColorsForGraphViewController:self];
+		if (0 < index && index < [defaultColors count]) {
+			
+			color = [defaultColors objectAtIndex:index];
 		
-		if (moreColors != nil)
-			[self.availableColors addObjectsFromArray:moreColors];
+		} else {
+			
+			srand(time(0));
+			NSInteger randomIndex = random() % [defaultColors count];
+			color = [defaultColors objectAtIndex:randomIndex];
+		}
 	}
+	
+	return color;
 }
 
 -(void)createXScaleWithDataRange:(FCDataRange)theDataRange {
@@ -924,60 +981,42 @@
 
 -(void)addDataSet:(FCGraphDataSet *)theDataSet {
 /*	Adds the given data set as a separate set and displays them in the graph view.
-	The data set is an array of FCGraphEntryView objects.
-	Relies on having colors available and will do nothing if there are none. */
+	The data set is an array of FCGraphEntryView objects. */
 	
-	if (self.availableColors == nil)
-		[self loadAvailableColors]; // load new colors if we never got any
 	
-	if ([self.availableColors count] == 0)
-		[self requestMoreColors]; // request more colors if we've run out
+	// add set to the data sets array
+	
+	[dataSets addObject:theDataSet];
+	
+	// get a color for the data set 
+	
+	UIColor *color = [self colorForDataSetWithIndex:[self.dataSets count]-1];
+	
+	// setup and display the new entry objects
+	for (FCGraphEntryView *entry in theDataSet) {
 		
-	if ([self.availableColors count] != 0) {
+		entry.delegate = self;
 		
-		// select a color for this data set
+		// get mode from delegate (default is circles)
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(entryViewModeForGraphViewController:)])
+			entry.mode = [self.delegate entryViewModeForGraphViewController:self];
 		
-		/*
-		 // random color
-		 srand(time(0));
-		 NSInteger colorIndex = random() % [availableColors count];
-		 */
+		entry.color = color;
+		entry.anchor = [self.graphView positionForX:[entry.xValue doubleValue] y:[entry.yValue doubleValue]];
 		
-		// first available color
-		NSInteger colorIndex = [self.dataSets count];
-		UIColor *theColor = [self.availableColors objectAtIndex:colorIndex];
-		[self.availableColors removeObjectAtIndex:colorIndex];
+		[self.graphView addSubview:entry];
+	}
+	
+	// make sure the graph view has a pointer reference
+	
+	if (self.graphView.dataSetsRef == nil)
+		self.graphView.dataSetsRef = self.dataSets;
+	
+	// if there are no relatives or any twin and this was the first added data set...
+	if (self.relatives == nil && self.twin == nil && [dataSets count] == 1) {
 		
-		// setup and display the new entry objects
-		for (FCGraphEntryView *entry in theDataSet) {
-			
-			entry.delegate = self;
-			
-			// get mode from delegate (default is circles)
-			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(entryViewModeForGraphViewController:)])
-				entry.mode = [self.delegate entryViewModeForGraphViewController:self];
-			
-			entry.color = theColor;
-			entry.anchor = [self.graphView positionForX:[entry.xValue doubleValue] y:[entry.yValue doubleValue]];
-			
-			[self.graphView addSubview:entry];
-		}
-		
-		// add set to the data sets array
-		
-		[dataSets addObject:theDataSet];
-		
-		// also add a to the graph view
-		
-		if (self.graphView.dataSetsRef == nil)
-			self.graphView.dataSetsRef = self.dataSets;
-		
-		// if there are no relatives or any twin and this was the first added data set...
-		if (self.relatives == nil && self.twin == nil && [dataSets count] == 1) {
-			
-			// ...scroll to last entry in data set
-			[self scrollToLastEntryInDataSet:theDataSet];
-		}
+		// ...scroll to last entry in data set
+		[self scrollToLastEntryInDataSet:theDataSet];
 	}
 }
 

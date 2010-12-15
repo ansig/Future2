@@ -124,14 +124,19 @@
 
 @optional
 
--(NSArray *)colorsForGraphViewController:(id)theGraphViewController;
--(NSArray *)additionalColorsForGraphViewController:(id)theGraphViewController;
+// Appearance
+-(NSString *)labelTitleForGraphViewController:(id)theGraphViewController;
+-(UIImage *)labelIconForGraphViewController:(id)theGraphViewController;
+-(UIColor *)baseColorForGraphViewController:(id)theGraphViewController;
+-(UIColor *)colorForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController;
+-(UIImage *)iconForEntryViewWithKey:(NSString *)theKey;
 
+// Graph
 -(FCGraphScaleDateLevel)dateLevelForGraphViewController:(id)theGraphViewController;
 -(FCGraphEntryViewMode)entryViewModeForGraphViewController:(id)theGraphViewController;
-
 -(id)twinForGraphViewController:(id)theController;
 
+// Preferences
 -(BOOL)scrollRelativesForGraphViewController:(id)theGraphViewController;
 -(BOOL)scrollTwinForGraphViewController:(id)theGraphViewController;
 -(BOOL)drawGridForGraphViewController:(id)theGraphViewController;
@@ -145,8 +150,8 @@
 -(BOOL)drawReferencesForGraphViewController:(id)theGraphViewController;
 -(BOOL)drawLabelsInGraphForGraphViewController:(id)theGraphViewController;
 
--(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey;
--(UIImage *)iconForEntryViewWithKey:(NSString *)theKey;
+// Interaction
+-(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey;
 
 @end
 
@@ -154,7 +159,7 @@
 /* For classes that act as delegates for entry info views. */
 
 @required
--(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey;
+-(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey;
 -(CGSize)sizeForEntryViewWithAnchor:(CGPoint)theAnchor;
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey;
 

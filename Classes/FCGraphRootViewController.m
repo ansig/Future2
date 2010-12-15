@@ -285,8 +285,8 @@
 	return [[graphSet objectForKey:@"EntryViewMode"] integerValue];
 }
 
--(NSArray *)colorsForGraphViewController:(id)theGraphViewController {
-
+-(UIColor *)baseColorForGraphViewController:(id)theGraphViewController {
+	
 	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
 	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
 	
@@ -301,7 +301,7 @@
 		color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
 	}
 	
-	return [NSArray arrayWithObject:color];
+	return color;
 }
 
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
@@ -349,7 +349,7 @@
 	return newGraphViewController;
 }
 
--(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey; {
+-(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey; {
 	
 	// remove any present info views
 	
@@ -679,26 +679,31 @@
 	
 	// load the correct graph for the mode
 	
-	if (theMode == FCGraphModeTimePlotHorizontal) {
-		
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange];
-	
-	} else if (theMode == FCGraphModeDescendantTimePlotHorizontal) {
-		
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withAncestor:theRelative];
-	
-	} else if (theMode == FCGraphModeTwinTimePlotHorizontal && theRelative != nil) {
-	
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withTwin:theRelative];
-	
-	} else if (theMode == FCGraphModeTimeBandHorizontal) {
-	
-		if (theRelative == nil)
-			[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange];
-		
-		else
-			[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange withAncestor:theRelative];
-
+	switch (theMode) {
+			
+		case FCGraphModeTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange];
+			break;
+			
+		case FCGraphModeDescendantTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withAncestor:theRelative];
+			break;
+			
+		case FCGraphModeTwinTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withTwin:theRelative];
+			break;
+			
+		case FCGraphModeTimeBandHorizontal:
+			if (theRelative == nil)
+				[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange];
+			
+			else
+				[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange withAncestor:theRelative];
+			break;
+			
+		default:
+			NSAssert1(0, @"FCGraphRootViewController createGraphForViewControllerWithFrame:mode:key:startDate:endDate:ancestorOrTwin: || %@", @"Failed to swtich according to mode since mode was not among listed!");
+			break;
 	}
 	
 	// create graph entry objects for the entries and add them to the graph
@@ -790,10 +795,6 @@
 	[label release];
 	
 	[category release];
-	
-	// load preferences
-	
-	[newGraphViewController loadPreferences];
 	
 	// autorelease and return the new graph controller
 	
