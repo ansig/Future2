@@ -550,6 +550,9 @@
 		// change the unit id
 		self.uid = newUnit.uid;
 		
+		// release any held unit objects
+		self.unit = nil;
+		
 		// add it to the sets to be updated
 		
 		NSString *value = [[NSString alloc] initWithFormat:@"'%@'", self.uid];
