@@ -306,13 +306,9 @@
 
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
 
-	// TMP, VERY SLOW!
-	
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
-	NSString *imageName = anEntry.category.iconName;
-	UIImage *icon = [UIImage imageNamed:imageName];
-	
-	return icon;
+		
+	return anEntry.category.icon;
 }
 
 -(id)twinForGraphViewController:(id)theController {
@@ -785,7 +781,7 @@
 	label.textAlignment = UITextAlignmentRight;
 	label.text = category.name;
 	
-	UIImage *image = [UIImage imageNamed:category.iconName];
+	UIImage *image = category.icon;
 	label.imageView.image = image;
 	
 	newGraphViewController.label = label;

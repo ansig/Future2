@@ -444,9 +444,9 @@
 		[label setBackgroundColor:[[FCColorCollection sharedColorCollection] colorForIndex:colorIndex]];
 	}
 	
-	if (self.category.iconName != nil) {
+	if (self.category.iid != nil) {
 		
-		UIImage *icon = [UIImage imageNamed:self.category.iconName];
+		UIImage *icon = self.category.icon;
 		[self.iconButton setImage:icon forState:UIControlStateNormal];
 	}
 	

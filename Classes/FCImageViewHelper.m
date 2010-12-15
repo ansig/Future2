@@ -34,7 +34,7 @@
 	
 	// icon
 	
-	self.image = [UIImage imageNamed:category.iconName];
+	self.image = category.icon;
 	
 	// border and background color
 	

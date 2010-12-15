@@ -176,10 +176,10 @@
 	
 		} else if (self.propertyToSelect == FCPropertyIcon) {
 			
-			UIImage *icon = [UIImage imageNamed:[dictionary objectForKey:@"name"]];
+			UIImage *icon = [[FCIconCollection sharedIconCollection] iconForIID:[dictionary objectForKey:@"iid"]];
 			cell.imageView.image = icon;
 		
-			cell.textLabel.text = [[dictionary objectForKey:@"name"] stringByReplacingOccurrencesOfString:@"Icon.png" withString:@""];
+			cell.textLabel.text = [[dictionary objectForKey:@"Name"] stringByReplacingOccurrencesOfString:@"Icon.png" withString:@""];
 		} 
 	
 		[dictionary release];
@@ -361,7 +361,6 @@
 			NSDictionary *dictionary = [rows objectAtIndex:indexPath.row];
 			
 			self.category.iid = [dictionary objectForKey:@"iid"];
-			self.category.iconName = [dictionary objectForKey:@"name"];
 		
 		} else if (self.propertyToSelect == FCPropertyColor) {
 		
@@ -507,16 +506,7 @@
 	
 	NSMutableArray *newRows = [[NSMutableArray alloc] init];
 	
-	NSString *table = @"icons";
-	NSString *columns = @"iid, name";
-	
-	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
-	
-	NSArray *result = [dbh getColumns:columns fromTable:table withOptions:@"ORDER BY name"];
-	
-	[dbh release];
-	
-	for (NSDictionary *row in result) {
+	for (NSDictionary *row in [[FCIconCollection sharedIconCollection] allIcons]) {
 		
 		[newRows addObject:row];
 	}

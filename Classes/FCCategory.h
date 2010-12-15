@@ -45,7 +45,6 @@
 	NSDate *modified;
 	
 	NSString *datatypeName;
-	NSString *iconName;
 	NSNumber *colorIndex;
 	
 	NSString *lid;
@@ -69,7 +68,6 @@
 @property (nonatomic, retain) NSDate *modified;
 
 @property (nonatomic, retain) NSString *datatypeName;
-@property (nonatomic, retain) NSString *iconName;
 @property (nonatomic, retain) NSNumber *colorIndex;
 
 @property (nonatomic, retain) NSString *lid;
@@ -95,5 +93,7 @@
 -(void)delete;
 
 -(NSDictionary *)generateDefaultGraphSet;
+
+-(UIImage *)icon;
 
 @end

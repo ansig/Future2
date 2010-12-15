@@ -35,7 +35,7 @@
 @synthesize name;
 @synthesize minimum, maximum, decimals;
 @synthesize created, modified;
-@synthesize datatypeName, iconName, colorIndex;
+@synthesize datatypeName, colorIndex;
 @synthesize lid, uid, oid, did, iid;
 @synthesize unit;
 
@@ -47,10 +47,10 @@
 		
 		FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 		
-		NSString *columns = @"categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid";
+		NSString *columns = @"categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, iid, oid";
 		NSString *table = @"categories";
 		NSString *filters = [NSString stringWithFormat:@"cid = '%@'", theCID];
-		NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+		NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did";
 		
 		NSArray *result = [dbh getColumns:columns fromTable:table withJoints:joints filters:filters];
 		
@@ -77,9 +77,9 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"cid, categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, categories.iid, icons.name as icon, oid, max(categories.created)";
+	NSString *columns = @"cid, categories.name, minimum, maximum, decimals, color, lid, uid, categories.did, datatypes.name as datatype, iid, oid, max(categories.created)";
 	NSString *table = @"categories";
-	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did";
 	
 	NSArray *result = [dbh getColumns:columns fromTable:table withJoints:joints];
 	
@@ -99,9 +99,9 @@
 
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
+	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, iid, oid";
 	NSString *table = @"categories";
-	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did";
 	NSString *options = @"ORDER BY name";
 	
 	NSArray *result = [dbh getColumns:columns fromTable:table withJoints:joints options:options];
@@ -133,9 +133,9 @@
 	
 	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
 	
-	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, categories.iid as iid, icons.name as icon, oid";
+	NSString *columns = @"categories.cid as cid, categories.name as name, minimum, maximum, decimals, color, lid, uid, categories.did as did, datatypes.name as datatype, iid, oid";
 	NSString *table = @"categories";
-	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did LEFT JOIN icons ON icons.iid = categories.iid";
+	NSString *joints = @"LEFT JOIN datatypes ON datatypes.did = categories.did";
 	NSString *filters = [[NSString alloc] initWithFormat:@"categories.oid = '%@'", theOwnersCID];
 	NSString *options = @"ORDER BY name";
 	
@@ -215,11 +215,6 @@
 				
 				self.datatypeName = [theDictionary objectForKey:key];
 				
-			// icon
-			} else if ([key isEqualToString:@"icon"]) {
-				
-				self.iconName = [theDictionary objectForKey:key];
-				
 			// color
 			} else if ([key isEqualToString:@"color"]) {
 				
@@ -286,7 +281,6 @@
 	copy.modified = self.modified;
 	
 	copy.datatypeName = self.datatypeName;
-	copy.iconName = self.iconName;
 	copy.colorIndex = self.colorIndex;
 	
 	copy.lid = self.lid;
@@ -314,7 +308,6 @@
 	[modified release];
 	
 	[datatypeName release];
-	[iconName release];
 	[colorIndex release];
 	
 	[lid release];
@@ -700,6 +693,11 @@
 	[graphSet autorelease];
 	
 	return graphSet;
+}
+
+-(UIImage *)icon {
+	
+	return [[FCIconCollection sharedIconCollection] iconForIID:self.iid];
 }
 
 @end

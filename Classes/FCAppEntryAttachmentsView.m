@@ -286,7 +286,7 @@
 		
 		newAttachmentButton.backgroundColor = color;
 		
-		UIImage *icon = [UIImage imageNamed:attachment.category.iconName];
+		UIImage *icon = attachment.category.icon;
 		[newAttachmentButton setImage:icon forState:UIControlStateNormal];
 		
 		CGFloat xPos = spacing + ((spacing + width) * i);

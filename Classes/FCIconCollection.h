@@ -19,12 +19,30 @@
  */
 
 //
-//  FCFunctionsFramework.h
+//  FCIconCollection.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 01/11/2010.
+//  Created by Anders Sigfridsson on 14/12/2010.
 //
 
-#import "FCUnitConverter.h"
-#import "FCColorCollection.h"
-#import "FCIconCollection.h"
+#import "FCIOFramework.h"
+
+@interface FCIconCollection : NSObject {
+
+	NSDictionary *_systemIcons;
+}
+
+@property (nonatomic, retain) NSDictionary *_systemIcons;
+
+// Class
+
++(id)sharedIconCollection;
+
+// Custom
+
+-(UIImage *)iconForIID:(NSString *)theIID;
+-(NSString *)databaseIconNameForIID:(NSString *)theIID;
+
+-(NSArray *)allIcons;
+
+@end

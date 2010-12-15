@@ -164,7 +164,7 @@
 			// icon
 			
 			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5.0f, 25.0f, 20.0f, 20.0f)];
-			newIcon.image = [UIImage imageNamed:category.iconName];
+			newIcon.image = category.icon;
 			
 			self.icon = newIcon;
 			[self addSubview:newIcon];
