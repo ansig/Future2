@@ -107,6 +107,11 @@
 -(void)loadXScaleViewWithLength:(CGFloat)actualLength yOffset:(CGFloat)yOffset;
 -(void)loadYScaleViewWithHeight:(CGFloat)height;
 
+-(void)loadReferenceRanges;
+
+-(void)loadBaseLabel;
+-(void)loadLabelForDataSetWithIndex:(NSInteger)index;
+
 -(void)didFinishLoadingGraph;
 
 // Animation

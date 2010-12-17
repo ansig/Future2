@@ -285,6 +285,46 @@
 	return [[graphSet objectForKey:@"EntryViewMode"] integerValue];
 }
 
+-(NSArray *)referenceRangesForGraphSet:(id)theGraphSet inGraphViewController:(id)theGraphViewController {
+	
+	// TMP SOLUTION: manually adds a reference range for glucose. This will be
+	// made dynamic in future version. The plan is to create a new data structure
+	// to the database which can store reference ranges for any category.
+	
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
+	NSString *key = typedGraphViewController.key;
+	
+	if ([key isEqualToString:FCKeyCIDGlucose]) {
+		
+		//FCGraphDataSet *typedGraphSet = (FCGraphDataSet *)theGraphSet;
+		
+		FCCategory *category = [FCCategory categoryWithCID:key];
+		
+		FCGraphReferenceRange *newRange;
+		
+		if ([category.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre]) {
+			
+			newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+														upperLimit:[NSNumber numberWithDouble:8.0] 
+														lowerLimit:[NSNumber numberWithDouble:5.0]];
+			
+		} else {
+			
+			newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+														upperLimit:[NSNumber numberWithDouble:144.0] 
+														lowerLimit:[NSNumber numberWithDouble:90.0]];
+		}
+		
+		NSArray *ranges = [NSArray arrayWithObjects:newRange, nil];
+		
+		[newRange release];
+		
+		return ranges;
+	}
+	
+	return nil;
+}
+
 -(UIColor *)baseColorForGraphViewController:(id)theGraphViewController {
 	
 	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
@@ -740,61 +780,10 @@
 		
 		[formatter release];
 		
-		// TMP SOLUTION: manually adds a reference range for glucose. This will be
-		// made dynamic in future version. The plan is to create a new data structure
-		// to the database which can store reference ranges for any category.
-		if ([theKey isEqualToString:FCKeyCIDGlucose]) {
-		
-			FCGraphReferenceRange *newRange;
-			
-			if ([category.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre]) {
-			
-				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
-															upperLimit:[NSNumber numberWithDouble:8.0] 
-															lowerLimit:[NSNumber numberWithDouble:5.0]];
-				
-			} else {
-				
-				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
-															upperLimit:[NSNumber numberWithDouble:144.0] 
-															lowerLimit:[NSNumber numberWithDouble:90.0]];
-			}
-			
-			[dataSet addYReferenceRange:newRange];
-			
-			[newRange release];
-		}
-		
 		[dataSet autorelease];
 		
 		[newGraphViewController addDataSet:dataSet];
 	}
-	
-	// TMP SOLUTION: sets up a label and add it to the new graph controller
-	// add a label for this data set
-	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
-	
-	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:category.cid];
-	
-	if (color == nil)
-		color = [[FCColorCollection sharedColorCollection] colorForIndex:[category.colorIndex integerValue]];
-	
-	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
-	
-	label.textColor = [UIColor whiteColor];
-	label.font = [UIFont systemFontOfSize:12.0f];
-	label.textAlignment = UITextAlignmentRight;
-	label.text = category.name;
-	
-	UIImage *image = category.icon;
-	label.imageView.image = image;
-	
-	newGraphViewController.label = label;
-	[newGraphViewController.view addSubview:label];
-	
-	[label release];
-	
-	[category release];
 	
 	// autorelease and return the new graph controller
 	

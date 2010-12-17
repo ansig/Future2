@@ -490,10 +490,70 @@
 	[newYScaleView release];
 }
 
+-(void)loadReferenceRanges {
+	
+	
+}
+
+-(void)loadBaseLabel {
+	
+	[self loadLabelForDataSetWithIndex:0];
+}
+
+-(void)loadLabelForDataSetWithIndex:(NSInteger)index {
+	
+	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
+	
+	UIColor *color;
+	NSString *title;
+	UIImage *icon;
+	
+	if (index == 0) {
+	
+		color = self.baseColor;
+		
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelTitleForGraphViewController:)])
+			title = [self.delegate labelTitleForGraphViewController:self];
+
+	} else {
+	
+		color = [self colorForDataSetWithIndex:index];
+		
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelTitleForDataSetWithIndex:inGraphViewController:)])
+			title = [self.delegate labelTitleForDataSetWithIndex:index inGraphViewController:self];
+	}
+	
+	
+	
+	= [[FCColorCollection sharedColorCollection] colorForCID:category.cid];
+	
+	if (color == nil)
+		color = [[FCColorCollection sharedColorCollection] colorForIndex:[category.colorIndex integerValue]];
+	
+	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
+	
+	label.textColor = [UIColor whiteColor];
+	label.font = [UIFont systemFontOfSize:12.0f];
+	label.textAlignment = UITextAlignmentRight;
+	label.text = category.name;
+	
+	UIImage *image = category.icon;
+	label.imageView.image = image;
+	
+	newGraphViewController.label = label;
+	[newGraphViewController.view addSubview:label];
+	
+	[label release];
+	
+	[category release]; 
+}
+
 -(void)didFinishLoadingGraph {
 /*	Sets up a label and loads preferences. */
 	
 	[self loadPreferences];
+	
+	[self loadBaseLabel];
 }
 
 #pragma mark Animation
@@ -609,6 +669,14 @@
 		return [self.delegate entryViewModeForGraphViewController:self];
 	
 	return FCGraphEntryViewModeCircle;
+}
+
+-(NSArray *)referenceRangesForGraphSet:(id)theGraphSet inGraphViewController:(id)theGraphViewController {
+
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(referenceRangesForGraphSet:inGraphViewController:)])
+		return [self.delegate referenceRangesForGraphSet:theGraphSet inGraphViewController:self];
+	
+	return nil;
 }
 
 -(BOOL)scrollRelativesForGraphViewController:(id)theGraphViewController {
@@ -988,16 +1056,26 @@
 	
 	[dataSets addObject:theDataSet];
 	
+	// add reference ranges to the new data set
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(referenceRangesForGraphSet:inGraphViewController:)]) {
+	
+		NSArray *ranges = [self.delegate referenceRangesForGraphSet:theDataSet inGraphViewController:self];
+		
+		for (FCGraphReferenceRange *range in ranges)
+			[theDataSet addYReferenceRange:range];
+	}
+	
 	// get a color for the data set 
 	
 	UIColor *color = [self colorForDataSetWithIndex:[self.dataSets count]-1];
 	
 	// setup and display the new entry objects
+	
 	for (FCGraphEntryView *entry in theDataSet) {
 		
 		entry.delegate = self;
 		
-		// get mode from delegate (default is circles)
+		// getting mode from delegate (default is circles)
 		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(entryViewModeForGraphViewController:)])
 			entry.mode = [self.delegate entryViewModeForGraphViewController:self];
 		
@@ -1012,12 +1090,11 @@
 	if (self.graphView.dataSetsRef == nil)
 		self.graphView.dataSetsRef = self.dataSets;
 	
-	// if there are no relatives or any twin and this was the first added data set...
-	if (self.relatives == nil && self.twin == nil && [dataSets count] == 1) {
-		
-		// ...scroll to last entry in data set
+	// if there are no relatives or any twin and this was the first added data set, then
+	// scroll to the last entry in data set
+	
+	if (self.relatives == nil && self.twin == nil && [dataSets count] == 1)
 		[self scrollToLastEntryInDataSet:theDataSet];
-	}
 }
 
 -(void)scrollToLastEntryInDataSet:(FCGraphDataSet *)theDataSet {

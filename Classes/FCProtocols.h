@@ -129,11 +129,14 @@
 -(UIImage *)labelIconForGraphViewController:(id)theGraphViewController;
 -(UIColor *)baseColorForGraphViewController:(id)theGraphViewController;
 -(UIColor *)colorForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController;
+-(NSString *)labelTitleForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController;
+-(UIImage *)labelIconForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController;
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey;
 
 // Graph
 -(FCGraphScaleDateLevel)dateLevelForGraphViewController:(id)theGraphViewController;
 -(FCGraphEntryViewMode)entryViewModeForGraphViewController:(id)theGraphViewController;
+-(NSArray *)referenceRangesForGraphSet:(id)theGraphSet inGraphViewController:(id)theGraphViewController;
 -(id)twinForGraphViewController:(id)theController;
 
 // Preferences
