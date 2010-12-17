@@ -102,6 +102,8 @@
 -(void)save;
 -(void)cancel;
 
+-(void)displayNameAlert;
+
 -(void)setCategoryProperties;
 
 -(void)ensureMinMaxRelationship;

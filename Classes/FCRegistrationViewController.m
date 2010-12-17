@@ -104,6 +104,8 @@
 	
 	UIAlertView *profileSaveAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
 	[profileSaveAlert show];
+	
+	[profileSaveAlert release];
 }
 
 #pragma mark Delegate

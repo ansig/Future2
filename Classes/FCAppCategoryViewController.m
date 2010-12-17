@@ -707,16 +707,34 @@
 
 -(void)save {
 	
-	[self setCategoryProperties];
+	if (self.nameTextField.text != nil && [self.nameTextField.text length] > 0) {
 	
-	[self.category save];
+		[self setCategoryProperties];
 	
-	[self dismiss];
+		[self.category save];
+	
+		[self dismiss];
+		
+	} else {
+		
+		[self displayNameAlert];
+	}
 }
 
 -(void)cancel {
 	
 	[self dismiss];
+}
+
+-(void)displayNameAlert {
+	
+	NSString *title = @"Name your tag!";
+	NSString *message = @"Please enter a name for your tag.";
+	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
+	[alert show];
+	
+	[alert release];
 }
 
 -(void)setCategoryProperties {
