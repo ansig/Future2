@@ -37,7 +37,7 @@
 @synthesize yScale, yScaleView;
 @synthesize xScale, xScaleView;
 @synthesize graphView, scrollView;
-@synthesize label, baseColor, additionalColors;
+@synthesize label, additionalLabels, baseColor, additionalColors;
 @synthesize dataSets;
 
 #pragma mark Init
@@ -89,6 +89,7 @@
 	[scrollView release];
 	
 	[label release];
+	[additionalLabels release];
 	[baseColor release];
 	[additionalColors release];
 	
@@ -502,50 +503,59 @@
 
 -(void)loadLabelForDataSetWithIndex:(NSInteger)index {
 	
-	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
-	
 	UIColor *color;
-	NSString *title;
-	UIImage *icon;
+	NSString *title = nil;
+	UIImage *icon = nil;
 	
 	if (index == 0) {
+		
+		// base data set
 	
 		color = self.baseColor;
 		
 		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelTitleForGraphViewController:)])
 			title = [self.delegate labelTitleForGraphViewController:self];
+		
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelIconForGraphViewController:)])
+			icon = [self.delegate labelIconForGraphViewController:self];
 
 	} else {
+		
+		// any other data set
 	
 		color = [self colorForDataSetWithIndex:index];
 		
 		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelTitleForDataSetWithIndex:inGraphViewController:)])
 			title = [self.delegate labelTitleForDataSetWithIndex:index inGraphViewController:self];
+		
+		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(labelIconForDataSetWithIndex:inGraphViewController:)])
+			icon = [self.delegate labelIconForDataSetWithIndex:index inGraphViewController:self];
 	}
 	
+	FCBorderedLabel *newLabel = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), 
+																			   (kGraphPadding/2), 
+																			   100.0f, 
+																			   20.0f)];
 	
+	newLabel.backgroundColor = [color colorWithAlphaComponent:0.25f];
 	
-	= [[FCColorCollection sharedColorCollection] colorForCID:category.cid];
+	newLabel.textColor = [UIColor whiteColor];
+	newLabel.font = [UIFont systemFontOfSize:12.0f];
+	newLabel.textAlignment = UITextAlignmentRight;
 	
-	if (color == nil)
-		color = [[FCColorCollection sharedColorCollection] colorForIndex:[category.colorIndex integerValue]];
+	if (title != nil)
+		newLabel.text = title;
 	
-	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
+	if (icon != nil)
+		newLabel.imageView.image = icon;
 	
-	label.textColor = [UIColor whiteColor];
-	label.font = [UIFont systemFontOfSize:12.0f];
-	label.textAlignment = UITextAlignmentRight;
-	label.text = category.name;
+	if (index == 0)
+		self.label = newLabel;
 	
-	UIImage *image = category.icon;
-	label.imageView.image = image;
+	else
+		[self.additionalLabels addObject:newLabel];
 	
-	newGraphViewController.label = label;
-	[newGraphViewController.view addSubview:label];
-	
-	[label release];
-	
-	[category release]; 
+	[newLabel release]; 
 }
 
 -(void)didFinishLoadingGraph {
@@ -554,6 +564,7 @@
 	[self loadPreferences];
 	
 	[self loadBaseLabel];
+	[self.view addSubview:self.label];
 }
 
 #pragma mark Animation
@@ -1056,6 +1067,8 @@
 	
 	[dataSets addObject:theDataSet];
 	
+	NSInteger index = [self.dataSets count] - 1;
+	
 	// add reference ranges to the new data set
 	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(referenceRangesForGraphSet:inGraphViewController:)]) {
 	
@@ -1067,7 +1080,7 @@
 	
 	// get a color for the data set 
 	
-	UIColor *color = [self colorForDataSetWithIndex:[self.dataSets count]-1];
+	UIColor *color = [self colorForDataSetWithIndex:index];
 	
 	// setup and display the new entry objects
 	
@@ -1083,6 +1096,13 @@
 		entry.anchor = [self.graphView positionForX:[entry.xValue doubleValue] y:[entry.yValue doubleValue]];
 		
 		[self.graphView addSubview:entry];
+	}
+	
+	// load and display a label
+	if (index > 0) {
+	
+		[self loadLabelForDataSetWithIndex:index];
+		[self.view addSubview:[self.additionalLabels objectAtIndex:index]];
 	}
 	
 	// make sure the graph view has a pointer reference

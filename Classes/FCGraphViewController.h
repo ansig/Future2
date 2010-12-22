@@ -58,6 +58,7 @@
 	UIScrollView *scrollView;
 	
 	FCBorderedLabel *label;
+	NSMutableArray *additionalLabels;
 	UIColor *baseColor;
 	NSArray *additionalColors;
 
@@ -85,6 +86,7 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 
 @property (nonatomic, retain) FCBorderedLabel *label;
+@property (nonatomic, retain) NSMutableArray *additionalLabels;
 @property (nonatomic, retain) UIColor *baseColor;
 @property (nonatomic, retain) NSArray *additionalColors;
 

@@ -344,6 +344,28 @@
 	return color;
 }
 
+-(UIImage *)labelIconForGraphViewController:(id)theGraphViewController {
+
+	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
+	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+	
+	NSString *key = [graphSet objectForKey:@"Key"];
+	FCCategory *category = [FCCategory categoryWithCID:key];
+	
+	return [[FCIconCollection sharedIconCollection] iconForIID:category.iid];
+}
+
+-(NSString *)labelTitleForGraphViewController:(id)theGraphViewController {
+	
+	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
+	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+	
+	NSString *key = [graphSet objectForKey:@"Key"];
+	FCCategory *category = [FCCategory categoryWithCID:key];
+	
+	return category.name;
+}
+
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
 
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
