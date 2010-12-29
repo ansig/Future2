@@ -157,7 +157,7 @@
 	
 	if (self.xScaleRef.mode == FCGraphScaleModeData) {
 		
-		NSInteger range = self.xScaleRef.wrappedRange;
+		NSInteger range = self.xScaleRef.integerRange;
 		step = (width-totalPadding) / range;
 		
 	} else if (xScaleRef.mode == FCGraphScaleModeDates) {
@@ -169,7 +169,7 @@
 		step = (width-totalPadding) / dateUnits;
 	}
 	
-	int units = self.xScaleRef.units;
+	int units = self.xScaleRef.wrappedUnits;
 	
 	CGFloat xPos;
 	
@@ -205,7 +205,7 @@
 	
 	if (self.yScaleRef.mode == FCGraphScaleModeData) {
 		
-		NSInteger range = self.yScaleRef.wrappedRange;
+		NSInteger range = self.yScaleRef.integerRange;
 		step = (height-totalPadding) / range;
 		
 	} else if (yScaleRef.mode == FCGraphScaleModeDates) {
@@ -214,7 +214,7 @@
 		step = (height-totalPadding) / dateUnits;
 	}
 	
-	int units = self.yScaleRef.units;
+	int units = self.yScaleRef.wrappedUnits;
 	
 	CGFloat yPos;
 	
@@ -571,12 +571,12 @@
 -(CGPoint)positionForX:(double)x y:(double)y {
 /*	Returns the exact CGPoint for the given x and y values. */
 	
-	NSInteger range = self.xScaleRef.wrappedRange;
+	NSInteger range = self.xScaleRef.integerRange;
 	CGFloat space = self.frame.size.width - (kGraphPadding*2);
 	
 	CGFloat xPosition = kGraphPadding + ((space/range)*x);
 	
-	range = self.yScaleRef.wrappedRange;
+	range = self.yScaleRef.integerRange;
 	space = self.frame.size.height - (kGraphPadding*2);
 	
 	CGFloat yPosition = self.frame.size.height - (kGraphPadding + ((space/range)*y));

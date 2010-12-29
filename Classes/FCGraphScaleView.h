@@ -35,14 +35,13 @@
 	FCGraphScale *scaleRef;
 	
 	FCGraphScaleViewOrientation orientation;
-	
-	NSMutableArray *labels;
 }
 
 // Properties
 
 @property (nonatomic, retain) FCGraphScale *scaleRef;
-@property (nonatomic, retain) NSMutableArray *labels;
+
+@property (nonatomic) FCGraphScaleViewOrientation orientation;
 
 // Initializers
 
@@ -51,6 +50,7 @@
 // Drawing
 
 -(void)drawInContext:(CGContextRef)context;
+-(void)drawLabelsInContext:(CGContextRef)context;
 
 // Get
 

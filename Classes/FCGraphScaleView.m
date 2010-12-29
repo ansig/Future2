@@ -29,7 +29,8 @@
 
 @implementation FCGraphScaleView
 
-@synthesize scaleRef, labels;
+@synthesize scaleRef;
+@synthesize orientation;
 
 #pragma mark Init
 
@@ -38,8 +39,6 @@
 	if (self = [super initWithFrame:theFrame]) {
 		
 		scaleRef = [theScale retain];
-		
-		labels = [[scaleRef createLabelsArray] retain];
 		
 		orientation = theOrientation;
 	}
@@ -50,8 +49,6 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-	
-	[labels release];
 	
 	[scaleRef release];
 	
@@ -68,125 +65,152 @@
 	// Clear the context
 	CGContextClearRect(context, rect);
 	
-	// Background
-	UIColor *backgroundColor = [UIColor grayColor];
-	CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
-	CGContextFillRect(context, rect);
-	
 	// Call actual draw method
 	[self drawInContext:context];
 }
 
 -(void)drawInContext:(CGContextRef)context {
 	
-	// Text color
-	CGContextSetRGBFillColor(context, 255, 255, 255, 1);
+	// Background
+	UIColor *backgroundColor = [UIColor grayColor];
+	CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+	CGContextFillRect(context, self.bounds);
 	
-	// Text setup
-	const char* text;
-	CGContextSelectFont(context, "Courier", 12.0f, kCGEncodingMacRoman);
-	CGContextSetTextDrawingMode(context, kCGTextFill);
+	[self drawLabelsInContext:context];
+}
+
+-(void)drawLabelsInContext:(CGContextRef)context {
 	
-	// Transform the context so that the text is shown right way up
-	// alt 1: flip text vertically
-	//CGAffineTransform textTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
-	//CGContextSetTextMatrix(context, textTransform);
+	// Color
 	
-	// alt 2: change context coordinates
-	CGContextTranslateCTM(context, 0, self.bounds.size.height);
-	CGContextScaleCTM(context, 1, -1);
+	const CGFloat components [] = {1.0f, 1.0f, 1.0f};
+	CGContextSetStrokeColor(context, components);
+	CGContextSetFillColor(context, components);
 	
-	// Variables for positioning
+	// Shared variables
 	
-	CGFloat length = orientation == FCGraphScaleViewOrientationHorizontal ? self.frame.size.width : self.frame.size.height;
+	CGFloat length = orientation == FCGraphScaleViewOrientationHorizontal ? self.bounds.size.width : self.bounds.size.height;
 	
 	CGFloat padding = self.scaleRef.padding;
 	CGFloat totalPadding = padding * 2;
 	
+	NSInteger divisor;
 	CGFloat step;
 	
-	if (self.scaleRef.mode == FCGraphScaleModeDates) {
-		
-		// OBS! The use of dateUnits is assuming that the scales date range is dividable
-		// into a whole number of hours, days, months, or years.
-		
-		NSInteger dateUnits = self.scaleRef.dateRangeInUnits;
-		step = (length-totalPadding)/dateUnits;
+	if (self.scaleRef.mode == FCGraphScaleModeData) {
 	
-	} else if (self.scaleRef.mode == FCGraphScaleModeData) {
+		divisor = self.scaleRef.integerDataRangeDivisor;
+		step = (length-totalPadding) / self.scaleRef.integerRange;
 		
-		NSInteger range = self.scaleRef.wrappedRange;
-		step = (length-totalPadding)/range;
+	} else {
+		
+		divisor = 1;
+		step = (length-totalPadding) / self.scaleRef.dateRangeInUnits;
 	}
 	
-	UIFont *font = [UIFont fontWithName:@"Courier" size:12.0f];		// For determining the length of the text and centering its position
-	CGSize textSize;												// OBS! Make sure font here is the same as is set in the context above!
+	NSInteger units = self.scaleRef.wrappedUnits;
+	
+	// Mark variables
+	
+	CGFloat markHeight = 4.0f;
+	
+	// Text variables
+	
+	NSArray *labels = [self.scaleRef createLabelsArray];
+	
+	NSString *text;
+	
+	CGFloat textWidth;
+	CGFloat textHeight;
+	
+	UITextAlignment alignment;
+	
+	UIFont *font = [UIFont systemFontOfSize:12.0f];
+	UIFont *actualFont;
+	
+	CGRect textRect;
+	
+	// Drawing
 	
 	CGFloat xPos;
 	CGFloat yPos;
 	
-	CGFloat width = self.frame.size.width;
-	CGFloat height = self.frame.size.height;
-		
-	// Draw text
+	NSInteger nextLabelIndex = [labels count] - 1;
 	
-	NSInteger units = self.scaleRef.units;
-	int j = 0; // Label counter
-	BOOL display = YES; // Display flag
-	for (int i = 0; i < units; i++) {
+	switch (self.orientation) {
 		
-		if (self.scaleRef.mode == FCGraphScaleModeData) {
+		case FCGraphScaleViewOrientationHorizontal:
+				
+			yPos = 0.0f;
+			
+			textWidth = step;
+			textHeight = self.bounds.size.height - markHeight;
+			alignment = UITextAlignmentLeft;
+			
+			for (int i = 0; i < units; i++) {
+				
+				if (i % divisor == 0) {
+			
+					xPos = (i * step) + padding;
+				
+					CGContextMoveToPoint(context, xPos, 0.0f);
+					CGContextAddLineToPoint(context, xPos, markHeight);
 		
-			if (i % self.scaleRef.wrappedDataRangeDivisor == 0)
-				display = YES;
-			
-			else
-				display = NO;
-		}
-		
-		if (display) {
-			
-			textSize = [[labels objectAtIndex:j] sizeWithFont:font];
-			textSize.height -= 10;	// OBS! This manual adjustment is necessary because
-									// textSize.height consistently is to large!
-			
-			text = [[labels objectAtIndex:j] UTF8String];
-			
-			if (orientation == FCGraphScaleViewOrientationHorizontal) {
-				
-				// Special cases to ensure full text is shown.
-				// first
-				if (i == 0)
-					xPos = ((step*i)+padding);
-				
-				// last
-				else if (i == units-1)
-					xPos = ((step*i)+padding) - textSize.width;
-				
-				// normal
-				else
-					xPos = ((step*i)+padding) - (textSize.width/2);
-				
-				yPos = (height/2) - (textSize.height/2);
-				
-			} else {
-				
-				xPos = (width/2) - (textSize.width/2);
-				yPos = ((step*i)+padding) - (textSize.height/2);
+					textRect = CGRectMake(xPos, markHeight, textWidth, textHeight);
+					
+					text = [labels objectAtIndex:nextLabelIndex];
+					
+					[text drawInRect:textRect 
+							withFont:font 
+					   lineBreakMode:UILineBreakModeTailTruncation
+						   alignment:alignment];
+					
+					nextLabelIndex--;
+				}
 			}
 			
-			CGContextShowTextAtPoint(context, xPos, yPos, text, strlen(text));
+			CGContextStrokePath(context);
 			
-			j++;
-		}
+			break;
+		
+		default: // FCGraphScaleViewOrientationVertical
+			
+			xPos = self.bounds.size.width;
+			
+			textWidth = self.bounds.size.width - markHeight;
+			textHeight = step;
+			alignment = UITextAlignmentCenter;
+			
+			for (int i = 0; i < units; i++) {
+				
+				if (i % divisor == 0) {
+				
+					yPos = (i * step) + padding;
+				
+					CGContextMoveToPoint(context, xPos, yPos);
+					CGContextAddLineToPoint(context, xPos-markHeight, yPos);
+					
+					text = [labels objectAtIndex:nextLabelIndex];
+					
+					actualFont = [text fontForText:text 
+										toFitWidth:textWidth
+								 usingOriginalFont:font];
+					
+					textRect = CGRectMake(0.0f, yPos-(actualFont.lineHeight/2), textWidth, textHeight);
+					
+					[text drawInRect:textRect 
+							withFont:actualFont
+					   lineBreakMode:UILineBreakModeTailTruncation
+						   alignment:alignment];
+					
+					nextLabelIndex--;
+				}
+			}
+			
+			CGContextStrokePath(context);
+			
+			break;
 	}
-}
-
-#pragma mark Get
-
--(FCGraphScaleViewOrientation)orientation {
-	
-	return orientation;
 }
 
 @end

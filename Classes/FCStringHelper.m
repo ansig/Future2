@@ -95,4 +95,28 @@
 	return newString;
 }
 
+-(UIFont *)fontForText:(NSString *)text toFitWidth:(CGFloat)width usingOriginalFont:(UIFont *)originalFont {
+	
+	NSString *fontName = originalFont.fontName;
+	CGFloat pointSize = originalFont.pointSize;
+	
+	UIFont *newFont = [UIFont fontWithName:fontName size:pointSize];
+	
+	CGSize requiredSize = [text sizeWithFont:newFont];
+	
+	while (requiredSize.width > width) {
+		
+		if (pointSize < 7)
+			break;
+		
+		pointSize--;
+		
+		newFont = [UIFont fontWithName:fontName size:pointSize];
+		
+		requiredSize = [text sizeWithFont:newFont];
+	}
+	
+	return newFont;
+}
+
 @end

@@ -35,4 +35,6 @@
 -(NSString *)sqlite3String;
 -(NSString *)numberString;
 
+-(UIFont *)fontForText:(NSString *)text toFitWidth:(CGFloat)width usingOriginalFont:(UIFont *)originalFont;
+
 @end
