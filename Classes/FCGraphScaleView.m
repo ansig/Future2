@@ -192,9 +192,8 @@
 					
 					text = [labels objectAtIndex:nextLabelIndex];
 					
-					actualFont = [text fontForText:text 
-										toFitWidth:textWidth
-								 usingOriginalFont:font];
+					actualFont = [text fontToFitWidth:textWidth
+									usingOriginalFont:font];
 					
 					textRect = CGRectMake(0.0f, yPos-(actualFont.lineHeight/2), textWidth, textHeight);
 					

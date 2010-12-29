@@ -95,14 +95,14 @@
 	return newString;
 }
 
--(UIFont *)fontForText:(NSString *)text toFitWidth:(CGFloat)width usingOriginalFont:(UIFont *)originalFont {
+-(UIFont *)fontToFitWidth:(CGFloat)width usingOriginalFont:(UIFont *)originalFont {
 	
 	NSString *fontName = originalFont.fontName;
 	CGFloat pointSize = originalFont.pointSize;
 	
 	UIFont *newFont = [UIFont fontWithName:fontName size:pointSize];
 	
-	CGSize requiredSize = [text sizeWithFont:newFont];
+	CGSize requiredSize = [self sizeWithFont:newFont];
 	
 	while (requiredSize.width > width) {
 		
@@ -113,7 +113,7 @@
 		
 		newFont = [UIFont fontWithName:fontName size:pointSize];
 		
-		requiredSize = [text sizeWithFont:newFont];
+		requiredSize = [self sizeWithFont:newFont];
 	}
 	
 	return newFont;
