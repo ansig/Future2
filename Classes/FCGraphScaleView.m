@@ -72,9 +72,34 @@
 -(void)drawInContext:(CGContextRef)context {
 	
 	// Background
-	UIColor *backgroundColor = [UIColor grayColor];
-	CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
-	CGContextFillRect(context, self.bounds);
+	
+	if (self.scaleRef.mode == FCGraphScaleModeDates) {
+		
+		// gradient
+	
+		CGColorRef topColorRef = [[UIColor lightGrayColor] CGColor];
+		CGColorRef bottomColorRef = [[UIColor darkGrayColor] CGColor];
+		NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
+		CGFloat locations[] = {0, 1};
+		
+		CGGradientRef gradient = CGGradientCreateWithColors(CGColorGetColorSpace(topColorRef), (CFArrayRef)colors, locations);
+		
+		CGRect bounds = self.bounds;
+		CGPoint top = CGPointMake(0.0f, CGRectGetMidY(bounds));
+		CGPoint bottom = CGPointMake(CGRectGetMaxX(bounds), CGRectGetMidY(bounds));
+		
+		CGContextDrawLinearGradient(context, gradient, top, bottom, 0);
+		
+		CGGradientRelease(gradient);
+	
+	} else {
+		
+		// solid
+		
+		UIColor *backgroundColor = [UIColor grayColor];
+		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+		CGContextFillRect(context, self.bounds);
+	}
 	
 	[self drawLabelsInContext:context];
 }
