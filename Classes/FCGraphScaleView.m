@@ -160,13 +160,17 @@
 	CGFloat xPos;
 	CGFloat yPos;
 	
-	NSInteger nextLabelIndex = [labels count] - 1;
+	NSInteger nextLabelIndex;
 	
 	switch (self.orientation) {
 		
 		case FCGraphScaleViewOrientationHorizontal:
+			
+			units--; // adjusting units to that last one is not drawn
 				
 			yPos = 0.0f;
+			
+			nextLabelIndex = 0;
 			
 			textWidth = step;
 			textHeight = self.bounds.size.height - markHeight;
@@ -190,7 +194,7 @@
 					   lineBreakMode:UILineBreakModeTailTruncation
 						   alignment:alignment];
 					
-					nextLabelIndex--;
+					nextLabelIndex++;
 				}
 			}
 			
@@ -201,6 +205,8 @@
 		default: // FCGraphScaleViewOrientationVertical
 			
 			xPos = self.bounds.size.width;
+			
+			nextLabelIndex = [labels count] - 1;
 			
 			textWidth = self.bounds.size.width - markHeight;
 			textHeight = step;
