@@ -171,13 +171,18 @@
 	
 	int units = self.xScaleRef.wrappedUnits;
 	
+	NSInteger divisor = self.xScaleRef.mode == FCGraphScaleModeData ? self.xScaleRef.integerDataRangeDivisor : 1;
+	
 	CGFloat xPos;
 	
 	for (int i = 0; i < units; i++) {
 		
-		xPos = (step*i)+padding;
-		CGContextMoveToPoint(context, xPos, 0.0f);
-		CGContextAddLineToPoint(context, xPos, height);
+		if (i % divisor == 0) {
+			
+			xPos = (step*i)+padding;
+			CGContextMoveToPoint(context, xPos, 0.0f);
+			CGContextAddLineToPoint(context, xPos, height);
+		}
 	}
 	
 	CGContextStrokePath(context);
@@ -216,13 +221,18 @@
 	
 	int units = self.yScaleRef.wrappedUnits;
 	
+	NSInteger divisor = self.yScaleRef.mode == FCGraphScaleModeData ? self.yScaleRef.integerDataRangeDivisor : 1;
+	
 	CGFloat yPos;
 	
 	for (int i = 0; i < units; i++) {
 		
-		yPos = (step*i)+padding;
-		CGContextMoveToPoint(context, 0.0f, yPos);
-		CGContextAddLineToPoint(context, width, yPos);
+		if (i % divisor == 0) {
+		
+			yPos = (step*i)+padding;
+			CGContextMoveToPoint(context, 0.0f, yPos);
+			CGContextAddLineToPoint(context, width, yPos);
+		}
 	}
 	
 	CGContextStrokePath(context);
