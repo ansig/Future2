@@ -68,7 +68,8 @@
 
 // Calculations
 
--(NSInteger)dateRangeInUnits;
+-(NSInteger)dateRangeUnits;
+-(NSInteger)dateRangeUnitsDivisor;
 -(NSInteger)wrappedUnits;
 -(double)range;
 -(NSInteger)integerRange;

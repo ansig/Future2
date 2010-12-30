@@ -99,6 +99,7 @@
 -(void)drawInterquartileRangeForYInContext:(CGContextRef)context;
 -(void)drawReferenceRangesForYInContext:(CGContextRef)context;
 
+-(void)drawXAxisSpecialLabelsInContext:(CGContextRef)context;
 
 // Custom
 

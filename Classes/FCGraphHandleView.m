@@ -376,7 +376,7 @@
 		// flip width/height
 		newLabel.bounds = CGRectMake(0.0f, 0.0f, self.bounds.size.height, self.bounds.size.width);
 		
-		// rotate anti-clockwise
+		// rotate counter clockwise
 		newLabel.transform = CGAffineTransformRotate(newLabel.transform, degreesToRadian(-90));
 	
 	} else if (self.mode == FCGraphHandleModeRightToLeft) {

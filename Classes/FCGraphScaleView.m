@@ -130,7 +130,7 @@
 	} else {
 		
 		divisor = 1;
-		step = (length-totalPadding) / self.scaleRef.dateRangeInUnits;
+		step = (length-totalPadding) / self.scaleRef.dateRangeUnits;
 	}
 	
 	NSInteger units = self.scaleRef.wrappedUnits;

@@ -128,6 +128,8 @@
 	if (self.drawMedian)
 		[self drawMedianForYValuesInContext:context];
 	
+	[self drawXAxisSpecialLabelsInContext:context];
+	
 	if (self.drawCurves)
 		[self drawCurvesInContext:context];
 	
@@ -165,7 +167,7 @@
 		// OBS! The use of dateUnits is assuming that the scales date range is dividable
 		// into a whole number of hours, days, months, or years.
 		
-		NSInteger dateUnits = xScaleRef.dateRangeInUnits;
+		NSInteger dateUnits = xScaleRef.dateRangeUnits;
 		step = (width-totalPadding) / dateUnits;
 	}
 	
@@ -215,7 +217,7 @@
 		
 	} else if (yScaleRef.mode == FCGraphScaleModeDates) {
 		
-		NSInteger dateUnits = yScaleRef.dateRangeInUnits;
+		NSInteger dateUnits = yScaleRef.dateRangeUnits;
 		step = (height-totalPadding) / dateUnits;
 	}
 	
@@ -549,7 +551,7 @@
 						CGContextSetFillColorWithColor(context, color.CGColor);
 						
 						// flip vertical
-						CGAffineTransform textTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);;
+						CGAffineTransform textTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
 						CGContextSetTextMatrix(context, textTransform);
 					
 						for (int x = upperLeftCorner.x; x <  width; x += kGraphLabelSpacing) {
@@ -562,6 +564,72 @@
 			}
 		}
 	}
+}
+
+-(void)drawXAxisSpecialLabelsInContext:(CGContextRef)context {
+	
+	// Shared variables
+	
+	CGFloat length = self.bounds.size.width;
+	
+	CGFloat padding = self.xScaleRef.padding;
+	CGFloat totalPadding = padding * 2;
+	
+	NSInteger divisor;
+	CGFloat step;
+	
+	if (self.xScaleRef.mode == FCGraphScaleModeData) {
+		
+		divisor = self.xScaleRef.integerDataRangeDivisor;
+		step = (length-totalPadding) / self.xScaleRef.integerRange;
+		
+	} else {
+		
+		divisor = self.xScaleRef.dateRangeUnitsDivisor;
+		step = (length-totalPadding) / self.xScaleRef.dateRangeUnits;
+	}
+	
+	NSInteger units = self.xScaleRef.wrappedUnits - 1;
+	
+	// Text variables
+	
+	NSArray *labels = [self.xScaleRef createSpecialLabelsArray];
+	
+	const char * text;
+	
+	CGContextSelectFont(context, "Courier", 12.0f, kCGEncodingMacRoman); // FONT
+	CGContextSetTextDrawingMode(context, kCGTextFill);
+	
+	const CGFloat components [] = {0.5f, 0.5f, 0.5f}; // COLOR
+	CGContextSetFillColor(context, components);
+	
+	CGAffineTransform flipTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0); // ROTATION
+	CGAffineTransform textTransform = CGAffineTransformRotate(flipTransform, degreesToRadian(45));
+	CGContextSetTextMatrix(context, textTransform);
+	
+	// Drawing
+	
+	CGPoint textPoint;
+	
+	textPoint.y = self.bounds.size.height;
+	
+	NSInteger nextLabelIndex = 0;
+	
+	for (int i = 0; i < units; i++) {
+		
+		if (i % divisor == 0) {
+			
+			textPoint.x = (i * step) + padding;
+			
+			text = [[labels objectAtIndex:nextLabelIndex] UTF8String];
+			
+			CGContextShowTextAtPoint(context, textPoint.x, textPoint.y, text, strlen(text));
+			
+			nextLabelIndex++;
+		}
+	}
+	
+	CGContextStrokePath(context);
 }
 
 #pragma mark Custom
