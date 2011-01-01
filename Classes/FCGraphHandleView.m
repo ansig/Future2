@@ -74,7 +74,7 @@
     // Get the graphics context
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	// DRAW A RECT WITH ROUNDED CORNERS
+	// DRAW A RECT WITH ROUNDED CORNERS IN PULL DIRECTION
 	
 	// color
 	
@@ -104,7 +104,7 @@
 			CGPointMake(0.0f, radius),
 			CGPointMake(radius, radius) };
 	
-	// paths
+	// outline
 	
 	CGContextBeginPath(context);
 	
@@ -117,15 +117,69 @@
 	
 	CGContextFillPath(context);
 	
-	CGContextBeginPath(context);
-	
-	CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
-	CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
-	
-	CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
-	CGContextAddArc(context, width - radius, radius, radius, degreesToRadian(270), degreesToRadian(90), NO); // upper right corner
-	
-	CGContextFillPath(context);
+	switch (self.mode) {
+		
+		case FCGraphHandleModeTopDown:
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
+			
+			CGContextFillPath(context);
+			
+			// filled corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddRect(context, CGRectMake(0.0f, 0.0f, radius, radius)); // upper left
+			CGContextAddRect(context, CGRectMake(width-radius, 0.0f, radius, radius)); // upper right
+			
+			CGContextFillPath(context);
+			
+			break;
+			
+		case FCGraphHandleModeRightToLeft:
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			
+			CGContextFillPath(context);
+			
+			// filled corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddRect(context, CGRectMake(width-radius, 0.0f, radius, radius)); // upper right
+			CGContextAddRect(context, CGRectMake(width-radius, height-radius, radius, radius)); // lower right
+			
+			CGContextFillPath(context);
+			
+			break;
+
+		
+		default: // = four round corners
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			
+			CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
+			CGContextAddArc(context, width - radius, radius, radius, degreesToRadian(270), degreesToRadian(90), NO); // upper right corner
+			
+			CGContextFillPath(context);
+			
+			break;
+	}
 }
 
 #pragma mark Touch
