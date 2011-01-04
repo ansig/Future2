@@ -99,7 +99,7 @@
 	 
 	 CGRect frame = CGRectMake(0.0f, 0.0f, 480.0f, 320.0f); // flipping width/height for landscape view
 	 UIView *view = [[UIView alloc] initWithFrame:frame];
-	 view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	 view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	 
 	 self.view = view;
 	 
@@ -138,7 +138,7 @@
 	 
 	 FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
 	 newHandle.delegate = self.pullMenuViewController;
-	 newHandle.color = [UIColor darkGrayColor];
+	 newHandle.color =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	 newHandle.mode = FCGraphHandleModeTopDown;
 	 newHandle.cornerRadius = 8.0f;
 	 newHandle.range = kGraphPullMenuHandleRange;
@@ -156,8 +156,11 @@
 	 
 	 NSString *text = [NSString stringWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
 	 [newHandle createNewLabelWithText:text];
+	 newHandle.label.textColor = kDarkColor;
 	 
 	 [formatter release];
+	 
+	 [newHandle createDirectionalArrow];
 	 
 	 self.pullMenuHandleView = newHandle;
 	 [self.view addSubview:newHandle];
@@ -327,15 +330,13 @@
 
 -(UIColor *)baseColorForGraphViewController:(id)theGraphViewController {
 	
-	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
-	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
 	
-	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:[graphSet objectForKey:@"Key"]];
+	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:typedGraphViewController.key];
 	
 	if (color == nil) {
 		
-		NSString *key = [graphSet objectForKey:@"Key"];
-		FCCategory *category = [FCCategory categoryWithCID:key];
+		FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
 		
 		NSInteger colorIndex = [category.colorIndex integerValue];
 		color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
@@ -346,22 +347,18 @@
 
 -(UIImage *)labelIconForGraphViewController:(id)theGraphViewController {
 
-	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
-	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
 	
-	NSString *key = [graphSet objectForKey:@"Key"];
-	FCCategory *category = [FCCategory categoryWithCID:key];
+	FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
 	
 	return [[FCIconCollection sharedIconCollection] iconForIID:category.iid];
 }
 
 -(NSString *)labelTitleForGraphViewController:(id)theGraphViewController {
 	
-	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
-	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
 	
-	NSString *key = [graphSet objectForKey:@"Key"];
-	FCCategory *category = [FCCategory categoryWithCID:key];
+	FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
 	
 	return category.name;
 }
@@ -826,18 +823,17 @@
 	CGFloat yPos = frame.origin.y + ((frame.size.height/2) - (height/2));
 	
 	FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-	newHandle.color = [UIColor darkGrayColor];
+	newHandle.color = [self baseColorForGraphViewController:theGraphController];
 	newHandle.mode = FCGraphHandleModeRightToLeft;
 	newHandle.cornerRadius = 5.0f;
 	newHandle.range = 220.0f;
 	newHandle.lowerThreshold = FCGraphHandleThresholdQuarter;
-	//newHandle.upperThreshold = FCGraphHandleThresholdOpposite;
+	//newHandle.upperThreshold = FCGraphHandleThresholdOpposite;	// OBS! If the upper threshold is set the user can't 
+																	// choose size on the twin
 	
 	newHandle.delegate = theGraphController;
 	
-	// get the category we're working with for the title
-	FCCategory *category = [FCCategory categoryWithCID:theGraphController.key];
-	[newHandle createNewLabelWithText:category.name];
+	[newHandle createDirectionalArrow];
 	
 	[newHandle autorelease];
 	

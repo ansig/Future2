@@ -73,12 +73,20 @@
 	
 	// Background
 	
+	UIColor *backgroundColor = kDarkColor;
+	
 	if (self.scaleRef.mode == FCGraphScaleModeDates) {
 		
+		/*
+		
 		// gradient
-	
-		CGColorRef topColorRef = [[UIColor lightGrayColor] CGColor];
-		CGColorRef bottomColorRef = [[UIColor darkGrayColor] CGColor];
+		
+		const CGFloat components [] = {1.0f, 1.0f, 1.0f};
+		CGContextSetFillColor(context, components);
+		CGContextFillRect(context, self.bounds);
+		 
+		CGColorRef topColorRef = [[backgroundColor colorWithAlphaComponent:0.75f] CGColor];
+		CGColorRef bottomColorRef = [backgroundColor CGColor];
 		NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 		CGFloat locations[] = {0, 1};
 		
@@ -91,12 +99,18 @@
 		CGContextDrawLinearGradient(context, gradient, top, bottom, 0);
 		
 		CGGradientRelease(gradient);
+		 
+		 */
+		
+		// solid
+		
+		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+		CGContextFillRect(context, self.bounds);
 	
 	} else {
 		
 		// solid
 		
-		UIColor *backgroundColor = [UIColor grayColor];
 		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
 		CGContextFillRect(context, self.bounds);
 	}
@@ -150,7 +164,7 @@
 	
 	UITextAlignment alignment;
 	
-	UIFont *font = [UIFont systemFontOfSize:12.0f];
+	UIFont *font = kGraphFont;
 	UIFont *actualFont;
 	
 	CGRect textRect;

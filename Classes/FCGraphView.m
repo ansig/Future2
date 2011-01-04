@@ -87,7 +87,11 @@
 	
 	// * Draw a gradient background
 	
-	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[UIColor lightGrayColor] CGColor];
+	const CGFloat components [] = {1.0f, 1.0f, 1.0f};
+	CGContextSetFillColor(context, components);
+	CGContextFillRect(context, self.bounds);
+	
+	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[kDarkColor colorWithAlphaComponent:0.5f] CGColor];
 	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor whiteColor] CGColor];
 	NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 	CGFloat locations[] = {0, 1};
@@ -363,7 +367,7 @@
 					
 					const char * text = [[NSString stringWithFormat:@"Average: %f", average] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					CGContextSetRGBFillColor(context, 255, 255, 255, 1.0f); // COLOR
 					
@@ -423,7 +427,7 @@
 					
 					const char * text = [[NSString stringWithFormat:@"Median: %f", median] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					CGContextSetRGBFillColor(context, 255, 255, 255, 1.0f); // COLOR
 					
@@ -480,7 +484,7 @@
 					const char * text1 = [[NSString stringWithFormat:@"Upper quartile %f", upperQuartile] UTF8String];
 					const char * text2 = [[NSString stringWithFormat:@"Lower quartile: %f", lowerQuartile] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					
 					UIColor *color = [[lastDatum color] colorWithAlphaComponent:1.0f]; // COLOR
@@ -544,7 +548,7 @@
 						const char * text1 = [[NSString stringWithFormat:@"%@ < %f", range.name, upperLimit] UTF8String];
 						const char * text2 = [[NSString stringWithFormat:@"%@ > %f", range.name, lowerLimit] UTF8String];
 											
-						CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+						CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 						CGContextSetTextDrawingMode(context, kCGTextFill);
 						
 						UIColor *color = [[lastDatum color] colorWithAlphaComponent:1.0f]; // COLOR
@@ -597,11 +601,10 @@
 	
 	const char * text;
 	
-	CGContextSelectFont(context, "Courier", 12.0f, kCGEncodingMacRoman); // FONT
+	CGContextSelectFont(context, "Helvetica", 12.0f, kCGEncodingMacRoman); // FONT
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 	
-	const CGFloat components [] = {0.5f, 0.5f, 0.5f}; // COLOR
-	CGContextSetFillColor(context, components);
+	CGContextSetFillColorWithColor(context, [kDarkColor CGColor]);
 	
 	CGAffineTransform flipTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0); // ROTATION
 	CGAffineTransform textTransform = CGAffineTransformRotate(flipTransform, degreesToRadian(45));

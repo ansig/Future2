@@ -39,7 +39,6 @@
 	UIScrollView *scrollView;
 	
 	UIPageControl *pageControl;
-	UILabel *pageLabel;
 	
 	UILabel *nameLabel;
 	
@@ -53,7 +52,6 @@
 @property (nonatomic, retain) UIScrollView *scrollView;
 
 @property (nonatomic, retain) UIPageControl *pageControl;
-@property (nonatomic, retain) UILabel *pageLabel;
 
 @property (nonatomic, retain) UILabel *nameLabel;
 

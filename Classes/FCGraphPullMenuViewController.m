@@ -91,7 +91,7 @@
 	CGFloat yPos = -height; // this is off screen
 	
 	UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-	newView.backgroundColor = [UIColor lightGrayColor];
+	newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	self.view = newView;
 	[newView release];
 	
@@ -159,7 +159,7 @@
 	
 	CGFloat separation = 2.0f;
 	UIView *newSeparatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, yPos - padding, 320.0f, separation)];
-	newSeparatorView.backgroundColor = [UIColor darkGrayColor];
+	newSeparatorView.backgroundColor = kDarkColor;
 	
 	[self.view addSubview:newSeparatorView];
 	[newSeparatorView release];

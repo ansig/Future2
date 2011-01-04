@@ -116,7 +116,7 @@
 	UIScrollView *newView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
 	
 	if (self.isOpaque)
-		newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+		newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	
 	else
 		newView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.75f];
@@ -680,7 +680,7 @@
 		[newTableView release];
 		
 		UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 30.0f)];
-		tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"30pxBandBackground.png"]];
+		tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"30pxBandBackgroundPattern.png"]];
 		
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 300.0f, 30.0f)];
 		label.backgroundColor = [UIColor clearColor];

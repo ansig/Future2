@@ -306,7 +306,7 @@
 	
 	// * Separator line
 	
-	self.view.backgroundColor = [UIColor darkGrayColor];
+	self.view.backgroundColor = self.baseColor;
 	CGFloat separation = 3.0f;
 	
 	// * Views
@@ -378,17 +378,6 @@
 	
 	// graph view
 	[self loadGraphViewWithLength:actualLength height:height];
-	
-	/*
-	// colors for graph view background
-	[self loadAvailableColors];
-	
-	if (self.availableColors != nil) {
-	
-		self.graphView.topColor = [self.availableColors objectAtIndex:0];
-		self.graphView.bottomColor = [self.availableColors objectAtIndex:0];
-	}
-	 */
 	
 	// x scale view
 	[self loadXScaleViewWithLength:actualLength yOffset:height];
@@ -540,7 +529,7 @@
 	newLabel.backgroundColor = [color colorWithAlphaComponent:0.25f];
 	
 	newLabel.textColor = [UIColor whiteColor];
-	newLabel.font = [UIFont systemFontOfSize:12.0f];
+	newLabel.font = kGraphFont;
 	newLabel.textAlignment = UITextAlignmentRight;
 	
 	if (title != nil)
@@ -563,8 +552,11 @@
 	
 	[self loadPreferences];
 	
-	[self loadBaseLabel];
-	[self.view addSubview:self.label];
+	if (self.twin == nil) {
+		
+		[self loadBaseLabel];
+		[self.view addSubview:self.label];
+	}
 }
 
 #pragma mark Animation

@@ -14,19 +14,16 @@
 		9A049C6F1212EDA400462EFE /* separatorLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A049C6E1212EDA400462EFE /* separatorLine.png */; };
 		9A0B5ABB124A551D0056D711 /* FCGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B5ABA124A551D0056D711 /* FCGraphViewController.m */; };
 		9A14D8DC126F231200BC4BB2 /* FCGraphDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A14D8DB126F231200BC4BB2 /* FCGraphDataSet.m */; };
-		9A1879B012A671740075DE04 /* 30pxBandBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1879AF12A671740075DE04 /* 30pxBandBackground.png */; };
 		9A187A0512A67AC60075DE04 /* FCCustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A187A0412A67AC60075DE04 /* FCCustomButton.m */; };
 		9A187A4612A68D800075DE04 /* FCBorderedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A187A4512A68D800075DE04 /* FCBorderedLabel.m */; };
 		9A2630D612B7893E00343623 /* FCImageViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2630D512B7893E00343623 /* FCImageViewHelper.m */; };
 		9A26321812B7DD0B00343623 /* FCIconCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A26321712B7DD0B00343623 /* FCIconCollection.m */; };
-		9A30173A12AE4F2000EC03AD /* 40pxBandBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A30173912AE4F2000EC03AD /* 40pxBandBackground.png */; };
 		9A421F15120C2B9200D370F8 /* FCTypedef.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F11120C2B9200D370F8 /* FCTypedef.m */; };
 		9A421F16120C2B9200D370F8 /* FCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F14120C2B9200D370F8 /* FCConstants.m */; };
 		9A421F28120C2F3900D370F8 /* FCNavigationBarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F27120C2F3900D370F8 /* FCNavigationBarHelper.m */; };
 		9A421F2E120C564E00D370F8 /* FCIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2A120C564E00D370F8 /* FCIcon.png */; };
 		9A421F2F120C564E00D370F8 /* navigationBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2B120C564E00D370F8 /* navigationBarBackground.png */; };
 		9A421F30120C564E00D370F8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2C120C564E00D370F8 /* Default.png */; };
-		9A421F31120C564E00D370F8 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2D120C564E00D370F8 /* background.png */; };
 		9A421F39120C588900D370F8 /* FCRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F38120C588900D370F8 /* FCRootViewController.m */; };
 		9A57D51C12B7EA5800546803 /* FCIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A57D51B12B7EA5800546803 /* FCIcons.plist */; };
 		9A5C7FE4124D02B400FA92ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5C7FE3124D02B400FA92ED /* CoreGraphics.framework */; };
@@ -46,6 +43,11 @@
 		9A82C489121D4F4C00E87717 /* FCProfileHealthInfoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A82C488121D4F4C00E87717 /* FCProfileHealthInfoDataSource.m */; };
 		9A82C4DF121D52B900E87717 /* FCProfilePersonalInfoTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A82C4DE121D52B900E87717 /* FCProfilePersonalInfoTableDataSource.m */; };
 		9A8355EF12562F9C00042647 /* FCGraphEntryInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8355EE12562F9C00042647 /* FCGraphEntryInfoView.m */; };
+		9A847D1012D1FB6F005E2DCF /* pullIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847D0F12D1FB6F005E2DCF /* pullIcon.png */; };
+		9A847E7912D2128B005E2DCF /* settingsButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847E7812D2128B005E2DCF /* settingsButton.png */; };
+		9A847E9912D21578005E2DCF /* calendarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847E9812D21578005E2DCF /* calendarButton.png */; };
+		9A847EC812D2376C005E2DCF /* mainBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */; };
+		9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */; };
 		9A8513241235287B00031CA6 /* webviewClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513221235287B00031CA6 /* webviewClose.png */; };
 		9A8513251235287B00031CA6 /* webviewBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513231235287B00031CA6 /* webviewBack.png */; };
 		9A859A27127590D900987FBD /* FCGraphReferenceRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859A26127590D900987FBD /* FCGraphReferenceRange.m */; };
@@ -62,6 +64,8 @@
 		9A859C7E1275E67700987FBD /* UIImage+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859C7D1275E67700987FBD /* UIImage+TKCategory.m */; };
 		9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9A859D141275E83E00987FBD /* TapkuLibrary.bundle */; };
 		9A859DCE1275EA1400987FBD /* UIView+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */; };
+		9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */; };
+		9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */; };
 		9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */; };
 		9A87435712B8F01B00B6CB72 /* attachmentsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87431712B8F01B00B6CB72 /* attachmentsIcon.png */; };
 		9A87435812B8F01B00B6CB72 /* ballIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87431812B8F01B00B6CB72 /* ballIcon.png */; };
@@ -180,7 +184,6 @@
 		9A0B5ABA124A551D0056D711 /* FCGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphViewController.m; sourceTree = "<group>"; };
 		9A14D8DA126F231200BC4BB2 /* FCGraphDataSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphDataSet.h; sourceTree = "<group>"; };
 		9A14D8DB126F231200BC4BB2 /* FCGraphDataSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphDataSet.m; sourceTree = "<group>"; };
-		9A1879AF12A671740075DE04 /* 30pxBandBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 30pxBandBackground.png; path = resources/images/30pxBandBackground.png; sourceTree = "<group>"; };
 		9A187A0312A67AC60075DE04 /* FCCustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCCustomButton.h; path = Classes/FCCustomButton.h; sourceTree = "<group>"; };
 		9A187A0412A67AC60075DE04 /* FCCustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCCustomButton.m; path = Classes/FCCustomButton.m; sourceTree = "<group>"; };
 		9A187A4412A68D800075DE04 /* FCBorderedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCBorderedLabel.h; path = Classes/FCBorderedLabel.h; sourceTree = "<group>"; };
@@ -190,7 +193,6 @@
 		9A2630D512B7893E00343623 /* FCImageViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCImageViewHelper.m; sourceTree = "<group>"; };
 		9A26321612B7DD0B00343623 /* FCIconCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCIconCollection.h; sourceTree = "<group>"; };
 		9A26321712B7DD0B00343623 /* FCIconCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCIconCollection.m; sourceTree = "<group>"; };
-		9A30173912AE4F2000EC03AD /* 40pxBandBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 40pxBandBackground.png; path = resources/images/40pxBandBackground.png; sourceTree = "<group>"; };
 		9A421F10120C2B9200D370F8 /* FCProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCProtocols.h; path = Classes/FCProtocols.h; sourceTree = "<group>"; };
 		9A421F11120C2B9200D370F8 /* FCTypedef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCTypedef.m; path = Classes/FCTypedef.m; sourceTree = "<group>"; };
 		9A421F12120C2B9200D370F8 /* FCTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCTypedef.h; path = Classes/FCTypedef.h; sourceTree = "<group>"; };
@@ -201,7 +203,6 @@
 		9A421F2A120C564E00D370F8 /* FCIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FCIcon.png; path = resources/images/FCIcon.png; sourceTree = "<group>"; };
 		9A421F2B120C564E00D370F8 /* navigationBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navigationBarBackground.png; path = resources/images/navigationBarBackground.png; sourceTree = "<group>"; };
 		9A421F2C120C564E00D370F8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = resources/images/Default.png; sourceTree = "<group>"; };
-		9A421F2D120C564E00D370F8 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = resources/images/background.png; sourceTree = "<group>"; };
 		9A421F37120C588900D370F8 /* FCRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCRootViewController.h; sourceTree = "<group>"; };
 		9A421F38120C588900D370F8 /* FCRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCRootViewController.m; sourceTree = "<group>"; };
 		9A57D51B12B7EA5800546803 /* FCIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = FCIcons.plist; path = resources/images/icons/FCIcons.plist; sourceTree = "<group>"; };
@@ -233,6 +234,11 @@
 		9A8354561255CF5B00042647 /* generate_test_data.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = generate_test_data.sql; path = resources/scripts/generate_test_data.sql; sourceTree = "<group>"; };
 		9A8355ED12562F9C00042647 /* FCGraphEntryInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphEntryInfoView.h; sourceTree = "<group>"; };
 		9A8355EE12562F9C00042647 /* FCGraphEntryInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphEntryInfoView.m; sourceTree = "<group>"; };
+		9A847D0F12D1FB6F005E2DCF /* pullIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pullIcon.png; path = resources/images/pullIcon.png; sourceTree = "<group>"; };
+		9A847E7812D2128B005E2DCF /* settingsButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingsButton.png; path = resources/images/buttons/settingsButton.png; sourceTree = "<group>"; };
+		9A847E9812D21578005E2DCF /* calendarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = calendarButton.png; path = resources/images/buttons/calendarButton.png; sourceTree = "<group>"; };
+		9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackgroundPattern.png; path = resources/images/mainBackgroundPattern.png; sourceTree = "<group>"; };
+		9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slantedBackgroundPattern.png; path = resources/images/slantedBackgroundPattern.png; sourceTree = "<group>"; };
 		9A8513221235287B00031CA6 /* webviewClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewClose.png; path = resources/images/buttons/webviewClose.png; sourceTree = "<group>"; };
 		9A8513231235287B00031CA6 /* webviewBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewBack.png; path = resources/images/buttons/webviewBack.png; sourceTree = "<group>"; };
 		9A859A25127590D900987FBD /* FCGraphReferenceRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphReferenceRange.h; sourceTree = "<group>"; };
@@ -262,6 +268,8 @@
 		9A859D141275E83E00987FBD /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = resources/images/TapkuLibrary.bundle; sourceTree = "<group>"; };
 		9A859DCC1275EA1400987FBD /* UIImage+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TKCategory.h"; path = "Tapku Library/UIImage+TKCategory.h"; sourceTree = "<group>"; };
 		9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+TKCategory.m"; path = "Tapku Library/UIView+TKCategory.m"; sourceTree = "<group>"; };
+		9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 30pxBandBackgroundPattern.png; path = resources/images/30pxBandBackgroundPattern.png; sourceTree = "<group>"; };
+		9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 40pxBandBackgroundPattern.png; path = resources/images/40pxBandBackgroundPattern.png; sourceTree = "<group>"; };
 		9A873BB41293C32300C3D0BF /* FCAppCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCategoryViewController.h; sourceTree = "<group>"; };
 		9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppCategoryViewController.m; sourceTree = "<group>"; };
 		9A87431712B8F01B00B6CB72 /* attachmentsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attachmentsIcon.png; path = resources/images/icons/attachmentsIcon.png; sourceTree = "<group>"; };
@@ -543,6 +551,8 @@
 		9A8513211235286100031CA6 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				9A847E9812D21578005E2DCF /* calendarButton.png */,
+				9A847E7812D2128B005E2DCF /* settingsButton.png */,
 				9A9648C2127841B200A410C1 /* editButton.png */,
 				9A804790125A3141006ADD63 /* entryInfoViewClose.png */,
 				9A8513221235287B00031CA6 /* webviewClose.png */,
@@ -866,9 +876,11 @@
 				9AB10F72124CAB43005E8D2A /* Icons */,
 				9A8513211235286100031CA6 /* Buttons */,
 				9AA8572A1210094C008DA1BA /* TabBarIcons */,
-				9A1879AF12A671740075DE04 /* 30pxBandBackground.png */,
-				9A30173912AE4F2000EC03AD /* 40pxBandBackground.png */,
-				9A421F2D120C564E00D370F8 /* background.png */,
+				9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */,
+				9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */,
+				9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */,
+				9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */,
+				9A847D0F12D1FB6F005E2DCF /* pullIcon.png */,
 				9A421F2C120C564E00D370F8 /* Default.png */,
 				9A421F2A120C564E00D370F8 /* FCIcon.png */,
 				9A421F2B120C564E00D370F8 /* navigationBarBackground.png */,
@@ -1037,7 +1049,6 @@
 				9A421F2E120C564E00D370F8 /* FCIcon.png in Resources */,
 				9A421F2F120C564E00D370F8 /* navigationBarBackground.png in Resources */,
 				9A421F30120C564E00D370F8 /* Default.png in Resources */,
-				9A421F31120C564E00D370F8 /* background.png in Resources */,
 				9AA8573A121009A5008DA1BA /* glucoseTabBarIcon.png in Resources */,
 				9AA8573B121009A5008DA1BA /* logTabBarIcon.png in Resources */,
 				9AA8573C121009A5008DA1BA /* profileTabBarIcon.png in Resources */,
@@ -1050,8 +1061,6 @@
 				9A804791125A3141006ADD63 /* entryInfoViewClose.png in Resources */,
 				9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */,
 				9A9648C3127841B200A410C1 /* editButton.png in Resources */,
-				9A1879B012A671740075DE04 /* 30pxBandBackground.png in Resources */,
-				9A30173A12AE4F2000EC03AD /* 40pxBandBackground.png in Resources */,
 				9A57D51C12B7EA5800546803 /* FCIcons.plist in Resources */,
 				9A87435712B8F01B00B6CB72 /* attachmentsIcon.png in Resources */,
 				9A87435812B8F01B00B6CB72 /* ballIcon.png in Resources */,
@@ -1117,6 +1126,13 @@
 				9A87439412B8F01B00B6CB72 /* weightIcon.png in Resources */,
 				9A87439512B8F01B00B6CB72 /* wrench1Icon.png in Resources */,
 				9A87439612B8F01B00B6CB72 /* wrench2Icon.png in Resources */,
+				9A847D1012D1FB6F005E2DCF /* pullIcon.png in Resources */,
+				9A847E7912D2128B005E2DCF /* settingsButton.png in Resources */,
+				9A847E9912D21578005E2DCF /* calendarButton.png in Resources */,
+				9A847EC812D2376C005E2DCF /* mainBackgroundPattern.png in Resources */,
+				9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */,
+				9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */,
+				9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

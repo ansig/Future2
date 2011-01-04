@@ -107,7 +107,7 @@
 	// * Main view
 	
 	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
-	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	self.view = view;
 	[view release];
 	
@@ -255,7 +255,7 @@
 	
 	UILabel *tableHeaderViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, 320.0f, 40.0f)];
 	tableHeaderViewLabel.tag = 1;
-	tableHeaderViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	tableHeaderViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackgroundPattern.png"]];
 	tableHeaderViewLabel.font = kAppSmallLabelFont;
 	tableHeaderViewLabel.textColor = [UIColor blackColor];
 	tableHeaderViewLabel.textAlignment = UITextAlignmentCenter;
@@ -267,7 +267,7 @@
 	UIButton *tableHeaderViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	tableHeaderViewButton.frame = CGRectMake(280.0f, 9.0f, 30.0f, 30.0f);
 	
-	[tableHeaderViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+	[tableHeaderViewButton setImage:[UIImage imageNamed:@"calendarButton.png"] forState:UIControlStateNormal];
 	[tableHeaderViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
 	
 	[tableHeaderView addSubview:tableHeaderViewButton];
@@ -283,7 +283,7 @@
 	
 	UILabel *tableFooterViewLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, 320.0f, 40.0f)];
 	tableFooterViewLabel.tag = 1;
-	tableFooterViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackground.png"]];
+	tableFooterViewLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackgroundPattern.png"]];
 	tableFooterViewLabel.font = kAppSmallLabelFont;
 	tableFooterViewLabel.textColor = [UIColor blackColor];
 	tableFooterViewLabel.textAlignment = UITextAlignmentCenter;
@@ -295,7 +295,7 @@
 	UIButton *tableFooterViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	tableFooterViewButton.frame = CGRectMake(280.0f, 9.0f, 30.0f, 30.0f);
 	
-	[tableFooterViewButton setImage:[UIImage imageNamed:@"editButton.png"] forState:UIControlStateNormal];
+	[tableFooterViewButton setImage:[UIImage imageNamed:@"calendarButton.png"] forState:UIControlStateNormal];
 	[tableFooterViewButton addTarget:self action:@selector(loadDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
 	
 	[tableFooterView addSubview:tableFooterViewButton];

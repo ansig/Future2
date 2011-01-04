@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 06/10/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 @interface FCGraphHandleView : UIView {
 
@@ -43,6 +41,8 @@
 	
 	UIColor *color;
 	UILabel *label;
+	UIImageView *directionalArrow;
+	BOOL directionalArrowIsFlipped;
 }
 
 @property (assign) id <FCGraphHandleViewDelegate> delegate;
@@ -58,10 +58,13 @@
 
 @property (nonatomic, retain) UIColor *color;
 @property (nonatomic, retain) UILabel *label;
+@property (nonatomic, retain) UIImageView *directionalArrow;
+@property (nonatomic) BOOL directionalArrowIsFlipped;
 
 // Animation
 
 -(void)animateToNewFrame:(CGRect)newFrame;
+-(void)animateFlipDirectionalArrow;
 
 // Custom
 
@@ -71,5 +74,6 @@
 -(BOOL)isAboveUpperThreshold;
 
 -(void)createNewLabelWithText:(NSString *)text;
+-(void)createDirectionalArrow;
 
 @end

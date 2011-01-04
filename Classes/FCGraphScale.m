@@ -413,7 +413,7 @@ int gcd(int a, int b) {
 				break;
 				
 			case FCGraphScaleDateLevelDays:
-				formatter.dateFormat = @"MMM";
+				formatter.dateFormat = @"MMM yyyy";
 				break;
 				
 			case FCGraphScaleDateLevelMonths:
