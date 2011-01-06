@@ -157,31 +157,7 @@
 	
 	// * Reset the log dates on startup
 	
-	// set end date to today's date
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	
-	NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0.0f];
-	NSDateComponents *components = [gregorian components:unitFlags fromDate:now];
-	[now release];
-	
-	NSDate *newEndDate = [[gregorian dateFromComponents:components] retain];
-	
-	[gregorian release];
-	
-	// calculate the start date
-	NSTimeInterval interval = -518400; // 6 days
-	NSDate *newStartDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:newEndDate];
-	
-	// save the dates in the user defaults
-	NSDictionary *logDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", newEndDate, @"EndDate", nil];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:logDates forKey:FCDefaultLogDates];
-	
-	[logDates release];
-	
-	[newStartDate release];
-	[newEndDate release];
+	[self setLogDatesToNow];
 	
 	// * Load application...
 	
@@ -331,6 +307,40 @@
 -(void)onRotationNotAllowedNotification {
 	
 	self.rotationIsAllowed = NO;
+}
+
+-(void)setLogDatesToNow {
+	
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	
+	NSDate *now = [[NSDate alloc] initWithTimeIntervalSinceNow:0.0f];
+	NSDateComponents *components = [gregorian components:unitFlags fromDate:now]; // makes sure we are always dealing with 00:00 AM on both dates
+	[now release];
+	
+	NSDate *newEndDate = [gregorian dateFromComponents:components];
+	
+	[gregorian release];
+	
+	NSDate *newStartDate;
+	
+	FCGraphScaleDateLevel level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
+	
+	switch (level) {
+			
+		case FCGraphScaleDateLevelHours:
+			newStartDate = [NSDate dateWithTimeInterval:-518400 sinceDate:newEndDate]; // week
+			break;
+			
+		default:
+			newStartDate = [NSDate dateWithTimeInterval:-2505600 sinceDate:newEndDate]; // month
+			break;
+	}
+	
+	// save the dates in the user defaults
+	NSDictionary *logDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", newEndDate, @"EndDate", nil];
+	[[NSUserDefaults standardUserDefaults] setObject:logDates forKey:FCDefaultLogDates];
+	[logDates release];
 }
 
 @end

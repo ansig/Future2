@@ -274,7 +274,7 @@
 	// * Navigation buttons
 	
 	//  left button
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	

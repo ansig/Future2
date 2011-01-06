@@ -77,16 +77,10 @@
 	
 	if (self.scaleRef.mode == FCGraphScaleModeDates) {
 		
-		/*
-		
 		// gradient
-		
-		const CGFloat components [] = {1.0f, 1.0f, 1.0f};
-		CGContextSetFillColor(context, components);
-		CGContextFillRect(context, self.bounds);
 		 
-		CGColorRef topColorRef = [[backgroundColor colorWithAlphaComponent:0.75f] CGColor];
-		CGColorRef bottomColorRef = [backgroundColor CGColor];
+		CGColorRef topColorRef = [backgroundColor CGColor];
+		CGColorRef bottomColorRef = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
 		NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 		CGFloat locations[] = {0, 1};
 		
@@ -99,13 +93,6 @@
 		CGContextDrawLinearGradient(context, gradient, top, bottom, 0);
 		
 		CGGradientRelease(gradient);
-		 
-		 */
-		
-		// solid
-		
-		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
-		CGContextFillRect(context, self.bounds);
 	
 	} else {
 		
@@ -122,9 +109,8 @@
 	
 	// Color
 	
-	const CGFloat components [] = {1.0f, 1.0f, 1.0f};
-	CGContextSetStrokeColor(context, components);
-	CGContextSetFillColor(context, components);
+	CGContextSetStrokeColorWithColor(context, [[UIColor whiteColor] CGColor]);
+	CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
 	
 	// Shared variables
 	

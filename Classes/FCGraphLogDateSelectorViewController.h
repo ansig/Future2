@@ -19,38 +19,34 @@
  */
 
 //
-//  FCAppLogDateSelectorViewController.h
+//  FCGraphLogDateSelectorViewController.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 21/09/2010.
+//  Created by Anders Sigfridsson on 06/01/2011.
 //
 
 
-#import "FCAppOverlayViewController.h"  // superclass
-
+#import "TKGlobal.h"
 #import "FCCalendarDelegate.h"
 #import "TKCalendarMonthView.h"
 #import "NSDate+TKCategory.h"
 
-@interface FCAppLogDateSelectorViewController : FCAppOverlayViewController {
+@interface FCGraphLogDateSelectorViewController : UIViewController {
 
 	TKCalendarMonthView *calendarMonthView;
-	
 	FCCalendarDelegate *calendarDelegate;
 	
-	UISegmentedControl *segmentedControl;
-	UILabel *label;
+	UIButton *doneButton;
 }
 
 @property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
-
 @property (nonatomic, retain) FCCalendarDelegate *calendarDelegate;
 
-@property (nonatomic, retain) UISegmentedControl *segmentedControl;
-@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, retain) UIButton *doneButton;
 
-// Events
+-(void)presentUIContent;
+-(void)dismissUIContent;
 
--(void)onSegmentedControlValueChange;
+-(void)save;
 
 @end

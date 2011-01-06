@@ -19,38 +19,35 @@
  */
 
 //
-//  FCAppLogDateSelectorViewController.h
+//  FCCalendarDelegate.h
 //  Future2
 //
-//  Created by Anders Sigfridsson on 21/09/2010.
+//  Created by Anders Sigfridsson on 05/01/2011.
 //
 
 
-#import "FCAppOverlayViewController.h"  // superclass
-
-#import "FCCalendarDelegate.h"
 #import "TKCalendarMonthView.h"
 #import "NSDate+TKCategory.h"
 
-@interface FCAppLogDateSelectorViewController : FCAppOverlayViewController {
+@interface FCCalendarDelegate : NSObject <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource> {
 
 	TKCalendarMonthView *calendarMonthView;
 	
-	FCCalendarDelegate *calendarDelegate;
+	NSDate *lastSelectedDate;
+	BOOL lastSetWasStartDate;
 	
-	UISegmentedControl *segmentedControl;
-	UILabel *label;
+	NSInteger intervalInDays;
 }
 
-@property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
+@property (assign) TKCalendarMonthView *calendarMonthView;
 
-@property (nonatomic, retain) FCCalendarDelegate *calendarDelegate;
+@property (nonatomic, retain) NSDate *lastSelectedDate;
+@property (nonatomic) BOOL lastSetWasStartDate;
 
-@property (nonatomic, retain) UISegmentedControl *segmentedControl;
-@property (nonatomic, retain) UILabel *label;
+@property (nonatomic) NSInteger intervalInDays;
 
-// Events
+// Custom
 
--(void)onSegmentedControlValueChange;
+-(void)loadIntervalInDays;
 
 @end

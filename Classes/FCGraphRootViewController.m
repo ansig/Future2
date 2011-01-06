@@ -31,12 +31,18 @@
 									// between the two dates and does not wrap around them like
 									// the log does
 
+
+
+
+
 @implementation FCGraphRootViewController
 
+@synthesize logDatesButton, logDateSelectorViewController;
 @synthesize scrollView;
 @synthesize graphControllers, graphHandles;
 @synthesize entryInfoView;
 @synthesize pullMenuViewController, pullMenuHandleView;
+@synthesize progressView;
 
 #pragma mark Instance
 
@@ -66,6 +72,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationGraphSetsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationGraphPreferencesChanged object:nil];
 
+	[logDatesButton release];
+	[logDateSelectorViewController release];
+	
 	[scrollView release];
 	
 	[graphControllers release];
@@ -75,6 +84,8 @@
 	
 	[pullMenuViewController release];
 	[pullMenuHandleView release];
+	
+	[progressView release];
 	
     [super dealloc];
 }
@@ -105,6 +116,12 @@
 	 
 	 [view release];
 	 
+	 // * Gesture recognizer
+	 
+	 UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+	 [self.view addGestureRecognizer:pinchGesture];
+	 [pinchGesture release];
+	 
 	 // * Scroll view
 	 
 	 UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, kGraphAppHeader, 480.0f, 320.0f-kGraphAppHeader)];
@@ -115,6 +132,17 @@
 	 [self.view addSubview:newScrollView];
 	 
 	 [newScrollView release];
+	 
+	 // * Log dates button
+	 
+	 UIButton *newLogDatesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	 newLogDatesButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+	 
+	 [newLogDatesButton setImage:[UIImage imageNamed:@"calendarButton.png"] forState:UIControlStateNormal];
+	 [newLogDatesButton addTarget:self action:@selector(loadLogDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
+	  
+	  self.logDatesButton = newLogDatesButton;
+	  [self.view addSubview:newLogDatesButton];
 	
 	 // * Load default state
 	 
@@ -145,32 +173,31 @@
 	 newHandle.lowerThreshold = kGraphPullMenuHandleLowerThreshold;
 	 newHandle.upperThreshold = kGraphPullMenuHandleUpperThreshold;
 	 
-	 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	 formatter.dateStyle = NSDateFormatterMediumStyle;
-	 
-	 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	 NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
-	 
-	 NSDate *startDate = [logDates objectForKey:@"StartDate"];
-	 NSDate *endDate = [NSDate dateWithTimeInterval:kEndDateOffset sinceDate:[logDates objectForKey:@"EndDate"]];
-	 
-	 NSString *text = [NSString stringWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
-	 [newHandle createNewLabelWithText:text];
-	 newHandle.label.textColor = kDarkColor;
-	 
-	 [formatter release];
-	 
-	 [newHandle createDirectionalArrow];
+	 [newHandle createNewLabel];
+	 [newHandle createNewDirectionalArrow];
 	 
 	 self.pullMenuHandleView = newHandle;
 	 [self.view addSubview:newHandle];
 	 
 	 [newHandle release];
 	 
+	 [self setLogDatesLabel];
+	 
+	 // * Progress view
+	 
+	 UIProgressView *newProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+	 newProgressView.frame = CGRectMake(5.0f, 5.0f, newProgressView.frame.size.width, newProgressView.frame.size.height);
+	 
+	 self.progressView = newProgressView;
+	 
+	 [newProgressView release];
+	 
 	 // * Notifications
 	 
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphSetsChangedNotification) name:FCNotificationGraphSetsChanged object:nil];
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphPreferencesChangedNotification) name:FCNotificationGraphPreferencesChanged object:nil];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphOptionsChangedNotification) name:FCNotificationGraphOptionsChanged object:nil];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphLogDateSelectorDismissedNotification) name:FCNotificationGraphLogDateSelectorDismissed object:nil];
  }
 
 /*
@@ -186,8 +213,26 @@
 	// e.g. self.myOutlet = nil;
 }
 
--(void)loadAllGraphs {
+-(void)loadLogDateSelectorViewController {
 	
+	FCGraphLogDateSelectorViewController *viewController = [[FCGraphLogDateSelectorViewController alloc] init];
+	viewController.view.alpha = 0.0f;
+	
+	self.logDateSelectorViewController = viewController;
+	[self.view addSubview:viewController.view];
+	
+	[viewController release];
+	
+	[UIView animateWithDuration:kViewAppearDuration 
+					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.75f; } 
+					 completion:^ (BOOL finished) { [self.logDateSelectorViewController presentUIContent]; } ];
+}
+
+-(void)dismissLogDateSelectorViewController {
+	
+	[UIView animateWithDuration:kViewDisappearDuration 
+					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.0f; } 
+					 completion:^ (BOOL finished) { [self.logDateSelectorViewController.view removeFromSuperview]; self.logDateSelectorViewController = nil; } ];
 }
 
 #pragma mark Orientation
@@ -532,6 +577,81 @@
 		[graphController reloadPreferences];
 }
 
+-(void)onGraphOptionsChangedNotification {
+	
+	// update log dates for the current date level
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	NSDate *endDate = [logDates objectForKey:@"EndDate"];
+	
+	NSDate *newStartDate;
+	
+	FCGraphScaleDateLevel level = [defaults integerForKey:FCDefaultGraphSettingDateLevel];
+	
+	switch (level) {
+			
+		case FCGraphScaleDateLevelHours:
+			newStartDate = [NSDate dateWithTimeInterval:-518400 sinceDate:endDate]; // week
+			break;
+			
+		default:
+			newStartDate = [NSDate dateWithTimeInterval:-2505600 sinceDate:endDate]; // month
+			break;
+	}
+	
+	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", endDate, @"EndDate", nil];
+	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
+	[newLogDates release];
+	
+	[self setLogDatesLabel];
+	
+	[self loadDefaultState];
+}
+
+-(void)onGraphLogDateSelectorDismissedNotification {
+
+	[self dismissLogDateSelectorViewController];
+}
+
+#pragma mark Gestures
+
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
+	
+    CGFloat scale = [(UIPinchGestureRecognizer *)sender scale];
+	UIGestureRecognizerState state = [(UIPinchGestureRecognizer *)sender state];
+	
+	if (state == UIGestureRecognizerStateBegan) {
+		
+		_initialScale = scale;
+		
+	} else if (state == UIGestureRecognizerStateChanged) {
+		
+		_changedScale = scale;
+		
+	} else if (state == UIGestureRecognizerStateEnded) {
+		
+		NSInteger level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
+		
+		if (_changedScale > _initialScale) {
+			
+			level++;
+	
+		} else {
+		
+			level--;
+		}
+		
+		if (level > -1 && level < 3) {
+			
+			[[NSUserDefaults standardUserDefaults] setInteger:level forKey:FCDefaultGraphSettingDateLevel];
+		
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+		}
+	}
+}
+
 #pragma mark Custom
 
 -(void)loadDefaultState {
@@ -570,6 +690,9 @@
 		// counts
 		int fullGraphs = 0;
 		int bands = 0;
+		
+		// progress
+		float progress = 1.0f / [defaultGraphs count];
 		
 		for (NSDictionary *graphSet in defaultGraphs) {
 			
@@ -630,6 +753,9 @@
 		
 				fullGraphs++;
 			}
+			
+			// increase progress
+			self.progressView.progress += progress;
 		}
 		
 		// set content size for scroll view
@@ -642,6 +768,8 @@
 		
 		[self createDefaultGraph];
 	}
+	
+	[self.progressView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:kPerceptionDelay];
 }
 
 -(void)unloadCurrentState {
@@ -662,6 +790,9 @@
 		
 		self.graphHandles = nil;
 	}
+	
+	self.progressView.progress = 0.0f;
+	[self.view addSubview:self.progressView];
 }
 
 -(void)createDefaultGraph {
@@ -833,7 +964,7 @@
 	
 	newHandle.delegate = theGraphController;
 	
-	[newHandle createDirectionalArrow];
+	[newHandle createNewDirectionalArrow];
 	
 	[newHandle autorelease];
 	
@@ -949,6 +1080,23 @@
 	[dictionary autorelease];
 	
 	return dictionary;
+}
+
+-(void)setLogDatesLabel {
+	
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	formatter.dateStyle = NSDateFormatterMediumStyle;
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	
+	NSDate *startDate = [logDates objectForKey:@"StartDate"];
+	NSDate *endDate = [NSDate dateWithTimeInterval:kEndDateOffset sinceDate:[logDates objectForKey:@"EndDate"]];
+	
+	self.pullMenuHandleView.label.text = [NSString stringWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
+	self.pullMenuHandleView.label.textColor = kDarkColor;
+	
+	[formatter release];
 }
 
 @end

@@ -31,9 +31,19 @@
 @implementation FCAppLogDateSelectorViewController
 
 @synthesize calendarMonthView;
-@synthesize lastSelectedDate, lastSetWasStartDate;
+@synthesize calendarDelegate;
+@synthesize segmentedControl, label;
 
 #pragma mark Init
+
+-(id)init {
+	
+	if (self = [super init]) {
+
+	}
+
+	return self;
+}
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -50,7 +60,10 @@
 - (void)dealloc {
 	
 	[calendarMonthView release];
-	[lastSelectedDate release];
+	[calendarDelegate release];
+	
+	[segmentedControl release];
+	[label release];
 	
     [super dealloc];
 }
@@ -92,166 +105,13 @@
  }
  */
 
-#pragma mark TKCalendarMonthViewDelegate
+#pragma mark Events
 
-- (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)d {
+-(void)onSegmentedControlValueChange {
 	
-	// get current log dates
+	[[NSUserDefaults standardUserDefaults] setInteger:self.segmentedControl.selectedSegmentIndex forKey:FCDefaultGraphSettingDateLevel];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
-	
-	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
-	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
-	
-	// determine whether to set a new start or end date
-	
-	BOOL setNewStartDate = NO;
-	
-	int differenceToStartDate = [logStartDate differenceInDaysTo:d];
-	
-	if (self.lastSelectedDate == nil) {
-	
-		if (differenceToStartDate < 0)
-			setNewStartDate = YES;
-		
-	} else if (self.lastSetWasStartDate) {
-		
-		if (differenceToStartDate < 0)
-			setNewStartDate = YES;
-		
-	} else {
-		
-		int differenceToEndDate = [logEndDate differenceInDaysTo:d];
-		
-		if (differenceToEndDate <= 0)
-			setNewStartDate = YES;
-	}
-	
-	// set new start or end date
-	NSDate *newLogStartDate, *newLogEndDate;
-	if (setNewStartDate) {
-		
-		newLogStartDate = d;
-		
-		// adjust end date so that difference to the new start date is within the allowed range
-		
-		int differenceToEndDate = [newLogStartDate differenceInDaysTo:logEndDate];
-		
-		if (differenceToEndDate > 6) {
-		
-			TKDateInformation newStartDateInfo = [newLogStartDate dateInformation];
-			newStartDateInfo.day += 6;
-			
-			newLogEndDate = [NSDate dateFromDateInformation:newStartDateInfo];
-		
-		} else {
-		
-			newLogEndDate = logEndDate;
-		}
-		
-		// flag that the last set date was start date
-		
-		self.lastSetWasStartDate = YES;
-		
-	} else {
-		
-		newLogEndDate = d;
-		
-		// adjust end date so that difference to the new start date is within the allowed range
-		
-		int differenceToStartDate = [logStartDate differenceInDaysTo:newLogEndDate];
-		
-		if (differenceToStartDate > 6) {
-			
-			TKDateInformation newEndDateInfo = [newLogEndDate dateInformation];
-			newEndDateInfo.day -= 6;
-			
-			newLogStartDate = [NSDate dateFromDateInformation:newEndDateInfo];
-			
-		} else {
-			
-			newLogStartDate = logStartDate;
-		}
-		
-		// flag that the last set date was start date
-		
-		self.lastSetWasStartDate = NO;
-	}
-	
-	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
-	
-	// update the user defaults
-	
-	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
-	
-	[newLogDates release];
-	
-	// remember this selection and reload the calendar month view
-	
-	self.lastSelectedDate = d;
-	[self.calendarMonthView reload];
-}
-
-- (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)d {
-	
-	// reload to ensure visible marked days are marked
-	[self.calendarMonthView reload];
-}
-
-#pragma mark TKCalendarMonthViewDataSource
-
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate {
-	
-	// * Mark all dates between current log start date and end date in user defaults
-	
-	// get current log dates
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
-	
-	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
-	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
-	
-	// loop through all dates currently visible in calendar view
-	
-	NSMutableArray *selectedDates = [[NSMutableArray alloc] init];
-	
-	NSDate *currentDate = startDate;
-	
-	int difference = [startDate differenceInDaysTo:lastDate];
-	for (int i = 0; i <= difference; i++) {
-	
-		// get info about current date
-		TKDateInformation currentDateInfo = [currentDate dateInformation];
-		
-		// find dates between the log start and end dates
-		NSNumber *marker;
-		
-		int differenceToLogStartDate = [currentDate differenceInDaysTo:logStartDate];
-		int differenceToLogEndDate = [currentDate differenceInDaysTo:logEndDate];
-		
-		if (differenceToLogStartDate <= 0 && differenceToLogEndDate >= 0)
-			marker = [[NSNumber alloc] initWithBool:YES];
-		
-		else
-			marker = [[NSNumber alloc] initWithBool:NO];
-			
-		// add marker
-		[selectedDates addObject:marker];
-		
-		[marker release];
-		
-		// get the next date
-		currentDateInfo.day++;
-		currentDate = [NSDate dateFromDateInformation:currentDateInfo];
-	}
-	
-	// autorelease and return
-	
-	[selectedDates autorelease];
-	
-	return selectedDates;
+	[self.calendarDelegate loadIntervalInDays];
 }
 
 #pragma mark Custom
@@ -266,14 +126,49 @@
 	
 	// calendar month view
 	
+	FCCalendarDelegate *newCalendarDelegate = [[FCCalendarDelegate alloc] init];
+	self.calendarDelegate = newCalendarDelegate;
+	[newCalendarDelegate release];
+	
 	TKCalendarMonthView *newCalendarMonthView = [[TKCalendarMonthView alloc] init];
-	newCalendarMonthView.delegate = self;
-	newCalendarMonthView.dataSource = self;
+	newCalendarMonthView.delegate = self.calendarDelegate;
+	newCalendarMonthView.dataSource = self.calendarDelegate;
+	self.calendarDelegate.calendarMonthView = newCalendarMonthView;
 	
 	newCalendarMonthView.frame = CGRectMake(0.0f, 0.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
 	
 	self.calendarMonthView = newCalendarMonthView;
 	[newCalendarMonthView release];
+	
+	// label and segmented control
+	
+	NSString *text = @"View in graph:";
+	CGSize sizeForText = [text sizeWithFont:kAppBoldCommonLabelFont];
+	
+	CGFloat yPos = 309 + kAppAdjacentSpacing;
+	
+	UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, yPos, 320.0f, sizeForText.height)];
+	newLabel.backgroundColor = [UIColor clearColor];
+	newLabel.font = kAppBoldCommonLabelFont;
+	newLabel.textAlignment = UITextAlignmentCenter;
+	newLabel.textColor = [UIColor whiteColor];
+	newLabel.text = text;
+	
+	self.label = newLabel;
+	
+	[newLabel release];
+	
+	yPos = self.label.frame.origin.y + self.label.frame.size.height + kAppAdjacentSpacing;
+	
+	UISegmentedControl *newSegmentedControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Hours", @"Days", @"Months", nil]];
+	newSegmentedControl.frame = CGRectMake(50.0f, yPos, 220.0f, 27.0f);
+	newSegmentedControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
+	
+	[newSegmentedControl addTarget:self action:@selector(onSegmentedControlValueChange) forControlEvents:UIControlEventValueChanged];
+	
+	self.segmentedControl = newSegmentedControl;
+	
+	[newSegmentedControl release];
 }
 
 -(void)presentUIContent {
@@ -291,15 +186,19 @@
 	// reload calendar month view to highlight selected
 	[self.calendarMonthView reload];
 	
-	// animate calendar month view onto screen
+	// animate calendar month view, label and segmented control onto screen
 	
 	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, 460.0f);
 	self.calendarMonthView.transform = translation;
+	self.segmentedControl.transform = translation;
+	self.label.transform = translation;
 	
 	[self.view addSubview:self.calendarMonthView];
+	[self.view addSubview:self.segmentedControl];
+	[self.view addSubview:self.label];
 	
 	[UIView animateWithDuration:kAppearDuration 
-					 animations:^ { self.calendarMonthView.transform = CGAffineTransformIdentity; } 
+					 animations:^ { self.calendarMonthView.transform = CGAffineTransformIdentity; self.segmentedControl.transform = CGAffineTransformIdentity; self.label.transform = CGAffineTransformIdentity; } 
 					 completion:^ (BOOL finished) { } ];
 }
 
@@ -310,19 +209,18 @@
 	CGAffineTransform translation = CGAffineTransformMakeTranslation(0.0f, 460.0f);
 	
 	[UIView animateWithDuration:kDisappearDuration 
-					 animations:^{ self.calendarMonthView.transform = translation; } 
-					 completion:^(BOOL finished) { [self.calendarMonthView removeFromSuperview]; } ];
+					 animations:^{ self.calendarMonthView.transform = translation; self.segmentedControl.transform = translation; self.label.transform = translation; } 
+					 completion:^(BOOL finished) { [self.calendarMonthView removeFromSuperview]; [self.segmentedControl removeFromSuperview]; [self.label removeFromSuperview]; } ];
 }
 
 -(void)dismiss {
 	
 	// post notification
-	if (self.lastSelectedDate != nil)
+	if (self.calendarDelegate.lastSelectedDate != nil)
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationLogDateChanged object:self];
 	
 	// super dismiss
 	[super dismiss];
 }
-
 
 @end

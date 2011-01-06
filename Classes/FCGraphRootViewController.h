@@ -25,11 +25,10 @@
 //  Created by Anders Sigfridsson on 28/07/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 #import "FCGraphViewController.h"
 #import "FCGraphPullMenuViewController.h"
+#import "FCGraphLogDateSelectorViewController.h"
 #import "FCGraphEntryInfoView.h"
 #import "FCGraphHandleView.h"
 #import "FCIOFramework.h"
@@ -38,6 +37,9 @@
 #import "FCEntry.h"
 
 @interface FCGraphRootViewController : UIViewController <FCGraphDelegate> {
+	
+	UIButton *logDatesButton;
+	FCGraphLogDateSelectorViewController *logDateSelectorViewController;
 	
 	UIScrollView *scrollView;
 	
@@ -48,7 +50,15 @@
 	
 	FCGraphPullMenuViewController *pullMenuViewController;
 	FCGraphHandleView *pullMenuHandleView;
+	
+	CGFloat _initialScale;
+	CGFloat _changedScale;
+	
+	UIProgressView *progressView;
 }
+
+@property (nonatomic, retain) UIButton *logDatesButton;
+@property (nonatomic, retain) FCGraphLogDateSelectorViewController *logDateSelectorViewController;
 
 @property (nonatomic, retain) UIScrollView *scrollView;
 
@@ -60,10 +70,23 @@
 @property (nonatomic, retain) FCGraphPullMenuViewController *pullMenuViewController;
 @property (nonatomic, retain) FCGraphHandleView *pullMenuHandleView;
 
+@property (nonatomic, retain) UIProgressView *progressView;
+
+// View
+
+-(void)loadLogDateSelectorViewController;
+-(void)dismissLogDateSelectorViewController;
+
 // Notifications
 
 -(void)onGraphSetsChangedNotification;
 -(void)onGraphPreferencesChangedNotification;
+-(void)onGraphOptionsChangedNotification;
+-(void)onGraphLogDateSelectorDismissedNotification;
+
+// Gestures
+
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender;
 
 // Custom
 
@@ -83,5 +106,7 @@
 
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate;
 -(NSDictionary *)findMinMaxAmong:(NSArray *)entries;
+
+-(void)setLogDatesLabel;
 
 @end

@@ -25,8 +25,6 @@
 //  Created by Anders Sigfridsson on 08/10/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 #import "FCDatabaseHandler.h"
 #import "FCCategory.h"

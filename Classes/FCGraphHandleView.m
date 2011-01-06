@@ -442,8 +442,8 @@
 	return NO;
 }
 
--(void)createNewLabelWithText:(NSString *)text {
-/*	Creates a new label, rotates it according to mode, and sets it's text to given text */
+-(void)createNewLabel {
+/*	Creates a new label and rotates it according to mode. */
 	
 	// remove old label
 	if (self.label != nil)
@@ -455,7 +455,6 @@
 	newLabel.textColor = [UIColor whiteColor];
 	newLabel.textAlignment = UITextAlignmentCenter;
 	newLabel.font = kGraphLabelFont;
-	newLabel.text = text;
 	
 	// rotate if necessary
 	if (self.mode == FCGraphHandleModeLeftToRight) {
@@ -482,8 +481,11 @@
 	[newLabel release];
 }
 
--(void)createDirectionalArrow {
+-(void)createNewDirectionalArrow {
 	
+	if (self.directionalArrow != nil)
+		[self.directionalArrow removeFromSuperview], self.directionalArrow = nil;
+		
 	UIImage *image = [UIImage imageNamed:@"pullIcon.png"];
 	
 	CGFloat padding = 5.0f;
@@ -493,7 +495,7 @@
 	BOOL center = self.label == nil ? YES : NO;
 	
 	if (self.mode == FCGraphHandleModeTopDown) {
-	
+		
 		CGFloat xPos = center ? (self.bounds.size.width/2) - (image.size.width/2) : self.bounds.size.width - image.size.width - padding;
 		CGFloat yPos = (self.bounds.size.height/2) - (image.size.height/2);
 		
@@ -507,7 +509,7 @@
 										  self.label.frame.size.height);
 		
 	} else if (self.mode == FCGraphHandleModeRightToLeft) {
-	
+		
 		CGFloat xPos = (self.bounds.size.width/2) - (image.size.width/2);
 		CGFloat yPos = center ? (self.bounds.size.height/2) - (image.size.height/2) : self.bounds.size.height - image.size.height - padding;
 		

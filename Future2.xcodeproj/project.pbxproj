@@ -64,6 +64,7 @@
 		9A859C7E1275E67700987FBD /* UIImage+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859C7D1275E67700987FBD /* UIImage+TKCategory.m */; };
 		9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9A859D141275E83E00987FBD /* TapkuLibrary.bundle */; };
 		9A859DCE1275EA1400987FBD /* UIView+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */; };
+		9A85D6D912D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A85D6D812D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m */; };
 		9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */; };
 		9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */; };
 		9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */; };
@@ -150,6 +151,7 @@
 		9A9BD1D41211AA7500E3A1EB /* FCAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9BD1D31211AA7500E3A1EB /* FCAppSettingsViewController.m */; };
 		9A9EDBED127C1E8100322158 /* FCCFHelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A9EDBEC127C1E8100322158 /* FCCFHelpers.c */; };
 		9A9EDC50127C1FDA00322158 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9EDC4F127C1FDA00322158 /* CoreFoundation.framework */; };
+		9AA6B35112D49B8D001797B5 /* FCCalendarDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA6B35012D49B8D001797B5 /* FCCalendarDelegate.m */; };
 		9AA8569C120FFF2D008DA1BA /* FCAppRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA8569B120FFF2D008DA1BA /* FCAppRootViewController.m */; };
 		9AA8573A121009A5008DA1BA /* glucoseTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AA85735121009A5008DA1BA /* glucoseTabBarIcon.png */; };
 		9AA8573B121009A5008DA1BA /* logTabBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AA85736121009A5008DA1BA /* logTabBarIcon.png */; };
@@ -268,6 +270,8 @@
 		9A859D141275E83E00987FBD /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = resources/images/TapkuLibrary.bundle; sourceTree = "<group>"; };
 		9A859DCC1275EA1400987FBD /* UIImage+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TKCategory.h"; path = "Tapku Library/UIImage+TKCategory.h"; sourceTree = "<group>"; };
 		9A859DCD1275EA1400987FBD /* UIView+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+TKCategory.m"; path = "Tapku Library/UIView+TKCategory.m"; sourceTree = "<group>"; };
+		9A85D6D712D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphLogDateSelectorViewController.h; sourceTree = "<group>"; };
+		9A85D6D812D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphLogDateSelectorViewController.m; sourceTree = "<group>"; };
 		9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 30pxBandBackgroundPattern.png; path = resources/images/30pxBandBackgroundPattern.png; sourceTree = "<group>"; };
 		9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 40pxBandBackgroundPattern.png; path = resources/images/40pxBandBackgroundPattern.png; sourceTree = "<group>"; };
 		9A873BB41293C32300C3D0BF /* FCAppCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCategoryViewController.h; sourceTree = "<group>"; };
@@ -372,6 +376,8 @@
 		9A9EDBEB127C1E8100322158 /* FCCFHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCFHelpers.h; sourceTree = "<group>"; };
 		9A9EDBEC127C1E8100322158 /* FCCFHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FCCFHelpers.c; sourceTree = "<group>"; };
 		9A9EDC4F127C1FDA00322158 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		9AA6B34F12D49B8D001797B5 /* FCCalendarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCalendarDelegate.h; sourceTree = "<group>"; };
+		9AA6B35012D49B8D001797B5 /* FCCalendarDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCCalendarDelegate.m; sourceTree = "<group>"; };
 		9AA8569A120FFF2D008DA1BA /* FCAppRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppRootViewController.h; sourceTree = "<group>"; };
 		9AA8569B120FFF2D008DA1BA /* FCAppRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppRootViewController.m; sourceTree = "<group>"; };
 		9AA85735121009A5008DA1BA /* glucoseTabBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = glucoseTabBarIcon.png; path = resources/images/tabBarIcons/glucoseTabBarIcon.png; sourceTree = "<group>"; };
@@ -427,6 +433,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9AA6B39B12D4B085001797B5 /* Delegates */,
+				9A187A0212A67AA80075DE04 /* Subclasses */,
 				9AF7D9EE111AE3B1008E90F6 /* Models */,
 				9A968260123F980100ED80EE /* Functions */,
 				9AF7D9F0111AE3D9008E90F6 /* IO functionality */,
@@ -465,7 +473,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9A187A0212A67AA80075DE04 /* Subclasses */,
 				9AF7D9EF111AE3C0008E90F6 /* Helpers */,
 				9AE500EC127EC9A3005CD258 /* Frameworks */,
 				9A421F10120C2B9200D370F8 /* FCProtocols.h */,
@@ -514,6 +521,7 @@
 				9A187A4512A68D800075DE04 /* FCBorderedLabel.m */,
 			);
 			name = Subclasses;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		9A19874F12AD312000199569 /* Libraries */ = {
@@ -674,15 +682,6 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		9A9056E012608E5F00741647 /* Pull menu */ = {
-			isa = PBXGroup;
-			children = (
-				9A7C0B35125F52A1008E1A3F /* FCGraphPullMenuViewController.h */,
-				9A7C0B36125F52A1008E1A3F /* FCGraphPullMenuViewController.m */,
-			);
-			name = "Pull menu";
-			sourceTree = "<group>";
-		};
 		9A9680BD123E57C500ED80EE /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -729,6 +728,15 @@
 				9A9BD13112118A3B00E3A1EB /* FCRegistrationViewController.m */,
 			);
 			name = "Registration Application";
+			sourceTree = "<group>";
+		};
+		9AA6B39B12D4B085001797B5 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				9AA6B34F12D49B8D001797B5 /* FCCalendarDelegate.h */,
+				9AA6B35012D49B8D001797B5 /* FCCalendarDelegate.m */,
+			);
+			name = Delegates;
 			sourceTree = "<group>";
 		};
 		9AA8572A1210094C008DA1BA /* TabBarIcons */ = {
@@ -973,7 +981,10 @@
 			children = (
 				9A9BD09012116A6F00E3A1EB /* FCGraphRootViewController.h */,
 				9A9BD09112116A6F00E3A1EB /* FCGraphRootViewController.m */,
-				9A9056E012608E5F00741647 /* Pull menu */,
+				9A85D6D712D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.h */,
+				9A85D6D812D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m */,
+				9A7C0B35125F52A1008E1A3F /* FCGraphPullMenuViewController.h */,
+				9A7C0B36125F52A1008E1A3F /* FCGraphPullMenuViewController.m */,
 				9A9056DD12608E1700741647 /* Graph */,
 				9A9BD0B412116CF900E3A1EB /* Views */,
 			);
@@ -1208,6 +1219,8 @@
 				9A187A4612A68D800075DE04 /* FCBorderedLabel.m in Sources */,
 				9A2630D612B7893E00343623 /* FCImageViewHelper.m in Sources */,
 				9A26321812B7DD0B00343623 /* FCIconCollection.m in Sources */,
+				9AA6B35112D49B8D001797B5 /* FCCalendarDelegate.m in Sources */,
+				9A85D6D912D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

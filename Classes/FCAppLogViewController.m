@@ -112,12 +112,12 @@
 	[view release];
 	
 	// * Left button
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(enterSearchMode)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStyleDone target:self action:@selector(enterSearchMode)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	
 	// * Left button
-	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sort" style:UIBarButtonItemStylePlain target:self action:@selector(loadSortByActionSheet)];
+	UIBarButtonItem *newRightButton = [[UIBarButtonItem alloc] initWithTitle:@"Sort" style:UIBarButtonItemStyleDone target:self action:@selector(loadSortByActionSheet)];
 	self.navigationItem.rightBarButtonItem = newRightButton;
 	[newRightButton release];
 	

@@ -848,7 +848,7 @@
 		FCUnit *categoryUnit;
 		if (doConvert) {
 			
-			converter = [[FCUnitConverter alloc] initWithTarget:self.category.unit];
+			converter = [[[FCUnitConverter alloc] initWithTarget:self.category.unit] autorelease];
 			categoryUnit = self.category.unit;
 		}
 		

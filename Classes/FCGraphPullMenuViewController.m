@@ -1123,7 +1123,7 @@
 		}
 		
 		if (needsReload)
-			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphSetsChanged object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
 		
 		else
 			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphPreferencesChanged object:self];

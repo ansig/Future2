@@ -512,7 +512,7 @@
 	if (self.entry.eid == nil && self.entry.owner == nil) {
 		
 		//  left button
-		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
 		self.navigationItem.leftBarButtonItem = newLeftButton;
 		[newLeftButton release];
 	}

@@ -129,7 +129,7 @@
 
 -(void)createCancelButton {
 	
-	UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 	self.navigationItem.leftBarButtonItem = newButton;
 }
 
@@ -424,7 +424,7 @@
 			NSDate *date = (NSDate *)object;
 			[self.datePicker setDate:date];
 			
-			UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+			UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove" style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 			self.navigationItem.leftBarButtonItem = newButton;
 			
 			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

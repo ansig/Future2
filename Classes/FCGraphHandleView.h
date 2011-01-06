@@ -73,7 +73,7 @@
 -(BOOL)isBelowLowerThreshold;
 -(BOOL)isAboveUpperThreshold;
 
--(void)createNewLabelWithText:(NSString *)text;
--(void)createDirectionalArrow;
+-(void)createNewLabel;
+-(void)createNewDirectionalArrow;
 
 @end

@@ -116,6 +116,8 @@ NSString * const FCNotificationConvertLogOrUnitChanged = @"ConvertLogOrUnitChang
 
 NSString * const FCNotificationGraphSetsChanged = @"GraphSetsChanged";
 NSString * const FCNotificationGraphPreferencesChanged = @"GraphPreferencesChanged";
+NSString * const FCNotificationGraphOptionsChanged = @"GraphOptionsChanged";
+NSString * const FCNotificationGraphLogDateSelectorDismissed = @"GraphLogDateSelectorDismissed";
 
 NSString * const FCNotificationLogDateChanged = @"LogDateChanged";
 

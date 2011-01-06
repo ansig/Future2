@@ -91,7 +91,7 @@
 	CGContextSetFillColor(context, components);
 	CGContextFillRect(context, self.bounds);
 	
-	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[kDarkColor colorWithAlphaComponent:0.5f] CGColor];
+	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[kDarkColor colorWithAlphaComponent:0.25f] CGColor];
 	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor whiteColor] CGColor];
 	NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 	CGFloat locations[] = {0, 1};
