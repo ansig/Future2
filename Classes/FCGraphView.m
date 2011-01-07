@@ -87,7 +87,11 @@
 	
 	// * Draw a gradient background
 	
-	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[UIColor grayColor] CGColor];
+	const CGFloat components [] = {1.0f, 1.0f, 1.0f};
+	CGContextSetFillColor(context, components);
+	CGContextFillRect(context, self.bounds);
+	
+	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[kDarkColor colorWithAlphaComponent:0.25f] CGColor];
 	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor whiteColor] CGColor];
 	NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 	CGFloat locations[] = {0, 1};
@@ -128,6 +132,8 @@
 	if (self.drawMedian)
 		[self drawMedianForYValuesInContext:context];
 	
+	[self drawXAxisSpecialLabelsInContext:context];
+	
 	if (self.drawCurves)
 		[self drawCurvesInContext:context];
 	
@@ -157,7 +163,7 @@
 	
 	if (self.xScaleRef.mode == FCGraphScaleModeData) {
 		
-		NSInteger range = self.xScaleRef.wrappedRange;
+		NSInteger range = self.xScaleRef.integerRange;
 		step = (width-totalPadding) / range;
 		
 	} else if (xScaleRef.mode == FCGraphScaleModeDates) {
@@ -165,19 +171,24 @@
 		// OBS! The use of dateUnits is assuming that the scales date range is dividable
 		// into a whole number of hours, days, months, or years.
 		
-		NSInteger dateUnits = xScaleRef.dateRangeInUnits;
+		NSInteger dateUnits = xScaleRef.dateRangeUnits;
 		step = (width-totalPadding) / dateUnits;
 	}
 	
-	int units = self.xScaleRef.units;
+	int units = self.xScaleRef.wrappedUnits;
+	
+	NSInteger divisor = self.xScaleRef.mode == FCGraphScaleModeData ? self.xScaleRef.integerDataRangeDivisor : 1;
 	
 	CGFloat xPos;
 	
 	for (int i = 0; i < units; i++) {
 		
-		xPos = (step*i)+padding;
-		CGContextMoveToPoint(context, xPos, 0.0f);
-		CGContextAddLineToPoint(context, xPos, height);
+		if (i % divisor == 0) {
+			
+			xPos = (step*i)+padding;
+			CGContextMoveToPoint(context, xPos, 0.0f);
+			CGContextAddLineToPoint(context, xPos, height);
+		}
 	}
 	
 	CGContextStrokePath(context);
@@ -205,24 +216,29 @@
 	
 	if (self.yScaleRef.mode == FCGraphScaleModeData) {
 		
-		NSInteger range = self.yScaleRef.wrappedRange;
+		NSInteger range = self.yScaleRef.integerRange;
 		step = (height-totalPadding) / range;
 		
 	} else if (yScaleRef.mode == FCGraphScaleModeDates) {
 		
-		NSInteger dateUnits = yScaleRef.dateRangeInUnits;
+		NSInteger dateUnits = yScaleRef.dateRangeUnits;
 		step = (height-totalPadding) / dateUnits;
 	}
 	
-	int units = self.yScaleRef.units;
+	int units = self.yScaleRef.wrappedUnits;
+	
+	NSInteger divisor = self.yScaleRef.mode == FCGraphScaleModeData ? self.yScaleRef.integerDataRangeDivisor : 1;
 	
 	CGFloat yPos;
 	
 	for (int i = 0; i < units; i++) {
 		
-		yPos = (step*i)+padding;
-		CGContextMoveToPoint(context, 0.0f, yPos);
-		CGContextAddLineToPoint(context, width, yPos);
+		if (i % divisor == 0) {
+		
+			yPos = (step*i)+padding;
+			CGContextMoveToPoint(context, 0.0f, yPos);
+			CGContextAddLineToPoint(context, width, yPos);
+		}
 	}
 	
 	CGContextStrokePath(context);
@@ -351,7 +367,7 @@
 					
 					const char * text = [[NSString stringWithFormat:@"Average: %f", average] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					CGContextSetRGBFillColor(context, 255, 255, 255, 1.0f); // COLOR
 					
@@ -411,7 +427,7 @@
 					
 					const char * text = [[NSString stringWithFormat:@"Median: %f", median] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					CGContextSetRGBFillColor(context, 255, 255, 255, 1.0f); // COLOR
 					
@@ -468,7 +484,7 @@
 					const char * text1 = [[NSString stringWithFormat:@"Upper quartile %f", upperQuartile] UTF8String];
 					const char * text2 = [[NSString stringWithFormat:@"Lower quartile: %f", lowerQuartile] UTF8String];
 					
-					CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+					CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 					CGContextSetTextDrawingMode(context, kCGTextFill);
 					
 					UIColor *color = [[lastDatum color] colorWithAlphaComponent:1.0f]; // COLOR
@@ -532,14 +548,14 @@
 						const char * text1 = [[NSString stringWithFormat:@"%@ < %f", range.name, upperLimit] UTF8String];
 						const char * text2 = [[NSString stringWithFormat:@"%@ > %f", range.name, lowerLimit] UTF8String];
 											
-						CGContextSelectFont(context, "Courier", 8.0f, kCGEncodingMacRoman); // FONT
+						CGContextSelectFont(context, "Helvetica", 8.0f, kCGEncodingMacRoman); // FONT
 						CGContextSetTextDrawingMode(context, kCGTextFill);
 						
 						UIColor *color = [[lastDatum color] colorWithAlphaComponent:1.0f]; // COLOR
 						CGContextSetFillColorWithColor(context, color.CGColor);
 						
 						// flip vertical
-						CGAffineTransform textTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);;
+						CGAffineTransform textTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
 						CGContextSetTextMatrix(context, textTransform);
 					
 						for (int x = upperLeftCorner.x; x <  width; x += kGraphLabelSpacing) {
@@ -552,6 +568,71 @@
 			}
 		}
 	}
+}
+
+-(void)drawXAxisSpecialLabelsInContext:(CGContextRef)context {
+	
+	// Shared variables
+	
+	CGFloat length = self.bounds.size.width;
+	
+	CGFloat padding = self.xScaleRef.padding;
+	CGFloat totalPadding = padding * 2;
+	
+	NSInteger divisor;
+	CGFloat step;
+	
+	if (self.xScaleRef.mode == FCGraphScaleModeData) {
+		
+		divisor = self.xScaleRef.integerDataRangeDivisor;
+		step = (length-totalPadding) / self.xScaleRef.integerRange;
+		
+	} else {
+		
+		divisor = self.xScaleRef.dateRangeUnitsDivisor;
+		step = (length-totalPadding) / self.xScaleRef.dateRangeUnits;
+	}
+	
+	NSInteger units = self.xScaleRef.wrappedUnits - 1;
+	
+	// Text variables
+	
+	NSArray *labels = [self.xScaleRef createSpecialLabelsArray];
+	
+	const char * text;
+	
+	CGContextSelectFont(context, "Helvetica", 12.0f, kCGEncodingMacRoman); // FONT
+	CGContextSetTextDrawingMode(context, kCGTextFill);
+	
+	CGContextSetFillColorWithColor(context, [kDarkColor CGColor]);
+	
+	CGAffineTransform flipTransform = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0); // ROTATION
+	CGAffineTransform textTransform = CGAffineTransformRotate(flipTransform, degreesToRadian(45));
+	CGContextSetTextMatrix(context, textTransform);
+	
+	// Drawing
+	
+	CGPoint textPoint;
+	
+	textPoint.y = self.bounds.size.height;
+	
+	NSInteger nextLabelIndex = 0;
+	
+	for (int i = 0; i < units; i++) {
+		
+		if (i % divisor == 0) {
+			
+			textPoint.x = (i * step) + padding;
+			
+			text = [[labels objectAtIndex:nextLabelIndex] UTF8String];
+			
+			CGContextShowTextAtPoint(context, textPoint.x, textPoint.y, text, strlen(text));
+			
+			nextLabelIndex++;
+		}
+	}
+	
+	CGContextStrokePath(context);
 }
 
 #pragma mark Custom
@@ -571,12 +652,12 @@
 -(CGPoint)positionForX:(double)x y:(double)y {
 /*	Returns the exact CGPoint for the given x and y values. */
 	
-	NSInteger range = self.xScaleRef.wrappedRange;
+	NSInteger range = self.xScaleRef.integerRange;
 	CGFloat space = self.frame.size.width - (kGraphPadding*2);
 	
 	CGFloat xPosition = kGraphPadding + ((space/range)*x);
 	
-	range = self.yScaleRef.wrappedRange;
+	range = self.yScaleRef.integerRange;
 	space = self.frame.size.height - (kGraphPadding*2);
 	
 	CGFloat yPosition = self.frame.size.height - (kGraphPadding + ((space/range)*y));

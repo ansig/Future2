@@ -28,32 +28,47 @@
 #import "FCCustomButton.h"
 
 
+#define kBackgroundColorAlpha			0.25f
+#define kHighlightBackgroundcolorAlpha	0.5f
+
 @implementation FCCustomButton
 
--(void)addBorder {
+#pragma mark Override
 
-	[self.layer setBorderWidth:1.0];
-	[self.layer setCornerRadius:5.0];
-	[self.layer setBorderColor:[[UIColor colorWithWhite:0.3 alpha:0.7] CGColor]];	
++(UIButton *)buttonWithType:(UIButtonType)buttonType {
+
+	UIButton *button = [super buttonWithType:buttonType];
+	
+	[button.layer setCornerRadius:5.0f];
+	
+	return button;
+}
+
+-(void)setBackgroundColor:(UIColor *)color {
+	
+	[self.layer setBorderColor:[color CGColor]];
+	
+	[super setBackgroundColor:[color colorWithAlphaComponent:kBackgroundColorAlpha]];
+}
+
+#pragma mark Custom
+
+-(void)showBorder {
+
+	[self.layer setBorderWidth:2.0];
+	
+	[super setBackgroundColor:[self.backgroundColor colorWithAlphaComponent:kHighlightBackgroundcolorAlpha]];
 	
 	[self setNeedsDisplay];
 }
 
--(void)removeBorder {
+-(void)hideBorder {
 	
 	[self.layer setBorderWidth:0.0];	
 	
+	[super setBackgroundColor:[self.backgroundColor colorWithAlphaComponent:kBackgroundColorAlpha]];
+	
 	[self setNeedsDisplay];
-}
-
--(void)addBackgroundColorBorder {
-
-	[self.layer setBorderWidth:1.0];
-	
-	[self.layer setBorderColor:[self.backgroundColor CGColor]];
-	
-	UIColor *oldBackground = self.backgroundColor;
-	self.backgroundColor = [oldBackground colorWithAlphaComponent:0.5f];
 }
 
 @end

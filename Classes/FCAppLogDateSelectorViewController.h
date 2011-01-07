@@ -28,19 +28,29 @@
 
 #import "FCAppOverlayViewController.h"  // superclass
 
+#import "FCCalendarDelegate.h"
 #import "TKCalendarMonthView.h"
 #import "NSDate+TKCategory.h"
 
-@interface FCAppLogDateSelectorViewController : FCAppOverlayViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource> {
+@interface FCAppLogDateSelectorViewController : FCAppOverlayViewController {
 
 	TKCalendarMonthView *calendarMonthView;
-	NSDate *lastSelectedDate;
-	BOOL lastSetWasStartDate;
+	
+	FCCalendarDelegate *calendarDelegate;
+	
+	UISegmentedControl *segmentedControl;
+	UILabel *label;
 }
 
 @property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
 
-@property (nonatomic, retain) NSDate *lastSelectedDate;
-@property (nonatomic) BOOL lastSetWasStartDate;
+@property (nonatomic, retain) FCCalendarDelegate *calendarDelegate;
+
+@property (nonatomic, retain) UISegmentedControl *segmentedControl;
+@property (nonatomic, retain) UILabel *label;
+
+// Events
+
+-(void)onSegmentedControlValueChange;
 
 @end

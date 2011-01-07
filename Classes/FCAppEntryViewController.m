@@ -116,7 +116,7 @@
 	UIScrollView *newView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 416.0f)];
 	
 	if (self.isOpaque)
-		newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+		newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	
 	else
 		newView.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.75f];
@@ -131,13 +131,6 @@
     [super viewDidLoad];
 }
 */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
@@ -453,7 +446,7 @@
 		FCCategory *aCategory = (FCCategory *)object;
 		
 		cell.textLabel.text = aCategory.name;
-		cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
+		[cell.imageView configureImageViewForCategory:aCategory];
 	
 	} else if ([object isKindOfClass:[NSString class]]) {
 	
@@ -519,7 +512,7 @@
 	if (self.entry.eid == nil && self.entry.owner == nil) {
 		
 		//  left button
-		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+		UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
 		self.navigationItem.leftBarButtonItem = newLeftButton;
 		[newLeftButton release];
 	}
@@ -550,7 +543,8 @@
 	height = 30.0f;
 	yPos = (kAppHeaderHeight/2) - (height/2);
 	UIImageView *newIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kAppSpacing, yPos, 30.0f, height)];
-	newIconImageView.image = [UIImage imageNamed:self.entry.category.iconName];
+	
+	[newIconImageView configureImageViewForCategory:self.entry.category];
 	
 	self.iconImageView = newIconImageView;
 	
@@ -686,7 +680,7 @@
 		[newTableView release];
 		
 		UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 30.0f)];
-		tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"30pxBandBackground.png"]];
+		tableHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"30pxBandBackgroundPattern.png"]];
 		
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 300.0f, 30.0f)];
 		label.backgroundColor = [UIColor clearColor];

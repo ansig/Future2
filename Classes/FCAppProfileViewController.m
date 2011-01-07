@@ -30,7 +30,7 @@
 @implementation FCAppProfileViewController
 
 @synthesize scrollView; 
-@synthesize pageControl, pageLabel;
+@synthesize pageControl;
 @synthesize nameLabel;
 @synthesize healthInfoTableView, healthInfoTableDataSource;
 @synthesize personalInfoTableView, personalInfoTableDataSource;
@@ -56,7 +56,6 @@
 	[scrollView release];
 	
 	[pageControl release];
-	[pageLabel release];
 	
 	[nameLabel release];
 	
@@ -69,6 +68,16 @@
     [super dealloc];
 }
 
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCAppProfileViewController -didReceiveMemoryWarning!");
+}
+
 #pragma mark View
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -77,7 +86,7 @@
 	// * Main view
 	
 	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
-	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	self.view = view;
 	[view release];
 	
@@ -93,10 +102,13 @@
 	[headerBackground release];
 	
 	// * Settings button
-	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
 	
-	CGRect newButtonFrame = CGRectMake(12.0f, 12.0f, settingsButton.frame.size.width, settingsButton.frame.size.height);
+	UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	
+	CGRect newButtonFrame = CGRectMake(12.0f, 7.0f, 30.0f, 30.0f);
 	settingsButton.frame = newButtonFrame;
+	
+	[settingsButton setImage:[UIImage imageNamed:@"settingsButton.png"] forState:UIControlStateNormal];
 	
 	[settingsButton addTarget:self action:@selector(loadSettingsViewController) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -104,7 +116,8 @@
 	
 	// * Name label
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(42.0f, 12.0f, 228.0f, 20.0f)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 12.0f, 320.0f, 20.0f)];
+	label.textAlignment = UITextAlignmentCenter;
 	label.font = [UIFont boldSystemFontOfSize:18.0f];
 	label.backgroundColor = [UIColor clearColor];
 	
@@ -114,20 +127,6 @@
 	[label release];
 	
 	[self updateNameLabel];
-	
-	// * Page label
-	
-	UILabel *newPageLabel = [[UILabel alloc] initWithFrame:CGRectMake(235.0f, 12.0f, 75.0f, 20.0f)];
-	newPageLabel.backgroundColor = [UIColor clearColor];
-	newPageLabel.font = [UIFont systemFontOfSize:18.0f];
-	newPageLabel.textColor = [UIColor grayColor];
-	newPageLabel.textAlignment = UITextAlignmentRight;
-	newPageLabel.text = kProfilePageHealth;
-	
-	self.pageLabel = newPageLabel;
-	[self.view addSubview:newPageLabel];
-	
-	[newPageLabel release];
 	
 	// * Scroll view
 	
@@ -179,8 +178,9 @@
 	[newPersonalTableView release];
 	
 	// * Page control
-	UIPageControl *newPageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(140.0f, 392.0f, 40.0f, 15.0f)];
-	newPageControl.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.5f];
+	
+	UIPageControl *newPageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(140.0f, 396.0f, 40.0f, 15.0f)];
+	newPageControl.backgroundColor = kDarkColor;
 	newPageControl.numberOfPages = 2;
 	newPageControl.currentPage = 0;
 	
@@ -199,13 +199,6 @@
 	[super viewDidLoad];
  }
  */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
@@ -292,16 +285,11 @@
 	
 	// update the page control
 	CGPoint offset = self.scrollView.contentOffset;
-	if (offset.x > 319) {
-		
-		self.pageLabel.text = kProfilePagePersonal;
+	if (offset.x > 319)
 		self.pageControl.currentPage = 1;
 	
-	} else {
-	
-		self.pageLabel.text = kProfilePageHealth;
+	else
 		self.pageControl.currentPage = 0;
-	}
 }
 
 #pragma mark FCProfileDisplay

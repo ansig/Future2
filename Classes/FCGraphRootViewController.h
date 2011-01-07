@@ -25,19 +25,22 @@
 //  Created by Anders Sigfridsson on 28/07/2010.
 //
 
-#import <UIKit/UIKit.h>
-
 
 #import "FCGraphViewController.h"
 #import "FCGraphPullMenuViewController.h"
+#import "FCGraphLogDateSelectorViewController.h"
 #import "FCGraphEntryInfoView.h"
 #import "FCGraphHandleView.h"
 #import "FCIOFramework.h"
 #import "FCFunctionsFramework.h"
 #import "FCViewFramework.h"
-#import "FCEntry.h"
+#import "FCModelsFramework.h"
+#import "MBProgressHUD.h"
 
-@interface FCGraphRootViewController : UIViewController <FCGraphDelegate> {
+@interface FCGraphRootViewController : UIViewController <FCGraphDelegate, MBProgressHUDDelegate> {
+	
+	UIButton *logDatesButton;
+	FCGraphLogDateSelectorViewController *logDateSelectorViewController;
 	
 	UIScrollView *scrollView;
 	
@@ -49,8 +52,14 @@
 	FCGraphPullMenuViewController *pullMenuViewController;
 	FCGraphHandleView *pullMenuHandleView;
 	
-	FCColorCollection *colorCollection;
+	CGFloat _initialScale;
+	CGFloat _changedScale;
+	
+	MBProgressHUD *_progressHUD;
 }
+
+@property (nonatomic, retain) UIButton *logDatesButton;
+@property (nonatomic, retain) FCGraphLogDateSelectorViewController *logDateSelectorViewController;
 
 @property (nonatomic, retain) UIScrollView *scrollView;
 
@@ -62,15 +71,25 @@
 @property (nonatomic, retain) FCGraphPullMenuViewController *pullMenuViewController;
 @property (nonatomic, retain) FCGraphHandleView *pullMenuHandleView;
 
-@property (nonatomic, retain) FCColorCollection *colorCollection;
+// View
+
+-(void)loadLogDateSelectorViewController;
+-(void)dismissLogDateSelectorViewController;
 
 // Notifications
 
 -(void)onGraphSetsChangedNotification;
 -(void)onGraphPreferencesChangedNotification;
+-(void)onGraphOptionsChangedNotification;
+-(void)onGraphLogDateSelectorDismissedNotification;
+
+// Gestures
+
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender;
 
 // Custom
 
+-(void)loadDefaultStateWithProgressHUD;
 -(void)loadDefaultState;
 -(void)unloadCurrentState;
 
@@ -87,5 +106,7 @@
 
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate;
 -(NSDictionary *)findMinMaxAmong:(NSArray *)entries;
+
+-(void)setLogDatesLabel;
 
 @end

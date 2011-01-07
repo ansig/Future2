@@ -110,6 +110,14 @@
 		UIImage *anIcon = [self.delegate iconForEntryViewWithKey:self.key];
 		if (anIcon != nil) {
 			
+			CALayer *caLayer = self.layer;
+			
+			[caLayer setBorderWidth:2.0];
+			[caLayer setCornerRadius:5.0];
+			[caLayer setBorderColor:[self.color CGColor]];
+			
+			[caLayer setBackgroundColor:[[self.color colorWithAlphaComponent:0.5f] CGColor]];
+			
 			// draw it
 			
 			CGSize iconSize = anIcon.size;
@@ -131,7 +139,7 @@
 	
 	// inform delegate
 	if (self.delegate != nil && [self.delegate conformsToProtocol:@protocol(FCGraphEntryViewDelegate)])
-		[self.delegate touchOnEntryWithAnchorPoint:self.anchor inSuperview:self.superview andKey:self.key];
+		[self.delegate touchOnEntryWithAnchorPoint:self.anchor superview:self.superview key:self.key];
 	
 	// pulse
 	[self animateDoublePulse];

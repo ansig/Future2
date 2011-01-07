@@ -64,6 +64,16 @@
     [super dealloc];
 }
 
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCAppGlucoseViewController -didReceiveMemoryWarning!");
+}
+
 #pragma mark View
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -72,7 +82,7 @@
 	// * Main view
 	
 	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
-	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	self.view = view;
 	[view release];
 	
@@ -146,13 +156,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
 	
 	[super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {

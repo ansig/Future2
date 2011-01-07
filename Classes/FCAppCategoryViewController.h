@@ -43,7 +43,6 @@
 	UITableView *tableView;
 	
 	UITextField *nameTextField;
-	FCColorCollection *colorCollection;
 	UIButton *colorButton;
 	UIButton *iconButton;
 	UISwitch *countableSwitch;
@@ -64,7 +63,6 @@
 @property (nonatomic, retain) UITableView *tableView;
 
 @property (nonatomic, retain) UITextField *nameTextField;
-@property (nonatomic, retain) FCColorCollection *colorCollection;
 @property (nonatomic, retain) UIButton *colorButton;
 @property (nonatomic, retain) UIButton *iconButton;
 @property (nonatomic, retain) UISwitch *countableSwitch;
@@ -103,6 +101,8 @@
 
 -(void)save;
 -(void)cancel;
+
+-(void)displayNameAlert;
 
 -(void)setCategoryProperties;
 

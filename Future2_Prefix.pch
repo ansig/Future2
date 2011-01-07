@@ -18,4 +18,5 @@
 	#import "FCNumberHelper.h"
 	#import "FCImageHelper.h"
 	#import "FCStringHelper.h"
+	#import "FCImageViewHelper.h"
 #endif

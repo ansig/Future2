@@ -59,6 +59,16 @@
     [super dealloc];
 }
 
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCAppRecordingViewController -didReceiveMemoryWarning!");
+}
+
 #pragma mark View
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -67,7 +77,7 @@
 	// * Main view
 	
 	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
-	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	self.view = view;
 	[view release];
 	
@@ -100,13 +110,6 @@
  [super viewDidLoad];
  }
  */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
@@ -180,7 +183,8 @@
 	FCCategory *aCategory = [[self.sections objectAtIndex:section] objectAtIndex:row];
 	
 	cell.textLabel.text = aCategory.name;
-	cell.imageView.image = [UIImage imageNamed:aCategory.iconName];
+	
+	[cell.imageView configureImageViewForCategory:aCategory];
 	
     return cell;
 }

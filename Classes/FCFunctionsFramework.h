@@ -27,3 +27,4 @@
 
 #import "FCUnitConverter.h"
 #import "FCColorCollection.h"
+#import "FCIconCollection.h"

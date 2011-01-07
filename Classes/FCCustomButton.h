@@ -32,9 +32,9 @@
 
 }
 
--(void)addBorder;
--(void)removeBorder;
+// Custom
 
--(void)addBackgroundColorBorder;
+-(void)showBorder;
+-(void)hideBorder;
 
 @end

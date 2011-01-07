@@ -31,7 +31,6 @@
 @implementation FCAppTagsViewController
 
 @synthesize section, tableView, deleteIndexPath;
-@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -55,9 +54,18 @@
 	[tableView release];
 	[deleteIndexPath release];
 	
-	[colorCollection release];
-	
     [super dealloc];
+}
+
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCAppTagsViewController -didReceiveMemoryWarning!");
 }
 
 #pragma mark View
@@ -68,7 +76,7 @@
 	// * Main view
 	
 	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 367.0f)];
-	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	self.view = view;
 	[view release];
 	
@@ -92,12 +100,6 @@
 	
 	[newTableView release];
 	
-	// * Color collection
-	
-	FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-	self.colorCollection = newColorCollection;
-	[newColorCollection release];
-	
 	// * Notifications
 	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -114,13 +116,6 @@
  }
  */
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
@@ -131,7 +126,6 @@
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] init];
 	newCategoryViewController.shouldAnimateContent = YES;
 	newCategoryViewController.title = @"New tag";
-	newCategoryViewController.colorCollection = self.colorCollection;
 	
 	[self presentOverlayViewController:newCategoryViewController];
 	
@@ -155,7 +149,6 @@
 
 	FCAppCategoryViewController *newCategoryViewController = [[FCAppCategoryViewController alloc] initWithCategory:theCategory];
 	newCategoryViewController.shouldAnimateContent = YES;
-	newCategoryViewController.colorCollection = self.colorCollection;
 	newCategoryViewController.title = theCategory.name;
 	
 	[self presentOverlayViewController:newCategoryViewController];
@@ -213,24 +206,7 @@
 		cell.detailTextLabel.text = nil;
 	}
 	
-	cell.imageView.image = [UIImage imageNamed:category.iconName];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:cell.imageView.frame];
-	label.backgroundColor = [UIColor blackColor];
-	
-	if (category.colorIndex != nil) {
-	
-		NSInteger colorIndex = [category.colorIndex integerValue];
-		UIColor *color = [self.colorCollection colorForIndex:colorIndex];
-		
-		CALayer *cellImageViewLayer = cell.imageView.layer;
-		
-		[cellImageViewLayer setBorderWidth:2.0];
-		[cellImageViewLayer setCornerRadius:5.0];
-		[cellImageViewLayer setBorderColor:[color CGColor]];
-		
-		cell.imageView.backgroundColor = [color colorWithAlphaComponent:0.5f];
-	}
+	[cell.imageView configureImageViewForCategory:category];
 	
 	UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	editButton.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);

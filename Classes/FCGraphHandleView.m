@@ -37,7 +37,7 @@
 @synthesize range, offset;
 @synthesize lowerThreshold, upperThreshold;
 @synthesize cornerRadius;
-@synthesize color, label;
+@synthesize color, label, directionalArrow, directionalArrowIsFlipped;
 
 #pragma mark Init
 
@@ -74,7 +74,7 @@
     // Get the graphics context
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	// DRAW A RECT WITH ROUNDED CORNERS
+	// DRAW A RECT WITH ROUNDED CORNERS IN PULL DIRECTION
 	
 	// color
 	
@@ -104,7 +104,7 @@
 			CGPointMake(0.0f, radius),
 			CGPointMake(radius, radius) };
 	
-	// paths
+	// outline
 	
 	CGContextBeginPath(context);
 	
@@ -117,15 +117,69 @@
 	
 	CGContextFillPath(context);
 	
-	CGContextBeginPath(context);
-	
-	CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
-	CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
-	
-	CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
-	CGContextAddArc(context, width - radius, radius, radius, degreesToRadian(270), degreesToRadian(90), NO); // upper right corner
-	
-	CGContextFillPath(context);
+	switch (self.mode) {
+		
+		case FCGraphHandleModeTopDown:
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
+			
+			CGContextFillPath(context);
+			
+			// filled corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddRect(context, CGRectMake(0.0f, 0.0f, radius, radius)); // upper left
+			CGContextAddRect(context, CGRectMake(width-radius, 0.0f, radius, radius)); // upper right
+			
+			CGContextFillPath(context);
+			
+			break;
+			
+		case FCGraphHandleModeRightToLeft:
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			
+			CGContextFillPath(context);
+			
+			// filled corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddRect(context, CGRectMake(width-radius, 0.0f, radius, radius)); // upper right
+			CGContextAddRect(context, CGRectMake(width-radius, height-radius, radius, radius)); // lower right
+			
+			CGContextFillPath(context);
+			
+			break;
+
+		
+		default: // draw four round corners
+			
+			// rounded corners
+			
+			CGContextBeginPath(context);
+			
+			CGContextAddArc(context, radius, radius, radius, degreesToRadian(180), degreesToRadian(270), NO); // upper left corner
+			CGContextAddArc(context, radius, height - radius, radius, degreesToRadian(90), degreesToRadian(180), NO); // lower left corner
+			
+			CGContextAddArc(context, width - radius, height - radius, radius, degreesToRadian(0), degreesToRadian(90), NO); // lower right corner
+			CGContextAddArc(context, width - radius, radius, radius, degreesToRadian(270), degreesToRadian(90), NO); // upper right corner
+			
+			CGContextFillPath(context);
+			
+			break;
+	}
 }
 
 #pragma mark Touch
@@ -160,6 +214,9 @@
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleDidTapScrollToTop)])
 				[(UIResponder *)self.delegate performSelector:@selector(handleDidTapScrollToTop) withObject:nil afterDelay:kGraphHandleLockDuration];
 		}
+		
+		// flip directional arrow
+		[self animateFlipDirectionalArrow];
 	}
 }
 
@@ -202,7 +259,7 @@
 	NSInteger taps = touch.tapCount;
 	
 	// only react if the tap count is 0 (since taps are handled by -touchedBegan:withEvent:)
-	if (taps < 1) {
+	if (taps == 0) {
 	
 		// check to see if the current offset exceeds any of the thresholds
 		// and act accordingly if it is
@@ -216,11 +273,20 @@
 			addend = -self.offset;
 			crossed = YES;
 			
+			if (self.directionalArrowIsFlipped)
+				[self animateFlipDirectionalArrow];
+			
 			// notify delegate
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleReleasedBelowLowerThreshold)])
 				[self.delegate handleReleasedBelowLowerThreshold];
 			
 		} else {
+			
+			if (self.lowerThreshold == FCGraphHandleThresholdNone) {
+				
+				if (![self isAboveUpperThreshold] && self.directionalArrowIsFlipped)
+					[self animateFlipDirectionalArrow];
+			}
 			
 			// notify delegate
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleReleasedAboveLowerThreshold)])
@@ -233,11 +299,20 @@
 			addend = self.range - self.offset;
 			crossed = YES;
 			
+			if (!self.directionalArrowIsFlipped)
+				[self animateFlipDirectionalArrow];
+			
 			// notify delegate
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleReleasedAboveUpperThreshold)])
 				[self.delegate handleReleasedAboveUpperThreshold];
 			
 		} else {
+			
+			if (self.upperThreshold == FCGraphHandleThresholdNone) {
+				
+				if (![self isBelowLowerThreshold] && !self.directionalArrowIsFlipped)
+				[self animateFlipDirectionalArrow];
+			}
 			
 			// notify delegate
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(handleReleasedBelowUpperThreshold)])
@@ -246,7 +321,6 @@
 		
 		if (crossed)
 			[self addOffset:addend withAnimation:YES];
-		
 	}
 }
 
@@ -259,6 +333,19 @@
 						options:UIViewAnimationCurveEaseOut 
 					 animations:^ { self.frame = newFrame; } 
 					 completion:^ (BOOL finished) { } ];
+}
+
+-(void)animateFlipDirectionalArrow {
+	
+	if (self.directionalArrow != nil) {
+			
+		CGAffineTransform newTransform = CGAffineTransformRotate(self.directionalArrow.transform, degreesToRadian(180));
+		
+		[UIView animateWithDuration:kGraphHandleLockDuration 
+						 animations:^ { self.directionalArrow.transform = newTransform; } ];
+		
+		self.directionalArrowIsFlipped = !directionalArrowIsFlipped;
+	}
 }
 
 #pragma mark Custom
@@ -355,8 +442,8 @@
 	return NO;
 }
 
--(void)createNewLabelWithText:(NSString *)text {
-/*	Creates a new label, rotates it according to mode, and sets it's text to given text */
+-(void)createNewLabel {
+/*	Creates a new label and rotates it according to mode. */
 	
 	// remove old label
 	if (self.label != nil)
@@ -367,8 +454,7 @@
 	newLabel.backgroundColor = [UIColor clearColor];
 	newLabel.textColor = [UIColor whiteColor];
 	newLabel.textAlignment = UITextAlignmentCenter;
-	newLabel.font = [UIFont systemFontOfSize:16.0f];
-	newLabel.text = text;
+	newLabel.font = kGraphLabelFont;
 	
 	// rotate if necessary
 	if (self.mode == FCGraphHandleModeLeftToRight) {
@@ -376,7 +462,7 @@
 		// flip width/height
 		newLabel.bounds = CGRectMake(0.0f, 0.0f, self.bounds.size.height, self.bounds.size.width);
 		
-		// rotate anti-clockwise
+		// rotate counter clockwise
 		newLabel.transform = CGAffineTransformRotate(newLabel.transform, degreesToRadian(-90));
 	
 	} else if (self.mode == FCGraphHandleModeRightToLeft) {
@@ -393,6 +479,54 @@
 	[self addSubview:newLabel];
 	
 	[newLabel release];
+}
+
+-(void)createNewDirectionalArrow {
+	
+	if (self.directionalArrow != nil)
+		[self.directionalArrow removeFromSuperview], self.directionalArrow = nil;
+		
+	UIImage *image = [UIImage imageNamed:@"pullIcon.png"];
+	
+	CGFloat padding = 5.0f;
+	
+	UIImageView *newIcon = [[UIImageView alloc] initWithImage:image];
+	
+	BOOL center = self.label == nil ? YES : NO;
+	
+	if (self.mode == FCGraphHandleModeTopDown) {
+		
+		CGFloat xPos = center ? (self.bounds.size.width/2) - (image.size.width/2) : self.bounds.size.width - image.size.width - padding;
+		CGFloat yPos = (self.bounds.size.height/2) - (image.size.height/2);
+		
+		newIcon.frame = CGRectMake(xPos, yPos, image.size.width, image.size.height);
+		newIcon.transform = CGAffineTransformRotate(newIcon.transform, degreesToRadian(0));
+		
+		if (self.label != nil)
+			self.label.frame = CGRectMake(self.label.frame.origin.x, 
+										  self.label.frame.origin.y, 
+										  self.bounds.size.width - newIcon.frame.size.width, 
+										  self.label.frame.size.height);
+		
+	} else if (self.mode == FCGraphHandleModeRightToLeft) {
+		
+		CGFloat xPos = (self.bounds.size.width/2) - (image.size.width/2);
+		CGFloat yPos = center ? (self.bounds.size.height/2) - (image.size.height/2) : self.bounds.size.height - image.size.height - padding;
+		
+		newIcon.frame = CGRectMake(xPos, yPos, image.size.width, image.size.height);
+		newIcon.transform = CGAffineTransformRotate(newIcon.transform, degreesToRadian(90));
+		
+		if (self.label != nil)
+			self.label.frame = CGRectMake(self.label.frame.origin.x, 
+										  self.label.frame.origin.y, 
+										  self.label.frame.size.width,
+										  self.bounds.size.height - newIcon.frame.size.height);
+	}
+	
+	self.directionalArrow = newIcon;
+	[self addSubview:newIcon];
+	
+	[newIcon release];
 }
 
 @end

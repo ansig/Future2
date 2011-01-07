@@ -27,11 +27,16 @@
 
 /* SIMPLE */
 
-#define kAppCommonLabelFont		[UIFont systemFontOfSize:18.0f]
-#define kAppBoldCommonLabelFont	[UIFont boldSystemFontOfSize:18.0f]
-#define kAppLargeLabelFont		[UIFont boldSystemFontOfSize:36.0f]
+#define kAppCommonLabelFont		[UIFont fontWithName:@"Helvetica" size:18.0f]
+#define kAppBoldCommonLabelFont	[UIFont fontWithName:@"Helvetica-Bold" size:18.0f]
+#define kAppLargeLabelFont		[UIFont fontWithName:@"Helvetica-Bold" size:36.0f]
+#define kAppSmallLabelFont		[UIFont fontWithName:@"Helvetica" size:14.0f]
+
+#define kGraphFont				[UIFont fontWithName:@"Helvetica" size:12.0f]
+#define kGraphLabelFont			[UIFont fontWithName:@"Helvetica-Bold" size:16.0f]
+
 #define kAppSpacing				15.0f // standard distance between any UI element (button, label, text view, image, etc) and any other UI element and screen edge
-#define kAppAdjacentSpacing		10.0f  // distance between any UI element and another UI element to which it is visually associated (e.g. a number label and a unit label)
+#define kAppAdjacentSpacing		10.0f  // distance between any UI element and another UI element to which it is visually associated (e.g. a timestamp label and its edit-button)
 #define kAppHeaderHeight		60.0f // distance between navigation bar and body content (often contains icon, timestamp and edit-button)
 
 #define kGraphPadding		12.5f // minimum distance to all edges in the graph view (should be about half kGraphEntryViewDiameter)
@@ -71,7 +76,7 @@
 #define kGraphEntryInfoViewPadding	10.0f // the minimum distance between any edge of the info box to any side of the screen as well as the entry object itself
 
 #define kGraphPullMenuSize			CGSizeMake(320.0f, 280.0f) // size of the pull down menu in the graph application
-#define kGraphPullMenuHandleSize	CGSizeMake(220.0f, 30.0f) // size of the pull down menus handle
+#define kGraphPullMenuHandleSize	CGSizeMake(250.0f, 30.0f) // size of the pull down menus handle
 #define kGraphPullMenuHandleRange	280.0f // the distance which the pull down menu handle can be moved (should correspond to height of kGraphPullMenuSize)
 #define kGraphPullMenuHandleLowerThreshold	FCGraphHandleThresholdQuarter; // the fractional distance from the starting point at which the handle locks to the side
 #define kGraphPullMenuHandleUpperThreshold	FCGraphHandleThresholdOpposite;	// the fractional distance from the end point at which the handle locks to the side
@@ -79,9 +84,9 @@
 
 #define kGraphHandleLockDuration	0.25f // duration of the animation when handle views lock to a side
 
-#define kTintColor				[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
-#define kButtonTitleColor		[UIColor colorWithRed:0.415686274509804f green:0.690196078431373f blue:0.243137254901961f alpha:1.0f]
-#define kHighlightColor			[UIColor colorWithRed:0.96484375f green:0.95875f blue:0.9453125f alpha:1.0f]
+#define kTintColor				[UIColor colorWithRed:0.54509f green:0.81568f blue:0.6666667f alpha:1.0f]
+#define kDarkColor				[UIColor colorWithRed:0.12156f green:0.12156f blue:0.12156f alpha:1.0f]
+#define kButtonTitleColor		kTintColor
 
 #define kViewAppearDuration		0.5f // duration of view appearance animations
 #define kViewDisappearDuration	0.5f // duration of view disappearance animations
@@ -232,6 +237,7 @@ extern NSString * const FCDefaultAgeDisplay; // integer
 // log/graph
 
 extern NSString * const FCDefaultLogDates; // dictionary with date objects
+extern NSString * const FCDefaultLogSortBy; // integer
 extern NSString * const FCDefaultGraphs; // array of dictionary objects
 
 extern NSString * const FCDefaultGraphSettingScrollRelatives; // boolean
@@ -251,6 +257,8 @@ extern NSString * const FCNotificationConvertLogOrUnitChanged;
 
 extern NSString * const FCNotificationGraphSetsChanged;
 extern NSString * const FCNotificationGraphPreferencesChanged;
+extern NSString * const FCNotificationGraphOptionsChanged;
+extern NSString * const	FCNotificationGraphLogDateSelectorDismissed;
 
 extern NSString * const FCNotificationLogDateChanged;
 

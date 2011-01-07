@@ -33,7 +33,7 @@
 @synthesize category, originalCategory;
 @synthesize sections;
 @synthesize tableView;
-@synthesize nameTextField, colorCollection, colorButton, iconButton, countableSwitch;
+@synthesize nameTextField, colorButton, iconButton, countableSwitch;
 @synthesize minimumTextField, maximumTextField, decimalsSegmentedControl, unitButton;
 @synthesize beingEdited;
 
@@ -90,7 +90,6 @@
 	[sections release];
 	
 	[nameTextField release];
-	[colorCollection release];
 	[colorButton release];
 	[iconButton release];
 	[countableSwitch release];
@@ -156,7 +155,6 @@
 	
 	selectorViewController.title = @"Color";
 	selectorViewController.propertyToSelect = FCPropertyColor;
-	selectorViewController.colorCollection =  self.colorCollection;
 	
 	[self presentOverlayViewController:selectorViewController];
 	
@@ -276,7 +274,7 @@
 	// * Navigation buttons
 	
 	//  left button
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	
@@ -320,14 +318,7 @@
 	FCBorderedLabel *colorButtonLabel = [[FCBorderedLabel alloc] initWithFrame:newColorButton.bounds];
 	colorButtonLabel.tag = 1;
 	
-	if (self.colorCollection == nil) {
-		
-		FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-		self.colorCollection = newColorCollection;
-		[newColorCollection release];
-	}
-	
-	colorButtonLabel.backgroundColor = [colorCollection colorForIndex:0];
+	colorButtonLabel.backgroundColor = [[FCColorCollection sharedColorCollection] colorForIndex:0];
 	
 	[newColorButton addSubview:colorButtonLabel];
 	
@@ -450,12 +441,12 @@
 		
 		NSInteger colorIndex = [self.category.colorIndex integerValue];
 		UILabel *label = (UILabel *)[self.colorButton viewWithTag:1];
-		[label setBackgroundColor:[self.colorCollection colorForIndex:colorIndex]];
+		[label setBackgroundColor:[[FCColorCollection sharedColorCollection] colorForIndex:colorIndex]];
 	}
 	
-	if (self.category.iconName != nil) {
+	if (self.category.iid != nil) {
 		
-		UIImage *icon = [UIImage imageNamed:self.category.iconName];
+		UIImage *icon = self.category.icon;
 		[self.iconButton setImage:icon forState:UIControlStateNormal];
 	}
 	
@@ -716,16 +707,34 @@
 
 -(void)save {
 	
-	[self setCategoryProperties];
+	if (self.nameTextField.text != nil && [self.nameTextField.text length] > 0) {
 	
-	[self.category save];
+		[self setCategoryProperties];
 	
-	[self dismiss];
+		[self.category save];
+	
+		[self dismiss];
+		
+	} else {
+		
+		[self displayNameAlert];
+	}
 }
 
 -(void)cancel {
 	
 	[self dismiss];
+}
+
+-(void)displayNameAlert {
+	
+	NSString *title = @"Name your tag!";
+	NSString *message = @"Please enter a name for your tag.";
+	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
+	[alert show];
+	
+	[alert release];
 }
 
 -(void)setCategoryProperties {

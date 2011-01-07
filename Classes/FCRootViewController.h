@@ -53,4 +53,6 @@
 -(void)onRotationNotAllowedNotification;
 -(void)onRegistrationCompleteNotification;
 
+-(void)setLogDatesToNow;
+
 @end

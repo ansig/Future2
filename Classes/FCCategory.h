@@ -45,7 +45,6 @@
 	NSDate *modified;
 	
 	NSString *datatypeName;
-	NSString *iconName;
 	NSNumber *colorIndex;
 	
 	NSString *lid;
@@ -53,6 +52,8 @@
 	NSString *uid;
 	NSString *did;
 	NSString *iid;
+	
+	FCUnit *unit;
 }
 
 @property (nonatomic, retain) NSString *cid;
@@ -67,7 +68,6 @@
 @property (nonatomic, retain) NSDate *modified;
 
 @property (nonatomic, retain) NSString *datatypeName;
-@property (nonatomic, retain) NSString *iconName;
 @property (nonatomic, retain) NSNumber *colorIndex;
 
 @property (nonatomic, retain) NSString *lid;
@@ -75,6 +75,8 @@
 @property (nonatomic, retain) NSString *uid;
 @property (nonatomic, retain) NSString *did;
 @property (nonatomic, retain) NSString *iid;
+
+@property (nonatomic, retain) FCUnit *unit;
 
 // Class
 +(FCCategory *)categoryWithCID:(NSString *)theCID;
@@ -85,14 +87,13 @@
 // Init
 -(id)initWithDictionary:(NSDictionary *)theDictionary;
 
-// Get
--(FCUnit *)unit;
-
 // Custom
 -(void)save;
 -(void)saveNewUnit:(FCUnit *)newUnit andConvert:(BOOL)convert;
 -(void)delete;
 
 -(NSDictionary *)generateDefaultGraphSet;
+
+-(UIImage *)icon;
 
 @end

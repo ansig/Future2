@@ -31,13 +31,17 @@
 									// between the two dates and does not wrap around them like
 									// the log does
 
+
+
+
+
 @implementation FCGraphRootViewController
 
+@synthesize logDatesButton, logDateSelectorViewController;
 @synthesize scrollView;
 @synthesize graphControllers, graphHandles;
 @synthesize entryInfoView;
 @synthesize pullMenuViewController, pullMenuHandleView;
-@synthesize colorCollection;
 
 #pragma mark Instance
 
@@ -60,18 +64,16 @@
 }
 */
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
+#pragma mark Dealloc
 
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationGraphSetsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationGraphPreferencesChanged object:nil];
 
+	[logDatesButton release];
+	[logDateSelectorViewController release];
+	
 	[scrollView release];
 	
 	[graphControllers release];
@@ -82,9 +84,18 @@
 	[pullMenuViewController release];
 	[pullMenuHandleView release];
 	
-	[colorCollection release];
-	
     [super dealloc];
+}
+
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCGraphRootViewController -didReceiveMemoryWarning!");
 }
 
 #pragma mark Views
@@ -96,11 +107,17 @@
 	 
 	 CGRect frame = CGRectMake(0.0f, 0.0f, 480.0f, 320.0f); // flipping width/height for landscape view
 	 UIView *view = [[UIView alloc] initWithFrame:frame];
-	 view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+	 view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"mainBackgroundPattern.png"]];
 	 
 	 self.view = view;
 	 
 	 [view release];
+	 
+	 // * Gesture recognizer
+	 
+	 UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+	 [self.view addGestureRecognizer:pinchGesture];
+	 [pinchGesture release];
 	 
 	 // * Scroll view
 	 
@@ -113,11 +130,16 @@
 	 
 	 [newScrollView release];
 	 
-	 // * Colors
+	 // * Log dates button
 	 
-	 FCColorCollection *newColorCollection = [[FCColorCollection alloc] init];
-	 self.colorCollection = newColorCollection;
-	 [colorCollection release];
+	 UIButton *newLogDatesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	 newLogDatesButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+	 
+	 [newLogDatesButton setImage:[UIImage imageNamed:@"calendarButton.png"] forState:UIControlStateNormal];
+	 [newLogDatesButton addTarget:self action:@selector(loadLogDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];
+	  
+	  self.logDatesButton = newLogDatesButton;
+	  [self.view addSubview:newLogDatesButton];
 	
 	 // * Load default state
 	 
@@ -141,36 +163,29 @@
 	 
 	 FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
 	 newHandle.delegate = self.pullMenuViewController;
-	 newHandle.color = [UIColor darkGrayColor];
+	 newHandle.color =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	 newHandle.mode = FCGraphHandleModeTopDown;
 	 newHandle.cornerRadius = 8.0f;
 	 newHandle.range = kGraphPullMenuHandleRange;
 	 newHandle.lowerThreshold = kGraphPullMenuHandleLowerThreshold;
 	 newHandle.upperThreshold = kGraphPullMenuHandleUpperThreshold;
 	 
-	 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	 formatter.dateStyle = NSDateFormatterMediumStyle;
-	 
-	 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	 NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
-	 
-	 NSDate *startDate = [logDates objectForKey:@"StartDate"];
-	 NSDate *endDate = [NSDate dateWithTimeInterval:kEndDateOffset sinceDate:[logDates objectForKey:@"EndDate"]];
-	 
-	 NSString *text = [NSString stringWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
-	 [newHandle createNewLabelWithText:text];
-	 
-	 [formatter release];
+	 [newHandle createNewLabel];
+	 [newHandle createNewDirectionalArrow];
 	 
 	 self.pullMenuHandleView = newHandle;
 	 [self.view addSubview:newHandle];
 	 
 	 [newHandle release];
 	 
+	 [self setLogDatesLabel];
+	 
 	 // * Notifications
 	 
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphSetsChangedNotification) name:FCNotificationGraphSetsChanged object:nil];
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphPreferencesChangedNotification) name:FCNotificationGraphPreferencesChanged object:nil];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphOptionsChangedNotification) name:FCNotificationGraphOptionsChanged object:nil];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphLogDateSelectorDismissedNotification) name:FCNotificationGraphLogDateSelectorDismissed object:nil];
  }
 
 /*
@@ -186,8 +201,26 @@
 	// e.g. self.myOutlet = nil;
 }
 
--(void)loadAllGraphs {
+-(void)loadLogDateSelectorViewController {
 	
+	FCGraphLogDateSelectorViewController *viewController = [[FCGraphLogDateSelectorViewController alloc] init];
+	viewController.view.alpha = 0.0f;
+	
+	self.logDateSelectorViewController = viewController;
+	[self.view addSubview:viewController.view];
+	
+	[viewController release];
+	
+	[UIView animateWithDuration:kViewAppearDuration 
+					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.75f; } 
+					 completion:^ (BOOL finished) { [self.logDateSelectorViewController presentUIContent]; } ];
+}
+
+-(void)dismissLogDateSelectorViewController {
+	
+	[UIView animateWithDuration:kViewDisappearDuration 
+					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.0f; } 
+					 completion:^ (BOOL finished) { [self.logDateSelectorViewController.view removeFromSuperview]; self.logDateSelectorViewController = nil; } ];
 }
 
 #pragma mark Orientation
@@ -197,6 +230,15 @@
 	
 	// Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden {
+    
+	// Remove HUD from screen when the HUD was hidded
+    [_progressHUD removeFromSuperview];
+    [_progressHUD release];
 }
 
 #pragma mark FCGraphDelegate
@@ -288,34 +330,86 @@
 	return [[graphSet objectForKey:@"EntryViewMode"] integerValue];
 }
 
--(NSArray *)colorsForGraphViewController:(id)theGraphViewController {
-
-	NSInteger indexOfGraphController = [self.graphControllers indexOfObject:(FCGraphViewController *)theGraphViewController];
-	NSDictionary *graphSet = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs] objectAtIndex:indexOfGraphController];
+-(NSArray *)referenceRangesForGraphSet:(id)theGraphSet inGraphViewController:(id)theGraphViewController {
 	
-	UIColor *color = [self.colorCollection colorForCID:[graphSet objectForKey:@"Key"]];
+	// TMP SOLUTION: manually adds a reference range for glucose. This will be
+	// made dynamic in future version. The plan is to create a new data structure
+	// to the database which can store reference ranges for any category.
+	
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
+	NSString *key = typedGraphViewController.key;
+	
+	if ([key isEqualToString:FCKeyCIDGlucose]) {
+		
+		//FCGraphDataSet *typedGraphSet = (FCGraphDataSet *)theGraphSet;
+		
+		FCCategory *category = [FCCategory categoryWithCID:key];
+		
+		FCGraphReferenceRange *newRange;
+		
+		if ([category.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre]) {
+			
+			newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+														upperLimit:[NSNumber numberWithDouble:8.0] 
+														lowerLimit:[NSNumber numberWithDouble:5.0]];
+			
+		} else {
+			
+			newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
+														upperLimit:[NSNumber numberWithDouble:144.0] 
+														lowerLimit:[NSNumber numberWithDouble:90.0]];
+		}
+		
+		NSArray *ranges = [NSArray arrayWithObjects:newRange, nil];
+		
+		[newRange release];
+		
+		return ranges;
+	}
+	
+	return nil;
+}
+
+-(UIColor *)baseColorForGraphViewController:(id)theGraphViewController {
+	
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
+	
+	UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:typedGraphViewController.key];
 	
 	if (color == nil) {
 		
-		NSString *key = [graphSet objectForKey:@"Key"];
-		FCCategory *category = [FCCategory categoryWithCID:key];
+		FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
 		
 		NSInteger colorIndex = [category.colorIndex integerValue];
-		color = [self.colorCollection colorForIndex:colorIndex];
+		color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
 	}
 	
-	return [NSArray arrayWithObject:color];
+	return color;
+}
+
+-(UIImage *)labelIconForGraphViewController:(id)theGraphViewController {
+
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
+	
+	FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
+	
+	return [[FCIconCollection sharedIconCollection] iconForIID:category.iid];
+}
+
+-(NSString *)labelTitleForGraphViewController:(id)theGraphViewController {
+	
+	FCGraphViewController *typedGraphViewController = (FCGraphViewController *)theGraphViewController;
+	
+	FCCategory *category = [FCCategory categoryWithCID:typedGraphViewController.key];
+	
+	return category.name;
 }
 
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
 
-	// TMP, VERY SLOW!
-	
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
-	NSString *imageName = anEntry.category.iconName;
-	UIImage *icon = [UIImage imageNamed:imageName];
-	
-	return icon;
+		
+	return anEntry.category.icon;
 }
 
 -(id)twinForGraphViewController:(id)theController {
@@ -356,7 +450,7 @@
 	return newGraphViewController;
 }
 
--(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor inSuperview:(UIView *)theSuperview andKey:(NSString *)theKey; {
+-(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey; {
 	
 	// remove any present info views
 	
@@ -471,7 +565,7 @@
 
 -(void)onGraphSetsChangedNotification {
 	
-	[self loadDefaultState];
+	[self loadDefaultStateWithProgressHUD];
 }
 
 -(void)onGraphPreferencesChangedNotification {
@@ -480,7 +574,99 @@
 		[graphController reloadPreferences];
 }
 
+-(void)onGraphOptionsChangedNotification {
+	
+	// update log dates for the current date level
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	NSDate *endDate = [logDates objectForKey:@"EndDate"];
+	
+	NSDate *newStartDate;
+	
+	FCGraphScaleDateLevel level = [defaults integerForKey:FCDefaultGraphSettingDateLevel];
+	
+	switch (level) {
+			
+		case FCGraphScaleDateLevelHours:
+			newStartDate = [NSDate dateWithTimeInterval:-518400 sinceDate:endDate]; // week
+			break;
+			
+		default:
+			newStartDate = [NSDate dateWithTimeInterval:-2505600 sinceDate:endDate]; // month
+			break;
+	}
+	
+	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", endDate, @"EndDate", nil];
+	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
+	[newLogDates release];
+	
+	[self setLogDatesLabel];
+	
+	[self loadDefaultStateWithProgressHUD];
+}
+
+-(void)onGraphLogDateSelectorDismissedNotification {
+
+	[self dismissLogDateSelectorViewController];
+}
+
+#pragma mark Gestures
+
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
+	
+    CGFloat scale = [(UIPinchGestureRecognizer *)sender scale];
+	UIGestureRecognizerState state = [(UIPinchGestureRecognizer *)sender state];
+	
+	if (state == UIGestureRecognizerStateBegan) {
+		
+		_initialScale = scale;
+		
+	} else if (state == UIGestureRecognizerStateChanged) {
+		
+		_changedScale = scale;
+		
+	} else if (state == UIGestureRecognizerStateEnded) {
+		
+		NSInteger level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
+		
+		if (_changedScale > _initialScale) {
+			
+			level++;
+	
+		} else {
+		
+			level--;
+		}
+		
+		if (level > -1 && level < 3) {
+			
+			[[NSUserDefaults standardUserDefaults] setInteger:level forKey:FCDefaultGraphSettingDateLevel];
+		
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+		}
+	}
+}
+
 #pragma mark Custom
+
+-(void)loadDefaultStateWithProgressHUD {
+
+	// The hud will dispable all input on the view (use the higest view possible in the view hierarchy)
+    _progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	
+    // Add HUD to screen
+    [self.view addSubview:_progressHUD];
+	
+    // Regisete for HUD callbacks so we can remove it from the window at the right time
+    _progressHUD.delegate = self;
+	
+    _progressHUD.labelText = @"Loading";
+	
+    // Show the HUD while the provided method executes in a new thread
+    [_progressHUD showWhileExecuting:@selector(loadDefaultState) onTarget:self withObject:nil animated:YES];
+}
 
 -(void)loadDefaultState {
 	
@@ -686,26 +872,31 @@
 	
 	// load the correct graph for the mode
 	
-	if (theMode == FCGraphModeTimePlotHorizontal) {
-		
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange];
-	
-	} else if (theMode == FCGraphModeDescendantTimePlotHorizontal) {
-		
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withAncestor:theRelative];
-	
-	} else if (theMode == FCGraphModeTwinTimePlotHorizontal && theRelative != nil) {
-	
-		[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withTwin:theRelative];
-	
-	} else if (theMode == FCGraphModeTimeBandHorizontal) {
-	
-		if (theRelative == nil)
-			[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange];
-		
-		else
-			[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange withAncestor:theRelative];
-
+	switch (theMode) {
+			
+		case FCGraphModeTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange];
+			break;
+			
+		case FCGraphModeDescendantTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withAncestor:theRelative];
+			break;
+			
+		case FCGraphModeTwinTimePlotHorizontal:
+			[newGraphViewController loadTimePlotHorizontalGraphForDataRange:dataRange withinDateRange:dateRange withTwin:theRelative];
+			break;
+			
+		case FCGraphModeTimeBandHorizontal:
+			if (theRelative == nil)
+				[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange];
+			
+			else
+				[newGraphViewController loadTimeBandHorizontalGraphForDataRange:dataRange withingDateRange:dateRange withAncestor:theRelative];
+			break;
+			
+		default:
+			NSAssert1(0, @"FCGraphRootViewController createGraphForViewControllerWithFrame:mode:key:startDate:endDate:ancestorOrTwin: || %@", @"Failed to swtich according to mode since mode was not among listed!");
+			break;
 	}
 	
 	// create graph entry objects for the entries and add them to the graph
@@ -742,65 +933,10 @@
 		
 		[formatter release];
 		
-		// TMP SOLUTION: manually adds a reference range for glucose. This will be
-		// made dynamic in future version. The plan is to create a new data structure
-		// to the database which can store reference ranges for any category.
-		if ([theKey isEqualToString:FCKeyCIDGlucose]) {
-		
-			FCGraphReferenceRange *newRange;
-			
-			if ([category.uid isEqualToString:FCKeyUIDGlucoseMillimolesPerLitre]) {
-			
-				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
-															upperLimit:[NSNumber numberWithDouble:8.0] 
-															lowerLimit:[NSNumber numberWithDouble:5.0]];
-				
-			} else {
-				
-				newRange = [[FCGraphReferenceRange alloc] initWithName:@"Normal glucose" 
-															upperLimit:[NSNumber numberWithDouble:144.0] 
-															lowerLimit:[NSNumber numberWithDouble:90.0]];
-			}
-			
-			[dataSet addYReferenceRange:newRange];
-			
-			[newRange release];
-		}
-		
 		[dataSet autorelease];
 		
 		[newGraphViewController addDataSet:dataSet];
 	}
-	
-	// TMP SOLUTION: sets up a label and add it to the new graph controller
-	// add a label for this data set
-	FCBorderedLabel *label = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), (kGraphPadding/2), 100.0f, 20.0f)];
-	
-	UIColor *color = [self.colorCollection colorForCID:category.cid];
-	
-	if (color == nil)
-		color = [self.colorCollection colorForIndex:[category.colorIndex integerValue]];
-	
-	label.backgroundColor = [color colorWithAlphaComponent:0.25f];
-	
-	label.textColor = [UIColor whiteColor];
-	label.font = [UIFont systemFontOfSize:12.0f];
-	label.textAlignment = UITextAlignmentRight;
-	label.text = category.name;
-	
-	UIImage *image = [UIImage imageNamed:category.iconName];
-	label.imageView.image = image;
-	
-	newGraphViewController.label = label;
-	[newGraphViewController.view addSubview:label];
-	
-	[label release];
-	
-	[category release];
-	
-	// load preferences
-	
-	[newGraphViewController loadPreferences];
 	
 	// autorelease and return the new graph controller
 	
@@ -821,18 +957,17 @@
 	CGFloat yPos = frame.origin.y + ((frame.size.height/2) - (height/2));
 	
 	FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-	newHandle.color = [UIColor darkGrayColor];
+	newHandle.color = [self baseColorForGraphViewController:theGraphController];
 	newHandle.mode = FCGraphHandleModeRightToLeft;
 	newHandle.cornerRadius = 5.0f;
 	newHandle.range = 220.0f;
 	newHandle.lowerThreshold = FCGraphHandleThresholdQuarter;
-	//newHandle.upperThreshold = FCGraphHandleThresholdOpposite;
+	//newHandle.upperThreshold = FCGraphHandleThresholdOpposite;	// OBS! If the upper threshold is set the user can't 
+																	// choose size on the twin
 	
 	newHandle.delegate = theGraphController;
 	
-	// get the category we're working with for the title
-	FCCategory *category = [FCCategory categoryWithCID:theGraphController.key];
-	[newHandle createNewLabelWithText:category.name];
+	[newHandle createNewDirectionalArrow];
 	
 	[newHandle autorelease];
 	
@@ -948,6 +1083,23 @@
 	[dictionary autorelease];
 	
 	return dictionary;
+}
+
+-(void)setLogDatesLabel {
+	
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	formatter.dateStyle = NSDateFormatterMediumStyle;
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	
+	NSDate *startDate = [logDates objectForKey:@"StartDate"];
+	NSDate *endDate = [NSDate dateWithTimeInterval:kEndDateOffset sinceDate:[logDates objectForKey:@"EndDate"]];
+	
+	self.pullMenuHandleView.label.text = [NSString stringWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
+	self.pullMenuHandleView.label.textColor = kDarkColor;
+	
+	[formatter release];
 }
 
 @end

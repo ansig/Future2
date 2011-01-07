@@ -44,7 +44,7 @@
 		
 		entryRef = anEntry;
 		
-		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"attachmentsBandBackground.png"]];
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"40pxBandBackgroundPattern.png"]];
 		
 		selectedIndex = -1;
 		previouslySelectedIndex = -1;
@@ -169,7 +169,8 @@
 	cell.textLabel.text = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog] ? anEntry.convertedFullDescription : anEntry.fullDescription;
 	
 	cell.detailTextLabel.text = anEntry.timeDescription;
-	cell.imageView.image = [UIImage imageNamed:anEntry.category.iconName];
+	
+	[cell.imageView configureImageViewForCategory:anEntry.category];
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -275,7 +276,17 @@
 		
 		newAttachmentButton.tag = i;
 		
-		UIImage *icon = [UIImage imageNamed:attachment.category.iconName];
+		UIColor *color = [[FCColorCollection sharedColorCollection] colorForCID:attachment.cid];
+		
+		if (color == nil) {
+			
+			NSInteger colorIndex = [attachment.category.colorIndex integerValue];
+			color = [[FCColorCollection sharedColorCollection] colorForIndex:colorIndex];
+		}
+		
+		newAttachmentButton.backgroundColor = color;
+		
+		UIImage *icon = attachment.category.icon;
 		[newAttachmentButton setImage:icon forState:UIControlStateNormal];
 		
 		CGFloat xPos = spacing + ((spacing + width) * i);
@@ -383,8 +394,7 @@
 		if (self.selectedIndex > -1) {
 			
 			FCCustomButton *selectedButton = [self.attachmentButtons objectAtIndex:self.selectedIndex];
-			[selectedButton setBackgroundColor:kHighlightColor];
-			[selectedButton addBorder];
+			[selectedButton showBorder];
 		}
 		
 		// un-highlight previous button
@@ -392,8 +402,7 @@
 		if (self.previouslySelectedIndex > -1) {
 			
 			FCCustomButton *previouslySelectedButton = [self.attachmentButtons objectAtIndex:self.previouslySelectedIndex];
-			[previouslySelectedButton setBackgroundColor:[UIColor clearColor]];
-			[previouslySelectedButton removeBorder];
+			[previouslySelectedButton hideBorder];
 		}
 	}
 }

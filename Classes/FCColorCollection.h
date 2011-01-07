@@ -34,6 +34,10 @@
 	NSArray *_freeColors;
 }
 
+// Class
+
++(id)sharedColorCollection;
+
 // Custom
 
 -(void)loadSystemColors;

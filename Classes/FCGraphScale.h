@@ -39,14 +39,23 @@
 	
 	CGFloat padding;
 	CGFloat spacing;
+	
+	NSArray *labels;
+	NSArray *specialLabels;
 }
 
 @property (nonatomic) FCGraphScaleMode mode;
+
 @property (nonatomic) FCDataRange dataRange;
 @property (nonatomic) FCDateRange dateRange;
+
 @property (nonatomic) FCGraphScaleDateLevel level;
+
 @property (nonatomic) CGFloat padding;
 @property (nonatomic) CGFloat spacing;
+
+@property (nonatomic, retain) NSArray *labels;
+@property (nonatomic, retain) NSArray *specialLabels;
 
 // Initialization
 
@@ -59,15 +68,17 @@
 
 // Calculations
 
--(NSInteger)dateRangeInUnits;
--(NSInteger)wrappedDataRangeDivisor;
--(NSInteger)units;
+-(NSInteger)dateRangeUnits;
+-(NSInteger)dateRangeUnitsDivisor;
+-(NSInteger)wrappedUnits;
 -(double)range;
--(NSInteger)wrappedRange;
+-(NSInteger)integerRange;
+-(NSInteger)integerDataRangeDivisor;
 -(CGFloat)requiredLength;
 
 // Custom
 
--(NSMutableArray *)createLabelsArray;
+-(NSArray *)createLabelsArray;
+-(NSArray *)createSpecialLabelsArray;
 
 @end

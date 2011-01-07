@@ -69,6 +69,16 @@
 	[super dealloc];
 }
 
+#pragma mark Memory warning
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+	NSLog(@"FCGraphPullMenuViewController -didReceiveMemoryWarning!");
+}
+
 #pragma mark View
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -81,7 +91,7 @@
 	CGFloat yPos = -height; // this is off screen
 	
 	UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-	newView.backgroundColor = [UIColor lightGrayColor];
+	newView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	self.view = newView;
 	[newView release];
 	
@@ -149,7 +159,7 @@
 	
 	CGFloat separation = 2.0f;
 	UIView *newSeparatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, yPos - padding, 320.0f, separation)];
-	newSeparatorView.backgroundColor = [UIColor darkGrayColor];
+	newSeparatorView.backgroundColor = kDarkColor;
 	
 	[self.view addSubview:newSeparatorView];
 	[newSeparatorView release];
@@ -174,13 +184,6 @@
     [super viewDidLoad];
 }
 */
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	
@@ -247,7 +250,7 @@
 			NSDictionary *graphSet = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 			FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 			cell.textLabel.text = category.name;
-			cell.imageView.image = [UIImage imageNamed:category.iconName];
+			cell.imageView.image = category.icon;
 			
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
@@ -351,7 +354,8 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.iconName];
+		
+		[cell.imageView configureImageViewForCategory:category];
 		
 		cell.accessoryView = nil;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -404,7 +408,8 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:section] objectAtIndex:row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.iconName];
+		
+		[cell.imageView configureImageViewForCategory:category];
 	
 		if ([self.selectedIndexPaths indexOfObjectIdenticalTo:indexPath] != NSNotFound)
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -630,7 +635,7 @@
 		NSDictionary *graphSet = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
 		cell.textLabel.text = category.name;
-		cell.imageView.image = [UIImage imageNamed:category.iconName];
+		cell.imageView.image = category.icon;
 		
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
@@ -1118,7 +1123,7 @@
 		}
 		
 		if (needsReload)
-			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphSetsChanged object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
 		
 		else
 			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphPreferencesChanged object:self];

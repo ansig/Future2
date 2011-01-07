@@ -35,7 +35,6 @@
 @synthesize timestampLabel, datePicker;
 @synthesize tableView, rows;
 @synthesize quantity, system;
-@synthesize colorCollection;
 
 #pragma mark Init
 
@@ -82,8 +81,6 @@
 	[tableView release];
 	[rows release];
 	
-	[colorCollection release];
-	
 	[super dealloc];
 }
 
@@ -101,13 +98,6 @@
     [super viewDidLoad];
 }
 */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
@@ -186,10 +176,10 @@
 	
 		} else if (self.propertyToSelect == FCPropertyIcon) {
 			
-			UIImage *icon = [UIImage imageNamed:[dictionary objectForKey:@"name"]];
+			UIImage *icon = [[FCIconCollection sharedIconCollection] iconForIID:[dictionary objectForKey:@"iid"]];
 			cell.imageView.image = icon;
 		
-			cell.textLabel.text = [[dictionary objectForKey:@"name"] stringByReplacingOccurrencesOfString:@"Icon.png" withString:@""];
+			cell.textLabel.text = [[dictionary objectForKey:@"Name"] stringByReplacingOccurrencesOfString:@"Icon.png" withString:@""];
 		} 
 	
 		[dictionary release];
@@ -371,7 +361,6 @@
 			NSDictionary *dictionary = [rows objectAtIndex:indexPath.row];
 			
 			self.category.iid = [dictionary objectForKey:@"iid"];
-			self.category.iconName = [dictionary objectForKey:@"name"];
 		
 		} else if (self.propertyToSelect == FCPropertyColor) {
 		
@@ -421,7 +410,7 @@
 	else
 		title = @"Remove";
 	
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	
@@ -492,7 +481,7 @@
 	else
 		title = @"Remove";
 	
-	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+	UIBarButtonItem *newLeftButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(cancel)];
 	self.navigationItem.leftBarButtonItem = newLeftButton;
 	[newLeftButton release];
 	
@@ -517,16 +506,7 @@
 	
 	NSMutableArray *newRows = [[NSMutableArray alloc] init];
 	
-	NSString *table = @"icons";
-	NSString *columns = @"iid, name";
-	
-	FCDatabaseHandler *dbh = [[FCDatabaseHandler alloc] init];
-	
-	NSArray *result = [dbh getColumns:columns fromTable:table withOptions:@"ORDER BY name"];
-	
-	[dbh release];
-	
-	for (NSDictionary *row in result) {
+	for (NSDictionary *row in [[FCIconCollection sharedIconCollection] allIcons]) {
 		
 		[newRows addObject:row];
 	}
@@ -562,11 +542,8 @@
 	
 	NSMutableArray *newRows = [[NSMutableArray alloc] init];
 	
-	if (self.colorCollection != nil) {
-	
-		for (UIColor *color in [colorCollection allFreeColors])
-			[newRows addObject:color];
-	}
+	for (UIColor *color in [[FCColorCollection sharedColorCollection] allFreeColors])
+		[newRows addObject:color];
 	
 	self.rows = newRows;
 	[newRows release];

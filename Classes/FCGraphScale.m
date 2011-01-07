@@ -47,6 +47,7 @@ int gcd(int a, int b) {
 
 @synthesize mode, dataRange, dateRange, level;
 @synthesize padding, spacing;
+@synthesize labels, specialLabels;
 
 #pragma mark Instance
 
@@ -114,34 +115,61 @@ int gcd(int a, int b) {
 
 -(void)dealloc {
 	
+	[labels release];
+	[specialLabels release];
+	
     [super dealloc];
 }
 
 #pragma mark Get
 
--(NSInteger)dateRangeInUnits {
+-(NSArray *)labels {
+
+	if (labels == nil) {
+		
+		self.labels = [self createLabelsArray];
+	}
+	
+	return labels;
+}
+
+-(NSArray *)specialLabels {
+	
+	if (specialLabels == nil) {
+		
+		self.specialLabels = [self createSpecialLabelsArray];
+	}
+	
+	return specialLabels;
+}
+
+-(NSInteger)dateRangeUnits {
 /*	Returns the date range in number of significant datetime units for current level (hours, days, months or years). */
 	
 	if (self.mode == FCGraphScaleModeDates) {
 		
 		// use the correct unit flags
 		NSUInteger unitFlag;
-		if (level == FCGraphScaleDateLevelHours)
-			unitFlag = NSHourCalendarUnit;
-		
-		else if (level == FCGraphScaleDateLevelDays)
-			unitFlag = NSDayCalendarUnit;
-		
-		else if (level == FCGraphScaleDateLevelMonths)
-			unitFlag = NSMonthCalendarUnit;
-		
-		else if (level == FCGraphScaleDateLevelYears)
-			unitFlag = NSYearCalendarUnit;
-		
-		else {
+		switch (self.level) {
 			
-			NSLog(@"FCGraphScale -(int)dateUnits || Warning, date level was not among listed! Returning 0.");
-			return 0;
+			case FCGraphScaleDateLevelHours:
+				unitFlag = NSHourCalendarUnit;
+				break;
+			
+			case FCGraphScaleDateLevelDays:
+				unitFlag = NSDayCalendarUnit;
+				break;
+
+			case FCGraphScaleDateLevelMonths:
+				unitFlag = NSMonthCalendarUnit;
+				break;
+
+			case FCGraphScaleDateLevelYears:
+				unitFlag = NSYearCalendarUnit;
+				break;
+				
+			default:
+				NSAssert1(0, @"FCGraphScale -dateRangeUnits || %@", @"Scale not among listed!");
 		}
 		
 		// exctract the interval in components
@@ -159,17 +187,27 @@ int gcd(int a, int b) {
 		
 		// get the number of units
 		NSInteger units;
-		if (level == FCGraphScaleDateLevelHours)
-			units = intervalInComponents.hour;
-		
-		else if (level == FCGraphScaleDateLevelDays)
-			units = intervalInComponents.day;
-		
-		else if (level == FCGraphScaleDateLevelMonths)
-			units = intervalInComponents.month;
-		
-		else if (level == FCGraphScaleDateLevelYears)
-			units = intervalInComponents.year;
+		switch (self.level) {
+				
+			case FCGraphScaleDateLevelHours:
+				units = intervalInComponents.hour;
+				break;
+				
+			case FCGraphScaleDateLevelDays:
+				units = intervalInComponents.day;
+				break;
+				
+			case FCGraphScaleDateLevelMonths:
+				units = intervalInComponents.month;
+				break;
+				
+			case FCGraphScaleDateLevelYears:
+				units = intervalInComponents.year;
+				break;
+				
+			default:
+				NSAssert1(0, @"FCGraphScale -dateRangeUnits || %@", @"Scale not among listed!");
+		}
 		
 		// make sure units is always at least 1, since
 		// we need to display at least 1 in the graph
@@ -180,15 +218,73 @@ int gcd(int a, int b) {
 		return units;
 	}
 	
-	NSLog(@"FCGraphScale -(double)dateUnits || Warning, dateUnits called on scale NOT in date mode! Returning 0.");
+	NSLog(@"FCGraphScale -dateUnits || Warning, dateUnits called on scale NOT in date mode! Returning 0.");
 	
 	return 0;
 }
 
--(NSInteger)wrappedDataRangeDivisor {
-/*	A divisor for stepping through the intDataRange in either 4, 3, or 2 steps (including the first integer) */
+-(NSInteger)dateRangeUnitsDivisor {
+/*	Returns a divisor for stepping through the date range units in a certain number of steps. */
 	
-	NSInteger range = self.wrappedRange;
+	return 6;
+}
+
+-(NSInteger)wrappedUnits {
+/*	Returns the number of primary units covered by the scales range (wraps around to include first and last units).
+	For date mode: every significant datetime in date range for current level (hours, days, months or years).
+	For data mode: every integer in the data range. */
+	
+	if (mode == FCGraphScaleModeDates) {
+		
+		return self.dateRangeUnits + 1; // +1 to include first unit
+	
+	} else if (mode == FCGraphScaleModeData) {
+	
+		return self.integerRange + 1; // +1 to include first integer
+	} 
+	
+	NSLog(@"FCGraphScale -units || Warning, graph mode is not set! Returning 0.");
+	return 0;
+}
+
+-(double)range {
+/*	Returns the true range which the scale covers. */
+	
+	if (self.mode == FCGraphScaleModeData)
+		return self.dataRange.range;
+	
+	return self.dateRange.interval;
+}
+
+-(NSInteger)integerRange {
+/*	Returns the range as an integer which can contain the true range. */
+	
+	if (self.mode == FCGraphScaleModeData) {
+		
+		NSInteger range = (NSInteger)self.dataRange.range;
+		if (range < self.dataRange.range)
+			range += 1;
+		
+		return range;
+	
+	} else if (self.mode == FCGraphScaleModeDates) {
+		
+		NSInteger range = (NSInteger)self.dateRange.interval;
+		if (range < self.dateRange.interval)
+			range += 1;
+		
+		return range;
+	}
+	
+	NSLog(@"FCGraphScale -integerRange || Warning, did not recognize graph scale mode! Returning 0.");
+	
+	return 0;
+}
+
+-(NSInteger)integerDataRangeDivisor {
+/*	A divisor for stepping through the integer data range in either 4, 3, or 2 steps (including the first integer) */
+	
+	NSInteger range = self.integerRange;
 	NSInteger divisor;
 	
 	// Try for 4
@@ -210,148 +306,171 @@ int gcd(int a, int b) {
 	return divisor;
 }
 
--(NSInteger)units {
-/*	Returns the number of primary units covered by the scales range.
-	For date mode: every significant datetime in date range for current level (hours, days, months or years).
-	For data mode: every integer in the data range. 
-	Wraps around to include first and last units. */
-	
-	if (mode == FCGraphScaleModeDates) {
-		
-		return self.dateRangeInUnits + 1; // +1 to include first unit
-	
-	} else if (mode == FCGraphScaleModeData) {
-	
-		return self.wrappedRange + 1; // +1 to include first integer
-	
-	} 
-	
-	NSLog(@"FCGraphScale -units || Warning, graph mode is not set! Returning 0.");
-	return 0;
-}
-
--(double)range {
-/*	Returns the true range which the scale covers. */
-	
-	if (self.mode == FCGraphScaleModeData)
-		return self.dataRange.range;
-	
-	return self.dateRange.interval;
-}
-
--(NSInteger)wrappedRange {
-/*	Returns the range as an integer which can contain the true range. */
-	
-	if (self.mode == FCGraphScaleModeData) {
-		
-		NSInteger range = (NSInteger)self.dataRange.range;
-		if (range < self.dataRange.range)
-			range += 1;
-		
-		return range;
-	
-	} else if (self.mode == FCGraphScaleModeDates) {
-		
-		NSInteger range = (NSInteger)self.dateRange.interval;
-		if (range < self.dateRange.interval)
-			range += 1;
-		
-		return range;
-	}
-	
-	NSLog(@"FCGraphScale -(NSInteger)wrappedRange || Warning, did not recognize graph scale mode! Returning 0.");
-	
-	return 0;
-}
-
 -(CGFloat)requiredLength {
 /*	The length required to display the entire date range */
 	
 	if (mode == FCGraphScaleModeDates) {
 		
-		CGFloat length = (self.dateRangeInUnits * self.spacing) + (self.padding * 2);
+		CGFloat length = (self.dateRangeUnits * self.spacing) + (self.padding * 2);
 		return length;
 	}
 	
-	NSLog(@"FCGraphScale -(CFloat)requiredLength || Warning, required length called on scale in data mode! Returning 0.0f.");
+	NSLog(@"FCGraphScale -requiredLength || Warning, required length called on scale in data mode! Returning 0.0f.");
 	
 	return 0.0f;
 }
 
 #pragma mark Custom
 
--(NSMutableArray *)createLabelsArray {
+-(NSArray *)createLabelsArray {
 /*	Creates and returns an array with strings describing each significant primary unit covered by the scale. */
 	
-	NSMutableArray *labels = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableLabels = [[NSMutableArray alloc] init];
 	
 	// * Date mode
 	if (self.mode == FCGraphScaleModeDates) {
 		
 		NSDateFormatter *formatter = [NSDateFormatter fc_dateFormatterLocal];
 		
-		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit;
-		
-		NSDate *currentDate;
-		NSDate *previousDate = nil;
-		
-		for (int i = 0; i < self.units; i++) {
+		switch (self.level) {
 			
-			NSTimeInterval currentInterval = (self.dateRange.interval/self.dateRangeInUnits)*i;
-			currentDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:dateRange.startDateTimeIntervalSinceReferenceDate+currentInterval];
-			
-			if (previousDate == nil)
-				previousDate = [currentDate retain];
-			
-			NSDateComponents *currentDateComponents = [gregorian components:unitFlags fromDate:currentDate];
-			NSDateComponents *previousDateComponents = [gregorian components:unitFlags fromDate:previousDate];
-			
-			[previousDate release];
-			
-			if (currentDateComponents.year != previousDateComponents.year)
-				formatter.dateFormat = @"MMM yyyy";
-			
-			else if (currentDateComponents.month != previousDateComponents.month)
-				formatter.dateFormat = @"d MMM";
-			
-			else if (currentDateComponents.day != previousDateComponents.day)
-				formatter.dateFormat = @"d/M";
-			
-			else if (currentDateComponents.hour != previousDateComponents.hour)
+			case FCGraphScaleDateLevelHours:
 				formatter.dateFormat = @"HH:00";
-
-			else
+				break;
+				
+			case FCGraphScaleDateLevelDays:
 				formatter.dateFormat = @"d/M";
-			
-			NSString *label = [[NSString alloc] initWithString:[formatter stringFromDate:currentDate]];
-			[labels addObject:label];
-			[label release];
-			
-			previousDate = currentDate;
+				break;
+				
+			case FCGraphScaleDateLevelMonths:
+				formatter.dateFormat = @"d MMM";
+				break;
+				
+			case FCGraphScaleDateLevelYears:
+				formatter.dateFormat = @"MMM yyyy";
+				break;
+				
+			default:
+				formatter.dateFormat = FCFormatTimestamp;
+				NSLog(@"FCGraphScale -createLabelsArray: || Warning, date level not among listed! Setting date format to full timestamp.");
+				break;
 		}
 		
-		[previousDate release];
-		[gregorian release];
+		NSTimeInterval currentInterval;
+		NSDate *currentDate;
+		
+		for (int i = 0; i < self.wrappedUnits; i++) {
+			
+			currentInterval = (self.dateRange.interval/self.dateRangeUnits)*i;
+			currentDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:self.dateRange.startDateTimeIntervalSinceReferenceDate+currentInterval];
+			
+			NSString *label = [[NSString alloc] initWithString:[formatter stringFromDate:currentDate]];
+			[mutableLabels addObject:label];
+			[label release];
+		
+			[currentDate release];
+		}
 		
 	// * Data mode
 	} else if (self.mode == FCGraphScaleModeData) {
 		
-		NSInteger divisor = self.wrappedDataRangeDivisor;		
-		for (int i = 0; i < self.units; i++) {
+		NSInteger divisor = self.integerDataRangeDivisor;		
+		for (int i = 0; i < self.wrappedUnits; i++) {
 			
 			if (i % divisor == 0) {
 				
 				NSString *label = [[NSString alloc] initWithFormat:@"%d", i+(int)self.dataRange.minimum];
-				[labels addObject:label];
+				[mutableLabels addObject:label];
 				[label release];
 			}
 		}
 	}
 
-	[labels autorelease];
+	NSRange range = NSMakeRange(0, [mutableLabels count]);
+	NSArray *newLabels = [mutableLabels subarrayWithRange:range];
 	
-	return labels;
+	[mutableLabels release];
+	
+	return newLabels;
+}
+
+-(NSArray *)createSpecialLabelsArray {
+/*	Creates and returns an array with strings describing each special (eg separating) primary unit covered by the scale.
+	For date mode: every sixth.
+	For data mode: every 10th.*/
+	
+	NSMutableArray *mutableLabels = [[NSMutableArray alloc] init];
+	
+	// * Date mode
+	if (self.mode == FCGraphScaleModeDates) {
+		
+		NSDateFormatter *formatter = [NSDateFormatter fc_dateFormatterLocal];
+		
+		switch (self.level) {
+				
+			case FCGraphScaleDateLevelHours:
+				formatter.dateFormat = @"d MMM";
+				break;
+				
+			case FCGraphScaleDateLevelDays:
+				formatter.dateFormat = @"MMM yyyy";
+				break;
+				
+			case FCGraphScaleDateLevelMonths:
+				formatter.dateFormat = @"yyyy";
+				break;
+				
+			case FCGraphScaleDateLevelYears:
+				formatter.dateFormat = @"d MMM yyyy";
+				break;
+				
+			default:
+				formatter.dateFormat = FCFormatTimestamp;
+				NSLog(@"FCGraphScale -createLabelsArray: || Warning, date level not among listed! Setting date format to full timestamp.");
+				break;
+		}
+		
+		NSTimeInterval currentInterval;
+		NSDate *currentDate;
+		
+		NSInteger divisor = self.dateRangeUnitsDivisor;
+		
+		for (int i = 0; i < self.wrappedUnits; i++) {
+			
+			if (i % divisor == 0) {
+			
+				currentInterval = (self.dateRange.interval/self.dateRangeUnits)*i;
+				currentDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:self.dateRange.startDateTimeIntervalSinceReferenceDate+currentInterval];
+			
+				NSString *label = [[NSString alloc] initWithString:[formatter stringFromDate:currentDate]];
+				[mutableLabels addObject:label];
+				[label release];
+			
+				[currentDate release];
+			}
+		}
+		
+	// * Data mode
+	} else if (self.mode == FCGraphScaleModeData) {
+		
+		NSInteger divisor = 10;		
+		for (int i = 0; i < self.wrappedUnits; i++) {
+			
+			if (i % divisor == 0) {
+				
+				NSString *label = [[NSString alloc] initWithFormat:@"%d", i+(int)self.dataRange.minimum];
+				[mutableLabels addObject:label];
+				[label release];
+			}
+		}
+	}
+	
+	NSRange range = NSMakeRange(0, [mutableLabels count]);
+	NSArray *newLabels = [mutableLabels subarrayWithRange:range];
+	
+	[mutableLabels release];
+	
+	return newLabels;
 }
 
 @end
