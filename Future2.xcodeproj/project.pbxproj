@@ -18,6 +18,7 @@
 		9A187A4612A68D800075DE04 /* FCBorderedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A187A4512A68D800075DE04 /* FCBorderedLabel.m */; };
 		9A2630D612B7893E00343623 /* FCImageViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2630D512B7893E00343623 /* FCImageViewHelper.m */; };
 		9A26321812B7DD0B00343623 /* FCIconCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A26321712B7DD0B00343623 /* FCIconCollection.m */; };
+		9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */; };
 		9A421F15120C2B9200D370F8 /* FCTypedef.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F11120C2B9200D370F8 /* FCTypedef.m */; };
 		9A421F16120C2B9200D370F8 /* FCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F14120C2B9200D370F8 /* FCConstants.m */; };
 		9A421F28120C2F3900D370F8 /* FCNavigationBarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F27120C2F3900D370F8 /* FCNavigationBarHelper.m */; };
@@ -196,6 +197,7 @@
 		9A2630D512B7893E00343623 /* FCImageViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCImageViewHelper.m; sourceTree = "<group>"; };
 		9A26321612B7DD0B00343623 /* FCIconCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCIconCollection.h; sourceTree = "<group>"; };
 		9A26321712B7DD0B00343623 /* FCIconCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCIconCollection.m; sourceTree = "<group>"; };
+		9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackgroundPattern.png; path = resources/images/lightBackgroundPattern.png; sourceTree = "<group>"; };
 		9A421F10120C2B9200D370F8 /* FCProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCProtocols.h; path = Classes/FCProtocols.h; sourceTree = "<group>"; };
 		9A421F11120C2B9200D370F8 /* FCTypedef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCTypedef.m; path = Classes/FCTypedef.m; sourceTree = "<group>"; };
 		9A421F12120C2B9200D370F8 /* FCTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCTypedef.h; path = Classes/FCTypedef.h; sourceTree = "<group>"; };
@@ -899,6 +901,7 @@
 				9AA8572A1210094C008DA1BA /* TabBarIcons */,
 				9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */,
 				9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */,
+				9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */,
 				9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */,
 				9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */,
 				9A847D0F12D1FB6F005E2DCF /* pullIcon.png */,
@@ -1157,6 +1160,7 @@
 				9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */,
 				9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */,
 				9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */,
+				9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

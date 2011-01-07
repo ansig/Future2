@@ -33,6 +33,7 @@
 #define kAppSmallLabelFont		[UIFont fontWithName:@"Helvetica" size:14.0f]
 
 #define kGraphFont				[UIFont fontWithName:@"Helvetica" size:12.0f]
+#define kGraphLargeFont			[UIFont fontWithName:@"Helvetica" size:18.0f]
 #define kGraphLabelFont			[UIFont fontWithName:@"Helvetica-Bold" size:16.0f]
 
 #define kAppSpacing				15.0f // standard distance between any UI element (button, label, text view, image, etc) and any other UI element and screen edge

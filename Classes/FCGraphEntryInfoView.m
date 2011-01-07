@@ -51,12 +51,37 @@
 		
 		FCCategory *category = self.entry.category;
 		
+		// setup looks
+		
+		self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackgroundPattern.png"]];
+		
+		self.layer.shadowOffset = CGSizeMake(0.0f, -3.0f);
+		self.layer.shadowOpacity = 1.0f;
+		
+		// header
+		
+		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 30.0f)];
+		headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
+		
+		[self addSubview:headerView];
+		
+		[headerView release];
+		
+		UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 29.0f, self.frame.size.width, 1.0f)];
+		separatorView.backgroundColor = kDarkColor;
+		
+		[self addSubview:separatorView];
+		
+		[separatorView release];
+		
 		// common labels
 		
-		UILabel *newCategoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 20.0f)];
-		newCategoryLabel.backgroundColor = [UIColor darkGrayColor];
-		newCategoryLabel.font = [UIFont systemFontOfSize:16.0f];
-		newCategoryLabel.textColor = [UIColor whiteColor];
+		CGFloat padding = 5.0f;
+		
+		UILabel *newCategoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(padding, padding, self.frame.size.width-(padding*2), 20.0f)];
+		newCategoryLabel.backgroundColor = [UIColor clearColor];
+		newCategoryLabel.font = kGraphLabelFont;
+		newCategoryLabel.textColor = kDarkColor;
 		
 		newCategoryLabel.text = category.name;
 		
@@ -65,11 +90,11 @@
 		
 		[newCategoryLabel release];
 		
-		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 20.0f)];
+		UILabel *newTimestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(padding, padding, self.frame.size.width-(padding*2), 20.0f)];
 		newTimestampLabel.backgroundColor = [UIColor clearColor];
-		newTimestampLabel.font = [UIFont systemFontOfSize:16.0f];
+		newTimestampLabel.font = kGraphLabelFont;
 		newTimestampLabel.textAlignment = UITextAlignmentRight;
-		newTimestampLabel.textColor = [UIColor whiteColor];
+		newTimestampLabel.textColor = kDarkColor;
 		
 		newTimestampLabel.text = self.entry.timestampDescription;
 		
@@ -82,10 +107,10 @@
 			
 			// text view
 			
-			UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, self.frame.size.width, self.frame.size.height-20.0f)];
+			UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 31.0f, self.frame.size.width, self.frame.size.height-31.0f)];
 			newTextView.backgroundColor = [UIColor clearColor];
-			newTextView.font = [UIFont boldSystemFontOfSize:18.0f];
-			newTextView.textColor = [UIColor whiteColor];
+			newTextView.font = kGraphLargeFont;
+			newTextView.textColor = kDarkColor;
 			newTextView.editable = NO;
 			
 			newTextView.text = self.entry.string;
@@ -108,7 +133,7 @@
 				
 				// scroll view
 				
-				UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 20.0f, self.frame.size.width, self.frame.size.height-20.0f)];
+				UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 31.0f, self.frame.size.width, self.frame.size.height-31.0f)];
 				
 				CGFloat minimumScale = image.size.height > image.size.width ? newScrollView.frame.size.height / image.size.height : newScrollView.frame.size.width / image.size.width;
 				newScrollView.minimumZoomScale = minimumScale;
@@ -146,10 +171,10 @@
 			
 			// description label
 			
-			UILabel *newDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 25.0f, self.frame.size.width-30.0f, 20.0f)];
+			UILabel *newDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f+(padding*2), 31.0f+padding+5.0f, self.frame.size.width-30.0f, 20.0f)];
 			newDescriptionLabel.backgroundColor = [UIColor clearColor];
-			newDescriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-			newDescriptionLabel.textColor = [UIColor whiteColor];
+			newDescriptionLabel.font = kGraphLargeFont;
+			newDescriptionLabel.textColor = kDarkColor;
 			
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultConvertLog])
 				newDescriptionLabel.text = self.entry.convertedFullDescription;
@@ -163,7 +188,7 @@
 			
 			// icon
 			
-			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(5.0f, 25.0f, 20.0f, 20.0f)];
+			UIImageView *newIcon = [[UIImageView alloc] initWithFrame:CGRectMake(padding, 31.0f+padding, 30.0f, 30.0f)];
 			newIcon.image = category.icon;
 			
 			self.icon = newIcon;
@@ -286,7 +311,7 @@
 	
 	UIImage *image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/graph/close.png")];
 	
-	newCloseButton.frame = CGRectMake(self.frame.size.width - 35.0f, 30.0f, image.size.width, image.size.height);
+	newCloseButton.frame = CGRectMake(self.frame.size.width - 35.0f, 36.0f, image.size.width, image.size.height);
 	
 	[newCloseButton setImage:image forState:UIControlStateNormal];
 	[newCloseButton addTarget:self action:@selector(animateDisappearence) forControlEvents:UIControlEventTouchUpInside];

@@ -26,6 +26,8 @@
 //
 
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "TKGlobal.h"
 #import "FCEntry.h"
 
