@@ -166,6 +166,7 @@
 		9AB0C0FB1279CEE600A63CCA /* FCAppNewEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */; };
 		9AB3D6181237AE2E00548306 /* FCDatabaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB3D6171237AE2E00548306 /* FCDatabaseHandler.m */; };
 		9AD2E84E122E452900A4445B /* FCAppProfileInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2E84D122E452900A4445B /* FCAppProfileInputViewController.m */; };
+		9ADD15EB12D668C40000E47E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADD15EA12D668C40000E47E /* MBProgressHUD.m */; };
 		9AFA72E3123A4A0800D2A7B6 /* FCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFA72E2123A4A0800D2A7B6 /* FCEntry.m */; };
 		9AFA7324123A66D900D2A7B6 /* FCCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFA7323123A66D900D2A7B6 /* FCCategory.m */; };
 		9AFA7327123A66FF00D2A7B6 /* FCUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AFA7326123A66FF00D2A7B6 /* FCUnit.m */; };
@@ -401,6 +402,8 @@
 		9AB3D6171237AE2E00548306 /* FCDatabaseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCDatabaseHandler.m; sourceTree = "<group>"; };
 		9AD2E84C122E452900A4445B /* FCAppProfileInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppProfileInputViewController.h; sourceTree = "<group>"; };
 		9AD2E84D122E452900A4445B /* FCAppProfileInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppProfileInputViewController.m; sourceTree = "<group>"; };
+		9ADD15E912D668C40000E47E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Classes/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
+		9ADD15EA12D668C40000E47E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
 		9AE500E7127EC937005CD258 /* FCModelsFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCModelsFramework.h; sourceTree = "<group>"; };
 		9AE500ED127EC9EF005CD258 /* FCIOFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCIOFramework.h; sourceTree = "<group>"; };
 		9AE500EE127ECA1E005CD258 /* FCFunctionsFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCFunctionsFramework.h; sourceTree = "<group>"; };
@@ -527,6 +530,7 @@
 		9A19874F12AD312000199569 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				9ADD15E712D668B50000E47E /* MBProgressHUD */,
 				9A859BC01275DE9D00987FBD /* Tapku Library */,
 			);
 			name = Libraries;
@@ -853,6 +857,15 @@
 				9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		9ADD15E712D668B50000E47E /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				9ADD15E912D668C40000E47E /* MBProgressHUD.h */,
+				9ADD15EA12D668C40000E47E /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		9AE500EC127EC9A3005CD258 /* Frameworks */ = {
@@ -1221,6 +1234,7 @@
 				9A26321812B7DD0B00343623 /* FCIconCollection.m in Sources */,
 				9AA6B35112D49B8D001797B5 /* FCCalendarDelegate.m in Sources */,
 				9A85D6D912D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m in Sources */,
+				9ADD15EB12D668C40000E47E /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

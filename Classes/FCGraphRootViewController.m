@@ -42,7 +42,6 @@
 @synthesize graphControllers, graphHandles;
 @synthesize entryInfoView;
 @synthesize pullMenuViewController, pullMenuHandleView;
-@synthesize progressView;
 
 #pragma mark Instance
 
@@ -84,8 +83,6 @@
 	
 	[pullMenuViewController release];
 	[pullMenuHandleView release];
-	
-	[progressView release];
 	
     [super dealloc];
 }
@@ -183,15 +180,6 @@
 	 
 	 [self setLogDatesLabel];
 	 
-	 // * Progress view
-	 
-	 UIProgressView *newProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-	 newProgressView.frame = CGRectMake(5.0f, 5.0f, newProgressView.frame.size.width, newProgressView.frame.size.height);
-	 
-	 self.progressView = newProgressView;
-	 
-	 [newProgressView release];
-	 
 	 // * Notifications
 	 
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphSetsChangedNotification) name:FCNotificationGraphSetsChanged object:nil];
@@ -242,6 +230,15 @@
 	
 	// Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden {
+    
+	// Remove HUD from screen when the HUD was hidded
+    [_progressHUD removeFromSuperview];
+    [_progressHUD release];
 }
 
 #pragma mark FCGraphDelegate
@@ -568,7 +565,7 @@
 
 -(void)onGraphSetsChangedNotification {
 	
-	[self loadDefaultState];
+	[self loadDefaultStateWithProgressHUD];
 }
 
 -(void)onGraphPreferencesChangedNotification {
@@ -607,7 +604,7 @@
 	
 	[self setLogDatesLabel];
 	
-	[self loadDefaultState];
+	[self loadDefaultStateWithProgressHUD];
 }
 
 -(void)onGraphLogDateSelectorDismissedNotification {
@@ -654,6 +651,23 @@
 
 #pragma mark Custom
 
+-(void)loadDefaultStateWithProgressHUD {
+
+	// The hud will dispable all input on the view (use the higest view possible in the view hierarchy)
+    _progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	
+    // Add HUD to screen
+    [self.view addSubview:_progressHUD];
+	
+    // Regisete for HUD callbacks so we can remove it from the window at the right time
+    _progressHUD.delegate = self;
+	
+    _progressHUD.labelText = @"Loading";
+	
+    // Show the HUD while the provided method executes in a new thread
+    [_progressHUD showWhileExecuting:@selector(loadDefaultState) onTarget:self withObject:nil animated:YES];
+}
+
 -(void)loadDefaultState {
 	
 	// unload any present graphs
@@ -690,9 +704,6 @@
 		// counts
 		int fullGraphs = 0;
 		int bands = 0;
-		
-		// progress
-		float progress = 1.0f / [defaultGraphs count];
 		
 		for (NSDictionary *graphSet in defaultGraphs) {
 			
@@ -753,9 +764,6 @@
 		
 				fullGraphs++;
 			}
-			
-			// increase progress
-			self.progressView.progress += progress;
 		}
 		
 		// set content size for scroll view
@@ -768,8 +776,6 @@
 		
 		[self createDefaultGraph];
 	}
-	
-	[self.progressView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:kPerceptionDelay];
 }
 
 -(void)unloadCurrentState {
@@ -790,9 +796,6 @@
 		
 		self.graphHandles = nil;
 	}
-	
-	self.progressView.progress = 0.0f;
-	[self.view addSubview:self.progressView];
 }
 
 -(void)createDefaultGraph {

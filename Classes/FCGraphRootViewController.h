@@ -34,9 +34,10 @@
 #import "FCIOFramework.h"
 #import "FCFunctionsFramework.h"
 #import "FCViewFramework.h"
-#import "FCEntry.h"
+#import "FCModelsFramework.h"
+#import "MBProgressHUD.h"
 
-@interface FCGraphRootViewController : UIViewController <FCGraphDelegate> {
+@interface FCGraphRootViewController : UIViewController <FCGraphDelegate, MBProgressHUDDelegate> {
 	
 	UIButton *logDatesButton;
 	FCGraphLogDateSelectorViewController *logDateSelectorViewController;
@@ -54,7 +55,7 @@
 	CGFloat _initialScale;
 	CGFloat _changedScale;
 	
-	UIProgressView *progressView;
+	MBProgressHUD *_progressHUD;
 }
 
 @property (nonatomic, retain) UIButton *logDatesButton;
@@ -69,8 +70,6 @@
 
 @property (nonatomic, retain) FCGraphPullMenuViewController *pullMenuViewController;
 @property (nonatomic, retain) FCGraphHandleView *pullMenuHandleView;
-
-@property (nonatomic, retain) UIProgressView *progressView;
 
 // View
 
@@ -90,6 +89,7 @@
 
 // Custom
 
+-(void)loadDefaultStateWithProgressHUD;
 -(void)loadDefaultState;
 -(void)unloadCurrentState;
 
