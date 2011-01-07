@@ -26,9 +26,13 @@
 //
 
 
-@interface FCAppViewController : UIViewController {
+#import "MBProgressHUD.h"
+
+@interface FCAppViewController : UIViewController <MBProgressHUDDelegate> {
 
 	UINavigationController *overlaidNavigationController;
+	
+	MBProgressHUD *_progressHUD;
 }
 
 @property (nonatomic, retain) UINavigationController *overlaidNavigationController;
@@ -38,5 +42,10 @@
 -(void)presentOverlayViewController:(id)anOverlayViewController;
 -(void)replaceOverlayViewControllerWith:(id)anotherOverlayViewController;
 -(void)dismissOverlayViewController;
+
+-(void)performTask:(SEL)task;
+-(void)performTask:(SEL)task andMessage:(NSString *)message;
+-(void)performTask:(SEL)task andObject:(id)object;
+-(void)performTask:(SEL)task andObject:(id)object message:(NSString *)message;
 
 @end

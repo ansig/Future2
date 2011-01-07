@@ -147,18 +147,17 @@
 	
 	// Start listening to certain notifications
 	
-	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	
 	// FCEntryList
-	[notificationCenter addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
-	[notificationCenter addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
-	[notificationCenter addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
-	[notificationCenter addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
-	[notificationCenter addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
-	[notificationCenter addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryUpdatedNotification) name:FCNotificationEntryUpdated object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryCreatedNotification) name:FCNotificationEntryCreated object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEntryDeletedNotification) name:FCNotificationEntryDeleted object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAttachmentAddedNotification) name:FCNotificationAttachmentAdded object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAttachmentRemovedNotification) name:FCNotificationAttachmentRemoved object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCategoryUpdatedNotification) name:FCNotificationCategoryUpdated object:nil];
 	
 	// custom
-	[notificationCenter addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onConvertLogOrUnitChange) name:FCNotificationConvertLogOrUnitChanged object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogDateChangedNotification) name:FCNotificationLogDateChanged object:nil];
 }
 
 /*
@@ -209,9 +208,6 @@
 }
 
 -(void)loadDateSelectorViewController {
-	
-	// start listening to date changed notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogDateChangedNotification) name:FCNotificationLogDateChanged object:nil];
 	
 	// create and present a new selector view controller
 	FCAppLogDateSelectorViewController *selectorViewController = [[FCAppLogDateSelectorViewController alloc] init];
@@ -355,6 +351,33 @@
 					 completion:^ (BOOL finished) { [self.searchBar removeFromSuperview]; } ];
 }
 
+#pragma mark Tasks
+
+-(void)readAndReload {
+	
+	[self loadSectionsAndRows];
+	[self.tableView reloadData];
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+-(void)reload {
+
+	[self.tableView reloadData];
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+-(void)doSearchWithSearchBar:(UISearchBar *)theSearchBar {
+
+	BOOL searchSuccess = [self doSearchWithSearchString:theSearchBar.text searchScope:theSearchBar.selectedScopeButtonIndex];
+	
+	if (searchSuccess)
+		[self.searchDisplayController.searchResultsTableView reloadData];
+}
+
 #pragma mark Notifications
 
 -(void)onLogDateChangedNotification {
@@ -368,7 +391,7 @@
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	formatter.dateStyle = NSDateFormatterMediumStyle;
 	
-	NSString *logDatesString = [[NSString alloc] initWithFormat:@"%@ - %@", [formatter stringFromDate:startDate], [formatter stringFromDate:endDate]];
+	NSString *logDatesString = [[NSString alloc] initWithFormat:@"%@ - %@", [formatter stringFromDate:self.startDate], [formatter stringFromDate:self.endDate]];
 	
 	UILabel *headerLabel = (UILabel *)[self.tableView.tableHeaderView viewWithTag:1];
 	headerLabel.text = logDatesString;
@@ -379,9 +402,8 @@
 	[logDatesString release];
 		
 	[formatter release];
-
-	[self loadSectionsAndRows];
-	[self.tableView reloadData];
+	
+	[self performTask:@selector(readAndReload)];
 }
 
 -(void)onConvertLogOrUnitChange {
@@ -394,17 +416,12 @@
 
 -(void)onEntryCreatedNotification {
 	
-	[self loadSectionsAndRows];
-	[self.tableView reloadData];
+	[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
 }
 
 -(void)onEntryUpdatedNotification {
 	
-	[self loadSectionsAndRows];
-	[self.tableView reloadData];
-	
-	if (self.searchDisplayController.active)
-		[self.searchDisplayController.searchResultsTableView reloadData];
+	[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
 }
 
 -(void)onEntryDeletedNotification {
@@ -448,8 +465,7 @@
 			
 			[defaults setInteger:buttonIndex forKey:FCDefaultLogSortBy];
 		
-			[self loadSectionsAndRows];
-			[self.tableView reloadData];
+			[self performTask:@selector(readAndReload) andMessage:@"Sorting"];
 		}
 	}
 }
@@ -671,10 +687,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
 
-	BOOL searchSuccess = [self doSearchWithSearchString:theSearchBar.text searchScope:theSearchBar.selectedScopeButtonIndex];
-	
-	if (searchSuccess)
-		[self.searchDisplayController.searchResultsTableView reloadData];
+	[self performTask:@selector(doSearchWithSearchBar:) andObject:theSearchBar message:@"Searching"];
 }
 
 #pragma mark Custom
