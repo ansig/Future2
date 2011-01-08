@@ -815,7 +815,7 @@
 	
 	UIButton *newCloseButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/graph/close.png")];
+	UIImage *image = [UIImage imageNamed:@"closeButton.png"];
 	
 	newCloseButton.frame = CGRectMake(self.view.frame.size.width - 35.0f, 10.0f, image.size.width, image.size.height);
 	

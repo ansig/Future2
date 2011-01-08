@@ -51,6 +51,7 @@
 		9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */; };
 		9A8513241235287B00031CA6 /* webviewClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513221235287B00031CA6 /* webviewClose.png */; };
 		9A8513251235287B00031CA6 /* webviewBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513231235287B00031CA6 /* webviewBack.png */; };
+		9A853B2012D85B6600E855D5 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A853B1F12D85B6600E855D5 /* closeButton.png */; };
 		9A859A27127590D900987FBD /* FCGraphReferenceRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859A26127590D900987FBD /* FCGraphReferenceRange.m */; };
 		9A859BDB1275DEF400987FBD /* ODCalendarDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859BCC1275DEF400987FBD /* ODCalendarDayEventView.m */; };
 		9A859BDC1275DEF400987FBD /* ODCalendarDayTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859BCE1275DEF400987FBD /* ODCalendarDayTimelineView.m */; };
@@ -246,6 +247,7 @@
 		9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slantedBackgroundPattern.png; path = resources/images/slantedBackgroundPattern.png; sourceTree = "<group>"; };
 		9A8513221235287B00031CA6 /* webviewClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewClose.png; path = resources/images/buttons/webviewClose.png; sourceTree = "<group>"; };
 		9A8513231235287B00031CA6 /* webviewBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewBack.png; path = resources/images/buttons/webviewBack.png; sourceTree = "<group>"; };
+		9A853B1F12D85B6600E855D5 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = closeButton.png; path = resources/images/buttons/closeButton.png; sourceTree = "<group>"; };
 		9A859A25127590D900987FBD /* FCGraphReferenceRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphReferenceRange.h; sourceTree = "<group>"; };
 		9A859A26127590D900987FBD /* FCGraphReferenceRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphReferenceRange.m; sourceTree = "<group>"; };
 		9A859BCB1275DEF400987FBD /* ODCalendarDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODCalendarDayEventView.h; path = "Tapku Library/ODCalendarDayEventView.h"; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 		9A8513211235286100031CA6 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				9A853B1F12D85B6600E855D5 /* closeButton.png */,
 				9A847E9812D21578005E2DCF /* calendarButton.png */,
 				9A847E7812D2128B005E2DCF /* settingsButton.png */,
 				9A9648C2127841B200A410C1 /* editButton.png */,
@@ -1161,6 +1164,7 @@
 				9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */,
 				9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */,
 				9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */,
+				9A853B2012D85B6600E855D5 /* closeButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TKGlobal.h"
 #import "FCEntry.h"
 
 @interface FCGraphEntryInfoView : UIView <UIScrollViewDelegate> {
