@@ -134,6 +134,7 @@
 				// scroll view
 				
 				UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, 31.0f, self.frame.size.width, self.frame.size.height-31.0f)];
+				newScrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackgroundPattern.png"]];
 				
 				CGFloat minimumScale = image.size.height > image.size.width ? newScrollView.frame.size.height / image.size.height : newScrollView.frame.size.width / image.size.width;
 				newScrollView.minimumZoomScale = minimumScale;
@@ -305,13 +306,25 @@
 -(void)createAndDisplayCloseButton {
 /*	Creates a close-button and adds it as subview. */
 	
-	// close button
+	// adjust labels
+	
+	self.categoryLabel.frame = CGRectMake(self.categoryLabel.frame.origin.x, 
+										  self.categoryLabel.frame.origin.y, 
+										  self.categoryLabel.frame.size.width - 35.0f, 
+										  self.categoryLabel.frame.size.height);
+	
+	self.timestampLabel.frame = CGRectMake(self.timestampLabel.frame.origin.x, 
+										   self.timestampLabel.frame.origin.y, 
+										   self.timestampLabel.frame.size.width - 35.0f, 
+										   self.timestampLabel.frame.size.height);
+	
+	// add close button
 	
 	UIButton *newCloseButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
 	UIImage *image = [UIImage imageNamed:@"closeButton.png"];
 	
-	newCloseButton.frame = CGRectMake(self.frame.size.width - 35.0f, 36.0f, image.size.width, image.size.height);
+	newCloseButton.frame = CGRectMake(self.frame.size.width - 35.0f, 0.0f, image.size.width, image.size.height);
 	
 	[newCloseButton setImage:image forState:UIControlStateNormal];
 	[newCloseButton addTarget:self action:@selector(animateDisappearence) forControlEvents:UIControlEventTouchUpInside];

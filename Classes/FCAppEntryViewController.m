@@ -189,7 +189,7 @@
 		// create the scroll view
 	
 		UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-		newScrollView.backgroundColor = [UIColor lightGrayColor];
+		newScrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackgroundPattern.png"]];
 		
 		CGFloat minimumScale = image.size.height > image.size.width ? newScrollView.frame.size.height / image.size.height : newScrollView.frame.size.width / image.size.width;
 		newScrollView.minimumZoomScale = minimumScale;
