@@ -26,6 +26,8 @@
 //
 
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FCGraphViewController.h"
 #import "FCGraphPullMenuViewController.h"
 #import "FCGraphLogDateSelectorViewController.h"

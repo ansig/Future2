@@ -72,7 +72,7 @@
 	
 	UIButton *newDoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *image = [UIImage imageNamed:@"closeButton.png"];
+	UIImage *image = [UIImage imageNamed:@"doneButton.png"];
 	[newDoneButton setImage:image forState:UIControlStateNormal];
 	
 	newDoneButton.frame = CGRectMake(self.view.frame.size.width - 35.0f, 5.0f, image.size.width, image.size.height);

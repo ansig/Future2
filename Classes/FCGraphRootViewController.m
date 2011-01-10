@@ -163,7 +163,7 @@
 	 
 	 FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
 	 newHandle.delegate = self.pullMenuViewController;
-	 newHandle.color =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
+	 newHandle.color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	 newHandle.mode = FCGraphHandleModeTopDown;
 	 newHandle.cornerRadius = 8.0f;
 	 newHandle.range = kGraphPullMenuHandleRange;
