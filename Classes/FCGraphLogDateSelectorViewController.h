@@ -36,12 +36,16 @@
 	FCCalendarDelegate *calendarDelegate;
 	
 	UIButton *doneButton;
+	
+	BOOL selectingAdditionalLogDates;
 }
 
 @property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
 @property (nonatomic, retain) FCCalendarDelegate *calendarDelegate;
 
 @property (nonatomic, retain) UIButton *doneButton;
+
+@property (nonatomic) BOOL selectingAdditionalLogDates;
 
 -(void)presentUIContent;
 -(void)dismissUIContent;

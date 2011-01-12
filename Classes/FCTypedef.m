@@ -84,8 +84,11 @@ NSString * FCGraphModeAsString(FCGraphMode mode) {
 	else if (mode == FCGraphModeTwinTimePlotHorizontal)
 		return @"Horizontal twin time plot";
 	
-	else if (mode == FCGraphModeDayComparisonHorizontal)
-		return @"Horizontal day comparison";
+	else if (mode == FCGraphModeTimeBandHorizontal)
+		return @"Horizontal time band";
+	
+	else if (mode == FCGraphModeDescendantTimeBandHorizontal)
+		return @"Horizontal descendant time band";
 	
 	return nil;
 }

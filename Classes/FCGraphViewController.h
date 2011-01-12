@@ -63,6 +63,8 @@
 	NSArray *additionalColors;
 
 	NSMutableArray *dataSets;
+	UIButton *addButton;
+	NSMutableArray *removeButtons;
 }
 
 @property (assign) id <FCGraphDelegate> delegate;
@@ -91,6 +93,8 @@
 @property (nonatomic, retain) NSArray *additionalColors;
 
 @property (nonatomic, retain) NSMutableArray *dataSets;
+@property (nonatomic, retain) UIButton *addButton;
+@property (nonatomic, retain) NSMutableArray *removeButtons;
 
 // Init
 
@@ -119,6 +123,11 @@
 // Animation
 
 -(void)animatePulseForAllEntryViewsInDataSet:(NSArray *)theDataSet;
+
+// Events
+
+-(void)addButtonPressed:(UIButton *)theButton;
+-(void)removeButtonPressed:(UIButton *)theButton;
 
 // Custom
 

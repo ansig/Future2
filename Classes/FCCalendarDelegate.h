@@ -46,6 +46,9 @@
 
 @property (nonatomic) NSInteger intervalInDays;
 
+// Init
+
+
 // Custom
 
 -(void)loadIntervalInDays;

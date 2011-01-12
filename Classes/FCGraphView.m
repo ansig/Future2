@@ -132,7 +132,8 @@
 	if (self.drawMedian)
 		[self drawMedianForYValuesInContext:context];
 	
-	[self drawXAxisSpecialLabelsInContext:context];
+	if (self.dataSetsRef == nil || [self.dataSetsRef count] < 2)
+		[self drawXAxisSpecialLabelsInContext:context];
 	
 	if (self.drawCurves)
 		[self drawCurvesInContext:context];

@@ -65,6 +65,35 @@
 	[super dealloc];
 }
 
+#pragma mark NSCopying
+
+-(id)copyWithZone:(NSZone *)zone {
+/*	Implements DEEP copying (i.e. duplicates instance variables).
+	(see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmImplementCopy.html )
+	 
+	Data references do not get copied, since they are set when the data set is added to
+	a graph view controller. */
+	 
+	FCGraphDataSet *copy = [[[self class] allocWithZone:zone] init];
+	
+	NSMutableArray *dataCopy = [[NSMutableArray alloc] initWithArray:self.data copyItems:YES];
+	copy.data = dataCopy;
+	[dataCopy release];
+	
+	NSMutableArray *xSerieCopy = [[NSMutableArray alloc] initWithArray:self.xSerie copyItems:YES];
+	copy.xSerie = xSerieCopy;
+	[xSerieCopy release];
+	
+	NSMutableArray *ySerieCopy = [[NSMutableArray alloc] initWithArray:self.ySerie copyItems:YES];
+	copy.ySerie = ySerieCopy;
+	[ySerieCopy release];
+	
+	copy.xBoxPlot = self.xBoxPlot;
+	copy.yBoxPlot = self.yBoxPlot;
+	
+	return (copy);
+}
+
 #pragma mark Override
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {

@@ -32,6 +32,7 @@
 
 @synthesize calendarMonthView, calendarDelegate;
 @synthesize doneButton;
+@synthesize selectingAdditionalLogDates;
 
 #pragma mark Init
 
@@ -94,8 +95,6 @@
 	
 	self.calendarMonthView = newCalendarMonthView;
 	[newCalendarMonthView release];
-	
-	NSLog(@"%f", self.calendarMonthView.frame.size.width);
 }
 
 /*
@@ -161,7 +160,7 @@
 
 -(void)save {
 	
-	if (self.calendarDelegate.lastSelectedDate != nil)
+	if (self.calendarDelegate.lastSelectedDate != nil && !self.selectingAdditionalLogDates)
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
 
 	[self dismissUIContent];

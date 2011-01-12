@@ -141,9 +141,9 @@
 		self.lastSetWasStartDate = NO;
 	}
 	
-	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
-	
 	// update the user defaults
+	
+	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
 	
 	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
 	

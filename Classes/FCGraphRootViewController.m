@@ -450,6 +450,21 @@
 	return newGraphViewController;
 }
 
+-(void)addAdditionalGraphSetToGraphViewController:(id)theGraphViewController {
+	
+	FCGraphLogDateSelectorViewController *viewController = [[FCGraphLogDateSelectorViewController alloc] init];
+	viewController.view.alpha = 0.0f;
+	
+	self.logDateSelectorViewController = viewController;
+	[self.view addSubview:viewController.view];
+	
+	[viewController release];
+	
+	[UIView animateWithDuration:kViewAppearDuration 
+					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.75f; } 
+					 completion:^ (BOOL finished) { [self.logDateSelectorViewController presentUIContent]; } ];
+}
+
 -(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey; {
 	
 	// remove any present info views
@@ -899,43 +914,30 @@
 			break;
 	}
 	
-	// create graph entry objects for the entries and add them to the graph
-	
 	if (entries != nil) {
-	
-		// formatter for the entry view labels
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		
-		[formatter setMinimumIntegerDigits:1];
+		if (theMode == FCGraphModeTwinTimePlotHorizontal) {
+			
+			// copy each data set in the relative and add to the new graph
+			
+			for (FCGraphDataSet *dataSet in theRelative.dataSets) {
+			
+				FCGraphDataSet *copy = [dataSet copy];
+				[newGraphViewController addDataSet:copy];
+				[copy release];
+			}
+			
+		} else {
+			
+			// create graph entry objects for the entries and add them to the graph
 		
-		[formatter setMinimumFractionDigits:[category.decimals intValue]];
-		[formatter setMaximumFractionDigits:[category.decimals intValue]];
-		
-		FCGraphDataSet *dataSet = [[FCGraphDataSet alloc] init];
-		for (FCEntry *entry in entries) {
+			FCGraphDataSet *dataSet = [self dataSetFromEntries:entries 
+								 withStartDate:theStartDate 
+										  mode:theMode 
+									  category:category];
 			
-			NSNumber *yValue;
-			if (theMode == FCGraphModeTimeBandHorizontal)
-				yValue = [NSNumber numberWithDouble:1.0];
-			else
-				yValue = entry.integer != nil ? entry.integer : entry.decimal;
-			
-			NSNumber *xValue = [NSNumber numberWithDouble:[entry.timestamp timeIntervalSinceDate:theStartDate]];
-			
-			FCGraphEntryView *entryView = [[FCGraphEntryView alloc] initWithXValue:xValue yValue:yValue key:entry.eid];
-			
-			if (theMode != FCGraphModeTimeBandHorizontal)
-				[entryView showLabelForYValueUsingNumberFormatter:formatter]; // show correctly formatted label for the y value
-			
-			[dataSet addObject:entryView];
-			[entryView release];
+			[newGraphViewController addDataSet:dataSet];
 		}
-		
-		[formatter release];
-		
-		[dataSet autorelease];
-		
-		[newGraphViewController addDataSet:dataSet];
 	}
 	
 	// autorelease and return the new graph controller
@@ -972,6 +974,47 @@
 	[newHandle autorelease];
 	
 	return newHandle;
+}
+
+-(FCGraphDataSet *)dataSetFromEntries:(NSArray *)entries 
+							withStartDate:(NSDate *)startDate 
+								 mode:(FCGraphMode)mode 
+							 category:(FCCategory *)category	{
+	
+/*	Returns a data set of entry views correctly formatted for the given parameters. */
+	
+	// formatter for the entry view labels
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	
+	[formatter setMinimumIntegerDigits:1];
+	
+	NSInteger decimals = [category.decimals integerValue];
+	[formatter setMinimumFractionDigits:decimals];
+	[formatter setMaximumFractionDigits:decimals];
+	
+	FCGraphDataSet *dataSet = [[FCGraphDataSet alloc] init];
+	for (FCEntry *entry in entries) {
+		
+		NSNumber *yValue;
+		if (mode == FCGraphModeTimeBandHorizontal)
+			yValue = [NSNumber numberWithDouble:1.0];
+		else
+			yValue = entry.integer != nil ? entry.integer : entry.decimal;
+		
+		NSNumber *xValue = [NSNumber numberWithDouble:[entry.timestamp timeIntervalSinceDate:startDate]];
+		
+		FCGraphEntryView *entryView = [[FCGraphEntryView alloc] initWithXValue:xValue yValue:yValue key:entry.eid];
+		
+		if (mode != FCGraphModeTimeBandHorizontal)
+			[entryView showLabelForYValueUsingNumberFormatter:formatter]; // show correctly formatted label for the y value
+		
+		[dataSet addObject:entryView];
+		[entryView release];
+	}
+	
+	[formatter release];
+	
+	return [dataSet autorelease];
 }
 
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate {

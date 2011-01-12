@@ -38,7 +38,7 @@
 @synthesize xScale, xScaleView;
 @synthesize graphView, scrollView;
 @synthesize label, additionalLabels, baseColor, additionalColors;
-@synthesize dataSets;
+@synthesize dataSets, addButton, removeButtons;
 
 #pragma mark Init
 
@@ -54,6 +54,7 @@
 		
 		// create the data set array
 		dataSets = [[NSMutableArray alloc] init];
+		removeButtons = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
@@ -94,6 +95,8 @@
 	[additionalColors release];
 	
 	[dataSets release];
+	[addButton release];
+	[removeButtons release];
 	
     [super dealloc];
 }
@@ -363,6 +366,10 @@
 	
 	[self validateDataRange:theDataRange dateRange:theDateRange];
 	
+	// * Mode
+	
+	self.mode = FCGraphModeDescendantTimeBandHorizontal;
+	
 	// * Scales
 	
 	[self createXScaleWithDateRange:theDateRange];
@@ -420,7 +427,7 @@
 	
 	// * Mode
 	
-	self.mode = FCGraphModeDescendantTimePlotHorizontal;
+	self.mode = FCGraphModeDescendantTimeBandHorizontal;
 	
 	// * Add relationship
 	
@@ -521,10 +528,18 @@
 			icon = [self.delegate labelIconForDataSetWithIndex:index inGraphViewController:self];
 	}
 	
-	FCBorderedLabel *newLabel = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(kScaleViewSize+(kGraphPadding/2), 
-																			   (kGraphPadding/2), 
-																			   100.0f, 
-																			   20.0f)];
+	CGFloat padding = 5.0f;
+	
+	CGFloat width = 100.0f;
+	CGFloat height = 20.0f;
+	
+	CGFloat xPos = kScaleViewSize+(kGraphPadding/2);
+	CGFloat yPos = (kGraphPadding/2)  + ((height+padding)*index);
+	
+	FCBorderedLabel *newLabel = [[FCBorderedLabel alloc] initWithFrame:CGRectMake(xPos, 
+																			   yPos, 
+																			   width, 
+																			   height)];
 	
 	newLabel.backgroundColor = [color colorWithAlphaComponent:0.25f];
 	
@@ -544,7 +559,54 @@
 	else
 		[self.additionalLabels addObject:newLabel];
 	
+	[self.view addSubview:newLabel];
+	
 	[newLabel release]; 
+}
+
+-(void)loadButtonsForDataSetWithIndex:(NSInteger)index {
+	
+	CGFloat padding = 5.0f;
+	
+	CGFloat width = 100.0f;
+	CGFloat height = 20.0f;
+	
+	CGFloat xPos = kScaleViewSize+(kGraphPadding/2);
+	CGFloat yPos = (kGraphPadding/2)  + ((height+padding)*index);
+	
+	if (self.mode == FCGraphModeTimePlotHorizontal || self.mode == FCGraphModeDescendantTimePlotHorizontal) {
+		
+		if (index == 0) {
+			
+			UIButton *newAddButton = [UIButton buttonWithType:UIButtonTypeCustom];
+			newAddButton.frame = CGRectMake(xPos+width+padding, 
+											yPos, 
+											20.0f, 
+											20.0f);
+			
+			[newAddButton setImage:[UIImage imageNamed:@"doneButton"] forState:UIControlStateNormal];
+			[newAddButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+			
+			self.addButton = newAddButton;
+			
+			[self.view addSubview:newAddButton];
+			
+		} else {
+			
+			UIButton *newRemoveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+			newRemoveButton.frame = CGRectMake(xPos+width+padding, 
+											   yPos, 
+											   20.0f, 
+											   20.0f);
+			
+			[newRemoveButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+			[newRemoveButton addTarget:self action:@selector(removeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+			
+			[self.removeButtons insertObject:newRemoveButton atIndex:index];
+			
+			[self.view addSubview:newRemoveButton];
+		}
+	}
 }
 
 -(void)didFinishLoadingGraph {
@@ -572,6 +634,19 @@
 		
 		i++;
 	}
+}
+
+#pragma mark Events
+
+-(void)addButtonPressed:(UIButton *)theButton {
+	
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(addAdditionalGraphSetToGraphViewController:)])
+		[self.delegate addAdditionalGraphSetToGraphViewController:self];
+}
+
+-(void)removeButtonPressed:(UIButton *)theButton {
+	
+	NSLog(@"removeButtonPressed:");
 }
 
 #pragma mark Get
@@ -1090,12 +1165,12 @@
 		[self.graphView addSubview:entry];
 	}
 	
-	// load and display a label
-	if (index > 0) {
-	
+	// load and display a label (index of 0 corresponds to base label)
+	if (index > 0)
 		[self loadLabelForDataSetWithIndex:index];
-		[self.view addSubview:[self.additionalLabels objectAtIndex:index]];
-	}
+	
+	// load add and remove buttons
+	[self loadButtonsForDataSetWithIndex:index];
 	
 	// make sure the graph view has a pointer reference
 	

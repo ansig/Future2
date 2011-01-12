@@ -106,6 +106,11 @@
 
 -(FCGraphHandleView *)createHandleForGraphController:(FCGraphViewController *)theGraphController;
 
+-(FCGraphDataSet *)dataSetFromEntries:(NSArray *)entries 
+						withStartDate:(NSDate *)startDate 
+								 mode:(FCGraphMode)mode 
+							 category:(FCCategory *)category;
+
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate;
 -(NSDictionary *)findMinMaxAmong:(NSArray *)entries;
 
