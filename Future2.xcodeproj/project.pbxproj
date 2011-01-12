@@ -138,6 +138,8 @@
 		9A8C1A951248F63200124E25 /* FCAppLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C1A941248F63200124E25 /* FCAppLogDateSelectorViewController.m */; };
 		9A8C7AB7122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */; };
 		9A8D0F7F129ECE7F0032F18D /* FCColorCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */; };
+		9A8F407712DE2E9B002E5B53 /* minusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8F407512DE2E9B002E5B53 /* minusButton.png */; };
+		9A8F407812DE2E9B002E5B53 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8F407612DE2E9B002E5B53 /* plusButton.png */; };
 		9A8F740F1250A08300DDD1A4 /* FCGraphEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */; };
 		9A8FD63A12800CD900FDF9CC /* FCAppOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FD63912800CD900FDF9CC /* FCAppOverlayViewController.m */; };
 		9A9648C3127841B200A410C1 /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A9648C2127841B200A410C1 /* editButton.png */; };
@@ -353,6 +355,8 @@
 		9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppSettingsSelectViewController.m; sourceTree = "<group>"; };
 		9A8D0F7D129ECE7F0032F18D /* FCColorCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCColorCollection.h; sourceTree = "<group>"; };
 		9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCColorCollection.m; sourceTree = "<group>"; };
+		9A8F407512DE2E9B002E5B53 /* minusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = minusButton.png; path = resources/images/buttons/minusButton.png; sourceTree = "<group>"; };
+		9A8F407612DE2E9B002E5B53 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = plusButton.png; path = resources/images/buttons/plusButton.png; sourceTree = "<group>"; };
 		9A8F740D1250A08300DDD1A4 /* FCGraphEntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphEntryView.h; sourceTree = "<group>"; };
 		9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphEntryView.m; sourceTree = "<group>"; };
 		9A8FD63812800CD900FDF9CC /* FCAppOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppOverlayViewController.h; sourceTree = "<group>"; };
@@ -563,6 +567,8 @@
 		9A8513211235286100031CA6 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				9A8F407512DE2E9B002E5B53 /* minusButton.png */,
+				9A8F407612DE2E9B002E5B53 /* plusButton.png */,
 				9A853B1F12D85B6600E855D5 /* closeButton.png */,
 				9A847E9812D21578005E2DCF /* calendarButton.png */,
 				9A847E7812D2128B005E2DCF /* settingsButton.png */,
@@ -1157,6 +1163,8 @@
 				9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */,
 				9A853B2012D85B6600E855D5 /* closeButton.png in Resources */,
 				9A86897112DB0430001D01CE /* doneButton.png in Resources */,
+				9A8F407712DE2E9B002E5B53 /* minusButton.png in Resources */,
+				9A8F407812DE2E9B002E5B53 /* plusButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

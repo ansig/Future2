@@ -584,7 +584,7 @@
 											20.0f, 
 											20.0f);
 			
-			[newAddButton setImage:[UIImage imageNamed:@"doneButton"] forState:UIControlStateNormal];
+			[newAddButton setImage:[UIImage imageNamed:@"plusButton"] forState:UIControlStateNormal];
 			[newAddButton addTarget:self action:@selector(addButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 			
 			self.addButton = newAddButton;
@@ -599,7 +599,7 @@
 											   20.0f, 
 											   20.0f);
 			
-			[newRemoveButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+			[newRemoveButton setImage:[UIImage imageNamed:@"minusButton"] forState:UIControlStateNormal];
 			[newRemoveButton addTarget:self action:@selector(removeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 			
 			[self.removeButtons insertObject:newRemoveButton atIndex:index];
