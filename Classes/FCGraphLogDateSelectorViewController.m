@@ -125,7 +125,26 @@
     // e.g. self.myOutlet = nil;
 }
 
+#pragma mark Set
+
+-(void)setSelectingAdditionalLogDates:(BOOL)flag {
+	
+	selectingAdditionalLogDates = flag;
+	
+	self.calendarDelegate.selectingAdditionalLogDates = flag;
+}
+
 #pragma mark Custom
+
+-(NSDate *)additionalStartDate {
+
+	return self.calendarDelegate.additionalStartDate;
+}
+
+-(NSDate *)additionalEndDate {
+	
+	return self.calendarDelegate.additionalEndDate;
+}
 
 -(void)presentUIContent {
 	
@@ -160,8 +179,14 @@
 
 -(void)save {
 	
-	if (self.calendarDelegate.lastSelectedDate != nil && !self.selectingAdditionalLogDates)
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+	if (self.calendarDelegate.lastSelectedDate != nil) {
+		
+		if (self.selectingAdditionalLogDates)
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphAdditionalLogDateSelected object:self];
+			
+		else
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+	}
 
 	[self dismissUIContent];
 }

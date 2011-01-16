@@ -405,6 +405,23 @@
 	return category.name;
 }
 
+-(NSString *)labelTitleForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController {
+
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	formatter.dateStyle = NSDateFormatterShortStyle;
+	
+	NSString *title = [NSString stringWithFormat:@"%@-%@", [formatter stringFromDate:_lastAdditionalStartDate], [formatter stringFromDate:_lastAdditionalEndDate]];
+	
+	[formatter release];
+	
+	// OBS! these two were retained in -finishSelectingAdditionalLogDates
+	// and must be released here
+	[_lastAdditionalStartDate release];
+	[_lastAdditionalEndDate release];
+	
+	return title;
+}
+
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
 
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
@@ -452,17 +469,9 @@
 
 -(void)addAdditionalGraphSetToGraphViewController:(id)theGraphViewController {
 	
-	FCGraphLogDateSelectorViewController *viewController = [[FCGraphLogDateSelectorViewController alloc] init];
-	viewController.view.alpha = 0.0f;
+	_additionalGraphSetCandidateIndex = [self.graphControllers indexOfObject:theGraphViewController];
 	
-	self.logDateSelectorViewController = viewController;
-	[self.view addSubview:viewController.view];
-	
-	[viewController release];
-	
-	[UIView animateWithDuration:kViewAppearDuration 
-					 animations:^ { self.logDateSelectorViewController.view.alpha = 0.75f; } 
-					 completion:^ (BOOL finished) { [self.logDateSelectorViewController presentUIContent]; } ];
+	[self beginSelectingAdditionalLogDates];
 }
 
 -(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey; {
@@ -665,6 +674,42 @@
 }
 
 #pragma mark Custom
+
+-(void)beginSelectingAdditionalLogDates {
+	
+	[self loadLogDateSelectorViewController];
+	
+	self.logDateSelectorViewController.selectingAdditionalLogDates = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(finishSelectingAdditionalLogDates) 
+												 name:FCNotificationGraphAdditionalLogDateSelected
+											   object:nil];
+}
+
+-(void)finishSelectingAdditionalLogDates {
+	
+	_lastAdditionalStartDate = [self.logDateSelectorViewController.additionalStartDate retain];															// OBS! These are retained because they are needed in 
+	_lastAdditionalEndDate = [[NSDate dateWithTimeInterval:kEndDateOffset sinceDate:self.logDateSelectorViewController.additionalEndDate] retain];		// -labelTitleForDataSetWithIndex:inGraphViewController:
+																																						// where they are also released
+	
+	FCGraphViewController *theGraphViewController = [self.graphControllers objectAtIndex:_additionalGraphSetCandidateIndex];
+	
+	NSArray *entries = [self loadEntriesWithCID:theGraphViewController.key 
+							   betweenStartDate:_lastAdditionalStartDate 
+										endDate:_lastAdditionalEndDate];
+	
+	FCGraphDataSet *dataSet = [self dataSetFromEntries:entries 
+										 withStartDate:_lastAdditionalStartDate 
+												  mode:theGraphViewController.mode 
+											  category:[FCCategory categoryWithCID:theGraphViewController.key]];
+	
+	[theGraphViewController addDataSet:dataSet];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:FCNotificationGraphAdditionalLogDateSelected 
+												  object:nil];
+}
 
 -(void)loadDefaultStateWithProgressHUD {
 
@@ -971,9 +1016,7 @@
 	
 	[newHandle createNewDirectionalArrow];
 	
-	[newHandle autorelease];
-	
-	return newHandle;
+	return [newHandle autorelease];
 }
 
 -(FCGraphDataSet *)dataSetFromEntries:(NSArray *)entries 

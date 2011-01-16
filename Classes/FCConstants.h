@@ -260,6 +260,7 @@ extern NSString * const FCNotificationGraphSetsChanged;
 extern NSString * const FCNotificationGraphPreferencesChanged;
 extern NSString * const FCNotificationGraphOptionsChanged;
 extern NSString * const	FCNotificationGraphLogDateSelectorDismissed;
+extern NSString * const FCNotificationGraphAdditionalLogDateSelected;
 
 extern NSString * const FCNotificationLogDateChanged;
 

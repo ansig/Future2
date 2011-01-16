@@ -38,7 +38,7 @@
 @synthesize xScale, xScaleView;
 @synthesize graphView, scrollView;
 @synthesize label, additionalLabels, baseColor, additionalColors;
-@synthesize dataSets, addButton, removeButtons;
+@synthesize dataSets, addButton, removeButton;
 
 #pragma mark Init
 
@@ -54,7 +54,7 @@
 		
 		// create the data set array
 		dataSets = [[NSMutableArray alloc] init];
-		removeButtons = [[NSMutableArray alloc] init];
+		additionalLabels = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
@@ -96,7 +96,7 @@
 	
 	[dataSets release];
 	[addButton release];
-	[removeButtons release];
+	[removeButton release];
 	
     [super dealloc];
 }
@@ -547,11 +547,14 @@
 	newLabel.font = kGraphFont;
 	newLabel.textAlignment = UITextAlignmentRight;
 	
+	if (icon != nil) {
+		
+		[newLabel loadImageView];
+		newLabel.imageView.image = icon;
+	}
+	
 	if (title != nil)
 		newLabel.text = title;
-	
-	if (icon != nil)
-		newLabel.imageView.image = icon;
 	
 	if (index == 0)
 		self.label = newLabel;
@@ -602,8 +605,9 @@
 			[newRemoveButton setImage:[UIImage imageNamed:@"minusButton"] forState:UIControlStateNormal];
 			[newRemoveButton addTarget:self action:@selector(removeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 			
-			[self.removeButtons insertObject:newRemoveButton atIndex:index];
+			[self.removeButton removeFromSuperview];
 			
+			self.removeButton = newRemoveButton;
 			[self.view addSubview:newRemoveButton];
 		}
 	}
@@ -646,7 +650,37 @@
 
 -(void)removeButtonPressed:(UIButton *)theButton {
 	
-	NSLog(@"removeButtonPressed:");
+	// remove the entries and data set
+	
+	for (FCGraphEntryView *entryView in [self.dataSets lastObject])
+		[entryView removeFromSuperview];
+	
+	[self.dataSets removeLastObject];
+	
+	// remove label and move or delete remove button
+	
+	FCBorderedLabel *theLabel = [self.additionalLabels lastObject];
+	[theLabel removeFromSuperview];
+	[self.additionalLabels removeObject:theLabel];
+	
+	NSInteger lastIndex = [self.dataSets count]-1;
+	if (lastIndex > 0) {
+		
+		[self loadButtonsForDataSetWithIndex:lastIndex];
+	
+	} else {
+		
+		[self.removeButton removeFromSuperview];
+		self.removeButton = nil;
+	}
+	
+	// make sure add button is in correct state
+	if ([self.dataSets count] < 3)
+		self.addButton.enabled = YES;
+	
+	// redraw graph view
+	
+	[self.graphView setNeedsDisplay];
 }
 
 #pragma mark Get
@@ -950,8 +984,12 @@
 			
 			// get the twin from the delegate
 			id candidate = [self.delegate twinForGraphViewController:self];
-			if ([candidate isKindOfClass:[FCGraphViewController class]])
+			if ([candidate isKindOfClass:[FCGraphViewController class]]) {
+				
 				self.twin = (FCGraphViewController *)candidate;
+			
+				[self disableButtons];
+			}
 		}
 	}
 }
@@ -962,7 +1000,27 @@
 		
 		[self.twin.view removeFromSuperview];
 		self.twin = nil;
+		
+		[self enableButtons];
 	}
+}
+
+-(void)enableButtons {
+
+	if (self.addButton != nil && [self.dataSets count] < 3)
+		self.addButton.enabled = YES;
+	
+	if (self.removeButton != nil)
+		self.removeButton.enabled = YES;
+}
+
+-(void)disableButtons {
+	
+	if (self.addButton != nil)
+		self.addButton.enabled = NO;
+	
+	if (self.removeButton != nil)
+		self.removeButton.enabled = NO;
 }
 
 -(UIColor *)colorForDataSetWithIndex:(NSInteger)index {
@@ -1129,7 +1187,6 @@
 /*	Adds the given data set as a separate set and displays them in the graph view.
 	The data set is an array of FCGraphEntryView objects. */
 	
-	
 	// add set to the data sets array
 	
 	[dataSets addObject:theDataSet];
@@ -1165,22 +1222,37 @@
 		[self.graphView addSubview:entry];
 	}
 	
-	// load and display a label (index of 0 corresponds to base label)
-	if (index > 0)
-		[self loadLabelForDataSetWithIndex:index];
+	if (self.twin == nil) {
+		
+		// load and display a label (index of 0 corresponds to base label and that is already added by default)
+		if (index > 0)
+			[self loadLabelForDataSetWithIndex:index];
 	
-	// load add and remove buttons
-	[self loadButtonsForDataSetWithIndex:index];
+		// load add and remove buttons
+		[self loadButtonsForDataSetWithIndex:index];
+	}
 	
 	// make sure the graph view has a pointer reference
 	
 	if (self.graphView.dataSetsRef == nil)
 		self.graphView.dataSetsRef = self.dataSets;
 	
+	// make sure graph view is redrawn to show correct elements
+	// and that the add butotn is disabled if we reach the 
+	// maximum allowed number of data sets
+	
+	if ([self.dataSets count] > 1) {
+		
+		[self.graphView setNeedsDisplay];
+		
+		if ([self.dataSets count] > 2)
+			self.addButton.enabled = NO;
+	}
+	
 	// if there are no relatives or any twin and this was the first added data set, then
 	// scroll to the last entry in data set
 	
-	if (self.relatives == nil && self.twin == nil && [dataSets count] == 1)
+	if (self.relatives == nil && self.twin == nil && [self.dataSets count] == 1)
 		[self scrollToLastEntryInDataSet:theDataSet];
 }
 

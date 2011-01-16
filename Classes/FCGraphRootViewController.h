@@ -49,6 +49,10 @@
 	NSMutableArray *graphControllers;
 	NSMutableArray *graphHandles;
 	
+	NSInteger _additionalGraphSetCandidateIndex;
+	NSDate *_lastAdditionalStartDate;
+	NSDate *_lastAdditionalEndDate;
+	
 	FCGraphEntryInfoView *entryInfoView;
 	
 	FCGraphPullMenuViewController *pullMenuViewController;
@@ -90,6 +94,9 @@
 - (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender;
 
 // Custom
+
+-(void)beginSelectingAdditionalLogDates;
+-(void)finishSelectingAdditionalLogDates;
 
 -(void)loadDefaultStateWithProgressHUD;
 -(void)loadDefaultState;

@@ -64,7 +64,7 @@
 
 	NSMutableArray *dataSets;
 	UIButton *addButton;
-	NSMutableArray *removeButtons;
+	UIButton *removeButton;
 }
 
 @property (assign) id <FCGraphDelegate> delegate;
@@ -94,7 +94,7 @@
 
 @property (nonatomic, retain) NSMutableArray *dataSets;
 @property (nonatomic, retain) UIButton *addButton;
-@property (nonatomic, retain) NSMutableArray *removeButtons;
+@property (nonatomic, retain) UIButton *removeButton;
 
 // Init
 
@@ -118,6 +118,8 @@
 -(void)loadBaseLabel;
 -(void)loadLabelForDataSetWithIndex:(NSInteger)index;
 
+-(void)loadButtonsForDataSetWithIndex:(NSInteger)index;
+
 -(void)didFinishLoadingGraph;
 
 // Animation
@@ -133,6 +135,9 @@
 
 -(void)loadTwin;
 -(void)unloadTwin;
+
+-(void)enableButtons;
+-(void)disableButtons;
 
 -(UIColor *)colorForDataSetWithIndex:(NSInteger)index;
 

@@ -47,6 +47,11 @@
 
 @property (nonatomic) BOOL selectingAdditionalLogDates;
 
+// Custom
+
+-(NSDate *)additionalStartDate;
+-(NSDate *)additionalEndDate;
+
 -(void)presentUIContent;
 -(void)dismissUIContent;
 
