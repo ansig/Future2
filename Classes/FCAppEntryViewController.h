@@ -88,6 +88,10 @@
 
 -(id)initWithEntry:(FCEntry *)theEntry;
 
+// Tasks
+
+-(void)doSave;
+
 // View
 
 -(void)loadNewEntryViewController;

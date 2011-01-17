@@ -423,7 +423,9 @@
 
 -(void)onEntryUpdatedNotification {
 	
-	[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
+	[self readAndReload];
+	
+	//[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
 }
 
 -(void)onEntryDeletedNotification {
