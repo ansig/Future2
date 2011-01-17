@@ -416,7 +416,9 @@
 
 -(void)onEntryCreatedNotification {
 	
-	[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
+	[self readAndReload];
+	
+	//[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
 }
 
 -(void)onEntryUpdatedNotification {
