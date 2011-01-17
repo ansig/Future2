@@ -530,7 +530,7 @@
 	
 	CGFloat padding = 5.0f;
 	
-	CGFloat width = 100.0f;
+	CGFloat width = 140.0f;
 	CGFloat height = 20.0f;
 	
 	CGFloat xPos = kScaleViewSize+(kGraphPadding/2);
@@ -571,8 +571,8 @@
 	
 	CGFloat padding = 5.0f;
 	
-	CGFloat width = 100.0f;
-	CGFloat height = 20.0f;
+	CGFloat width = 140.0f; // corresponds to label width/height
+	CGFloat height = 20.0f; // in -loadLabelForDataSetWithIndex:
 	
 	CGFloat xPos = kScaleViewSize+(kGraphPadding/2);
 	CGFloat yPos = (kGraphPadding/2)  + ((height+padding)*index);

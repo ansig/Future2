@@ -87,17 +87,13 @@
 	
 	// * Draw a gradient background
 	
-	const CGFloat components [] = {1.0f, 1.0f, 1.0f};
-	CGContextSetFillColor(context, components);
-	CGContextFillRect(context, self.bounds);
-	
-	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[kDarkColor colorWithAlphaComponent:0.25f] CGColor];
-	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor whiteColor] CGColor];
+	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];	
+	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] CGColor];
 	NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 	CGFloat locations[] = {0, 1};
 	
 	CGGradientRef gradient = CGGradientCreateWithColors(CGColorGetColorSpace(topColorRef), (CFArrayRef)colors, locations);
-
+	
 	CGRect bounds = self.bounds;
 	CGPoint top = CGPointMake(CGRectGetMidX(bounds), bounds.origin.y);
 	CGPoint bottom = CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds));
