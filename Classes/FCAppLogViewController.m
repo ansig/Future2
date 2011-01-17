@@ -780,15 +780,13 @@
 	[titlesFilter release];
 	[titlesJoints release];
 	
-	[dateFormatter release];
-	
 	for (NSDictionary *row in titlesResult) {
 		
 		[newSectionTitles addObject:[row objectForKey:@"name"]];
 		
 		NSString *aCID = [row objectForKey:@"cid"];
 		
-		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"eid NOT IN (SELECT attachment_eid FROM attachments) AND cid = '%@'", aCID];
+		NSString *rowsFilter = [[NSString alloc] initWithFormat:@"date(timestamp) >= '%@' AND date(timestamp) <= '%@' AND eid NOT IN (SELECT attachment_eid FROM attachments) AND cid = '%@'", [dateFormatter stringFromDate:self.startDate], [dateFormatter stringFromDate:self.endDate], aCID];
 		NSArray *rowsResult = [dbh getColumns:@"*" fromTable:@"entries" withFilters:rowsFilter options:@"ORDER BY timestamp DESC"];
 		[rowsFilter release];
 		
@@ -805,6 +803,8 @@
 		[newSections addObject:section];
 		[section release];
 	}
+	
+	[dateFormatter release];
 	
 	[dbh release];
 	
