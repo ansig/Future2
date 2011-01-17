@@ -418,12 +418,12 @@
 	
 	[self readAndReload];
 	
-	//[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
+	//[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
 }
 
 -(void)onEntryUpdatedNotification {
 	
-	[self performTask:@selector(readAndReload) andMessage:@"Updating log"];
+	[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
 }
 
 -(void)onEntryDeletedNotification {
@@ -467,7 +467,7 @@
 			
 			[defaults setInteger:buttonIndex forKey:FCDefaultLogSortBy];
 		
-			[self performTask:@selector(readAndReload) andMessage:@"Sorting"];
+			[self performTask:@selector(readAndReload) withMessage:@"Sorting"];
 		}
 	}
 }
@@ -689,7 +689,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
 
-	[self performTask:@selector(doSearchWithSearchBar:) andObject:theSearchBar message:@"Searching"];
+	[self performTask:@selector(doSearchWithSearchBar:) withObject:theSearchBar message:@"Searching"];
 }
 
 #pragma mark Custom

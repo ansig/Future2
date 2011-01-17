@@ -44,8 +44,8 @@
 -(void)dismissOverlayViewController;
 
 -(void)performTask:(SEL)task;
--(void)performTask:(SEL)task andMessage:(NSString *)message;
--(void)performTask:(SEL)task andObject:(id)object;
--(void)performTask:(SEL)task andObject:(id)object message:(NSString *)message;
+-(void)performTask:(SEL)task withMessage:(NSString *)message;
+-(void)performTask:(SEL)task withObject:(id)object;
+-(void)performTask:(SEL)task withObject:(id)object message:(NSString *)message;
 
 @end

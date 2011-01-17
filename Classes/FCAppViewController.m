@@ -238,20 +238,20 @@
 
 -(void)performTask:(SEL)task {
 	
-	[self performTask:task andObject:nil message:@"Loading"];
+	[self performTask:task withObject:nil message:@"Loading"];
 }
 
--(void)performTask:(SEL)task andMessage:(NSString *)message {
+-(void)performTask:(SEL)task withMessage:(NSString *)message {
 	
-	[self performTask:task andObject:nil message:message];
+	[self performTask:task withObject:nil message:message];
 }
 
--(void)performTask:(SEL)task andObject:(id)object {
+-(void)performTask:(SEL)task withObject:(id)object {
 	
-	[self performTask:task andObject:object message:@"Loading"];
+	[self performTask:task withObject:object message:@"Loading"];
 }
 
--(void)performTask:(SEL)task andObject:(id)object message:(NSString *)message {
+-(void)performTask:(SEL)task withObject:(id)object message:(NSString *)message {
 	
 	if (_progressHUD == nil) {
 	
