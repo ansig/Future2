@@ -32,6 +32,7 @@
 
 @synthesize calendarMonthView, calendarDelegate;
 @synthesize doneButton;
+@synthesize selectingAdditionalLogDates;
 
 #pragma mark Init
 
@@ -72,7 +73,7 @@
 	
 	UIButton *newDoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/graph/close.png")];
+	UIImage *image = [UIImage imageNamed:@"doneButton.png"];
 	[newDoneButton setImage:image forState:UIControlStateNormal];
 	
 	newDoneButton.frame = CGRectMake(self.view.frame.size.width - 35.0f, 5.0f, image.size.width, image.size.height);
@@ -94,8 +95,6 @@
 	
 	self.calendarMonthView = newCalendarMonthView;
 	[newCalendarMonthView release];
-	
-	NSLog(@"%f", self.calendarMonthView.frame.size.width);
 }
 
 /*
@@ -126,7 +125,26 @@
     // e.g. self.myOutlet = nil;
 }
 
+#pragma mark Set
+
+-(void)setSelectingAdditionalLogDates:(BOOL)flag {
+	
+	selectingAdditionalLogDates = flag;
+	
+	self.calendarDelegate.selectingAdditionalLogDates = flag;
+}
+
 #pragma mark Custom
+
+-(NSDate *)additionalStartDate {
+
+	return self.calendarDelegate.additionalStartDate;
+}
+
+-(NSDate *)additionalEndDate {
+	
+	return self.calendarDelegate.additionalEndDate;
+}
 
 -(void)presentUIContent {
 	
@@ -161,8 +179,14 @@
 
 -(void)save {
 	
-	if (self.calendarDelegate.lastSelectedDate != nil)
-		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+	if (self.calendarDelegate.lastSelectedDate != nil) {
+		
+		if (self.selectingAdditionalLogDates)
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphAdditionalLogDateSelected object:self];
+			
+		else
+			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphOptionsChanged object:self];
+	}
 
 	[self dismissUIContent];
 }

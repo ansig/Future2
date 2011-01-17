@@ -26,6 +26,8 @@
 //
 
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FCGraphViewController.h"
 #import "FCGraphPullMenuViewController.h"
 #import "FCGraphLogDateSelectorViewController.h"
@@ -46,6 +48,10 @@
 	
 	NSMutableArray *graphControllers;
 	NSMutableArray *graphHandles;
+	
+	NSInteger _additionalGraphSetCandidateIndex;
+	NSDate *_lastAdditionalStartDate;
+	NSDate *_lastAdditionalEndDate;
 	
 	FCGraphEntryInfoView *entryInfoView;
 	
@@ -89,6 +95,9 @@
 
 // Custom
 
+-(void)beginSelectingAdditionalLogDates;
+-(void)finishSelectingAdditionalLogDates;
+
 -(void)loadDefaultStateWithProgressHUD;
 -(void)loadDefaultState;
 -(void)unloadCurrentState;
@@ -103,6 +112,11 @@
 										  ancestorOrTwin:(FCGraphViewController *)theRelative;
 
 -(FCGraphHandleView *)createHandleForGraphController:(FCGraphViewController *)theGraphController;
+
+-(FCGraphDataSet *)dataSetFromEntries:(NSArray *)entries 
+						withStartDate:(NSDate *)startDate 
+								 mode:(FCGraphMode)mode 
+							 category:(FCCategory *)category;
 
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate;
 -(NSDictionary *)findMinMaxAmong:(NSArray *)entries;

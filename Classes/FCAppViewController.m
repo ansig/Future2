@@ -123,6 +123,16 @@
 }
 */
 
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden {
+    
+	// Remove HUD from screen when the HUD was hidded
+    [_progressHUD removeFromSuperview];
+    [_progressHUD release];
+	_progressHUD = nil;
+}
+
 #pragma mark Custom
 
 -(void)presentOverlayViewController:(id)anOverlayViewController {
@@ -224,6 +234,43 @@
 	
 	// release navigation controller which contains the overlay view controller
 	self.overlaidNavigationController = nil;
+}
+
+-(void)performTask:(SEL)task {
+	
+	[self performTask:task withObject:nil message:@"Loading"];
+}
+
+-(void)performTask:(SEL)task withMessage:(NSString *)message {
+	
+	[self performTask:task withObject:nil message:message];
+}
+
+-(void)performTask:(SEL)task withObject:(id)object {
+	
+	[self performTask:task withObject:object message:@"Loading"];
+}
+
+-(void)performTask:(SEL)task withObject:(id)object message:(NSString *)message {
+	
+	if (_progressHUD == nil) {
+	
+		UIView *topView = self.tabBarController != nil ? self.tabBarController.view : self.navigationController.view;
+		
+		// The hud will dispable all input on the view (use the higest view possible in the view hierarchy)
+		_progressHUD = [[MBProgressHUD alloc] initWithView:topView];
+		
+		// Add HUD to screen
+		[topView addSubview:_progressHUD];
+		
+		// Regisete for HUD callbacks so we can remove it from the window at the right time
+		_progressHUD.delegate = self;
+		
+		_progressHUD.labelText = message;
+		
+		// Show the HUD while the provided method executes in a new thread
+		[_progressHUD showWhileExecuting:task onTarget:self withObject:object animated:YES];
+	}
 }
 
 @end

@@ -69,6 +69,57 @@
 	[super dealloc];
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+/*	Implements DEEP copying (i.e. duplicates instance variables).
+	(see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmImplementCopy.html )
+ 
+	Only certain properties and instance variables get carried over to copy. The EXCEPTIONS are:
+ 
+	self.delegate - gets set when added as part of graph set to graph controller
+	self.anchor - gets set when added as part of graph set to graph controller
+	self.color - gets set when added as part of graph set to graph controller
+	self.icon - gets set in drawInRect */
+	
+	FCGraphEntryView *copy = [[[self class] allocWithZone:zone] init];
+	
+	copy.frame = self.frame;
+	copy.backgroundColor = [UIColor clearColor];
+	
+	copy.mode = self.mode;
+	
+	NSNumber *xValueCopy = [self.xValue copy];
+	copy.xValue = xValueCopy;
+	[xValueCopy release];
+	
+	NSNumber *yValueCopy = [self.yValue copy];
+	copy.yValue = yValueCopy;
+	[yValueCopy release];
+	
+	NSString *keyCopy = [self.key copy];
+	copy.key = keyCopy;
+	[keyCopy release];
+	
+	if (self.label != nil) {
+		
+		UILabel *labelCopy = [[UILabel alloc] initWithFrame:self.label.frame];
+		labelCopy.backgroundColor = [UIColor clearColor];
+		labelCopy.font = [UIFont fontWithName:self.label.font.fontName size:self.label.font.pointSize];
+		labelCopy.textAlignment = self.label.textAlignment;
+		labelCopy.textColor = [UIColor whiteColor];
+		
+		NSString *textCopy = [self.label.text copy];
+		labelCopy.text = textCopy;
+		[textCopy release];
+		
+		copy.label = labelCopy;
+		[copy addSubview:labelCopy];
+		
+		[labelCopy release];
+	}
+	
+	return (copy);
+}
+
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect {

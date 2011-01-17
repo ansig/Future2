@@ -138,6 +138,7 @@
 -(FCGraphEntryViewMode)entryViewModeForGraphViewController:(id)theGraphViewController;
 -(NSArray *)referenceRangesForGraphSet:(id)theGraphSet inGraphViewController:(id)theGraphViewController;
 -(id)twinForGraphViewController:(id)theController;
+-(void)addAdditionalGraphSetToGraphViewController:(id)theGraphViewController;
 
 // Preferences
 -(BOOL)scrollRelativesForGraphViewController:(id)theGraphViewController;

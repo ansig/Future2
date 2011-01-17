@@ -189,7 +189,7 @@
 		// create the scroll view
 	
 		UIScrollView *newScrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-		newScrollView.backgroundColor = [UIColor lightGrayColor];
+		newScrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackgroundPattern.png"]];
 		
 		CGFloat minimumScale = image.size.height > image.size.width ? newScrollView.frame.size.height / image.size.height : newScrollView.frame.size.width / image.size.width;
 		newScrollView.minimumZoomScale = minimumScale;
@@ -275,6 +275,15 @@
 						 completion:^ (BOOL finished) { [self.scrollView removeFromSuperview]; self.scrollView = nil; } ];
 		
 	}
+}
+
+#pragma mark Tasks
+
+-(void)doSave {
+
+	// save the entry only if it is not already saved (ie has an eid)
+	if (self.entry.eid == nil)
+		[self.entry save];
 }
 
 #pragma mark Orientation
@@ -800,11 +809,8 @@
 
 -(void)save {
 	
-	// save the entry only if it is not already saved (ie has an eid)
-	if (self.entry.eid == nil)
-		[self.entry save];
+	[self performTask:@selector(doSave) withMessage:@"Saving"];
 	
-	// dismiss
 	[super dismiss];
 }
 
@@ -815,7 +821,7 @@
 	
 	UIButton *newCloseButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	
-	UIImage *image = [UIImage imageWithContentsOfFile:TKBUNDLE(@"TapkuLibrary.bundle/Images/graph/close.png")];
+	UIImage *image = [UIImage imageNamed:@"closeButton.png"];
 	
 	newCloseButton.frame = CGRectMake(self.view.frame.size.width - 35.0f, 10.0f, image.size.width, image.size.height);
 	

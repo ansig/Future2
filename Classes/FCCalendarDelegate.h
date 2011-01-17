@@ -37,6 +37,10 @@
 	BOOL lastSetWasStartDate;
 	
 	NSInteger intervalInDays;
+	
+	BOOL selectingAdditionalLogDates;
+	NSDate *additionalStartDate;
+	NSDate *additionalEndDate;
 }
 
 @property (assign) TKCalendarMonthView *calendarMonthView;
@@ -45,6 +49,11 @@
 @property (nonatomic) BOOL lastSetWasStartDate;
 
 @property (nonatomic) NSInteger intervalInDays;
+
+@property (nonatomic) BOOL selectingAdditionalLogDates;
+@property (nonatomic, retain) NSDate *additionalStartDate;
+@property (nonatomic, retain) NSDate *additionalEndDate;
+
 
 // Custom
 

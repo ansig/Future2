@@ -31,7 +31,6 @@
 
 #import "FCAppCategoryViewController.h"
 #import "FCAppEntryAttachmentsView.h"
-#import "TKGlobal.h"
 #import "FCModelsFramework.h"
 
 @interface FCAppEntryViewController : FCAppOverlayViewController <FCEntryView, FCCategoryList, FCGroupedTableSourceDelegate, UIScrollViewDelegate> {
@@ -88,6 +87,10 @@
 // Init
 
 -(id)initWithEntry:(FCEntry *)theEntry;
+
+// Tasks
+
+-(void)doSave;
 
 // View
 

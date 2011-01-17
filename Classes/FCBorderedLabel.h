@@ -37,4 +37,8 @@
 @property (nonatomic) CGFloat spacing;
 @property (nonatomic, retain) UIImageView *imageView;
 
+// Custom
+
+-(void)loadImageView;
+
 @end

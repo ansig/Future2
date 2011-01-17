@@ -26,7 +26,8 @@
 //
 
 
-#import "TKGlobal.h"
+#import <QuartzCore/QuartzCore.h>
+
 #import "FCEntry.h"
 
 @interface FCGraphEntryInfoView : UIView <UIScrollViewDelegate> {

@@ -26,7 +26,6 @@
 //
 
 
-#import "TKGlobal.h"
 #import "FCCalendarDelegate.h"
 #import "TKCalendarMonthView.h"
 #import "NSDate+TKCategory.h"
@@ -37,12 +36,21 @@
 	FCCalendarDelegate *calendarDelegate;
 	
 	UIButton *doneButton;
+	
+	BOOL selectingAdditionalLogDates;
 }
 
 @property (nonatomic, retain) TKCalendarMonthView *calendarMonthView;
 @property (nonatomic, retain) FCCalendarDelegate *calendarDelegate;
 
 @property (nonatomic, retain) UIButton *doneButton;
+
+@property (nonatomic) BOOL selectingAdditionalLogDates;
+
+// Custom
+
+-(NSDate *)additionalStartDate;
+-(NSDate *)additionalEndDate;
 
 -(void)presentUIContent;
 -(void)dismissUIContent;

@@ -34,6 +34,7 @@
 @synthesize calendarMonthView;
 @synthesize lastSelectedDate, lastSetWasStartDate;
 @synthesize intervalInDays;
+@synthesize selectingAdditionalLogDates, additionalStartDate, additionalEndDate;
 
 #pragma mark Init
 
@@ -50,8 +51,30 @@
 #pragma mark Dealloc
 
 -(void)dealloc {
+	
+	[additionalStartDate release];
+	[additionalEndDate release];
 
 	[super dealloc];
+}
+
+#pragma mark Set
+
+-(void)setSelectingAdditionalLogDates:(BOOL)flag {
+
+	selectingAdditionalLogDates = flag;
+	
+	if (flag) {
+		
+		// set initial start and end date to the log dates
+		
+		NSDictionary *logDates = [[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates];
+		
+		self.additionalStartDate = [logDates objectForKey:@"StartDate"];
+		self.additionalEndDate = [logDates objectForKey:@"EndDate"];
+	}
+	
+	[self loadIntervalInDays];
 }
 
 #pragma mark TKCalendarMonthViewDelegate
@@ -60,11 +83,21 @@
 	
 	// get current log dates
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	NSDate *logStartDate;
+	NSDate *logEndDate;
 	
-	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
-	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
+	if (self.selectingAdditionalLogDates) {
+		
+		logStartDate = self.additionalStartDate;
+		logEndDate = self.additionalEndDate;
+		
+	} else {
+		
+		NSDictionary *logDates = [[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates];
+		
+		logStartDate = [logDates objectForKey:@"StartDate"];
+		logEndDate = [logDates objectForKey:@"EndDate"];
+	}
 	
 	// determine whether to set a new start or end date
 	
@@ -141,13 +174,22 @@
 		self.lastSetWasStartDate = NO;
 	}
 	
-	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
 	
-	// update the user defaults
+	if (self.selectingAdditionalLogDates) {
+		
+		// update the additional log dates
+		
+		self.additionalStartDate = newLogStartDate;
+		self.additionalEndDate = newLogEndDate;
+		
+	} else {
+		
+		// update the user defaults
 	
-	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
-	
-	[newLogDates release];
+		NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newLogStartDate, @"StartDate", newLogEndDate, @"EndDate", nil];
+		[[NSUserDefaults standardUserDefaults] setObject:newLogDates forKey:FCDefaultLogDates];
+		[newLogDates release];
+	}
 	
 	// remember this selection and reload the calendar month view
 	
@@ -163,17 +205,27 @@
 
 #pragma mark TKCalendarMonthViewDataSource
 
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate {
+- (NSArray*)calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate {
 	
 	// * Mark all dates between current log start date and end date in user defaults
 	
 	// get current log dates
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+	NSDate *logStartDate;
+	NSDate *logEndDate;
 	
-	NSDate *logStartDate = [logDates objectForKey:@"StartDate"];
-	NSDate *logEndDate = [logDates objectForKey:@"EndDate"];
+	if (self.selectingAdditionalLogDates) {
+		
+		logStartDate = self.additionalStartDate;
+		logEndDate = self.additionalEndDate;
+		
+	} else {
+	
+		NSDictionary *logDates = [[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates];
+	
+		logStartDate = [logDates objectForKey:@"StartDate"];
+		logEndDate = [logDates objectForKey:@"EndDate"];
+	}
 	
 	// loop through all dates currently visible in calendar view
 	
@@ -211,21 +263,26 @@
 	
 	// autorelease and return
 	
-	[selectedDates autorelease];
-	
-	return selectedDates;
+	return [selectedDates autorelease];
 }
 
 #pragma mark Custom
 
 -(void)loadIntervalInDays {
 	
-	FCGraphScaleDateLevel level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
-	if (level == FCGraphScaleDateLevelHours)
-		self.intervalInDays = 6;
+	if (self.selectingAdditionalLogDates) {
+		
+		self.intervalInDays = (NSInteger)[self.additionalStartDate differenceInDaysTo:self.additionalEndDate];
+		
+	} else {
 	
-	else
-		self.intervalInDays = 29;
+		FCGraphScaleDateLevel level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
+		if (level == FCGraphScaleDateLevelHours)
+			self.intervalInDays = 6;
+	
+		else
+			self.intervalInDays = 29;
+	}
 	
 	if (self.calendarMonthView != nil) {
 		
@@ -234,7 +291,7 @@
 		
 		self.lastSetWasStartDate = YES;
 		
-		NSDate *endDate = [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates] objectForKey:@"EndDate"];
+		NSDate *endDate = self.selectingAdditionalLogDates ? self.additionalEndDate : [[[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates] objectForKey:@"EndDate"];
 		[self calendarMonthView:self.calendarMonthView didSelectDate:endDate];
 		
 		[self.calendarMonthView reload];

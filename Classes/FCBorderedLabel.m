@@ -39,19 +39,6 @@
 		[self.layer setBorderWidth:2.0f];
 		[self.layer setCornerRadius:5.0f];
 		[self.layer setBorderColor:[[UIColor blackColor] CGColor]];
-		
-		spacing = 2.0f;
-		
-		CGFloat height = frame.size.height - (spacing*2);
-		CGFloat width = height;
-		
-		CGFloat xPos = spacing;
-		CGFloat yPos = (frame.size.height/2) - (height/2);
-		
-		imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
-		imageView.backgroundColor = [UIColor clearColor];
-		
-		[self addSubview:imageView];
 	}
 	
 	return self;
@@ -86,6 +73,24 @@
 	[self.layer setBorderColor:[color CGColor]];
 	
 	[super setBackgroundColor:[color colorWithAlphaComponent:0.5f]];
+}
+
+#pragma mark Custom
+
+-(void)loadImageView {
+	
+	spacing = 2.0f;
+	
+	CGFloat height = self.frame.size.height - (spacing*2);
+	CGFloat width = height;
+	
+	CGFloat xPos = spacing;
+	CGFloat yPos = (self.frame.size.height/2) - (height/2);
+	
+	imageView = [[UIImageView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
+	imageView.backgroundColor = [UIColor clearColor];
+	
+	[self addSubview:imageView];
 }
 
 @end

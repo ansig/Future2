@@ -163,7 +163,7 @@
 	 
 	 FCGraphHandleView *newHandle = [[FCGraphHandleView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
 	 newHandle.delegate = self.pullMenuViewController;
-	 newHandle.color =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
+	 newHandle.color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"slantedBackgroundPattern.png"]];
 	 newHandle.mode = FCGraphHandleModeTopDown;
 	 newHandle.cornerRadius = 8.0f;
 	 newHandle.range = kGraphPullMenuHandleRange;
@@ -405,6 +405,23 @@
 	return category.name;
 }
 
+-(NSString *)labelTitleForDataSetWithIndex:(NSInteger)index inGraphViewController:(id)theGraphViewController {
+
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	formatter.dateStyle = NSDateFormatterShortStyle;
+	
+	NSString *title = [NSString stringWithFormat:@"%@-%@", [formatter stringFromDate:_lastAdditionalStartDate], [formatter stringFromDate:_lastAdditionalEndDate]];
+	
+	[formatter release];
+	
+	// OBS! these two were retained in -finishSelectingAdditionalLogDates
+	// and must be released here
+	[_lastAdditionalStartDate release];
+	[_lastAdditionalEndDate release];
+	
+	return title;
+}
+
 -(UIImage *)iconForEntryViewWithKey:(NSString *)theKey {
 
 	FCEntry *anEntry = [FCEntry entryWithEID:theKey];
@@ -448,6 +465,13 @@
 	// return the controller
 	
 	return newGraphViewController;
+}
+
+-(void)addAdditionalGraphSetToGraphViewController:(id)theGraphViewController {
+	
+	_additionalGraphSetCandidateIndex = [self.graphControllers indexOfObject:theGraphViewController];
+	
+	[self beginSelectingAdditionalLogDates];
 }
 
 -(void)touchOnEntryWithAnchorPoint:(CGPoint)theAnchor superview:(UIView *)theSuperview key:(NSString *)theKey; {
@@ -650,6 +674,42 @@
 }
 
 #pragma mark Custom
+
+-(void)beginSelectingAdditionalLogDates {
+	
+	[self loadLogDateSelectorViewController];
+	
+	self.logDateSelectorViewController.selectingAdditionalLogDates = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(finishSelectingAdditionalLogDates) 
+												 name:FCNotificationGraphAdditionalLogDateSelected
+											   object:nil];
+}
+
+-(void)finishSelectingAdditionalLogDates {
+	
+	_lastAdditionalStartDate = [self.logDateSelectorViewController.additionalStartDate retain];															// OBS! These are retained because they are needed in 
+	_lastAdditionalEndDate = [[NSDate dateWithTimeInterval:kEndDateOffset sinceDate:self.logDateSelectorViewController.additionalEndDate] retain];		// -labelTitleForDataSetWithIndex:inGraphViewController:
+																																						// where they are also released
+	
+	FCGraphViewController *theGraphViewController = [self.graphControllers objectAtIndex:_additionalGraphSetCandidateIndex];
+	
+	NSArray *entries = [self loadEntriesWithCID:theGraphViewController.key 
+							   betweenStartDate:_lastAdditionalStartDate 
+										endDate:_lastAdditionalEndDate];
+	
+	FCGraphDataSet *dataSet = [self dataSetFromEntries:entries 
+										 withStartDate:_lastAdditionalStartDate 
+												  mode:theGraphViewController.mode 
+											  category:[FCCategory categoryWithCID:theGraphViewController.key]];
+	
+	[theGraphViewController addDataSet:dataSet];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self 
+													name:FCNotificationGraphAdditionalLogDateSelected 
+												  object:nil];
+}
 
 -(void)loadDefaultStateWithProgressHUD {
 
@@ -899,43 +959,30 @@
 			break;
 	}
 	
-	// create graph entry objects for the entries and add them to the graph
-	
 	if (entries != nil) {
-	
-		// formatter for the entry view labels
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		
-		[formatter setMinimumIntegerDigits:1];
+		if (theMode == FCGraphModeTwinTimePlotHorizontal) {
+			
+			// copy each data set in the relative and add to the new graph
+			
+			for (FCGraphDataSet *dataSet in theRelative.dataSets) {
+			
+				FCGraphDataSet *copy = [dataSet copy];
+				[newGraphViewController addDataSet:copy];
+				[copy release];
+			}
+			
+		} else {
+			
+			// create graph entry objects for the entries and add them to the graph
 		
-		[formatter setMinimumFractionDigits:[category.decimals intValue]];
-		[formatter setMaximumFractionDigits:[category.decimals intValue]];
-		
-		FCGraphDataSet *dataSet = [[FCGraphDataSet alloc] init];
-		for (FCEntry *entry in entries) {
+			FCGraphDataSet *dataSet = [self dataSetFromEntries:entries 
+								 withStartDate:theStartDate 
+										  mode:theMode 
+									  category:category];
 			
-			NSNumber *yValue;
-			if (theMode == FCGraphModeTimeBandHorizontal)
-				yValue = [NSNumber numberWithDouble:1.0];
-			else
-				yValue = entry.integer != nil ? entry.integer : entry.decimal;
-			
-			NSNumber *xValue = [NSNumber numberWithDouble:[entry.timestamp timeIntervalSinceDate:theStartDate]];
-			
-			FCGraphEntryView *entryView = [[FCGraphEntryView alloc] initWithXValue:xValue yValue:yValue key:entry.eid];
-			
-			if (theMode != FCGraphModeTimeBandHorizontal)
-				[entryView showLabelForYValueUsingNumberFormatter:formatter]; // show correctly formatted label for the y value
-			
-			[dataSet addObject:entryView];
-			[entryView release];
+			[newGraphViewController addDataSet:dataSet];
 		}
-		
-		[formatter release];
-		
-		[dataSet autorelease];
-		
-		[newGraphViewController addDataSet:dataSet];
 	}
 	
 	// autorelease and return the new graph controller
@@ -969,9 +1016,48 @@
 	
 	[newHandle createNewDirectionalArrow];
 	
-	[newHandle autorelease];
+	return [newHandle autorelease];
+}
+
+-(FCGraphDataSet *)dataSetFromEntries:(NSArray *)entries 
+							withStartDate:(NSDate *)startDate 
+								 mode:(FCGraphMode)mode 
+							 category:(FCCategory *)category	{
 	
-	return newHandle;
+/*	Returns a data set of entry views correctly formatted for the given parameters. */
+	
+	// formatter for the entry view labels
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	
+	[formatter setMinimumIntegerDigits:1];
+	
+	NSInteger decimals = [category.decimals integerValue];
+	[formatter setMinimumFractionDigits:decimals];
+	[formatter setMaximumFractionDigits:decimals];
+	
+	FCGraphDataSet *dataSet = [[FCGraphDataSet alloc] init];
+	for (FCEntry *entry in entries) {
+		
+		NSNumber *yValue;
+		if (mode == FCGraphModeTimeBandHorizontal)
+			yValue = [NSNumber numberWithDouble:1.0];
+		else
+			yValue = entry.integer != nil ? entry.integer : entry.decimal;
+		
+		NSNumber *xValue = [NSNumber numberWithDouble:[entry.timestamp timeIntervalSinceDate:startDate]];
+		
+		FCGraphEntryView *entryView = [[FCGraphEntryView alloc] initWithXValue:xValue yValue:yValue key:entry.eid];
+		
+		if (mode != FCGraphModeTimeBandHorizontal)
+			[entryView showLabelForYValueUsingNumberFormatter:formatter]; // show correctly formatted label for the y value
+		
+		[dataSet addObject:entryView];
+		[entryView release];
+	}
+	
+	[formatter release];
+	
+	return [dataSet autorelease];
 }
 
 -(NSArray *)loadEntriesWithCID:(NSString *)theCID betweenStartDate:(NSDate *)theStartDate endDate:(NSDate *)theEndDate {

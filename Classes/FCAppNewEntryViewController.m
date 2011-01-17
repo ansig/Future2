@@ -371,8 +371,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationEntryObjectUpdated object:nil];
 }
 
--(void)save {
-	
+-(void)doSave {
+
 	// update entry's value
 	[self setEntryProperties];
 	
@@ -392,9 +392,6 @@
 		if (self.originalEntry.uid != nil)
 			[self.category saveNewUnit:self.originalEntry.unit andConvert:YES];
 		
-		// dismiss
-		[super dismiss];
-		
 	} else if (self.owner != nil) {
 		
 		// add as attachment to the owner
@@ -405,15 +402,23 @@
 		if (self.owner.eid != nil)
 			[self.entry save];
 		
-		// dismiss self
-		[super dismiss];
-		
 	} else {
 		
 		// save entry
 		[self.entry save];
+	}
+}
+
+-(void)save {
+	
+	[self performTask:@selector(doSave) withMessage:@"Saving"];
+	
+	if (self.originalEntry != nil || self.owner != nil) {
+
+		[super dismiss];
 		
-		// load an entry view controller for the new entry
+	} else {
+		
 		[self loadEntryViewControllerWithEntry:self.entry];
 	}
 }

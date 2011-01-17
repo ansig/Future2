@@ -18,6 +18,7 @@
 		9A187A4612A68D800075DE04 /* FCBorderedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A187A4512A68D800075DE04 /* FCBorderedLabel.m */; };
 		9A2630D612B7893E00343623 /* FCImageViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A2630D512B7893E00343623 /* FCImageViewHelper.m */; };
 		9A26321812B7DD0B00343623 /* FCIconCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A26321712B7DD0B00343623 /* FCIconCollection.m */; };
+		9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */; };
 		9A421F15120C2B9200D370F8 /* FCTypedef.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F11120C2B9200D370F8 /* FCTypedef.m */; };
 		9A421F16120C2B9200D370F8 /* FCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F14120C2B9200D370F8 /* FCConstants.m */; };
 		9A421F28120C2F3900D370F8 /* FCNavigationBarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F27120C2F3900D370F8 /* FCNavigationBarHelper.m */; };
@@ -34,7 +35,6 @@
 		9A5C8120124D043100FA92ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5C811F124D043100FA92ED /* libsqlite3.dylib */; };
 		9A7C0B37125F52A1008E1A3F /* FCGraphPullMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A7C0B36125F52A1008E1A3F /* FCGraphPullMenuViewController.m */; };
 		9A7FC811123C04E700A7C6C9 /* FCNumberHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A7FC810123C04E700A7C6C9 /* FCNumberHelper.m */; };
-		9A804791125A3141006ADD63 /* entryInfoViewClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A804790125A3141006ADD63 /* entryInfoViewClose.png */; };
 		9A81067B124274F80013F7FB /* FCAppEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A81067A124274F80013F7FB /* FCAppEntryViewController.m */; };
 		9A813A25128D7DBE00FD0A07 /* FCStringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A813A24128D7DBE00FD0A07 /* FCStringHelper.m */; };
 		9A813A40128D868F00FD0A07 /* FCAppEntryAttachmentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A813A3F128D868F00FD0A07 /* FCAppEntryAttachmentsView.m */; };
@@ -48,8 +48,7 @@
 		9A847E9912D21578005E2DCF /* calendarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847E9812D21578005E2DCF /* calendarButton.png */; };
 		9A847EC812D2376C005E2DCF /* mainBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */; };
 		9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */; };
-		9A8513241235287B00031CA6 /* webviewClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513221235287B00031CA6 /* webviewClose.png */; };
-		9A8513251235287B00031CA6 /* webviewBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8513231235287B00031CA6 /* webviewBack.png */; };
+		9A853B2012D85B6600E855D5 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A853B1F12D85B6600E855D5 /* closeButton.png */; };
 		9A859A27127590D900987FBD /* FCGraphReferenceRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859A26127590D900987FBD /* FCGraphReferenceRange.m */; };
 		9A859BDB1275DEF400987FBD /* ODCalendarDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859BCC1275DEF400987FBD /* ODCalendarDayEventView.m */; };
 		9A859BDC1275DEF400987FBD /* ODCalendarDayTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A859BCE1275DEF400987FBD /* ODCalendarDayTimelineView.m */; };
@@ -67,6 +66,7 @@
 		9A85D6D912D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A85D6D812D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m */; };
 		9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */; };
 		9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */; };
+		9A86897112DB0430001D01CE /* doneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A86897012DB0430001D01CE /* doneButton.png */; };
 		9A873BB61293C32300C3D0BF /* FCAppCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */; };
 		9A87435712B8F01B00B6CB72 /* attachmentsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87431712B8F01B00B6CB72 /* attachmentsIcon.png */; };
 		9A87435812B8F01B00B6CB72 /* ballIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A87431812B8F01B00B6CB72 /* ballIcon.png */; };
@@ -138,6 +138,8 @@
 		9A8C1A951248F63200124E25 /* FCAppLogDateSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C1A941248F63200124E25 /* FCAppLogDateSelectorViewController.m */; };
 		9A8C7AB7122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */; };
 		9A8D0F7F129ECE7F0032F18D /* FCColorCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */; };
+		9A8F407712DE2E9B002E5B53 /* minusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8F407512DE2E9B002E5B53 /* minusButton.png */; };
+		9A8F407812DE2E9B002E5B53 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A8F407612DE2E9B002E5B53 /* plusButton.png */; };
 		9A8F740F1250A08300DDD1A4 /* FCGraphEntryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */; };
 		9A8FD63A12800CD900FDF9CC /* FCAppOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FD63912800CD900FDF9CC /* FCAppOverlayViewController.m */; };
 		9A9648C3127841B200A410C1 /* editButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A9648C2127841B200A410C1 /* editButton.png */; };
@@ -220,6 +222,7 @@
 		9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9A30172612AE400900EC03AD /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
+		9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackgroundPattern.png; path = resources/images/lightBackgroundPattern.png; sourceTree = "<group>"; };
 		9A421F10120C2B9200D370F8 /* FCProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCProtocols.h; path = Classes/FCProtocols.h; sourceTree = "<group>"; };
 		9A421F11120C2B9200D370F8 /* FCTypedef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCTypedef.m; path = Classes/FCTypedef.m; sourceTree = "<group>"; };
 		9A421F12120C2B9200D370F8 /* FCTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCTypedef.h; path = Classes/FCTypedef.h; sourceTree = "<group>"; };
@@ -243,7 +246,6 @@
 		9A7C0B36125F52A1008E1A3F /* FCGraphPullMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphPullMenuViewController.m; sourceTree = "<group>"; };
 		9A7FC80F123C04E700A7C6C9 /* FCNumberHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCNumberHelper.h; sourceTree = "<group>"; };
 		9A7FC810123C04E700A7C6C9 /* FCNumberHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCNumberHelper.m; sourceTree = "<group>"; };
-		9A804790125A3141006ADD63 /* entryInfoViewClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = entryInfoViewClose.png; path = resources/images/buttons/entryInfoViewClose.png; sourceTree = "<group>"; };
 		9A810679124274F80013F7FB /* FCAppEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppEntryViewController.h; sourceTree = "<group>"; };
 		9A81067A124274F80013F7FB /* FCAppEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppEntryViewController.m; sourceTree = "<group>"; };
 		9A813A23128D7DBE00FD0A07 /* FCStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCStringHelper.h; sourceTree = "<group>"; };
@@ -266,8 +268,7 @@
 		9A847E9812D21578005E2DCF /* calendarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = calendarButton.png; path = resources/images/buttons/calendarButton.png; sourceTree = "<group>"; };
 		9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackgroundPattern.png; path = resources/images/mainBackgroundPattern.png; sourceTree = "<group>"; };
 		9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slantedBackgroundPattern.png; path = resources/images/slantedBackgroundPattern.png; sourceTree = "<group>"; };
-		9A8513221235287B00031CA6 /* webviewClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewClose.png; path = resources/images/buttons/webviewClose.png; sourceTree = "<group>"; };
-		9A8513231235287B00031CA6 /* webviewBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = webviewBack.png; path = resources/images/buttons/webviewBack.png; sourceTree = "<group>"; };
+		9A853B1F12D85B6600E855D5 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = closeButton.png; path = resources/images/buttons/closeButton.png; sourceTree = "<group>"; };
 		9A859A25127590D900987FBD /* FCGraphReferenceRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphReferenceRange.h; sourceTree = "<group>"; };
 		9A859A26127590D900987FBD /* FCGraphReferenceRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphReferenceRange.m; sourceTree = "<group>"; };
 		9A859BCB1275DEF400987FBD /* ODCalendarDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODCalendarDayEventView.h; path = "Tapku Library/ODCalendarDayEventView.h"; sourceTree = "<group>"; };
@@ -299,6 +300,7 @@
 		9A85D6D812D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphLogDateSelectorViewController.m; sourceTree = "<group>"; };
 		9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 30pxBandBackgroundPattern.png; path = resources/images/30pxBandBackgroundPattern.png; sourceTree = "<group>"; };
 		9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 40pxBandBackgroundPattern.png; path = resources/images/40pxBandBackgroundPattern.png; sourceTree = "<group>"; };
+		9A86897012DB0430001D01CE /* doneButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = doneButton.png; path = resources/images/buttons/doneButton.png; sourceTree = "<group>"; };
 		9A873BB41293C32300C3D0BF /* FCAppCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppCategoryViewController.h; sourceTree = "<group>"; };
 		9A873BB51293C32300C3D0BF /* FCAppCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppCategoryViewController.m; sourceTree = "<group>"; };
 		9A87431712B8F01B00B6CB72 /* attachmentsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attachmentsIcon.png; path = resources/images/icons/attachmentsIcon.png; sourceTree = "<group>"; };
@@ -377,6 +379,8 @@
 		9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppSettingsSelectViewController.m; sourceTree = "<group>"; };
 		9A8D0F7D129ECE7F0032F18D /* FCColorCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCColorCollection.h; sourceTree = "<group>"; };
 		9A8D0F7E129ECE7F0032F18D /* FCColorCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCColorCollection.m; sourceTree = "<group>"; };
+		9A8F407512DE2E9B002E5B53 /* minusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = minusButton.png; path = resources/images/buttons/minusButton.png; sourceTree = "<group>"; };
+		9A8F407612DE2E9B002E5B53 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = plusButton.png; path = resources/images/buttons/plusButton.png; sourceTree = "<group>"; };
 		9A8F740D1250A08300DDD1A4 /* FCGraphEntryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCGraphEntryView.h; sourceTree = "<group>"; };
 		9A8F740E1250A08300DDD1A4 /* FCGraphEntryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCGraphEntryView.m; sourceTree = "<group>"; };
 		9A8FD63812800CD900FDF9CC /* FCAppOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppOverlayViewController.h; sourceTree = "<group>"; };
@@ -545,8 +549,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9AF7D9EF111AE3C0008E90F6 /* Helpers */,
 				9AE500EC127EC9A3005CD258 /* Frameworks */,
+				9AF7D9EF111AE3C0008E90F6 /* Helpers */,
 				9A421F10120C2B9200D370F8 /* FCProtocols.h */,
 				9A421F12120C2B9200D370F8 /* FCTypedef.h */,
 				9A421F11120C2B9200D370F8 /* FCTypedef.m */,
@@ -638,12 +642,13 @@
 		9A8513211235286100031CA6 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				9A8F407512DE2E9B002E5B53 /* minusButton.png */,
+				9A8F407612DE2E9B002E5B53 /* plusButton.png */,
+				9A853B1F12D85B6600E855D5 /* closeButton.png */,
 				9A847E9812D21578005E2DCF /* calendarButton.png */,
 				9A847E7812D2128B005E2DCF /* settingsButton.png */,
 				9A9648C2127841B200A410C1 /* editButton.png */,
-				9A804790125A3141006ADD63 /* entryInfoViewClose.png */,
-				9A8513221235287B00031CA6 /* webviewClose.png */,
-				9A8513231235287B00031CA6 /* webviewBack.png */,
+				9A86897012DB0430001D01CE /* doneButton.png */,
 			);
 			name = Buttons;
 			sourceTree = "<group>";
@@ -1075,6 +1080,7 @@
 				9AA8572A1210094C008DA1BA /* TabBarIcons */,
 				9A847EC612D2376C005E2DCF /* mainBackgroundPattern.png */,
 				9A847EC712D2376C005E2DCF /* slantedBackgroundPattern.png */,
+				9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */,
 				9A85E9C112D3138D00DF05C6 /* 30pxBandBackgroundPattern.png */,
 				9A85E9C212D3138D00DF05C6 /* 40pxBandBackgroundPattern.png */,
 				9A847D0F12D1FB6F005E2DCF /* pullIcon.png */,
@@ -1255,10 +1261,7 @@
 				9AA8573D121009A5008DA1BA /* recordingTabBarIcon.png in Resources */,
 				9AA8573E121009A5008DA1BA /* tagsTabBarIcon.png in Resources */,
 				9A049C6F1212EDA400462EFE /* separatorLine.png in Resources */,
-				9A8513241235287B00031CA6 /* webviewClose.png in Resources */,
-				9A8513251235287B00031CA6 /* webviewBack.png in Resources */,
 				9A878C671238E6B400784F9D /* Future2Record.rdb in Resources */,
-				9A804791125A3141006ADD63 /* entryInfoViewClose.png in Resources */,
 				9A859D151275E83E00987FBD /* TapkuLibrary.bundle in Resources */,
 				9A9648C3127841B200A410C1 /* editButton.png in Resources */,
 				9A57D51C12B7EA5800546803 /* FCIcons.plist in Resources */,
@@ -1333,6 +1336,11 @@
 				9A847EC912D2376C005E2DCF /* slantedBackgroundPattern.png in Resources */,
 				9A85E9C312D3138D00DF05C6 /* 30pxBandBackgroundPattern.png in Resources */,
 				9A85E9C412D3138D00DF05C6 /* 40pxBandBackgroundPattern.png in Resources */,
+				9A3AE6B812D7614900F8CB9D /* lightBackgroundPattern.png in Resources */,
+				9A853B2012D85B6600E855D5 /* closeButton.png in Resources */,
+				9A86897112DB0430001D01CE /* doneButton.png in Resources */,
+				9A8F407712DE2E9B002E5B53 /* minusButton.png in Resources */,
+				9A8F407812DE2E9B002E5B53 /* plusButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

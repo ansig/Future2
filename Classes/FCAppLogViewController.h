@@ -70,6 +70,12 @@
 -(void)loadTableHeaderAndFooter;
 -(void)loadSearchBarAndSearchDisplayController;
 
+// Tasks
+
+-(void)readAndReload;
+-(void)reload;
+-(void)doSearchWithSearchBar:(UISearchBar *)theSearchBar;
+
 // Notifications
 
 -(void)onLogDateChangedNotification;

@@ -72,7 +72,7 @@ typedef enum {
 	FCGraphModeDescendantTimePlotHorizontal,
 	FCGraphModeTwinTimePlotHorizontal,
 	FCGraphModeTimeBandHorizontal,
-	FCGraphModeDayComparisonHorizontal
+	FCGraphModeDescendantTimeBandHorizontal
 	
 } FCGraphMode;
 
