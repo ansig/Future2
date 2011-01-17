@@ -26,6 +26,10 @@
 		9A421F2F120C564E00D370F8 /* navigationBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2B120C564E00D370F8 /* navigationBarBackground.png */; };
 		9A421F30120C564E00D370F8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A421F2C120C564E00D370F8 /* Default.png */; };
 		9A421F39120C588900D370F8 /* FCRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A421F38120C588900D370F8 /* FCRootViewController.m */; };
+		9A4C91FE12E4B9A400A1420A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4C91FD12E4B9A400A1420A /* CFNetwork.framework */; };
+		9A4C920212E4B9B500A1420A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4C920112E4B9B500A1420A /* SystemConfiguration.framework */; };
+		9A4C920612E4B9C200A1420A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4C920512E4B9C200A1420A /* MobileCoreServices.framework */; };
+		9A4C920A12E4B9E800A1420A /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4C920912E4B9E800A1420A /* libz.1.2.3.dylib */; };
 		9A57D51C12B7EA5800546803 /* FCIcons.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A57D51B12B7EA5800546803 /* FCIcons.plist */; };
 		9A5C7FE4124D02B400FA92ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5C7FE3124D02B400FA92ED /* CoreGraphics.framework */; };
 		9A5C8060124D038000FA92ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A5C805F124D038000FA92ED /* Foundation.framework */; };
@@ -218,10 +222,6 @@
 		9A2630D512B7893E00343623 /* FCImageViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCImageViewHelper.m; sourceTree = "<group>"; };
 		9A26321612B7DD0B00343623 /* FCIconCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCIconCollection.h; sourceTree = "<group>"; };
 		9A26321712B7DD0B00343623 /* FCIconCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCIconCollection.m; sourceTree = "<group>"; };
-		9A30171A12AE3F8B00EC03AD /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		9A30172612AE400900EC03AD /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		9A3AE6B712D7614900F8CB9D /* lightBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackgroundPattern.png; path = resources/images/lightBackgroundPattern.png; sourceTree = "<group>"; };
 		9A421F10120C2B9200D370F8 /* FCProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCProtocols.h; path = Classes/FCProtocols.h; sourceTree = "<group>"; };
 		9A421F11120C2B9200D370F8 /* FCTypedef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCTypedef.m; path = Classes/FCTypedef.m; sourceTree = "<group>"; };
@@ -235,6 +235,10 @@
 		9A421F2C120C564E00D370F8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = resources/images/Default.png; sourceTree = "<group>"; };
 		9A421F37120C588900D370F8 /* FCRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCRootViewController.h; sourceTree = "<group>"; };
 		9A421F38120C588900D370F8 /* FCRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCRootViewController.m; sourceTree = "<group>"; };
+		9A4C91FD12E4B9A400A1420A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		9A4C920112E4B9B500A1420A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9A4C920512E4B9C200A1420A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		9A4C920912E4B9E800A1420A /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		9A57D51B12B7EA5800546803 /* FCIcons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = FCIcons.plist; path = resources/images/icons/FCIcons.plist; sourceTree = "<group>"; };
 		9A5C7FE3124D02B400FA92ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9A5C805F124D038000FA92ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -500,6 +504,10 @@
 				9A5C811A124D03F500FA92ED /* QuartzCore.framework in Frameworks */,
 				9A5C8120124D043100FA92ED /* libsqlite3.dylib in Frameworks */,
 				9A9EDC50127C1FDA00322158 /* CoreFoundation.framework in Frameworks */,
+				9A4C91FE12E4B9A400A1420A /* CFNetwork.framework in Frameworks */,
+				9A4C920212E4B9B500A1420A /* SystemConfiguration.framework in Frameworks */,
+				9A4C920612E4B9C200A1420A /* MobileCoreServices.framework in Frameworks */,
+				9A4C920A12E4B9E800A1420A /* libz.1.2.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,10 +592,10 @@
 				9A5C8119124D03F500FA92ED /* QuartzCore.framework */,
 				9A5C811F124D043100FA92ED /* libsqlite3.dylib */,
 				9A9EDC4F127C1FDA00322158 /* CoreFoundation.framework */,
-				9A30171A12AE3F8B00EC03AD /* CFNetwork.framework */,
-				9A30171E12AE3FC000EC03AD /* SystemConfiguration.framework */,
-				9A30172212AE3FD500EC03AD /* MobileCoreServices.framework */,
-				9A30172612AE400900EC03AD /* libz.1.2.3.dylib */,
+				9A4C91FD12E4B9A400A1420A /* CFNetwork.framework */,
+				9A4C920112E4B9B500A1420A /* SystemConfiguration.framework */,
+				9A4C920512E4B9C200A1420A /* MobileCoreServices.framework */,
+				9A4C920912E4B9E800A1420A /* libz.1.2.3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
