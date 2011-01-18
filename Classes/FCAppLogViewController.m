@@ -677,6 +677,11 @@
 	_isVisible = NO;
 }
 
+-(void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+
+	[self.searchBar becomeFirstResponder];
+}
+
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
