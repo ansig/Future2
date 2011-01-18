@@ -31,6 +31,7 @@
 @interface FCAppViewController : UIViewController <MBProgressHUDDelegate> {
 
 	UINavigationController *overlaidNavigationController;
+	BOOL _isVisible;
 	
 	MBProgressHUD *_progressHUD;
 }

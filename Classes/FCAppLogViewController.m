@@ -182,6 +182,14 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:NO forKey:FCDefaultShowLog];
 	
+	// Perform necessary tasks
+	
+	if (_needsReadAndReload)
+		[self performTask:@selector(readAndReload) withMessage:@"Updating"];
+	
+	else if (_needsReload)
+		[self performTask:@selector(reload) withMessage:@"Updating"];
+	
 	// Reactivate search display
 	if (self.searchWasActive)
 		[self enterSearchMode];
@@ -358,16 +366,15 @@
 	[self loadSectionsAndRows];
 	[self.tableView reloadData];
 	
-	if (self.searchDisplayController.active)
-		[self.searchDisplayController.searchResultsTableView reloadData];
+	_needsReadAndReload = NO;
+	_needsReload = NO; // Ensures there are no double updates
 }
 
 -(void)reload {
 
 	[self.tableView reloadData];
 	
-	if (self.searchDisplayController.active)
-		[self.searchDisplayController.searchResultsTableView reloadData];
+	_needsReload = NO;
 }
 
 -(void)doSearchWithSearchBar:(UISearchBar *)theSearchBar {
@@ -416,27 +423,32 @@
 
 -(void)onEntryCreatedNotification {
 	
-	[self readAndReload];
+	_needsReadAndReload = YES;
 	
-	//[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onEntryUpdatedNotification {
 	
-	[self readAndReload];
+	_needsReadAndReload = YES;
 	
-	//[self performTask:@selector(readAndReload) withMessage:@"Updating log"];
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onEntryDeletedNotification {
 	
-	[self loadSectionsAndRows];
-	[self.tableView reloadData];
+	if (!_isVisible)
+		_needsReadAndReload = YES;
+	
+	if (self.searchDisplayController.active)
+		[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)onAttachmentAddedNotification {
 	
-	[self.tableView reloadData];
+	_needsReload = YES;
 	
 	if (self.searchDisplayController.active)
 		[self.searchDisplayController.searchResultsTableView reloadData];
@@ -444,7 +456,7 @@
 
 -(void)onAttachmentRemovedNotification {
 	
-	[self.tableView reloadData];
+	_needsReload = YES;
 	
 	if (self.searchDisplayController.active)
 		[self.searchDisplayController.searchResultsTableView reloadData];
@@ -452,7 +464,7 @@
 
 -(void)onCategoryUpdatedNotification {
 
-	[self.tableView reloadData];
+	_needsReload = YES;
 }
 
 #pragma mark UIActionSheetDelegate
@@ -660,6 +672,11 @@
 
 #pragma mark UISearchDisplayControllerDelegate
 
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+
+	_isVisible = NO;
+}
+
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRotationAllowed object:self];
@@ -669,6 +686,10 @@
 	
 	if (self.filteredSections != nil)
 		self.filteredSections = nil;
+	
+	_isVisible = YES;
+	
+	[self viewDidAppear:YES];
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {

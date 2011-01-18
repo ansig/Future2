@@ -99,11 +99,15 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
+	
+	_isVisible = YES;
 
 	[super viewDidAppear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+	
+	_isVisible = NO;
 	
 	[super viewWillDisappear:animated];
 }
@@ -234,6 +238,9 @@
 	
 	// release navigation controller which contains the overlay view controller
 	self.overlaidNavigationController = nil;
+	
+	if (!self.searchDisplayController.active)
+		[self viewDidAppear:YES];
 }
 
 -(void)performTask:(SEL)task {

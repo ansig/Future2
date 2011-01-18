@@ -277,15 +277,6 @@
 	}
 }
 
-#pragma mark Tasks
-
--(void)doSave {
-
-	// save the entry only if it is not already saved (ie has an eid)
-	if (self.entry.eid == nil)
-		[self.entry save];
-}
-
 #pragma mark Orientation
 
 /*
@@ -809,7 +800,9 @@
 
 -(void)save {
 	
-	[self performTask:@selector(doSave) withMessage:@"Saving"];
+	// save the entry only if it is not already saved (ie has an eid)
+	if (self.entry.eid == nil)
+		[self.entry save];
 	
 	[super dismiss];
 }

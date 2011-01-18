@@ -474,7 +474,7 @@
 	
     // Task completed, update view in main thread (note: view operations should
     // be done only in the main thread)
-    [self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:YES]; // OBS! Changed waitUntilDone: to YES (originally NO)
+    [self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:NO];
 	
     [pool release];
 }

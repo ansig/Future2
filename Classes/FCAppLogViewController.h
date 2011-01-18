@@ -46,6 +46,9 @@
 	
 	UISearchBar *searchBar;
 	BOOL searchWasActive;
+	
+	BOOL _needsReadAndReload;
+	BOOL _needsReload;
 }
 
 @property (nonatomic, retain) NSDate *startDate;
