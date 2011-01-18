@@ -581,7 +581,6 @@
 		self.maximumTextField.text = [self.maximumTextField.text numberString];
 		
 		[self ensureMinMaxRelationship];
-	
 	}
 	
 	// exit edit mode
@@ -616,10 +615,10 @@
 		// update table
 		
 		NSArray *insertIndexPaths = [NSArray arrayWithObjects:	
+									 [NSIndexPath indexPathForRow:2 inSection:0],
+									 [NSIndexPath indexPathForRow:3 inSection:0],
 									 [NSIndexPath indexPathForRow:4 inSection:0],
 									 [NSIndexPath indexPathForRow:5 inSection:0],
-									 [NSIndexPath indexPathForRow:6 inSection:0],
-									 [NSIndexPath indexPathForRow:7 inSection:0],
 									 nil];
 		
 		[self.tableView beginUpdates];
@@ -632,16 +631,16 @@
 		
 		// * Remove four lower rows from section
 		
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
-		[[self.sections objectAtIndex:0] removeObjectAtIndex:4];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
+		[[self.sections objectAtIndex:0] removeObjectAtIndex:2];
 		
 		NSArray *deleteIndexPaths = [NSArray arrayWithObjects:	
+									 [NSIndexPath indexPathForRow:2 inSection:0],
+									 [NSIndexPath indexPathForRow:3 inSection:0],
 									 [NSIndexPath indexPathForRow:4 inSection:0],
 									 [NSIndexPath indexPathForRow:5 inSection:0],
-									 [NSIndexPath indexPathForRow:6 inSection:0],
-									 [NSIndexPath indexPathForRow:7 inSection:0],
 									 nil];
 		
 		[self.tableView beginUpdates];
@@ -821,6 +820,12 @@
 	NSDictionary *namePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
+	// type
+	
+	objects = [[NSArray alloc] initWithObjects:@"Countable", self.countableSwitch, nil];
+	NSDictionary *countablePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+	[objects release];
+	
 	// icon
 	
 	objects = [[NSArray alloc] initWithObjects:@"Icon", self.iconButton, nil];
@@ -833,15 +838,9 @@
 	NSDictionary *colorPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	// type
-	
-	objects = [[NSArray alloc] initWithObjects:@"Countable", self.countableSwitch, nil];
-	NSDictionary *countablePair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
-	[objects release];
-	
 	// compose the section
 	
-	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, iconPair, colorPair, countablePair, nil];
+	NSMutableArray *basicSection = [[NSMutableArray alloc] initWithObjects:namePair, countablePair, iconPair, colorPair, nil];
 	
 	[iconPair release];
 	[colorPair release];
@@ -912,13 +911,17 @@
 	NSArray *keys = [[NSArray alloc] initWithObjects:@"Title", @"ControlObject", nil];
 	NSArray *objects;
 	
+	NSInteger index;
+	
 	// minimum
 	
 	objects = [[NSArray alloc] initWithObjects:@"Minimum", self.minimumTextField, nil];
 	NSDictionary *minimumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	[[self.sections objectAtIndex:0] addObject:minimumPair];
+	index = self.category.cid != nil ? 1 : 2;
+	
+	[[self.sections objectAtIndex:0] insertObject:minimumPair atIndex:index];
 	
 	[minimumPair release];
 	
@@ -928,7 +931,9 @@
 	NSDictionary *maximumPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	[[self.sections objectAtIndex:0] addObject:maximumPair];
+	index = self.category.cid != nil ? 2 : 3;
+	
+	[[self.sections objectAtIndex:0] insertObject:maximumPair atIndex:index];
 	
 	[maximumPair release];
 	
@@ -938,7 +943,9 @@
 	NSDictionary *decimalsPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	[[self.sections objectAtIndex:0] addObject:decimalsPair];
+	index = self.category.cid != nil ? 3 : 4;
+	
+	[[self.sections objectAtIndex:0] insertObject:decimalsPair atIndex:index];
 	
 	[decimalsPair release];
 	
@@ -948,7 +955,9 @@
 	NSDictionary *unitPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	[[self.sections objectAtIndex:0] addObject:unitPair];
+	index = self.category.cid != nil ? 4 : 5;
+	
+	[[self.sections objectAtIndex:0] insertObject:unitPair atIndex:index];
 	
 	[unitPair release];
 	
