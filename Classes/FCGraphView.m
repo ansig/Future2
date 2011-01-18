@@ -87,7 +87,7 @@
 	
 	// * Draw a gradient background
 	
-	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];	
+	CGColorRef topColorRef = self.topColor != nil ? [self.topColor CGColor] : [[UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f] CGColor];	
 	CGColorRef bottomColorRef = self.bottomColor != nil ? [self.bottomColor CGColor] : [[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] CGColor];
 	NSArray *colors = [NSArray arrayWithObjects: (id)topColorRef, (id)bottomColorRef, nil];
 	CGFloat locations[] = {0, 1};

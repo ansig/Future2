@@ -133,7 +133,7 @@
 	 // * Log dates button
 	 
 	 UIButton *newLogDatesButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	 newLogDatesButton.frame = CGRectMake(5.0f, 5.0f, 30.0f, 30.0f);
+	 newLogDatesButton.frame = CGRectMake(440.0f, 5.0f, 30.0f, 30.0f);
 	 
 	 [newLogDatesButton setImage:[UIImage imageNamed:@"calendarButton.png"] forState:UIControlStateNormal];
 	 [newLogDatesButton addTarget:self action:@selector(loadLogDateSelectorViewController) forControlEvents:UIControlEventTouchUpInside];

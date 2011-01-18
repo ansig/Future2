@@ -76,7 +76,7 @@
 	UIImage *image = [UIImage imageNamed:@"doneButton.png"];
 	[newDoneButton setImage:image forState:UIControlStateNormal];
 	
-	newDoneButton.frame = CGRectMake(self.view.frame.size.width - 35.0f, 5.0f, image.size.width, image.size.height);
+	newDoneButton.frame = CGRectMake(self.view.frame.size.width - 40.0f, 5.0f, image.size.width, image.size.height);
 	
 	[newDoneButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -91,7 +91,8 @@
 	newCalendarMonthView.dataSource = self.calendarDelegate;
 	self.calendarDelegate.calendarMonthView = newCalendarMonthView;
 	
-	newCalendarMonthView.frame = CGRectMake(5.0f, 5.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
+	CGFloat xPos = (self.view.bounds.size.width/2) - (newCalendarMonthView.frame.size.width/2);
+	newCalendarMonthView.frame = CGRectMake(xPos, 5.0f, newCalendarMonthView.frame.size.width, newCalendarMonthView.frame.size.height); // in preparation for appearance animation below
 	
 	self.calendarMonthView = newCalendarMonthView;
 	[newCalendarMonthView release];

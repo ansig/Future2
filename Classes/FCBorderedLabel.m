@@ -36,6 +36,8 @@
 	
 	if (self = [super initWithFrame:frame]) {
 		
+		spacing = 2.0f;
+		
 		[self.layer setBorderWidth:2.0f];
 		[self.layer setCornerRadius:5.0f];
 		[self.layer setBorderColor:[[UIColor blackColor] CGColor]];
@@ -56,15 +58,19 @@
 	if (self.imageView != nil) {
 	
 		CGFloat xPos = self.imageView.frame.origin.x + self.imageView.frame.size.width + spacing;
-		CGFloat width = rect.size.width - xPos;
+		CGFloat width = rect.size.width - xPos - spacing;
 	
 		CGRect newRect = CGRectMake(xPos, rect.origin.y, width, rect.size.height);
 		
 		[super drawTextInRect:newRect];
 		
 	} else {
-	
-		[super drawTextInRect:rect];
+		
+		CGFloat width = rect.size.width - spacing;
+		
+		CGRect newRect = CGRectMake(rect.origin.x, rect.origin.y, width, rect.size.height);
+		
+		[super drawTextInRect:newRect];
 	}
 }
 
@@ -78,8 +84,6 @@
 #pragma mark Custom
 
 -(void)loadImageView {
-	
-	spacing = 2.0f;
 	
 	CGFloat height = self.frame.size.height - (spacing*2);
 	CGFloat width = height;
