@@ -464,7 +464,7 @@
 
 -(void)onCategoryUpdatedNotification {
 
-	_needsReload = YES;
+	_needsReadAndReload = YES;
 }
 
 #pragma mark UIActionSheetDelegate
