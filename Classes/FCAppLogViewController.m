@@ -194,6 +194,12 @@
 	if (self.searchWasActive)
 		[self enterSearchMode];
 	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultShowHelpMessageLog]) {
+		
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultShowHelpMessageLog];
+		[self showAlertUsingResourceWithName:@"Log"];
+	}
+	
 	[super viewWillAppear:animated];
 }
 

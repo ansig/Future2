@@ -208,6 +208,12 @@
 
 -(void)viewDidAppear:(BOOL)animated {
 	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultShowHelpMessageProfile]) {
+	
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultShowHelpMessageProfile];
+		[self showAlertUsingResourceWithName:@"Profile"];
+	}
+	
 	// flash the scroll indicator to remind the user that there are two pages
 	[self.scrollView flashScrollIndicators];
 	

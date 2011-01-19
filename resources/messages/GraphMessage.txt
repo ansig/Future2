@@ -1,0 +1,9 @@
+Here you can see a timeplot of any kind of entries you have made. 
+
+It shows the same time period as you have selected in the Log, but you can also select other dates by pressing the calendar button in the top right corner. You can select whether to view hours, days or months by pinching in or out anywhere on this view.
+
+There is a pull-down menu above the handle with dates at the top which you can either pull down with your finger or double-tap to see. There you select what entries you want to see in the graph and have a large number of options for how you want them to appear.
+
+For entries that are countable there is a handle on the right side of the graph that you can either pull or double-tap. It will create a separate twin of the graph which you can scroll to compare different time periods.
+
+You can also overlay other time periods to make comparisons by pressing the (+) buttons in each graph (only appears if there is entries for the current time period).

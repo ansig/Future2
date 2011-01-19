@@ -201,6 +201,17 @@
 	// e.g. self.myOutlet = nil;
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultShowHelpMessageGraph]) {
+		
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultShowHelpMessageGraph];
+		[self showAlertUsingResourceWithName:@"Graph"];
+	}
+	
+	[super viewDidAppear:animated];
+}
+
 -(void)loadLogDateSelectorViewController {
 	
 	FCGraphLogDateSelectorViewController *viewController = [[FCGraphLogDateSelectorViewController alloc] init];
@@ -674,6 +685,38 @@
 }
 
 #pragma mark Custom
+
+-(void)showAlertUsingResourceWithName:(NSString *)name {
+	
+	NSError *error = nil;
+	
+	NSString *titleResourceName = [NSString stringWithFormat:@"%@Title", name];
+	NSString *titleFilePath = [[NSBundle mainBundle] pathForResource:titleResourceName ofType:@"txt"];
+	NSString *title = [NSString stringWithContentsOfFile:titleFilePath encoding:NSUTF8StringEncoding error:&error];
+	
+	if (error != nil) {
+		
+		NSLog(@"FCGraphRooViewController -showAlertMessageUsingResourceWithName: || Could not retrieve title with message: %@", [error localizedDescription]);
+		
+		return;
+	}
+	
+	NSString *messageResourceName = [NSString stringWithFormat:@"%@Message", name];
+	NSString *messageFilePath = [[NSBundle mainBundle] pathForResource:messageResourceName ofType:@"txt"]; 
+	NSString *message = [NSString stringWithContentsOfFile:messageFilePath encoding:NSUTF8StringEncoding error:&error];
+	
+	if (error != nil) {
+		
+		NSLog(@"FCGraphRooViewController -showAlertMessageUsingResourceWithName: || Could not retrieve message with message:  %@", [error localizedDescription]);
+		
+		return;
+	}
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
+	[alertView show];
+	
+	[alertView release]; 
+}
 
 -(void)beginSelectingAdditionalLogDates {
 	

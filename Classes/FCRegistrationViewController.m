@@ -99,13 +99,12 @@
 
 -(void)showWelcomeMessage {
 	
-	NSString *title = @"Welcome to TiY!";
-	NSString *message = @"A profile will automatically be created for this test version. Please fill in your details under the Profile tab.";
+	[self showAlertUsingResourceWithName:@"Introduction"];
+}
+
+-(void)showCompletedMessage {
 	
-	UIAlertView *profileSaveAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
-	[profileSaveAlert show];
-	
-	[profileSaveAlert release];
+	[self showAlertUsingResourceWithName:@"ProjectInfo"];
 }
 
 #pragma mark Delegate
@@ -114,56 +113,38 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	
-	// user defaults
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	// OBS! Tmp solution to simply show welcome messages instead of doing the registration process!
 	
-	// * TMP TEST PROFILE
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultRegistrationComplete]) {
+		
+		[self showCompletedMessage];
+		
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultRegistrationComplete];
+		
+	} else {
 	
-	NSString *username = @"User1";
-	[defaults setObject:username forKey:FCDefaultProfileUsername];
-	
-	/*
-	 
-	NSString *email = @"ash.williams@boomstick.com";
-	[defaults setObject:email forKey:FCDefaultProfileEmail];
-	
-	NSString *firstName = @"Ashley";
-	[defaults setObject:firstName forKey:FCDefaultProfileFirstName];
-	
-	NSString *surname = @"J. Williams";
-	[defaults setObject:surname forKey:FCDefaultProfileSurname];
-	
-	NSDateFormatter *formatter = [NSDateFormatter fc_dateFormatterGMT];
-	[formatter setDateFormat:@"yyyy-MM-dd"];
-	NSDate *dateOfBirth = [formatter dateFromString:@"1958-06-22"];
-	[defaults setObject:dateOfBirth forKey:FCDefaultProfileDateOfBirth];
-	
-	//NSDate *diabetesDateDiagnosed = [formatter dateFromString:@"2004-04-05"];
-	//[defaults setObject:diabetesDateDiagnosed forKey:FCDefaultProfileDiabetesDateDiagnosed];
-	
-	NSString *diabetesType = @"Type 1";
-	[defaults setObject:diabetesType forKey:FCDefaultProfileDiabetesType];
-	
-	NSString *rapidInsulin = @"NovoRapid";
-	[defaults setObject:rapidInsulin forKey:FCDefaultProfileRapidInsulin];
-	
-	NSString *basalInsulin = @"Lantus";
-	[defaults setObject:basalInsulin forKey:FCDefaultProfileBasalInsulin];
-	
-	NSString *injectionPen = @"NovoPen 4";
-	[defaults setObject:injectionPen forKey:FCDefaultProfileInjectionPen];
-	 */
-	
-	// * SETTINGS
-	[defaults setInteger:FCTabGlucose forKey:FCDefaultTabBarIndex]; // Glucose tab
-	[defaults setInteger:FCUnitSystemMetric forKey:FCDefaultHeightWeigthSystem]; // Metric
-	[defaults setInteger:FCDateDisplayDate forKey:FCDefaultAgeDisplay]; // Date
-	[defaults setBool:YES forKey:FCDefaultGraphSettingScrollRelatives]; // scroll relatives in graph
-	
-	// synchronise defaults
-	[defaults synchronize];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRegistrationCompleted object:self];
+		// user defaults
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		// * SETTINGS
+		
+		[defaults setInteger:FCTabGlucose forKey:FCDefaultTabBarIndex]; // Glucose tab
+		[defaults setInteger:FCUnitSystemMetric forKey:FCDefaultHeightWeigthSystem]; // Metric
+		[defaults setInteger:FCDateDisplayDate forKey:FCDefaultAgeDisplay]; // Date
+		[defaults setBool:YES forKey:FCDefaultGraphSettingScrollRelatives]; // scroll relatives in graph
+		
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageProfile];
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageGlucose];
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageTags];
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageRecord];
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageLog];
+		[defaults setBool:YES forKey:FCDefaultShowHelpMessageGraph];
+		
+		// synchronise defaults
+		[defaults synchronize];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationRegistrationCompleted object:self];
+	}
 }
 
 @end

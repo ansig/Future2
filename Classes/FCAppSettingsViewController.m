@@ -351,6 +351,14 @@
 	}
 }
 
+-(void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message {
+
+	UIAlertView *profileSaveAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];	
+	[profileSaveAlert show];
+	
+	[profileSaveAlert release];
+}
+
 #pragma mark FCGroupedTableSourceDelegate
 
 -(void)loadSectionsAndRows {
@@ -409,7 +417,7 @@
 	NSDictionary *defaultTabPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	NSArray *generalSection = [[NSArray alloc] initWithObjects:defaultTabPair, nil];
+	NSArray *generalSection = [[NSArray alloc] initWithObjects:kSettingsItemResetRegistration, kSettingsItemResetHelpMessages, defaultTabPair, nil];
 	[newSections addObject:generalSection];
 	
 	[defaultTabPair release];
@@ -587,6 +595,27 @@
 		}
 		
 		[item release];
+		
+	} else if ([object isKindOfClass:[NSString class]]) {
+		
+		NSString *string = (NSString *)object;
+		if ([string isEqualToString:kSettingsItemResetRegistration]) {
+			
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultRegistrationComplete];
+			
+			[self showAlertViewWithTitle:@"Welcome messages reset" message:@"The next time you start TiY you will see the same welcome messages as when you started TiY the very first time."];
+			
+		} else if ([string isEqualToString:kSettingsItemResetHelpMessages]) {
+			
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageProfile];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageGlucose];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageTags];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageRecord];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageLog];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageGraph];
+			
+			[self showAlertViewWithTitle:@"Help messages reset" message:@"All help messages will show once more as you go to the corresponding views."];
+		}
 		
 	}
 	

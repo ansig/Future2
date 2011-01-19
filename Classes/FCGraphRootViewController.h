@@ -95,6 +95,8 @@
 
 // Custom
 
+-(void)showAlertUsingResourceWithName:(NSString *)name;
+
 -(void)beginSelectingAdditionalLogDates;
 -(void)finishSelectingAdditionalLogDates;
 

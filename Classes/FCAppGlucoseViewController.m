@@ -144,6 +144,12 @@
 	// stop listening to notifications about category updates
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:FCNotificationCategoryUpdated object:nil];
 	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultShowHelpMessageGlucose]) {
+		
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultShowHelpMessageGlucose];
+		[self showAlertUsingResourceWithName:@"Glucose"];
+	}
+	
 	[super viewDidAppear:animated];
 }
 

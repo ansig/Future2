@@ -64,6 +64,9 @@ NSString * const FCKeyDIDDecimal = @"system_0_3";
 #pragma mark Defaults
 
 // profile
+
+NSString * const FCDefaultRegistrationComplete = @"DefaultRegistrationComplete";
+
 NSString * const FCDefaultProfileUsername = @"ProfileUsername";
 NSString * const FCDefaultProfileEmail = @"ProfileEmail";
 
@@ -92,6 +95,13 @@ NSString * const FCDefaultConvertLog = @"DefaultConvertLog";
 NSString * const FCDefaultTabBarIndex = @"DefaultTabBarIndex";
 NSString * const FCDefaultShowLog = @"DefaultShowLog";
 NSString * const FCDefaultAgeDisplay = @"DefaultDateOfBirthDisplay";
+
+NSString * const FCDefaultShowHelpMessageProfile = @"ShowHelpMessageProfile";
+NSString * const FCDefaultShowHelpMessageGlucose = @"ShowHelpMessageGlucose";
+NSString * const FCDefaultShowHelpMessageTags = @"ShowHelpMessageTags";
+NSString * const FCDefaultShowHelpMessageRecord = @"ShowHelpMessageRecord";
+NSString * const FCDefaultShowHelpMessageLog = @"ShowHelpMessageLog";
+NSString * const FCDefaultShowHelpMessageGraph = @"ShowHelpMessageGraph";
 
 // log/graph
 

@@ -25,13 +25,15 @@
 //  Created by Anders Sigfridsson on 10/08/2010.
 //
 
-#import <UIKit/UIKit.h>
+#import "FCAppViewController.h" // SUPERCLASS
 
 
-@interface FCRegistrationViewController : UIViewController <UIAlertViewDelegate> {
+@interface FCRegistrationViewController : FCAppViewController {
 
+	BOOL _didShowAllMessages;
 }
 
 -(void)showWelcomeMessage;
+-(void)showCompletedMessage;
 
 @end

@@ -28,7 +28,7 @@
 
 #import "MBProgressHUD.h"
 
-@interface FCAppViewController : UIViewController <MBProgressHUDDelegate> {
+@interface FCAppViewController : UIViewController <MBProgressHUDDelegate, UIAlertViewDelegate> {
 
 	UINavigationController *overlaidNavigationController;
 	BOOL _isVisible;
@@ -39,6 +39,8 @@
 @property (nonatomic, retain) UINavigationController *overlaidNavigationController;
 
 // Custom
+
+-(void)showAlertUsingResourceWithName:(NSString *)name;
 
 -(void)presentOverlayViewController:(id)anOverlayViewController;
 -(void)replaceOverlayViewControllerWith:(id)anotherOverlayViewController;

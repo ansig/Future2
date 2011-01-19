@@ -1,0 +1,1 @@
+This view is for entering your blood glucose readings. You can select a time as well as alternative units by clicking on the cogwheel buttons next to each. Once you press Save you can attach insulin injections, notes, photos, or any tags that you have created to your reading.

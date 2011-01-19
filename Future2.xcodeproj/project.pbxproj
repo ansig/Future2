@@ -165,6 +165,22 @@
 		9AA858F21210394D008DA1BA /* FCAppTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA858F11210394D008DA1BA /* FCAppTagsViewController.m */; };
 		9AA858F512103967008DA1BA /* FCAppRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA858F412103967008DA1BA /* FCAppRecordingViewController.m */; };
 		9AA858F81210397B008DA1BA /* FCAppLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AA858F71210397B008DA1BA /* FCAppLogViewController.m */; };
+		9AAD814F12E739940000BEDF /* ProjectInfoMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD814D12E739940000BEDF /* ProjectInfoMessage.txt */; };
+		9AAD815012E739940000BEDF /* ProjectInfoTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD814E12E739940000BEDF /* ProjectInfoTitle.txt */; };
+		9AAD815612E739C10000BEDF /* IntroductionMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD815412E739C10000BEDF /* IntroductionMessage.txt */; };
+		9AAD815712E739C10000BEDF /* IntroductionTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD815512E739C10000BEDF /* IntroductionTitle.txt */; };
+		9AAD816212E73C4F0000BEDF /* GlucoseMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD815E12E73C4F0000BEDF /* GlucoseMessage.txt */; };
+		9AAD816312E73C4F0000BEDF /* GlucoseTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD815F12E73C4F0000BEDF /* GlucoseTitle.txt */; };
+		9AAD816412E73C4F0000BEDF /* ProfileMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD816012E73C4F0000BEDF /* ProfileMessage.txt */; };
+		9AAD816512E73C4F0000BEDF /* ProfileTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD816112E73C4F0000BEDF /* ProfileTitle.txt */; };
+		9AAD818212E7474A0000BEDF /* RecordMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD817E12E7474A0000BEDF /* RecordMessage.txt */; };
+		9AAD818312E7474A0000BEDF /* RecordTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD817F12E7474A0000BEDF /* RecordTitle.txt */; };
+		9AAD818412E7474A0000BEDF /* TagsMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818012E7474A0000BEDF /* TagsMessage.txt */; };
+		9AAD818512E7474A0000BEDF /* TagsTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818112E7474A0000BEDF /* TagsTitle.txt */; };
+		9AAD818E12E747E20000BEDF /* GraphMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818A12E747E20000BEDF /* GraphMessage.txt */; };
+		9AAD818F12E747E20000BEDF /* GraphTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818B12E747E20000BEDF /* GraphTitle.txt */; };
+		9AAD819012E747E20000BEDF /* LogMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818C12E747E20000BEDF /* LogMessage.txt */; };
+		9AAD819112E747E20000BEDF /* LogTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818D12E747E20000BEDF /* LogTitle.txt */; };
 		9AB0C0FB1279CEE600A63CCA /* FCAppNewEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */; };
 		9AB3D6181237AE2E00548306 /* FCDatabaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB3D6171237AE2E00548306 /* FCDatabaseHandler.m */; };
 		9AD2E84E122E452900A4445B /* FCAppProfileInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2E84D122E452900A4445B /* FCAppProfileInputViewController.m */; };
@@ -400,6 +416,22 @@
 		9AA858F412103967008DA1BA /* FCAppRecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppRecordingViewController.m; sourceTree = "<group>"; };
 		9AA858F61210397B008DA1BA /* FCAppLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppLogViewController.h; sourceTree = "<group>"; };
 		9AA858F71210397B008DA1BA /* FCAppLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppLogViewController.m; sourceTree = "<group>"; };
+		9AAD814D12E739940000BEDF /* ProjectInfoMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ProjectInfoMessage.txt; path = resources/messages/ProjectInfoMessage.txt; sourceTree = "<group>"; };
+		9AAD814E12E739940000BEDF /* ProjectInfoTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ProjectInfoTitle.txt; path = resources/messages/ProjectInfoTitle.txt; sourceTree = "<group>"; };
+		9AAD815412E739C10000BEDF /* IntroductionMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = IntroductionMessage.txt; path = resources/messages/IntroductionMessage.txt; sourceTree = "<group>"; };
+		9AAD815512E739C10000BEDF /* IntroductionTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = IntroductionTitle.txt; path = resources/messages/IntroductionTitle.txt; sourceTree = "<group>"; };
+		9AAD815E12E73C4F0000BEDF /* GlucoseMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GlucoseMessage.txt; path = resources/messages/GlucoseMessage.txt; sourceTree = "<group>"; };
+		9AAD815F12E73C4F0000BEDF /* GlucoseTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GlucoseTitle.txt; path = resources/messages/GlucoseTitle.txt; sourceTree = "<group>"; };
+		9AAD816012E73C4F0000BEDF /* ProfileMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ProfileMessage.txt; path = resources/messages/ProfileMessage.txt; sourceTree = "<group>"; };
+		9AAD816112E73C4F0000BEDF /* ProfileTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ProfileTitle.txt; path = resources/messages/ProfileTitle.txt; sourceTree = "<group>"; };
+		9AAD817E12E7474A0000BEDF /* RecordMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = RecordMessage.txt; path = resources/messages/RecordMessage.txt; sourceTree = "<group>"; };
+		9AAD817F12E7474A0000BEDF /* RecordTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = RecordTitle.txt; path = resources/messages/RecordTitle.txt; sourceTree = "<group>"; };
+		9AAD818012E7474A0000BEDF /* TagsMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TagsMessage.txt; path = resources/messages/TagsMessage.txt; sourceTree = "<group>"; };
+		9AAD818112E7474A0000BEDF /* TagsTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TagsTitle.txt; path = resources/messages/TagsTitle.txt; sourceTree = "<group>"; };
+		9AAD818A12E747E20000BEDF /* GraphMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GraphMessage.txt; path = resources/messages/GraphMessage.txt; sourceTree = "<group>"; };
+		9AAD818B12E747E20000BEDF /* GraphTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GraphTitle.txt; path = resources/messages/GraphTitle.txt; sourceTree = "<group>"; };
+		9AAD818C12E747E20000BEDF /* LogMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LogMessage.txt; path = resources/messages/LogMessage.txt; sourceTree = "<group>"; };
+		9AAD818D12E747E20000BEDF /* LogTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LogTitle.txt; path = resources/messages/LogTitle.txt; sourceTree = "<group>"; };
 		9AB0C0F91279CEE600A63CCA /* FCAppNewEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppNewEntryViewController.h; sourceTree = "<group>"; };
 		9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppNewEntryViewController.m; sourceTree = "<group>"; };
 		9AB3D6161237AE2E00548306 /* FCDatabaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCDatabaseHandler.h; sourceTree = "<group>"; };
@@ -496,6 +528,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9AAD811412E737F50000BEDF /* Messages */,
 				9AB3D6321237C61D00548306 /* SQL scripts */,
 				9AF7D9C4111AE0CE008E90F6 /* Graphics */,
 				9AF7D9C3111AE0C6008E90F6 /* Interfaces */,
@@ -758,6 +791,29 @@
 				9AA85739121009A5008DA1BA /* tagsTabBarIcon.png */,
 			);
 			name = TabBarIcons;
+			sourceTree = "<group>";
+		};
+		9AAD811412E737F50000BEDF /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				9AAD815412E739C10000BEDF /* IntroductionMessage.txt */,
+				9AAD815512E739C10000BEDF /* IntroductionTitle.txt */,
+				9AAD814D12E739940000BEDF /* ProjectInfoMessage.txt */,
+				9AAD814E12E739940000BEDF /* ProjectInfoTitle.txt */,
+				9AAD815E12E73C4F0000BEDF /* GlucoseMessage.txt */,
+				9AAD815F12E73C4F0000BEDF /* GlucoseTitle.txt */,
+				9AAD816012E73C4F0000BEDF /* ProfileMessage.txt */,
+				9AAD816112E73C4F0000BEDF /* ProfileTitle.txt */,
+				9AAD817E12E7474A0000BEDF /* RecordMessage.txt */,
+				9AAD817F12E7474A0000BEDF /* RecordTitle.txt */,
+				9AAD818012E7474A0000BEDF /* TagsMessage.txt */,
+				9AAD818112E7474A0000BEDF /* TagsTitle.txt */,
+				9AAD818A12E747E20000BEDF /* GraphMessage.txt */,
+				9AAD818B12E747E20000BEDF /* GraphTitle.txt */,
+				9AAD818C12E747E20000BEDF /* LogMessage.txt */,
+				9AAD818D12E747E20000BEDF /* LogTitle.txt */,
+			);
+			name = Messages;
 			sourceTree = "<group>";
 		};
 		9AB10F72124CAB43005E8D2A /* Icons */ = {
@@ -1165,6 +1221,22 @@
 				9A86897112DB0430001D01CE /* doneButton.png in Resources */,
 				9A8F407712DE2E9B002E5B53 /* minusButton.png in Resources */,
 				9A8F407812DE2E9B002E5B53 /* plusButton.png in Resources */,
+				9AAD814F12E739940000BEDF /* ProjectInfoMessage.txt in Resources */,
+				9AAD815012E739940000BEDF /* ProjectInfoTitle.txt in Resources */,
+				9AAD815612E739C10000BEDF /* IntroductionMessage.txt in Resources */,
+				9AAD815712E739C10000BEDF /* IntroductionTitle.txt in Resources */,
+				9AAD816212E73C4F0000BEDF /* GlucoseMessage.txt in Resources */,
+				9AAD816312E73C4F0000BEDF /* GlucoseTitle.txt in Resources */,
+				9AAD816412E73C4F0000BEDF /* ProfileMessage.txt in Resources */,
+				9AAD816512E73C4F0000BEDF /* ProfileTitle.txt in Resources */,
+				9AAD818212E7474A0000BEDF /* RecordMessage.txt in Resources */,
+				9AAD818312E7474A0000BEDF /* RecordTitle.txt in Resources */,
+				9AAD818412E7474A0000BEDF /* TagsMessage.txt in Resources */,
+				9AAD818512E7474A0000BEDF /* TagsTitle.txt in Resources */,
+				9AAD818E12E747E20000BEDF /* GraphMessage.txt in Resources */,
+				9AAD818F12E747E20000BEDF /* GraphTitle.txt in Resources */,
+				9AAD819012E747E20000BEDF /* LogMessage.txt in Resources */,
+				9AAD819112E747E20000BEDF /* LogTitle.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

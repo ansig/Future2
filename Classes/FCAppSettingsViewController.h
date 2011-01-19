@@ -66,4 +66,6 @@
 -(void)displayWebview;
 -(void)dismissWebView;
 
+-(void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message;
+
 @end

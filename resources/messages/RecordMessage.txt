@@ -1,0 +1,1 @@
+The Record view allows you to make stand-alone entries by simply clicking on the kind you want. You can of course attach other entries to it and everything appears in both the log and the graph once you are done.

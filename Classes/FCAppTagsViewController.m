@@ -116,6 +116,17 @@
  }
  */
 
+-(void)viewDidAppear:(BOOL)animated {
+
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultShowHelpMessageTags]) {
+		
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:FCDefaultShowHelpMessageTags];
+		[self showAlertUsingResourceWithName:@"Tags"];
+	}
+	
+	[super viewDidAppear:animated];
+}
+
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;

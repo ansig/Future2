@@ -1,0 +1,5 @@
+In this view you can access any entry that you have made. You select what time period to view by clicking the calendar button. 
+
+From here you can also access the graph by rotating the device counter clockwise.
+
+To see a detailed view for individual entries and their attachments, simply click on that entry. To delete an entry, swipe your finger across it and a delete button will appear.

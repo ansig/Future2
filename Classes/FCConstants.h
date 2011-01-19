@@ -141,6 +141,8 @@
 #define kSettingsItemAgeDisplay			@"Age display"
 
 #define kSettingsItemDefaultTab			@"Startup tab"
+#define kSettingsItemResetRegistration	@"Reset welcome messages"
+#define kSettingsItemResetHelpMessages	@"Reset help messages"
 
 #define kSettingsItemProjectInfo		@"Project"
 #define kSettingsItemLicenseInfo		@"Code license"
@@ -204,6 +206,8 @@ extern NSString * const FCKeyDIDDecimal;
 
 // profile
 
+extern NSString * const FCDefaultRegistrationComplete; // boolean
+
 extern NSString * const FCDefaultProfileUsername; // string object
 extern NSString * const FCDefaultProfileEmail; // string object
 
@@ -232,6 +236,13 @@ extern NSString * const FCDefaultConvertLog; // boolean
 extern NSString * const FCDefaultTabBarIndex; // integer
 extern NSString * const FCDefaultShowLog; // boolean
 extern NSString * const FCDefaultAgeDisplay; // integer
+
+extern NSString * const FCDefaultShowHelpMessageProfile; // boolean
+extern NSString * const FCDefaultShowHelpMessageGlucose; // boolean
+extern NSString * const FCDefaultShowHelpMessageTags; // boolean
+extern NSString * const FCDefaultShowHelpMessageRecord; // boolean
+extern NSString * const FCDefaultShowHelpMessageLog; // boolean
+extern NSString * const FCDefaultShowHelpMessageGraph; // boolean
 
 // log/graph
 

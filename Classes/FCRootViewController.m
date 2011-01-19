@@ -161,8 +161,8 @@
 	
 	// * Load application...
 	
-	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:FCDefaultProfileUsername];
-	if (username != nil) {
+	BOOL registrationComplete = [[NSUserDefaults standardUserDefaults] boolForKey:FCDefaultRegistrationComplete];
+	if (registrationComplete) {
 		
 		// * Application view controller
 		[self performSelector:@selector(loadApplicationViewController) withObject:NULL afterDelay:1.0f]; // delay for dramatical effect...
