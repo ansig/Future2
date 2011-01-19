@@ -138,8 +138,6 @@
 
 #define kSettingsItemHeightWeightSystem	@"Height/weight"
 #define kSettingsItemConvertLog			@"Auto convert"
-#define kSettingsItemRearrangeProfile	@"Rearrange profile page"
-#define kSettingsItemUsernamePassword	@"Username/Password"
 #define kSettingsItemAgeDisplay			@"Age display"
 
 #define kSettingsItemDefaultTab			@"Startup tab"

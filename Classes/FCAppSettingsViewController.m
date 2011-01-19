@@ -398,7 +398,7 @@
 	NSDictionary *dateOfBirthPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	NSArray *profileSection = [[NSArray alloc] initWithObjects:kSettingsItemUsernamePassword, kSettingsItemRearrangeProfile, dateOfBirthPair, nil];
+	NSArray *profileSection = [[NSArray alloc] initWithObjects:dateOfBirthPair, nil];
 	[newSections addObject:profileSection];
 	
 	[dateOfBirthPair release];
