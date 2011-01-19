@@ -193,7 +193,6 @@ typedef enum {
 	FCUnitQuantityInsulin,
 	FCUnitQuantityLength,
 	FCUnitQuantityNutrition,
-	FCUnitQuantityOther,
 	FCUnitQuantityTime,
 	FCUnitQuantityVolume,
 	FCUnitQuantityWeight

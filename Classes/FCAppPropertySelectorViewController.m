@@ -456,6 +456,15 @@
 	
 	NSArray *result = [dbh getColumns:columns fromTable:table withFilters:filter options:@"ORDER BY name"];
 	
+	// Special case: sometimes Customary units are exactly the same as Imperial. In that case we
+	// simply load the Imperial units to avoid an empty screen.
+	
+	if (result == nil && self.system == FCUnitSystemCustomary) {
+	
+		filter = [NSString stringWithFormat:@"system = %d AND quantity = %d", FCUnitSystemImperial, self.quantity];
+		result = [dbh getColumns:columns fromTable:table withFilters:filter options:@"ORDER BY name"];
+	}
+	
 	[dbh release];
 	
 	for (NSDictionary *row in result) {

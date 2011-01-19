@@ -25,30 +25,30 @@ INSERT INTO units (uid, name, abbreviation, metre, system, quantity) VALUES ('sy
 INSERT INTO units (uid, name, abbreviation, metre, system, quantity) VALUES ('system_0_10', 'Yard', 'yd', 0.9144, 1, 2);
 INSERT INTO units (uid, name, abbreviation, metre, system, quantity) VALUES ('system_0_11', 'Mile', 'mi', 1609.34, 1, 2);
 
-INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_12', 'Kilogram', 'kg', 1, 7);
-INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_13', 'Gram', 'g', 0.001, 7);
-INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_14', 'Milligram', 'mg', 0.000001, 7);
+INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_12', 'Kilogram', 'kg', 1, 6);
+INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_13', 'Gram', 'g', 0.001, 6);
+INSERT INTO units (uid, name, abbreviation, kilogram, quantity) VALUES ('system_0_14', 'Milligram', 'mg', 0.000001, 6);
 
-INSERT INTO units (uid, name, abbreviation, kilogram, system, quantity) VALUES ('system_0_15', 'Ounce', 'oz', 0.028349523125, 1, 7);
-INSERT INTO units (uid, name, abbreviation, kilogram, system, quantity) VALUES ('system_0_16', 'Pound', 'lb', 0.45359237, 1, 7);
+INSERT INTO units (uid, name, abbreviation, kilogram, system, quantity) VALUES ('system_0_15', 'Ounce', 'oz', 0.028349523125, 1, 6);
+INSERT INTO units (uid, name, abbreviation, kilogram, system, quantity) VALUES ('system_0_16', 'Pound', 'lb', 0.45359237, 1, 6);
 
-INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_17', 'Second', 'sec', 1, 5);
-INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_18', 'Minute', 'min', 60, 5);
-INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_19', 'Hour', 'h', 3600, 5);
-INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_20', 'Day', 'days', 86400, 5);
+INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_17', 'Second', 'sec', 1, 4);
+INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_18', 'Minute', 'min', 60, 4);
+INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_19', 'Hour', 'h', 3600, 4);
+INSERT INTO units (uid, name, abbreviation, second, quantity) VALUES ('system_0_20', 'Day', 'days', 86400, 4);
 
-INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_21', 'Litre', 'L', 0.001, 3, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_22', 'Millilitre', 'ml', 0.000001, 3, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_23', 'Centilitre', 'cl', 0.00001, 3, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_24', 'Decilitre', 'dl', 0.0001, 3, 6);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_21', 'Litre', 'L', 0.001, 3, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_22', 'Millilitre', 'ml', 0.000001, 3, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_23', 'Centilitre', 'cl', 0.00001, 3, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_24', 'Decilitre', 'dl', 0.0001, 3, 5);
 
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_25', 'Ounce', 'fl oz [Imp]', 0.0000284130625, 3, 1, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_26', 'Pint', 'pt [Imp]', 0.00056826125, 3, 1, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_27', 'Gallon', 'gal [Imp]', 0.00454609, 3, 1, 6);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_25', 'Ounce', 'fl oz [Imp]', 0.0000284130625, 3, 1, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_26', 'Pint', 'pt [Imp]', 0.00056826125, 3, 1, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_27', 'Gallon', 'gal [Imp]', 0.00454609, 3, 1, 5);
 
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_28', 'Ounce [fluid, US food nutrition labeling]', 'US fl oz', 0.00003, 3, 0, 3);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_29', 'Pint [fluid]', 'pt [US fl]', 0.000473176473, 3, 2, 6);
-INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_30', 'Gallon [fluid]', 'gal [US]', 0.003785411784, 3, 2, 6);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_28', 'Ounce [fluid, US food nutrition labeling]', 'US fl oz', 0.00003, 3, 2, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_29', 'Pint [fluid]', 'pt [US fl]', 0.000473176473, 3, 2, 5);
+INSERT INTO units (uid, name, abbreviation, metre, exponent, system, quantity) VALUES ('system_0_30', 'Gallon [fluid]', 'gal [US]', 0.003785411784, 3, 2, 5);
 
 INSERT INTO units (uid, name, abbreviation, metre, exponent, quantity) VALUES ('system_0_31', 'Insulin unit [U-100]', 'units', 0.00000001, 3, 1);
 

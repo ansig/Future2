@@ -157,9 +157,6 @@ NSString *FCUnitQuantityAsString(FCUnitQuantity quantity) {
 	else if (quantity == FCUnitQuantityNutrition)
 		return @"Nutrition";
 	
-	else if (quantity == FCUnitQuantityOther)
-		return @"Other";
-	
 	return nil;
 }
 
