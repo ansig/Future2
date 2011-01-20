@@ -136,7 +136,7 @@ modified TEXT,
 deleted Boolean  NOT NULL DEFAULT FALSE);
 
 CREATE TABLE icons (
-iid Varchar(512)  NOT NULL  PRIMARY KEY DEFAULT '-1',
+iid Varchar(512)  NOT NULL   PRIMARY KEY DEFAULT '-1',
 name Varchar(512),
 created TEXT(512),
 modified TEXT(512));
