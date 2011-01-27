@@ -611,31 +611,36 @@
 
 -(void)onGraphOptionsChangedNotification {
 	
-	// update log dates for the current date level
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
-	NSDate *endDate = [logDates objectForKey:@"EndDate"];
-	
-	NSDate *newStartDate;
-	
-	FCGraphScaleDateLevel level = [defaults integerForKey:FCDefaultGraphSettingDateLevel];
-	
-	switch (level) {
-			
-		case FCGraphScaleDateLevelHours:
-			newStartDate = [NSDate dateWithTimeInterval:-518400 sinceDate:endDate]; // week
-			break;
-			
-		default:
-			newStartDate = [NSDate dateWithTimeInterval:-2505600 sinceDate:endDate]; // month
-			break;
+	if (_newDateLevel) {
+		
+		// adjust log dates for the current date level
+		
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+		NSDate *endDate = [logDates objectForKey:@"EndDate"];
+		
+		NSDate *newStartDate;
+		
+		FCGraphScaleDateLevel level = [defaults integerForKey:FCDefaultGraphSettingDateLevel];
+		
+		switch (level) {
+				
+			case FCGraphScaleDateLevelHours:
+				newStartDate = [NSDate dateWithTimeInterval:-518400 sinceDate:endDate]; // week
+				break;
+				
+			default:
+				newStartDate = [NSDate dateWithTimeInterval:-2505600 sinceDate:endDate]; // month
+				break;
+		}
+		
+		NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", endDate, @"EndDate", nil];
+		[defaults setObject:newLogDates forKey:FCDefaultLogDates];
+		[newLogDates release];
+		
+		_newDateLevel = NO;
 	}
-	
-	NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", endDate, @"EndDate", nil];
-	[defaults setObject:newLogDates forKey:FCDefaultLogDates];
-	[newLogDates release];
 	
 	[self setLogDatesLabel];
 	
@@ -676,6 +681,8 @@
 		}
 		
 		if (level > -1 && level < 3) {
+			
+			_newDateLevel = YES;
 			
 			[[NSUserDefaults standardUserDefaults] setInteger:level forKey:FCDefaultGraphSettingDateLevel];
 		

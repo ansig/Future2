@@ -60,6 +60,7 @@
 	
 	CGFloat _initialScale;
 	CGFloat _changedScale;
+	BOOL _newDateLevel;
 	
 	MBProgressHUD *_progressHUD;
 }
