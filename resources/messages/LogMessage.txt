@@ -1,5 +1,7 @@
-In this view you can access any entry that you have made. You select what time period to view by clicking the calendar button. 
+In this view you can access any entries that you have made. You select what time period to view by clicking the (calendar) button.
 
-From here you can also access the graph by rotating the device counter clockwise.
+From here you can also access the Graph by {rotating} the device counter clockwise.
 
-To see a detailed view for individual entries and their attachments, simply click on that entry. To delete an entry, swipe your finger across it and a delete button will appear.
+The [Sort] button gives you different options for how to organise the entries and you can search among all entries regardless of time period by pressing [Search]. 
+
+To see a detailed view of individual entries and their attachments, simply {click} on that entry. To delete an entry, {swipe} your finger across it and a [Delete] button will appear ({click} anywhere outside the [Delete] button if you change your mind).

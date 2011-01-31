@@ -1,9 +1,9 @@
-Here you can see a timeplot of any kind of entries you have made. 
+Here you can create a timeplot graph of any kind of entries you have made. Scroll through a graph by {dragging} your finger left or right within them. If there are more graphs than can fit on screen you can also {drag} your finger up and down anywhere in this view to see more.
 
-It shows the same time period as you have selected in the Log, but you can also select other dates by pressing the calendar button in the top right corner. You can select whether to view hours, days or months by pinching in or out anywhere on this view.
+The Graph view shows the same time period as you have selected in the Log, but you can also select other dates by pressing the (calendar) button in the top right corner. You can select wether to view hours, days, or months by {pinching} in or out anywhere on this view.
 
-There is a pull-down menu above the handle with dates at the top which you can either pull down with your finger or double-tap to see. There you select what entries you want to see in the graph and have a large number of options for how you want them to appear.
+There is a pull-down menu above the handle which shows the current log dates. You can access it by either {pulling} the handle down with your finger or {double tapping} it. In this pull-down menu you can select what entries you want to create graphs of and have a large number of options for how you want them to appear. General options can be found by pressing the (Options) button, while options for specific graphs are viewed by {clicking} on them in the menu. 
 
-For entries that are countable there is a handle on the right side of the graph that you can either pull or double-tap. It will create a separate twin of the graph which you can scroll to compare different time periods.
+For entries that are countable there is a handle on the right side of the graph that you can either {pull} to the left or {double tap}. Doing so will create a twin graph which you can scroll independently to compare different time periods.
 
-You can also overlay other time periods to make comparisons by pressing the (+) buttons in each graph (only appears if there is entries for the current time period).
+You can also overlay entries from other time periods by pressing the (+) buttons in each graph (only appears if there are entries for the current time period).

@@ -1,1 +1,3 @@
-On this view you create and manage your tags. Tags are your own type of entries which you can, for example, attach to glucose readings and view in the graph. You have a "Create new tag" button in the top right corner and can edit any existing tags by pressing the cogwheel button next to them. To delete a tag, simply swipe your finger across it and a delete button will appear.
+On this view you create and manage your tags. Tags are your own type of entries which you can, for example, attach to glucose readings or make stand-alone entries of in the Record view. 
+
+You have a [Create new tag] button in the top right corner and can also edit existing tags by pressing the (cogwheel) button next to them. To delete a tag, simply {swipe} your finger across it and a [Delete] button will appear({click} anywhere outside the [Delete] button if you change your mind).

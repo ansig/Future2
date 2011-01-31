@@ -1,5 +1,5 @@
 TiY(tm) is developed at the Interaction Design Centre (University of Limerick, Ireland) and is part of a broader research project called FutureCOMM (funded by HEA Ireland under the PRTLI 4 program). 
 
-It is open source and you can find the source code at https://github.com/ansig/Future2. 
+It is open source and you can find the source code at https://github.com/ansig/Future2 
 
-Please go to the Settings view by pressing the (i) button in your Profile for more info!
+For more information and help, please go to the Settings view by pressing the (i) button in your Profile!

@@ -1,3 +1,3 @@
-TiY(tm) (Tag-it-Yourself) is an open source iPhone application that supports self-management of type 1 diabetes.
+TiY(tm) (Tag-it-Yourself) is an application that supports self-management of type 1 diabetes. It is a comprehensive product available to diabetics who are looking for alternative tools that bring personal journaling practices to another level.
 
-You can track blood glucose levels and insulin injections, but also extend the records to virtually anything that is important to you by creating 'Tags' and making links between any type of entry through attachments.
+TiY allows you to track your blood glucose levels and insulin injections, but also to extend the records to virtually anything that is important to you by creating 'Tags' and making links between any type of entry through attachments.
