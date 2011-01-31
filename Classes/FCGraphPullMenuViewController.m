@@ -1106,9 +1106,12 @@
 				
 				// determine if the graphs need to be reloaded
 				NSInteger oldSetting = [defaults integerForKey:defaultKey];
-				if (oldSetting != segmentedControl.selectedSegmentIndex)
+				if (oldSetting != segmentedControl.selectedSegmentIndex) {
+					
+					[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationGraphDateLevelChanged object:self];
 					needsReload = YES;
-				
+				}
+					
 				[defaults setInteger:segmentedControl.selectedSegmentIndex forKey:defaultKey];
 				
 			} else {

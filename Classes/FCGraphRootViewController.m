@@ -186,6 +186,7 @@
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphPreferencesChangedNotification) name:FCNotificationGraphPreferencesChanged object:nil];
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphOptionsChangedNotification) name:FCNotificationGraphOptionsChanged object:nil];
 	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphLogDateSelectorDismissedNotification) name:FCNotificationGraphLogDateSelectorDismissed object:nil];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGraphDateLevelChangedNotification) name:FCNotificationGraphDateLevelChanged object:nil];
  }
 
 /*
@@ -615,14 +616,12 @@
 		
 		// adjust log dates for the current date level
 		
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
-		NSDictionary *logDates = [defaults objectForKey:FCDefaultLogDates];
+		NSDictionary *logDates = [[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultLogDates];
 		NSDate *endDate = [logDates objectForKey:@"EndDate"];
 		
 		NSDate *newStartDate;
 		
-		FCGraphScaleDateLevel level = [defaults integerForKey:FCDefaultGraphSettingDateLevel];
+		FCGraphScaleDateLevel level = [[NSUserDefaults standardUserDefaults] integerForKey:FCDefaultGraphSettingDateLevel];
 		
 		switch (level) {
 				
@@ -636,7 +635,7 @@
 		}
 		
 		NSDictionary *newLogDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", endDate, @"EndDate", nil];
-		[defaults setObject:newLogDates forKey:FCDefaultLogDates];
+		[[NSUserDefaults standardUserDefaults] setObject:newLogDates forKey:FCDefaultLogDates];
 		[newLogDates release];
 		
 		_newDateLevel = NO;
@@ -645,6 +644,11 @@
 	[self setLogDatesLabel];
 	
 	[self loadDefaultStateWithProgressHUD];
+}
+
+-(void)onGraphDateLevelChangedNotification {
+
+	_newDateLevel = YES;
 }
 
 -(void)onGraphLogDateSelectorDismissedNotification {

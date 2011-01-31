@@ -85,6 +85,7 @@
 
 // Notifications
 
+-(void)onGraphDateLevelChangedNotification;
 -(void)onGraphSetsChangedNotification;
 -(void)onGraphPreferencesChangedNotification;
 -(void)onGraphOptionsChangedNotification;
