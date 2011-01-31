@@ -52,6 +52,8 @@
 
 -(void)dealloc {
 	
+	[lastSelectedDate release];
+	
 	[additionalStartDate release];
 	[additionalEndDate release];
 
