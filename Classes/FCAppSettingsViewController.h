@@ -27,6 +27,7 @@
 
 
 #import "FCAppSettingsSelectViewController.h"
+#import "FCAppSettingsViewMessagesViewController.h"
 
 @interface FCAppSettingsViewController : UIViewController <FCGroupedTableSourceDelegate> {
 	

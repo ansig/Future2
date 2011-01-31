@@ -181,6 +181,7 @@
 		9AAD818F12E747E20000BEDF /* GraphTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818B12E747E20000BEDF /* GraphTitle.txt */; };
 		9AAD819012E747E20000BEDF /* LogMessage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818C12E747E20000BEDF /* LogMessage.txt */; };
 		9AAD819112E747E20000BEDF /* LogTitle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9AAD818D12E747E20000BEDF /* LogTitle.txt */; };
+		9AAFD09712F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AAFD09612F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.m */; };
 		9AB0C0FB1279CEE600A63CCA /* FCAppNewEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */; };
 		9AB3D6181237AE2E00548306 /* FCDatabaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB3D6171237AE2E00548306 /* FCDatabaseHandler.m */; };
 		9AD2E84E122E452900A4445B /* FCAppProfileInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AD2E84D122E452900A4445B /* FCAppProfileInputViewController.m */; };
@@ -432,6 +433,8 @@
 		9AAD818B12E747E20000BEDF /* GraphTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GraphTitle.txt; path = resources/messages/GraphTitle.txt; sourceTree = "<group>"; };
 		9AAD818C12E747E20000BEDF /* LogMessage.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LogMessage.txt; path = resources/messages/LogMessage.txt; sourceTree = "<group>"; };
 		9AAD818D12E747E20000BEDF /* LogTitle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LogTitle.txt; path = resources/messages/LogTitle.txt; sourceTree = "<group>"; };
+		9AAFD09512F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppSettingsViewMessagesViewController.h; sourceTree = "<group>"; };
+		9AAFD09612F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppSettingsViewMessagesViewController.m; sourceTree = "<group>"; };
 		9AB0C0F91279CEE600A63CCA /* FCAppNewEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppNewEntryViewController.h; sourceTree = "<group>"; };
 		9AB0C0FA1279CEE600A63CCA /* FCAppNewEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCAppNewEntryViewController.m; sourceTree = "<group>"; };
 		9AB3D6161237AE2E00548306 /* FCDatabaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCDatabaseHandler.h; sourceTree = "<group>"; };
@@ -916,6 +919,8 @@
 				9A9BD1D31211AA7500E3A1EB /* FCAppSettingsViewController.m */,
 				9A8C7AB5122FA0BA008D2A71 /* FCAppSettingsSelectViewController.h */,
 				9A8C7AB6122FA0BA008D2A71 /* FCAppSettingsSelectViewController.m */,
+				9AAFD09512F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.h */,
+				9AAFD09612F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1315,6 +1320,7 @@
 				9AA6B35112D49B8D001797B5 /* FCCalendarDelegate.m in Sources */,
 				9A85D6D912D5B49E005A9EEA /* FCGraphLogDateSelectorViewController.m in Sources */,
 				9ADD15EB12D668C40000E47E /* MBProgressHUD.m in Sources */,
+				9AAFD09712F6BAF70001FA13 /* FCAppSettingsViewMessagesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

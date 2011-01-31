@@ -133,6 +133,7 @@
 #define kProfileItemEmergencyContact	@"Emergency"
 
 #define kSettingsSectionProfile			@"Profile"
+#define kSettingsSectionUnits			@"Units"
 #define kSettingsSectionGeneral			@"General"
 #define kSettingsSectionAbout			@"About TiY"
 
@@ -143,6 +144,7 @@
 #define kSettingsItemDefaultTab			@"Startup tab"
 #define kSettingsItemResetRegistration	@"Reset welcome messages"
 #define kSettingsItemResetHelpMessages	@"Reset help messages"
+#define kSettingsItemViewMessages		@"Info and help"
 
 #define kSettingsItemProjectInfo		@"Project"
 #define kSettingsItemLicenseInfo		@"Code license"

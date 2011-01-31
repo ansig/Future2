@@ -367,10 +367,10 @@
 	
 	NSMutableArray *newSectionTitles = [[NSMutableArray alloc] init];
 	
-	[newSectionTitles addObject:@"Units"];
-	[newSectionTitles addObject:@"Profile"];
-	[newSectionTitles addObject:@"General"];
-	[newSectionTitles addObject:@"About"];
+	[newSectionTitles addObject:kSettingsSectionUnits];
+	[newSectionTitles addObject:kSettingsSectionProfile];
+	[newSectionTitles addObject:kSettingsSectionGeneral];
+	[newSectionTitles addObject:kSettingsSectionAbout];
 	
 	self.sectionTitles = newSectionTitles;
 	
@@ -413,11 +413,12 @@
 	[profileSection release];
 	
 	// general
+	
 	objects = [[NSArray alloc] initWithObjects:FCDefaultTabBarIndex, kSettingsItemDefaultTab, nil];
 	NSDictionary *defaultTabPair = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
 	[objects release];
 	
-	NSArray *generalSection = [[NSArray alloc] initWithObjects:kSettingsItemResetRegistration, kSettingsItemResetHelpMessages, defaultTabPair, nil];
+	NSArray *generalSection = [[NSArray alloc] initWithObjects:kSettingsItemViewMessages, kSettingsItemResetRegistration, kSettingsItemResetHelpMessages, defaultTabPair, nil];
 	[newSections addObject:generalSection];
 	
 	[defaultTabPair release];
@@ -477,7 +478,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	
-	return [sectionTitles objectAtIndex:section];
+	return [self.sectionTitles objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -555,6 +556,12 @@
 		
 		cell.textLabel.text = string;
 		
+		if ([string isEqualToString:kSettingsItemViewMessages])
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		
+		else
+			cell.accessoryType = UITableViewCellAccessoryNone;
+		
 		[string release];
 	}
 	
@@ -615,8 +622,15 @@
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:FCDefaultShowHelpMessageGraph];
 			
 			[self showAlertViewWithTitle:@"Help messages reset" message:@"All help messages will show once more as you go to the corresponding views."];
-		}
 		
+		} else if ([string isEqualToString:kSettingsItemViewMessages]) {
+			
+			// push selection view controller
+			
+			FCAppSettingsViewMessagesViewController *messagesViewController = [[FCAppSettingsViewMessagesViewController alloc] init];
+			[self.navigationController pushViewController:messagesViewController animated:YES];
+			[messagesViewController release];
+		}
 	}
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
