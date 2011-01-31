@@ -1035,11 +1035,9 @@
 		}
 	}
 	
-	// autorelease and return the new graph controller
+	[category release];
 	
-	[newGraphViewController autorelease];
-	
-	return newGraphViewController;
+	return [newGraphViewController autorelease];
 }
 
 -(FCGraphHandleView *)createHandleForGraphController:(FCGraphViewController *)theGraphController {

@@ -63,9 +63,7 @@
 		
 		category.cid = theCID;
 		
-		[category autorelease];
-		
-		return category;
+		return [category autorelease];
 	}
 	
 	// if theCID was nil
@@ -90,9 +88,7 @@
 	
 	FCCategory *category = [[FCCategory alloc] initWithDictionary:[result objectAtIndex:0]];
 	
-	[category autorelease];
-	
-	return category;
+	return [category autorelease];
 }
 
 +(NSArray *)allCategories {
@@ -124,9 +120,7 @@
 	
 	[mutableArray release];
 	
-	[allCategories autorelease];
-	
-	return allCategories;
+	return [allCategories autorelease];
 }
 
 +(NSArray *)allCategoriesWithOwner:(NSString *)theOwnersCID {
@@ -161,9 +155,7 @@
 	
 	[mutableArray release];
 	
-	[allCategoriesWithOwner autorelease];
-	
-	return allCategoriesWithOwner;
+	return [allCategoriesWithOwner autorelease];
 }
 
 #pragma mark Init
