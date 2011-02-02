@@ -1,7 +1,7 @@
 /*
  
- TiY (tm) - an adaptable iPhone application for self-management of type 1 diabetes
- Copyright (C) 2010  Anders Sigfridsson
+ TiY (tm) - an iPhone app that supports self-management of type 1 diabetes
+ Copyright (C) 2010  Interaction Design Centre (University of Limerick, Ireland)
  
  TiY (tm) is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 //  Future2
 //
 //  Created by Anders Sigfridsson on 08/09/2010.
-//  Copyright 2010 University of Limerick. All rights reserved.
 //
 
 #import "FCDatabaseHandler.h"
