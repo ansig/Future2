@@ -33,7 +33,9 @@
 
 @synthesize rootViewController;
 
+/*
 @synthesize locationManager, bestLocation;
+*/
 
 #pragma mark Launch
 
@@ -50,8 +52,10 @@
 	// Override point for customization after application launch
     [window makeKeyAndVisible];
 	
+	/*
 	// * Location manager
 	[self setupLocationManager];
+	*/
 	
 	// * Database
 	[self setupDatabase];
@@ -64,8 +68,10 @@
 
 - (void)dealloc {
 	
+	/*
 	[bestLocation release];
 	[locationManager release];
+	*/
 	
 	[rootViewController release];
 	
@@ -98,6 +104,7 @@
 	[fileManager copyItemAtPath:databasePathFromApp toPath:databasePath error:nil];
 }
 
+/*
 #pragma mark Location
 
 -(void)setupLocationManager {
@@ -155,6 +162,6 @@
 		}
     }
 }
-
+*/
 
 @end

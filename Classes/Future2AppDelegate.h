@@ -36,19 +36,26 @@
 	
 	FCRootViewController *rootViewController;
 	
+	/*
 	CLLocationManager *locationManager;
 	CLLocation *bestLocation;
+	*/
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @property (nonatomic, retain) FCRootViewController *rootViewController;
 
+/*
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *bestLocation;
+*/
 
 -(void)setupDatabase;
+
+/*
 -(void)setupLocationManager;
+*/
 
 @end
 
