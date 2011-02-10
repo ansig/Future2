@@ -460,6 +460,7 @@
 	
 		NSString *statementAsString = [[NSString alloc] initWithFormat:@"DELETE FROM %@ WHERE %@", table, criterion];
 		const char *statement = [statementAsString UTF8String];
+		[statementAsString release];
 		
 		// * Compile and execute the statement
 		

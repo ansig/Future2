@@ -324,6 +324,8 @@
 			[defaults setObject:newDefaultGraphs forKey:FCDefaultGraphs];
 			
 			[newDefaultGraphs release];
+			
+			[defaults synchronize];
 		}
 	}
 	

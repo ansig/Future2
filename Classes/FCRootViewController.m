@@ -155,9 +155,10 @@
 
 -(void)loadApplication {
 	
-	// * Reset the log dates on startup
+	// * Maintinance
 	
 	[self setLogDatesToNow];
+	[self purgeDefaultGraphSets];
 	
 	// * Load application...
 	
@@ -341,6 +342,46 @@
 	NSDictionary *logDates = [[NSDictionary alloc] initWithObjectsAndKeys:newStartDate, @"StartDate", newEndDate, @"EndDate", nil];
 	[[NSUserDefaults standardUserDefaults] setObject:logDates forKey:FCDefaultLogDates];
 	[logDates release];
+}
+
+-(void)purgeDefaultGraphSets {
+/*	Ensures that there are no graph sets for categories that no longer exists.
+ 
+	Should always be none, but I have encountered a few instances where there were
+	left-over graph sets after having deleted numerous tags or where the app has crashed
+	before defaults were synchronised. This method ensures consistency. */
+	
+	NSArray *defaultGraphs = [[NSUserDefaults standardUserDefaults] objectForKey:FCDefaultGraphs];
+	if (defaultGraphs != nil) {
+		
+		NSMutableArray *graphSetsToRemove = [[NSMutableArray alloc] init];		
+		for (NSDictionary *graphSet in defaultGraphs) {
+			
+			FCCategory *category = [FCCategory categoryWithCID:[graphSet objectForKey:@"Key"]];
+			if (category == nil)
+				[graphSetsToRemove addObject:graphSet];
+		}
+		
+		if ([graphSetsToRemove count] > 0) {
+			
+			NSMutableArray *mutableNewDefaultGraphs = [[NSMutableArray alloc] initWithArray:defaultGraphs];
+			
+			for (NSDictionary *graphSet in graphSetsToRemove)
+				[mutableNewDefaultGraphs removeObject:graphSet];
+			
+			NSRange range = NSMakeRange(0, [mutableNewDefaultGraphs count]);
+			NSArray *newDefaultGraphs = [[NSArray alloc] initWithArray:[mutableNewDefaultGraphs subarrayWithRange:range]];
+			[mutableNewDefaultGraphs release];
+			
+			[[NSUserDefaults standardUserDefaults] setObject:newDefaultGraphs forKey:FCDefaultGraphs];
+			
+			[newDefaultGraphs release];
+			
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+		
+		[graphSetsToRemove release];
+	}
 }
 
 @end

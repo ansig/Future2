@@ -60,9 +60,7 @@
 		
 		unit.uid = theUID;
 		
-		[unit autorelease];
-		
-		return unit;
+		return [unit autorelease];
 	}
 	
 	return nil;

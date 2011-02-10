@@ -53,6 +53,9 @@
 -(void)onRotationNotAllowedNotification;
 -(void)onRegistrationCompleteNotification;
 
+// Custom
+
 -(void)setLogDatesToNow;
+-(void)purgeDefaultGraphSets;
 
 @end

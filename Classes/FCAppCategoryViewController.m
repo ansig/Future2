@@ -571,6 +571,8 @@
 	self.countableSwitch.enabled = NO;
 	self.decimalsSegmentedControl.enabled = NO;
 	self.unitButton.enabled = NO;
+	self.iconButton.enabled = NO;
+	self.colorButton.enabled = NO;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -593,6 +595,8 @@
 	self.countableSwitch.enabled = YES;
 	self.decimalsSegmentedControl.enabled = YES;
 	self.unitButton.enabled = YES;
+	self.iconButton.enabled = YES;
+	self.colorButton.enabled = YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

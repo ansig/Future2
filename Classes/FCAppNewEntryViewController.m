@@ -293,7 +293,15 @@
 		return 10;
 	
 	// the integer
-	return [self.entry.category.maximum integerValue] - [self.entry.category.minimum integerValue] + 1; // +1 to wrap
+	
+	FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:self.entry.unit];
+	
+	NSInteger maximum = [[converter convertNumber:self.entry.category.maximum withUnit:self.entry.category.unit] integerValue];
+	NSInteger minimum = [[converter convertNumber:self.entry.category.minimum withUnit:self.entry.category.unit] integerValue];
+	
+	[converter release];
+	
+	return maximum - minimum + 1; // +1 to wrap
 }
 
 #pragma mark UIPickerViewDelegate
@@ -318,6 +326,12 @@
 		aLabel = (UILabel *)view;
 	}
 	
+	FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:self.entry.unit];
+	
+	NSInteger minimum = [[converter convertNumber:self.entry.category.minimum withUnit:self.entry.category.unit] integerValue];
+	
+	[converter release];
+	
 	NSString *text;
 	if (component < 1 && self.pickerView.numberOfComponents > 1) {
 		
@@ -327,7 +341,7 @@
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		NSString *decimalSeparator = [formatter decimalSeparator];
 		
-		NSInteger integer = [self.category.minimum integerValue] + row;
+		NSInteger integer = minimum + row;
 		text = [[NSString alloc] initWithFormat:@"%d%@", integer, decimalSeparator];
 		
 		[formatter release];
@@ -336,7 +350,7 @@
 		
 		// integer
 		
-		NSInteger integer = [self.category.minimum integerValue] + row;
+		NSInteger integer = minimum + row;
 		text = [[NSString alloc] initWithFormat:@"%d", integer];
 	
 	} else {
@@ -387,6 +401,17 @@
 		[self.originalEntry copyEntry:entry];
 		
 		[self.originalEntry save];
+		
+		// TMP UGLY SOLUTION: update each attachment to make sure
+		// they have the same timestamp as the original entry
+		for (FCEntry *attachment in self.originalEntry.attachments) {
+		
+			NSDate *timestamp = [self.originalEntry.timestamp copy];
+			attachment.timestamp = timestamp;
+			[timestamp release];
+			
+			[attachment save];
+		}
 		
 		// update category's unit (only executes if applicable)
 		if (self.originalEntry.uid != nil)
@@ -839,14 +864,17 @@
 		else
 			anEntry = [FCEntry lastEntryWithCID:self.category.cid];
 		
-		// make sure the currently set category unit is used
-		FCUnit *unit = self.category.unit;
-		[anEntry convertToNewUnit:unit];
+		// use category minimum converted to the entry's individual unit
+		FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:self.entry.unit];
+	
+		NSInteger minimum = [[converter convertNumber:self.entry.category.minimum withUnit:self.entry.category.unit] integerValue];
+		
+		[converter release];
 		
 		if (anEntry.integer != nil) {
 			
 			// integer
-			NSInteger integer = [anEntry.integer integerValue] - [self.category.minimum integerValue];
+			NSInteger integer = [anEntry.integer integerValue] - minimum;
 			[self.pickerView selectRow:integer inComponent:0 animated:YES];
 			
 		} else if (anEntry.decimal != nil) {
@@ -872,7 +900,7 @@
 			
 			// get the integer and set the first component to that value
 			
-			NSInteger integer = [decimalNumberAsString integerValue] - [self.category.minimum integerValue];
+			NSInteger integer = [decimalNumberAsString integerValue] - minimum;
 			[self.pickerView selectRow:integer inComponent:0 animated:YES];
 			
 			// get the fractionals and set each remaining component accordingly
@@ -896,7 +924,13 @@
 	if (self.pickerView != nil) {
 	
 		// integer 
-		NSInteger integer = [self.category.minimum integerValue] + [self.pickerView selectedRowInComponent:0];
+		FCUnitConverter *converter = [[FCUnitConverter alloc] initWithTarget:self.entry.unit];
+		
+		NSInteger minimum = [[converter convertNumber:self.entry.category.minimum withUnit:self.entry.category.unit] integerValue];
+		
+		[converter release];
+		
+		NSInteger integer = minimum + [self.pickerView selectedRowInComponent:0];
 		
 		// initial string value
 		NSString *stringValue = [[NSString alloc] initWithFormat:@"%d", integer];

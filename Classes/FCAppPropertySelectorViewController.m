@@ -351,6 +351,8 @@
 	} else if (self.category != nil) {
 	
 		if (self.propertyToSelect == FCPropertyUnit) {
+	
+			self.category.unit = nil;
 		
 			NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
 			self.category.uid = [[rows objectAtIndex:indexPath.row] objectForKey:@"uid"];
@@ -372,9 +374,9 @@
 			[color release];
 		}
 		
-		[super dismiss];
-		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationCategoryObjectUpdated object:self];
+		
+		[super dismiss];
 	}
 }
 

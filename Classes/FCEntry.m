@@ -473,7 +473,7 @@
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryCreated object:self];
 		
-		if ([self.cid isEqualToString:FCKeyCIDWeight])
+		if ([self.cid isEqualToString:FCKeyCIDWeight]) // Special case!
 			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
 		
 	} else {
@@ -493,7 +493,7 @@
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationEntryUpdated object:self];
 		
-		if ([self.cid isEqualToString:FCKeyCIDWeight])
+		if ([self.cid isEqualToString:FCKeyCIDWeight]) // Special case!
 			[[NSNotificationCenter defaultCenter] postNotificationName:FCNotificationUserDefaultsUpdated object:self];
 		
 		// log
@@ -791,6 +791,8 @@
 	
 	self.cid = anotherEntry.cid;
 	self.uid = anotherEntry.uid;
+	
+	self.attachments = anotherEntry.attachments;
 }
 
 -(void)convertToNewUnit:(FCUnit *)newUnit {
@@ -823,6 +825,7 @@
 		
 		self.uid = newUnit.uid;
 		
+		self.category = nil;
 		self.unit = nil;
 	}
 }
@@ -867,7 +870,7 @@
 			NSDecimal roundedDecimalValue;
 			NSDecimalRound(&roundedDecimalValue, &decimalValue, [self.category.decimals integerValue], NSRoundPlain);
 			
-			description = [[NSString alloc] initWithFormat:@"%@", NSDecimalString(&roundedDecimalValue, FCUserLocale())];
+			description = [[NSString alloc] initWithFormat:@"%@", NSDecimalString(&roundedDecimalValue, (id)FCUserLocale())];
 		}
 		
 		if (addExtensions) {

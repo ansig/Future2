@@ -511,7 +511,7 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (self.textView != nil) {
 		
-		NSString *string = [(NSString *)self.textView.text copy];
+		NSString *string = self.textView.text;
 		if ([string length] == 0)
 			[defaults removeObjectForKey:[item objectForKey:@"DefaultKey"]];
 		else
@@ -519,7 +519,7 @@
 		
 	} else if (self.datePicker != nil) {
 		
-		NSDate *date = [(NSDate *)self.datePicker.date copy];
+		NSDate *date = self.datePicker.date;
 		if (cancelled)
 			[defaults removeObjectForKey:[item objectForKey:@"DefaultKey"]];
 		else 
