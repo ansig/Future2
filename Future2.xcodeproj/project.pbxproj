@@ -196,7 +196,6 @@
 /* Begin PBXFileReference section */
 		1D3623240D0F684500981E51 /* Future2AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Future2AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* Future2AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Future2AppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* Future2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Future2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Future2_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Future2_Prefix.pch; sourceTree = "<group>"; };
@@ -402,6 +401,7 @@
 		9A9EDBEB127C1E8100322158 /* FCCFHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCFHelpers.h; sourceTree = "<group>"; };
 		9A9EDBEC127C1E8100322158 /* FCCFHelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FCCFHelpers.c; sourceTree = "<group>"; };
 		9A9EDC4F127C1FDA00322158 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		9AA42EF313092796004FB43B /* Future2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Future2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AA6B34F12D49B8D001797B5 /* FCCalendarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCCalendarDelegate.h; sourceTree = "<group>"; };
 		9AA6B35012D49B8D001797B5 /* FCCalendarDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCCalendarDelegate.m; sourceTree = "<group>"; };
 		9AA8569A120FFF2D008DA1BA /* FCAppRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCAppRootViewController.h; sourceTree = "<group>"; };
@@ -498,7 +498,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Future2.app */,
+				9AA42EF313092796004FB43B /* Future2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1110,7 +1110,7 @@
 			);
 			name = Future2;
 			productName = Future2;
-			productReference = 1D6058910D05DD3D006BFB54 /* Future2.app */;
+			productReference = 9AA42EF313092796004FB43B /* Future2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1363,6 +1363,37 @@
 			};
 			name = Release;
 		};
+		9AD9E01713086722009D1639 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				NSZombieEnabled = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Distribution;
+		};
+		9AD9E01813086722009D1639 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Anders Sigfridsson";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Distribution: Anders Sigfridsson";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Future2_Prefix.pch;
+				INFOPLIST_FILE = "Future2-Info.plist";
+				PRODUCT_NAME = Future2;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1147E19-6DA1-46A2-8954-563E596429D8";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "C1147E19-6DA1-46A2-8954-563E596429D8";
+				SDKROOT = iphoneos;
+			};
+			name = Distribution;
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1399,6 +1430,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				9AD9E01813086722009D1639 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1408,6 +1440,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				9AD9E01713086722009D1639 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
